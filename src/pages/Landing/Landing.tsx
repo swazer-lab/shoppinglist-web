@@ -1,9 +1,19 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { AppState } from '../../store';
 
-class Landing extends Component {
+interface Props {
+    email: string;
+}
+
+class Landing extends Component<Props> {
     render() {
         return <h1>Landing</h1>;
     }
 }
 
-export default Landing;
+const mapStateToProps = (state: AppState) => {
+    return {};
+};
+
+export default connect(mapStateToProps)(Landing);

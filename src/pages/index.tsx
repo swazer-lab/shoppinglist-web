@@ -1,33 +1,29 @@
 import * as React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { Store } from 'redux';
+import { History } from 'history';
+import { Provider } from 'react-redux';
+import { ConnectedRouter } from 'connected-react-router';
 
-import Landing from './Landing/Landing';
-import Carts from './Carts/Carts';
-import Items from './Items/Items';
-
-import NotFound from './Other/NotFound';
-import PrivacyPolicy from './Other/PrivacyPolicy';
-import ServiceTerms from './Other/ServiceTerms';
+import { AppState } from '../store';
+import Routes from '../config/routes';
 
 interface Props {
+    store: Store<AppState>
+    history: History
 }
 
-class App extends React.Component<Props> {
+class Main extends React.Component<Props> {
     public render() {
-        return (
-            <Router>
-                <Switch>
-                    <Route exact path="/" component={Landing} />
-                    <Route path="/carts" component={Carts} />
-                    <Route path="/items" component={Items} />
+        const { store, history } = this.props;
 
-                    <Route path="/privacy" component={PrivacyPolicy} />
-                    <Route path="/terms" component={ServiceTerms} />
-                    <Route component={NotFound} />
-                </Switch>
-            </Router>
+        return (
+            <Provider store={store}>
+                <ConnectedRouter history={history}>
+                    <Routes />
+                </ConnectedRouter>
+            </Provider>
         );
     }
 }
 
-export default App;
+export default Main;
