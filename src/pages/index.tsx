@@ -1,29 +1,33 @@
 import * as React from 'react';
-import { Store } from 'redux';
-import { History } from 'history';
-import { Provider } from 'react-redux';
-import { ConnectedRouter } from 'connected-react-router';
+import { Provider, connect } from 'react-redux';
 
-import { AppState } from '../store';
-import Routes from '../config/routes';
+import { AppState } from '../types/store';
+import { AppNavigator } from '../config/routes';
+
+import { store } from '../config/store';
 
 interface Props {
-    store: Store<AppState>
-    history: History
+
 }
 
 class Main extends React.Component<Props> {
-    public render() {
-        const { store, history } = this.props;
-
-        return (
-            <Provider store={store}>
-                <ConnectedRouter history={history}>
-                    <Routes />
-                </ConnectedRouter>
-            </Provider>
-        );
-    }
+	public render() {
+		return (
+			<AppNavigator />
+		);
+	}
 }
 
-export default Main;
+const mapStateToProps = (state: AppState) => {
+	return {};
+};
+
+export default () => {
+	const AppWithNavigation = connect(mapStateToProps)(Main);
+
+	return (
+		<Provider store={store}>
+			<AppWithNavigation />
+		</Provider>
+	);
+}
