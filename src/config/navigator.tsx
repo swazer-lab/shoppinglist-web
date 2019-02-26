@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
+import { Layout } from '../layout';
+
 export const navigator = (routes: any) => {
 	const appRoutes = Object.keys(routes).map((route: any) => {
 		if (!routes.hasOwnProperty(route)) return;
@@ -12,7 +14,9 @@ export const navigator = (routes: any) => {
 	return (
 		<BrowserRouter>
 			<Switch>
-				{appRoutes}
+				<Layout>
+					{appRoutes}
+				</Layout>
 			</Switch>
 		</BrowserRouter>
 	);

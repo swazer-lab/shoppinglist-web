@@ -31,6 +31,10 @@ const Login = (props: Props) => {
 	);
 };
 
+Login.layoutOptions = {
+	title: 'Login',
+};
+
 const mapStateToProps = (state: AppState) => {
 	const { email, password, isLoading } = state.auth;
 

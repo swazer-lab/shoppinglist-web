@@ -1,30 +1,18 @@
 import { navigator } from './navigator';
 
-import Landing from '../pages/Landing/Landing';
-import Login from '../pages/Auth/Login';
-import Carts from '../pages/Carts/Carts';
+import { Register, Login } from '../pages/Auth';
+import { Carts } from '../pages/Carts';
+import { NotFound, PrivacyPolicy, ServiceTerms } from '../pages/Other';
 
-import NotFound from '../pages/Other/NotFound';
+export const routes = {
+	Register: { path: '/Account/Register', page: Register },
+	Login: { path: '/Account/Login', page: Login },
 
-const routes = {
-	Landing: {
-		path: '/',
-		page: Landing,
-
-		options: {
-			exact: true,
-		},
-	},
-	Login: {
-		path: '/Account/Login',
-		page: Login,
-	},
-	Carts: {
-		path: '/Carts',
-		page: Carts,
-	},
+	Carts: { path: '/', page: Carts, options: { exact: true } },
 
 	NotFound: { path: '*', page: NotFound },
+	PrivacyPolicy: { path: '/About/PrivacyPolicy', page: PrivacyPolicy },
+	ServiceTerms: { path: '/About/ServiceTerms', page: ServiceTerms },
 };
 
 export const AppNavigator = () => navigator(routes);

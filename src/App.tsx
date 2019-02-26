@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { Provider, connect } from 'react-redux';
 
-import { AppState } from '../types/store';
-import { AppNavigator } from '../config/routes';
+import { AppState } from './types/store';
+import { AppNavigator } from './config/routes';
 
-import { store } from '../config/store';
+import { store } from './config/store';
 
 interface Props {
 
