@@ -1,10 +1,12 @@
-const root = 'http://shopping.swazerlab.com/api/';
+const root = 'http://localhost:63493/api/';
 
 // Account Urls
 const accountRoot = root.concat('account/');
 export const register_url = accountRoot.concat('register');
 export const login_url = accountRoot.concat('token');
+export const confirm_email_url = accountRoot.concat('confirmEmail');
 export const fetch_profile_url = accountRoot.concat('profile');
+export const forgot_password_url = accountRoot.concat('forgotPassword');
 
 //Profile Urls
 const profileRoot = root.concat('user/');

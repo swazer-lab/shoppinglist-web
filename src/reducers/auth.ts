@@ -8,6 +8,7 @@ const initialState: State = {
 	email: '',
 	phone: '',
 	password: '',
+	isEmailConfirmed: false,
 
 	isLoading: false,
 };
@@ -64,6 +65,12 @@ export default (state: State = initialState, action: Action): State => {
 
 				isLoading: false,
 			};
+
+		case ActionTypes.confirm_email_result:
+			return {
+				...state,
+				isEmailConfirmed: action.isEmailConfirmed
+			}
 
 		default:
 			return state;

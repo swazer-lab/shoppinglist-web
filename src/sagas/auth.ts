@@ -3,11 +3,11 @@ import { call, put, select, takeLatest } from 'redux-saga/effects';
 
 import { AppState } from '../types/store';
 
-import { register_api, login_api } from '../api/auth';
-import { registerResult, loginResult } from '../actions/auth';
+import { register_api, login_api, confirm_email_api } from '../api/auth';
+import { registerResult, loginResult, confirmEmailResult } from '../actions/auth';
 
 import { EMAIL_VALIDATOR } from '../config/utilities';
-import { ActionTypes } from '../types/auth';
+import {ActionTypes, ConfirmEmailAction} from '../types/auth';
 
 function* registerSaga(): SagaIterator {
 	const { name, email, phone, password } = yield select((state: AppState) => state.auth);
@@ -77,7 +77,19 @@ function* loginSaga(): SagaIterator {
 	}
 }
 
+function* confirmEmailSaga(action: ConfirmEmailAction): SagaIterator {
+	const { userId, token } = action;
+
+	try {
+		yield call(confirm_email_api, userId, token);
+		yield put(confirmEmailResult(true, true));
+	} catch (e) {
+		yield put(confirmEmailResult(false, false));
+	}
+}
+
 export default [
 	takeLatest(ActionTypes.register, registerSaga),
 	takeLatest(ActionTypes.login, loginSaga),
+	takeLatest(ActionTypes.confirm_email, confirmEmailSaga)
 ];
