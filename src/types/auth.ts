@@ -61,6 +61,7 @@ export type Action =
 
 export interface State {
 	accessToken?: string,
+	isLoggedIn: boolean,
 
 	name: string,
 	email: string,

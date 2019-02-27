@@ -5,10 +5,15 @@ import { withRouter } from 'react-router-dom';
 import { AppState } from '../types/store';
 
 import { setTopLevelHistory } from '../config/navigationService';
+import { navigate } from '../actions/service';
 
 interface Props {
+	dispatch: Function,
+
 	children: any,
 	history: any,
+
+	isLoggedIn: boolean,
 }
 
 class Layout extends React.Component<Props> {
@@ -34,6 +39,11 @@ class Layout extends React.Component<Props> {
 			if (path.toLowerCase() === routePath.toLowerCase() || path.toLowerCase() + '/' === routePath.toLowerCase()) routeObject = routes[route];
 		});
 
+		if (routeObject && routeObject.options && routeObject.options.authorized && !this.props.isLoggedIn) {
+			this.props.dispatch(navigate('Login'));
+			return;
+		}
+
 		if (routeObject !== undefined && routeObject.page.layoutOptions) {
 			const layoutOptions = routeObject.page.layoutOptions;
 			if (layoutOptions.title) document.title = layoutOptions.title;
@@ -51,8 +61,12 @@ class Layout extends React.Component<Props> {
 }
 
 const mapStateToProps = (state: AppState) => {
-	return {};
+	const { isLoggedIn } = state.auth;
+
+	return {
+		isLoggedIn,
+	};
 };
 
 // @ts-ignore
-export default withRouter(connect()(Layout));
+export default withRouter(connect(mapStateToProps)(Layout));

@@ -2,6 +2,7 @@ import { Action, ActionTypes, State } from '../types/auth';
 
 const initialState: State = {
 	accessToken: '',
+	isLoggedIn: false,
 
 	name: '',
 	email: '',
@@ -44,6 +45,8 @@ export default (state: State = initialState, action: Action): State => {
 			return {
 				...state,
 				accessToken: action.accessToken,
+				isLoggedIn: true,
+
 				isLoading: false,
 			};
 
@@ -57,6 +60,8 @@ export default (state: State = initialState, action: Action): State => {
 			return {
 				...state,
 				accessToken: action.accessToken,
+				isLoggedIn: true,
+
 				isLoading: false,
 			};
 

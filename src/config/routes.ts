@@ -8,7 +8,7 @@ export const routes = {
 	Register: { path: '/Account/Register', page: Register },
 	Login: { path: '/Account/Login', page: Login },
 
-	Carts: { path: '/', page: Carts, options: { exact: true } },
+	Carts: { path: '/', page: Carts, options: { exact: true, authorized: true } },
 
 	NotFound: { path: '*', page: NotFound },
 	PrivacyPolicy: { path: '/About/PrivacyPolicy', page: PrivacyPolicy },
