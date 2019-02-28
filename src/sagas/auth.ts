@@ -1,13 +1,13 @@
 import { SagaIterator } from 'redux-saga';
 import { call, put, select, takeLatest } from 'redux-saga/effects';
-
 import { AppState } from '../types/store';
 
-import {register_api, login_api, confirm_email_api, forgot_password_api} from '../api/auth';
-import {registerResult, loginResult, confirmEmailResult, forgotPasswordResult} from '../actions/auth';
+import { register_api, login_api, confirm_email_api, forgot_password_api, send_reset_code_api } from '../api/auth';
+import { registerResult, loginResult, confirmEmailResult, sendForgotPasswordEmailResult } from '../actions/auth';
+import { ActionTypes, ConfirmEmailAction } from '../types/auth';
+import { hideProgress, showProgress } from '../actions/service';
 
 import { EMAIL_VALIDATOR } from '../config/utilities';
-import {ActionTypes, ConfirmEmailAction, ForgotPasswordAction} from '../types/auth';
 
 function* registerSaga(): SagaIterator {
 	const { name, email, phone, password } = yield select((state: AppState) => state.auth);
@@ -83,22 +83,40 @@ function* confirmEmailSaga(action: ConfirmEmailAction): SagaIterator {
 	yield put(showProgress('Confirming Email'));
 	try {
 		yield call(confirm_email_api, userId, token);
-		yield put(confirmEmailResult(true, true));
+		yield put(confirmEmailResult(false));
 	} catch (e) {
-		yield put(confirmEmailResult(false, false));
+		yield put(confirmEmailResult(true));
 	} finally {
 		yield put(hideProgress());
 	}
 }
 
-function* forgotEmailSaga(action: ForgotPasswordAction): SagaIterator {
-	const { email} = yield select((state: AppState) => state.auth);
+function* sendForgotPasswordEmailSaga(): SagaIterator {
+	console.log('Sending reset password email...');
 
+	const { email } = yield select((state: AppState) => state.auth);
+
+	yield put(showProgress('Sending reset password email...'));
 	try {
 		yield call(forgot_password_api, email);
-		yield put(forgotPasswordResult(false, true));
+		yield put(sendForgotPasswordEmailResult(false));
 	} catch (e) {
-		yield put(forgotPasswordResult(true, false));
+		yield put(sendForgotPasswordEmailResult(true));
+	} finally {
+		yield put(hideProgress());
+	}
+}
+
+function* sendResetPasswordSaga(): SagaIterator {
+	const { resetCode, resetPassword } = yield select((state: AppState) => state.auth);
+
+	try {
+		yield call(send_reset_code_api, resetCode, resetPassword);
+		yield put(sendForgotPasswordEmailResult(false));
+	} catch (e) {
+		yield put(sendForgotPasswordEmailResult(true));
+	} finally {
+		yield put(hideProgress());
 	}
 }
 
@@ -106,5 +124,6 @@ export default [
 	takeLatest(ActionTypes.register, registerSaga),
 	takeLatest(ActionTypes.login, loginSaga),
 	takeLatest(ActionTypes.confirm_email, confirmEmailSaga),
-	takeLatest(ActionTypes.forgot_password_email, forgotEmailSaga)
+	takeLatest(ActionTypes.send_forgot_password_email, sendForgotPasswordEmailSaga),
+	takeLatest(ActionTypes.send_reset_password, sendResetPasswordSaga),
 ];

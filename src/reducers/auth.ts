@@ -8,7 +8,11 @@ const initialState: State = {
 	email: '',
 	phone: '',
 	password: '',
+
 	isEmailConfirmed: false,
+	isResettingPassword: false,
+	resetCode: '',
+	resetPassword: '',
 
 	isLoading: false,
 };
@@ -34,6 +38,18 @@ export default (state: State = initialState, action: Action): State => {
 			return {
 				...state,
 				password: action.password,
+			};
+
+		case ActionTypes.change_reset_code:
+			return {
+				...state,
+				resetCode: action.resetCode,
+			};
+
+		case ActionTypes.change_reset_password:
+			return {
+				...state,
+				resetPassword: action.resetPassword,
 			};
 
 		case ActionTypes.register:
@@ -69,8 +85,15 @@ export default (state: State = initialState, action: Action): State => {
 		case ActionTypes.confirm_email_result:
 			return {
 				...state,
-				isEmailConfirmed: action.isEmailConfirmed
-			}
+				isEmailConfirmed: !action.hasError,
+			};
+
+		case ActionTypes.send_forgot_password_email_result:
+			console.log(!action.hasError);
+			return {
+				...state,
+				isResettingPassword: !action.hasError,
+			};
 
 		default:
 			return state;

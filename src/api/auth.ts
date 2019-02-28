@@ -44,3 +44,12 @@ export const forgot_password_api = (email: string): Promise<any> => {
 
     return axios.post(urls.forgot_password_url, body);
 };
+
+export const send_reset_code_api = (resetCode: string, resetPassword: string): Promise<any> => {
+    const body = {
+        resetCode,
+        resetPassword
+    };
+
+    return axios.post(urls.reset_password_url, body);
+};
