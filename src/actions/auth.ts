@@ -7,6 +7,8 @@ import {
 	ChangePasswordAction,
 	LoginResultAction,
 	RegisterResultAction,
+	ConfirmEmailAction,
+	ConfirmEmailResultAction
 } from '../types/auth';
 
 export const changeName = (name: string): ChangeNameAction => ({
@@ -29,11 +31,25 @@ export const changePassword = (password: string): ChangePasswordAction => ({
 export const register = (): AuthAction => ({
 	type: ActionTypes.register,
 });
+
 export const registerResult = (hasError: boolean, accessToken?: string): RegisterResultAction => ({
 	type: ActionTypes.register_result,
 	hasError,
 	accessToken,
 });
+
+export const confirmEmail = (userId: string, token: string): ConfirmEmailAction => ({
+	type: ActionTypes.confirm_email,
+	userId,
+	token
+});
+
+export const confirmEmailResult = (hasError: boolean, isEmailConfirmed: boolean): ConfirmEmailResultAction => ({
+	type: ActionTypes.confirm_email_result,
+	isEmailConfirmed,
+	hasError
+});
+
 
 export const login = (): AuthAction => ({
 	type: ActionTypes.login,
