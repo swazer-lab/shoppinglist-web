@@ -30,44 +30,46 @@ const Login = (props: Props) => {
 	const onRegisterClicked = () => dispatch(navigate('Register'));
 
 	return (
-		<AuthContainer className='page_auth' contentContainerClassName='page_auth__content_container'>
-			<h1 className='page_auth__title'>Login</h1>
-			<p className='page_auth__subtitle'>with your Google account</p>
-			<form action='#'>
-				<Input
-					className='page_auth__input'
-					value={email}
-					onChange={handleChangeEmail}
-					type='email'
-					placeholder='Email'
-					required
-				/>
-				<Input
-					className='page_auth__input'
-					value={password}
-					onChange={handleChangePassword}
-					type='password'
-					placeholder='Password'
-					required
-					pattern='.{6,}'
-				/>
-				<Button
-					className='page_auth__forgot_password_button'
-					mode='text'
-					title='Forgot Password'
-					onClick={onForgotPasswordClicked}
-				/>
-
-				<div className='page_auth__buttons_container'>
-					<Button
-						className='page_auth__action_button'
-						mode='text'
-						title='Create Account'
-						onClick={onRegisterClicked}
+		<AuthContainer className='page_auth' isLoading={isLoading}>
+			<div className='page_auth__content_container'>
+				<h1 className='page_auth__title'>Login</h1>
+				<p className='page_auth__subtitle'>with your Google account</p>
+				<form action='#'>
+					<Input
+						className='page_auth__input'
+						value={email}
+						onChange={handleChangeEmail}
+						type='email'
+						placeholder='Email'
+						required
 					/>
-					<Button title='Login' onClick={onLoginClicked} />
-				</div>
-			</form>
+					<Input
+						className='page_auth__input'
+						value={password}
+						onChange={handleChangePassword}
+						type='password'
+						placeholder='Password'
+						required
+						pattern='.{6,}'
+					/>
+					<Button
+						className='page_auth__forgot_password_button'
+						mode='text'
+						title='Forgot Password'
+						onClick={onForgotPasswordClicked}
+					/>
+
+					<div className='page_auth__buttons_container'>
+						<Button
+							className='page_auth__action_button'
+							mode='text'
+							title='Create Account'
+							onClick={onRegisterClicked}
+						/>
+						<Button type='submit' title='Login' onClick={onLoginClicked} />
+					</div>
+				</form>
+			</div>
 		</AuthContainer>
 	);
 };

@@ -4,7 +4,7 @@ import classNames from 'classnames';
 
 import { AppState } from '../../types/store';
 
-import { Button } from '../';
+import { Button, ProgressBar } from '../';
 import './styles.scss';
 
 interface Props {
@@ -12,11 +12,11 @@ interface Props {
 	children?: any,
 
 	className: string,
-	contentContainerClassName?: string,
+	isLoading?: boolean,
 }
 
 const AuthContainer = (props: Props) => {
-	const { dispatch, children, className, contentContainerClassName } = props;
+	const { dispatch, children, className, isLoading } = props;
 
 	const onHelpClicked = () => dispatch('');
 	const onPrivacyClicked = () => dispatch('');
@@ -25,7 +25,8 @@ const AuthContainer = (props: Props) => {
 	return (
 		<div className={classNames('auth_container', className)}>
 			<div className='auth_container__box'>
-				<div className={classNames('auth_container__content_container', contentContainerClassName)}>
+				<div className='auth_container__content_container'>
+					{isLoading && <ProgressBar />}
 					{children}
 				</div>
 				<div className='auth_container__links'>

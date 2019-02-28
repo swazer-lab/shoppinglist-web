@@ -8,16 +8,18 @@ interface Props {
 	accentColor?: 'primary' | 'text',
 	mode?: 'normal' | 'text',
 
+	type?: string,
 	title: string,
-	onClick: () => void
+	onClick: () => void,
 }
 
 const Button = (props: Props) => {
-	const { className, mode, accentColor, title, onClick } = props;
+	const { className, mode, accentColor, type, title, onClick } = props;
 	return (
 		<button
 			className={classNames(`button_component button_component-${mode}-${accentColor}`, className)}
-			onClick={onClick}>
+			onClick={onClick}
+			type={type}>
 			{title}
 		</button>
 	);
