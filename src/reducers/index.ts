@@ -22,5 +22,5 @@ const generateConfig = (reducer: Function, key: string, blacklist?: Array<string
 
 export default combineReducers<AppState>({
 	service: ServiceReducer,
-	auth: generateConfig(AuthReducer, '__auth', ['password']),
+	auth: generateConfig(AuthReducer, '__auth', ['isLoggedIn', 'password']),
 });

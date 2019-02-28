@@ -2,7 +2,13 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 
 import { AppState } from '../../types/store';
+
+import { AuthContainer, Input, Button } from '../../components';
+
+import { navigate } from '../../actions/service';
 import { changeEmail, changePassword, login } from '../../actions/auth';
+
+import './styles.scss';
 
 interface Props {
 	dispatch: Function,
@@ -19,15 +25,50 @@ const Login = (props: Props) => {
 	const handleChangeEmail = (e: any) => dispatch(changeEmail(e.target.value));
 	const handleChangePassword = (e: any) => dispatch(changePassword(e.target.value));
 
+	const onForgotPasswordClicked = () => dispatch(navigate('ForgotPassword'));
 	const onLoginClicked = () => dispatch(login());
+	const onRegisterClicked = () => dispatch(navigate('Register'));
 
 	return (
-		<div>
-			<input value={email} onChange={handleChangeEmail} />
-			<input value={password} onChange={handleChangePassword} />
+		<AuthContainer className='page_auth' contentContainerClassName='page_auth__content_container'>
+			<h1 className='page_auth__title'>Login</h1>
+			<p className='page_auth__subtitle'>with your Google account</p>
+			<form action='#'>
+				<Input
+					className='page_auth__input'
+					value={email}
+					onChange={handleChangeEmail}
+					type='email'
+					placeholder='Email'
+					required
+				/>
+				<Input
+					className='page_auth__input'
+					value={password}
+					onChange={handleChangePassword}
+					type='password'
+					placeholder='Password'
+					required
+					pattern='.{6,}'
+				/>
+				<Button
+					className='page_auth__forgot_password_button'
+					mode='text'
+					title='Forgot Password'
+					onClick={onForgotPasswordClicked}
+				/>
 
-			{!isLoading ? <button onClick={onLoginClicked}>Login</button> : <progress max={2} value={1} />}
-		</div>
+				<div className='page_auth__buttons_container'>
+					<Button
+						className='page_auth__action_button'
+						mode='text'
+						title='Create Account'
+						onClick={onRegisterClicked}
+					/>
+					<Button title='Login' onClick={onLoginClicked} />
+				</div>
+			</form>
+		</AuthContainer>
 	);
 };
 

@@ -1,0 +1,41 @@
+@import "../../assets/scss/main";
+
+.page_auth {
+  &__content_container {
+    padding: 4.8rem 4rem 3.6rem;
+    text-align: center;
+  }
+
+  &__title {
+    font-size: 2.4rem;
+    color: $color-primary;
+  }
+
+  &__subtitle {
+    font-size: 1.6rem;
+    margin-bottom: 2rem;
+  }
+
+  &__input {
+    margin-bottom: 1.4rem;
+  }
+
+  &__forgot_password_button {
+    float: right;
+    padding: .2rem .4rem;
+  }
+
+  &__buttons_container {
+    display: inline-flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    width: -webkit-fill-available;
+    margin-top: 2.5rem;
+  }
+
+  &__action_button {
+    padding-right: .5rem;
+    padding-left: .5rem;
+  }
+}

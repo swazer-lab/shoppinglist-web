@@ -10,7 +10,7 @@ export const routes = {
 
 	Carts: { path: '/', page: Carts, options: { exact: true, authorized: true } },
 
-	NotFound: { path: '*', page: NotFound },
+	// NotFound: { path: '*', page: NotFound },
 	PrivacyPolicy: { path: '/About/PrivacyPolicy', page: PrivacyPolicy },
 	ServiceTerms: { path: '/About/ServiceTerms', page: ServiceTerms },
 };

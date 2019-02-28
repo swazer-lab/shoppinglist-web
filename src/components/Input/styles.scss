@@ -1,0 +1,35 @@
+@import "../../assets/scss/main";
+
+.input-component {
+  display: block;
+  width: 100%;
+
+  padding: 1.5rem 2rem;
+
+  font-family: inherit;
+  font-size: 1.5rem;
+  color: inherit;
+
+  border: .1rem solid $color-gray;
+  border-radius: .4rem;
+
+  transition: all .3s;
+
+  &:hover {
+    box-shadow: 0 .5rem 1rem rgba($color-black, .1);
+  }
+
+  &:focus {
+    border: .1rem solid rgba($color-primary, .8);
+    box-shadow: 0 1rem 2rem rgba($color-black, .1);
+    outline: none;
+
+    &:invalid {
+      border: .1rem solid rgba($color-secondary, .8);
+    }
+  }
+
+  &::-webkit-input-placeholder {
+    color: $color-text;
+  }
+}
