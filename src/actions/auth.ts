@@ -8,7 +8,8 @@ import {
 	LoginResultAction,
 	RegisterResultAction,
 	ConfirmEmailAction,
-	ConfirmEmailResultAction
+	ConfirmEmailResultAction,
+	ForgotPasswordAction, ForgotPasswordResultAction
 } from '../types/auth';
 
 export const changeName = (name: string): ChangeNameAction => ({
@@ -50,6 +51,16 @@ export const confirmEmailResult = (hasError: boolean, isEmailConfirmed: boolean)
 	hasError
 });
 
+export const forgotPassword = (email: string): ForgotPasswordAction => ({
+	type: ActionTypes.forgot_password_email,
+	email: email
+});
+
+export const forgotPasswordResult = (hasError: boolean, isForgotPassword: boolean): ForgotPasswordResultAction => ({
+	type: ActionTypes.forgot_password_email_result,
+	isForgotPassword,
+	hasError
+});
 
 export const login = (): AuthAction => ({
 	type: ActionTypes.login,

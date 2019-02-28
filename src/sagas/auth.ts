@@ -3,11 +3,11 @@ import { call, put, select, takeLatest } from 'redux-saga/effects';
 
 import { AppState } from '../types/store';
 
-import { register_api, login_api, confirm_email_api } from '../api/auth';
-import { registerResult, loginResult, confirmEmailResult } from '../actions/auth';
+import {register_api, login_api, confirm_email_api, forgot_password_api} from '../api/auth';
+import {registerResult, loginResult, confirmEmailResult, forgotPasswordResult} from '../actions/auth';
 
 import { EMAIL_VALIDATOR } from '../config/utilities';
-import {ActionTypes, ConfirmEmailAction} from '../types/auth';
+import {ActionTypes, ConfirmEmailAction, ForgotPasswordAction} from '../types/auth';
 
 function* registerSaga(): SagaIterator {
 	const { name, email, phone, password } = yield select((state: AppState) => state.auth);
@@ -88,8 +88,20 @@ function* confirmEmailSaga(action: ConfirmEmailAction): SagaIterator {
 	}
 }
 
+function* forgotEmailSaga(action: ForgotPasswordAction): SagaIterator {
+	const { email} = yield select((state: AppState) => state.auth);
+
+	try {
+		yield call(forgot_password_api, email);
+		yield put(forgotPasswordResult(false, true));
+	} catch (e) {
+		yield put(forgotPasswordResult(true, false));
+	}
+}
+
 export default [
 	takeLatest(ActionTypes.register, registerSaga),
 	takeLatest(ActionTypes.login, loginSaga),
-	takeLatest(ActionTypes.confirm_email, confirmEmailSaga)
+	takeLatest(ActionTypes.confirm_email, confirmEmailSaga),
+	takeLatest(ActionTypes.forgot_password_email, forgotEmailSaga)
 ];

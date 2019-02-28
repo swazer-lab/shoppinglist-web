@@ -14,6 +14,9 @@ export enum ActionTypes {
 
     confirm_email = 'AUTH__CONFIRM_EMAIL',
     confirm_email_result = 'AUTH__CONFIRM_EMAIL_RESULT',
+
+    forgot_password_email = 'AUTH__FORGOT_PASSWORD_EMAIL',
+    forgot_password_email_result = 'AUTH__FORGOT_PASSWORD_EMAIL_RESULT',
 }
 
 export interface AuthAction extends ReduxAction<ActionTypes> {
@@ -64,6 +67,16 @@ export interface ConfirmEmailResultAction extends AuthResultAction {
     isEmailConfirmed: boolean
 }
 
+export interface ForgotPasswordAction extends AuthAction {
+    type: ActionTypes.forgot_password_email,
+    email: string
+}
+
+export interface ForgotPasswordResultAction extends AuthResultAction {
+    type: ActionTypes.forgot_password_email_result,
+    isForgotPassword: boolean
+}
+
 export type Action =
     & AuthAction
     & ChangeNameAction
@@ -73,7 +86,9 @@ export type Action =
     & RegisterResultAction
     & LoginResultAction
     & ConfirmEmailAction
-    & ConfirmEmailResultAction;
+    & ConfirmEmailResultAction
+    & ForgotPasswordAction
+    & ForgotPasswordResultAction;
 
 export interface State {
     accessToken?: string,

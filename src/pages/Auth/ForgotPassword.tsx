@@ -3,33 +3,33 @@ import {connect} from 'react-redux';
 
 import {AppState, Location} from '../../types/store';
 import {navigate} from "../../actions/service";
-import {changeEmail, confirmEmail} from "../../actions/auth";
+import {changeEmail, forgotPassword} from "../../actions/auth";
 
 interface Props {
-    isEmailConfirmed: boolean;
+    email: string,
     dispatch: Function,
-    location: Location,
 }
 
-class ConfirmEmail extends React.Component<Props> {
+const ForgotPassword = (props: Props) => {
+    const { email, dispatch} = props;
 
+    const handleChangeEmail = (e: any) => dispatch(changeEmail(e.target.value));
 
-    render() {
-        return (
-            <div>
-                <button>Forgot Password</button>
-            </div>
-        );
-    }
-}
+    return (
+        <div>
+            <input value={email} onChange={handleChangeEmail} />
+            <button onClick={() => props.dispatch(forgotPassword(email))}>ForgotPassword</button>
+        </div>
+    );
+};
 
 const mapStateToProps = (state: AppState) => {
 
-    const { isEmailConfirmed } = state.auth;
+    const { email } = state.auth;
 
     return {
-        isEmailConfirmed,
+        email,
     };
 };
 
-export default connect(mapStateToProps)(ConfirmEmail);
+export default connect(mapStateToProps)(ForgotPassword);
