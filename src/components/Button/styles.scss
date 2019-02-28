@@ -1,0 +1,59 @@
+@import "../../assets/scss/main";
+
+.button_component {
+  display: inline;
+  padding: .9rem 2.2rem;
+
+  border: none;
+  border-radius: .4rem;
+
+  font-weight: 700;
+  font-size: 1.4rem;
+
+  transition: all .3s;
+  cursor: pointer;
+  outline: none;
+
+  &-normal-primary {
+    background-color: $color-primary;
+
+    font-weight: 900;
+    color: $color-white;
+
+    &:hover {
+      background-color: lighten($color-primary, 5);
+      box-shadow: 0 .5rem 1rem rgba($color-primary, .1);
+    }
+
+    &:focus {
+      background-color: darken($color-primary, 5);
+      box-shadow: 0 1rem 2rem rgba($color-primary, .2);
+    }
+  }
+
+  &-text-primary {
+    background-color: transparent;
+    color: $color-primary;
+
+    &:hover {
+      background-color: rgba($color-primary, .04);
+    }
+
+    &:focus {
+      background-color: rgba($color-primary, .1);
+    }
+  }
+
+  &-text-text {
+    background-color: transparent;
+    color: $color-text;
+
+    &:hover {
+      background-color: rgba($color-text, .04);
+    }
+
+    &:focus {
+      background-color: rgba($color-text, .1);
+    }
+  }
+}

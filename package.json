@@ -9,12 +9,15 @@
 		"eject": "react-scripts eject"
 	},
 	"dependencies": {
+		"@types/classnames": "^2.2.7",
 		"axios": "^0.18.0",
 		"axios-response-logger": "^0.1.0",
+		"classnames": "^2.2.6",
 		"connected-react-router": "^4.5.0",
 		"history": "^4.7.2",
 		"lodash": "^4.17.11",
 		"morphism": "^1.8.5",
+		"node-sass": "^4.11.0",
 		"qs": "^6.6.0",
 		"react": "^16.8.3",
 		"react-dom": "^16.8.3",
@@ -31,7 +34,6 @@
 		"redux-saga": "^0.16.2"
 	},
 	"devDependencies": {
-	  "@types/redux-persist": "^4.3.1",
 		"@types/history": "^4.7.2",
 		"@types/lodash": "^4.14.121",
 		"@types/node": "^11.9.4",
@@ -43,6 +45,7 @@
 		"@types/react-router": "^4.4.4",
 		"@types/react-router-dom": "^4.3.1",
 		"@types/redux-logger": "^3.0.7",
+		"@types/redux-persist": "^4.3.1",
 		"typescript": "^3.3.3333"
 	},
 	"eslintConfig": {

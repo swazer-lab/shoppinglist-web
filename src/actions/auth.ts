@@ -9,7 +9,8 @@ import {
 	RegisterResultAction,
 	ConfirmEmailAction,
 	ConfirmEmailResultAction,
-	ForgotPasswordAction, ForgotPasswordResultAction
+	ForgotPasswordAction,
+	ForgotPasswordResultAction
 } from '../types/auth';
 
 export const changeName = (name: string): ChangeNameAction => ({
@@ -39,10 +40,19 @@ export const registerResult = (hasError: boolean, accessToken?: string): Registe
 	accessToken,
 });
 
+export const login = (): AuthAction => ({
+	type: ActionTypes.login,
+});
+export const loginResult = (hasError: boolean, accessToken?: string): LoginResultAction => ({
+	type: ActionTypes.login_result,
+	hasError,
+	accessToken,
+});
+
 export const confirmEmail = (userId: string, token: string): ConfirmEmailAction => ({
 	type: ActionTypes.confirm_email,
 	userId,
-	token
+	token,
 });
 
 export const confirmEmailResult = (hasError: boolean, isEmailConfirmed: boolean): ConfirmEmailResultAction => ({
@@ -60,13 +70,4 @@ export const forgotPasswordResult = (hasError: boolean, isForgotPassword: boolea
 	type: ActionTypes.forgot_password_email_result,
 	isForgotPassword,
 	hasError
-});
-
-export const login = (): AuthAction => ({
-	type: ActionTypes.login,
-});
-export const loginResult = (hasError: boolean, accessToken?: string): LoginResultAction => ({
-	type: ActionTypes.login_result,
-	hasError,
-	accessToken,
 });

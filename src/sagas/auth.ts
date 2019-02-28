@@ -80,11 +80,14 @@ function* loginSaga(): SagaIterator {
 function* confirmEmailSaga(action: ConfirmEmailAction): SagaIterator {
 	const { userId, token } = action;
 
+	yield put(showProgress('Confirming Email'));
 	try {
 		yield call(confirm_email_api, userId, token);
 		yield put(confirmEmailResult(true, true));
 	} catch (e) {
 		yield put(confirmEmailResult(false, false));
+	} finally {
+		yield put(hideProgress());
 	}
 }
 

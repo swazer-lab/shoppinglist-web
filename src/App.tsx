@@ -6,6 +6,8 @@ import { AppNavigator } from './config/routes';
 
 import { store } from './config/store';
 
+import './assets/scss/main.scss';
+
 interface Props {
 
 }
