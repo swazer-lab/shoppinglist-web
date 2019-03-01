@@ -40,10 +40,11 @@ export const changeResetPassword = (resetPassword: string): ChangeResetPasswordA
 export const register = (): AuthAction => ({
 	type: ActionTypes.register,
 });
-export const registerResult = (hasError: boolean, accessToken?: string): RegisterResultAction => ({
+export const registerResult = (hasError: boolean, message: string, accessToken?: string): RegisterResultAction => ({
 	type: ActionTypes.register_result,
 	hasError,
 	accessToken,
+	message
 });
 
 export const login = (): AuthAction => ({

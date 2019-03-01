@@ -9,7 +9,7 @@ import {
 	changeResetCode,
 	sendForgotPasswordEmail,
 	changeResetPassword,
-	sendResetCode,
+	sendResetCode, login,
 } from '../../actions/auth';
 import { AuthContainer } from '../../components/AuthContainer';
 
@@ -29,6 +29,7 @@ const ForgotPassword = (props: Props) => {
 	const handleResetCode = (e: any) => dispatch(changeResetCode(e.target.value));
 	const handleChangeEmail = (e: any) => dispatch(changeEmail(e.target.value));
 	const handleChangeResetPassword = (e: any) => dispatch(changeResetPassword(e.target.value));
+	const handleKeyPress = (e: any) => dispatch(login());
 
 	return (
 		<AuthContainer className='page_auth' isLoading={isLoading}>
@@ -56,6 +57,7 @@ const ForgotPassword = (props: Props) => {
 								className='page_auth__input'
 								value={resetCode}
 								onChange={handleResetCode}
+								onKeyPress={handleKeyPress}
 								type='text'
 								placeholder='Reset Code'
 								required
@@ -64,6 +66,7 @@ const ForgotPassword = (props: Props) => {
 								className='page_auth__input'
 								value={resetPassword}
 								onChange={handleChangeResetPassword}
+								onKeyPress={handleKeyPress}
 								type='password'
 								placeholder='New Password'
 								required
@@ -76,6 +79,7 @@ const ForgotPassword = (props: Props) => {
 								className='page_auth__input'
 								value={email}
 								onChange={handleChangeEmail}
+								onKeyPress={handleKeyPress}
 								type='email'
 								placeholder='Email'
 								required

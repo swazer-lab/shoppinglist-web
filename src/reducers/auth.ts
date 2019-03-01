@@ -57,14 +57,14 @@ export default (state: State = initialState, action: Action): State => {
 			return {
 				...state,
 				isLoading: true,
+				errorMessage: ''
 			};
 		case ActionTypes.register_result:
-			if (action.hasError) return { ...state, isLoading: false };
+			if (action.hasError) return { ...state, isLoading: false, errorMessage: action.message};
 			return {
 				...state,
 				accessToken: action.accessToken,
 				isLoggedIn: true,
-
 				isLoading: false,
 			};
 

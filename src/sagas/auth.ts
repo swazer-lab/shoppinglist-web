@@ -14,27 +14,27 @@ function* registerSaga(): SagaIterator {
 	const { name, email, phone, password } = yield select((state: AppState) => state.auth);
 
 	if (!name) {
-		yield put(registerResult(true));
+		yield put(registerResult(true,''));
 		return;
 	}
 	if (!email) {
-		yield put(registerResult(true));
+		yield put(registerResult(true,''));
 		return;
 	}
 	if (!phone) {
-		yield put(registerResult(true));
+		yield put(registerResult(true,''));
 		return;
 	}
 	if (!password) {
-		yield put(registerResult(true));
+		yield put(registerResult(true,''));
 		return;
 	}
 	if (!EMAIL_VALIDATOR.test(String(email).toLowerCase())) {
-		yield put(registerResult(true));
+		yield put(registerResult(true,''));
 		return;
 	}
 	if (password.length > 6) {
-		yield put(registerResult(true));
+		yield put(registerResult(true,''));
 		return;
 	}
 
@@ -42,9 +42,10 @@ function* registerSaga(): SagaIterator {
 		const response = yield call(register_api, name, email, phone, password);
 		const { data } = response;
 
-		yield put(registerResult(false, data.access_token));
+		yield put(registerResult(false,'', data.access_token));
 	} catch (e) {
-		yield put(registerResult(true));
+		const { response } = e;
+		yield put(registerResult(true, response.data.message));
 	}
 }
 

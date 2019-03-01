@@ -75,6 +75,7 @@ export interface ChangeResetPasswordAction extends AuthAction {
 export interface RegisterResultAction extends AuthResultAction {
 	type: ActionTypes.register_result,
 	accessToken?: string,
+	message: string
 }
 
 export interface LoginResultAction extends AuthResultAction {
