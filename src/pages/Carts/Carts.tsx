@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 
-class Carts extends Component {
-    render() {
-        return <h1>Carts</h1>;
-    }
-}
+const Carts = () => {
+	return <h1>Carts</h1>;
+};
+
+Carts.layoutOptions = {
+	title: 'Login',
+};
 
 export default Carts;

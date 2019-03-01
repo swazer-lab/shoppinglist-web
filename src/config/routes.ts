@@ -1,20 +1,66 @@
-import { navigator } from './navigator';
+import { createStackNavigator } from './navigator';
+
+import { Layout } from '../layout';
 
 import { Register, Login, ConfirmEmail, ForgotPassword } from '../pages/Auth';
 import { Carts } from '../pages/Carts';
-import { NotFound, PrivacyPolicy, ServiceTerms } from '../pages/Other';
+import { PrivacyPolicy, ServiceTerms } from '../pages/Other';
 
 export const routes = {
-	Register: { path: '/Account/Register', page: Register },
-	Login: { path: '/Account/Login', page: Login },
-	ConfirmEmail: { path: '/Account/ConfirmEmail', page: ConfirmEmail },
-	ForgotPassword: { path: '/Account/ForgotPassword', page: ForgotPassword },
+	account: {
+		Register: {
+			path: '/register',
+			page: Register,
+		},
+		Login: {
+			path: '/login',
+			page: Login,
+		},
+		ConfirmEmail: {
+			path: '/confirmEmail',
+			page: ConfirmEmail,
+		},
+		ForgotPassword: {
+			path: '/forgotPassword',
+			page: ForgotPassword,
+		},
 
-	Carts: { path: '/', page: Carts, options: { exact: true, authorized: true } },
+		stackOptions: {
+			path: '/account',
+			index: Register,
+		},
+		layoutOptions: {
+			yaman: true,
+		},
+	},
 
-	NotFound: { path: '*', page: NotFound },
-	PrivacyPolicy: { path: '/About/PrivacyPolicy', page: PrivacyPolicy },
-	ServiceTerms: { path: '/About/ServiceTerms', page: ServiceTerms },
+	carts: {
+		Carts: {
+			path: '/',
+			page: Carts,
+			routeOptions: {
+				exact: true,
+				authorized: true,
+			},
+		},
+
+		stackOptions: {
+			path: '/carts',
+			index: Carts,
+			layout: Layout,
+		},
+	},
+
+	more: {
+		PrivacyPolicy: {
+			path: '/PrivacyPolicy',
+			page: PrivacyPolicy,
+		},
+		ServiceTerms: {
+			path: '/ServiceTerms',
+			page: ServiceTerms,
+		},
+	},
 };
 
-export const AppNavigator = () => navigator(routes);
+export const AppNavigator = () => createStackNavigator(routes);
