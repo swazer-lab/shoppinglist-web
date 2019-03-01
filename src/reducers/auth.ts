@@ -14,6 +14,7 @@ const initialState: State = {
 	resetCode: '',
 	resetPassword: '',
 
+	errorMessage: '',
 	isLoading: false,
 };
 
@@ -88,11 +89,33 @@ export default (state: State = initialState, action: Action): State => {
 				isEmailConfirmed: !action.hasError,
 			};
 
-		case ActionTypes.send_forgot_password_email_result:
-			console.log(!action.hasError);
+		case ActionTypes.send_forgot_password_email:
 			return {
 				...state,
+				isLoading: true,
+				errorMessage: ''
+			};
+
+		case ActionTypes.send_forgot_password_email_result:
+			return {
+				...state,
+				isLoading: false,
 				isResettingPassword: !action.hasError,
+				errorMessage: action.message
+			};
+
+		case ActionTypes.send_reset_password:
+			return {
+				...state,
+				isLoading: true,
+				errorMessage: ''
+			};
+
+		case ActionTypes.send_reset_password_result:
+			return {
+				...state,
+				isLoading: false,
+				errorMessage: action.message
 			};
 
 		default:

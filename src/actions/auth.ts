@@ -9,6 +9,8 @@ import {
 	RegisterResultAction,
 	ConfirmEmailAction,
 	ChangeResetPasswordAction,
+	SendForgotPasswordEmailResultAction,
+	SendResetPasswordResultAction,
 	ChangeResetCode, AuthResultAction,
 } from '../types/auth';
 
@@ -75,7 +77,14 @@ export const sendResetCode = (): AuthAction => ({
 	type: ActionTypes.send_reset_password,
 });
 
-export const sendForgotPasswordEmailResult = (hasError: boolean): AuthResultAction => ({
+export const sendForgotPasswordEmailResult = (hasError: boolean, message: string): SendForgotPasswordEmailResultAction => ({
 	type: ActionTypes.send_forgot_password_email_result,
 	hasError,
+	message
+});
+
+export const sendResetPasswordEmailResult = (hasError: boolean, message: string): SendResetPasswordResultAction => ({
+	type: ActionTypes.send_reset_password_result,
+	hasError,
+	message
 });

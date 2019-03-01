@@ -2,8 +2,9 @@ import { SagaIterator } from 'redux-saga';
 import { call, put, select, takeLatest } from 'redux-saga/effects';
 import { AppState } from '../types/store';
 
+import { navigate } from '../actions/service';
 import { register_api, login_api, confirm_email_api, forgot_password_api, send_reset_code_api } from '../api/auth';
-import { registerResult, loginResult, confirmEmailResult, sendForgotPasswordEmailResult } from '../actions/auth';
+import { registerResult, loginResult, confirmEmailResult, sendForgotPasswordEmailResult, sendResetPasswordEmailResult } from '../actions/auth';
 import { ActionTypes, ConfirmEmailAction } from '../types/auth';
 import { hideProgress, showProgress } from '../actions/service';
 
@@ -92,29 +93,31 @@ function* confirmEmailSaga(action: ConfirmEmailAction): SagaIterator {
 }
 
 function* sendForgotPasswordEmailSaga(): SagaIterator {
-	console.log('Sending reset password email...');
-
 	const { email } = yield select((state: AppState) => state.auth);
 
 	yield put(showProgress('Sending reset password email...'));
 	try {
 		yield call(forgot_password_api, email);
-		yield put(sendForgotPasswordEmailResult(false));
+		yield put(sendForgotPasswordEmailResult(false, ''));
 	} catch (e) {
-		yield put(sendForgotPasswordEmailResult(true));
+		const { response } = e;
+		yield put(sendForgotPasswordEmailResult(true, response.data.message));
 	} finally {
 		yield put(hideProgress());
 	}
 }
 
 function* sendResetPasswordSaga(): SagaIterator {
-	const { resetCode, resetPassword } = yield select((state: AppState) => state.auth);
+	const { email, resetCode, resetPassword } = yield select((state: AppState) => state.auth);
 
+	yield put(showProgress('Sending Reset Password'));
 	try {
-		yield call(send_reset_code_api, resetCode, resetPassword);
-		yield put(sendForgotPasswordEmailResult(false));
+		yield call(send_reset_code_api, resetCode, resetPassword, email);
+		yield put(sendResetPasswordEmailResult(false, ''));
+		yield put(navigate('Login'));
 	} catch (e) {
-		yield put(sendForgotPasswordEmailResult(true));
+		const { response } = e;
+		yield put(sendResetPasswordEmailResult(true, response.data.message));
 	} finally {
 		yield put(hideProgress());
 	}
