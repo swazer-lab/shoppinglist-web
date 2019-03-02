@@ -7,31 +7,37 @@ import {
 	ShowAlertAction,
 	ShowProgressAction,
 } from '../types/service';
-import * as navigationService from '../config/navigationService';
+import { getHistory, getRoutes } from '../config/navigator';
 
 // Navigation
 export const navigate = (routeName: string): NavigateAction => {
-	navigationService.navigate(routeName);
+	const route = getRoutes()[routeName];
+	getHistory().push(route.path);
+
 	return {
 		type: ActionTypes.navigate,
 		routeName,
 	};
 };
 export const replace = (routeName: string): ReplaceAction => {
-	navigationService.replace(routeName);
+	const route = getRoutes()[routeName];
+	getHistory().replace(route.path);
+
 	return {
 		type: ActionTypes.replace,
 		routeName,
 	};
 };
 export const goBack = (): ServiceAction => {
-	navigationService.goBack();
+	getHistory().goBack();
+
 	return {
 		type: ActionTypes.go_back,
 	};
 };
 export const goForward = (): ServiceAction => {
-	navigationService.goForward();
+	getHistory().goBack();
+
 	return {
 		type: ActionTypes.go_forward,
 	};

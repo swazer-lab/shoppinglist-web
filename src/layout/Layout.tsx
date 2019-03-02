@@ -3,16 +3,13 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
 import { AppState } from '../types/store';
-
-import { setTopLevelHistory } from '../config/navigationService';
 import { navigate } from '../actions/service';
 
 interface Props {
+	children: any,
 	dispatch: Function,
 
-	children: any,
-	history: any,
-
+	layoutOptions: any,
 	isLoggedIn: boolean,
 }
 
@@ -26,27 +23,13 @@ class Layout extends React.Component<Props> {
 	}
 
 	setListenerUp = () => {
-		const { history } = this.props;
-		setTopLevelHistory(history);
+		const layoutOptions = this.props.layoutOptions ? this.props.layoutOptions() : {};
+		const { title, authorized } = layoutOptions;
 
-		const routes: any = require('../config/routes').routes;
-		const routePath: string = history.location.pathname;
-
-
-		let routeObject: any;
-		Object.keys(routes).map((route: any) => {
-			const { path } = routes[route];
-			if (path.toLowerCase() === routePath.toLowerCase() || path.toLowerCase() + '/' === routePath.toLowerCase()) routeObject = routes[route];
-		});
-
-		if (routeObject && routeObject.options && routeObject.options.authorized && !this.props.isLoggedIn) {
+		if (title) document.title = title;
+		if (authorized) {
 			this.props.dispatch(navigate('Login'));
 			return;
-		}
-
-		if (routeObject !== undefined && routeObject.page.layoutOptions) {
-			const layoutOptions = routeObject.page.layoutOptions;
-			if (layoutOptions.title) document.title = layoutOptions.title;
 		}
 	};
 
