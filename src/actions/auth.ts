@@ -8,6 +8,7 @@ import {
 	LoginResultAction,
 	RegisterResultAction,
 	ConfirmEmailAction,
+	ConfirmEmailResultAction,
 	ChangeResetPasswordAction,
 	SendForgotPasswordEmailResultAction,
 	SendResetPasswordResultAction,
@@ -61,9 +62,10 @@ export const confirmEmail = (userId: string, token: string): ConfirmEmailAction 
 	userId,
 	token,
 });
-export const confirmEmailResult = (hasError: boolean): AuthResultAction => ({
+export const confirmEmailResult = (hasError: boolean, errorMessage: string): ConfirmEmailResultAction => ({
 	type: ActionTypes.confirm_email_result,
 	hasError,
+	errorMessage
 });
 
 export const changeResetCode = (resetCode: string): ChangeResetCode => ({

@@ -21,10 +21,7 @@ function* registerSaga(): SagaIterator {
 		yield put(registerResult(true,''));
 		return;
 	}
-	if (!phone) {
-		yield put(registerResult(true,''));
-		return;
-	}
+
 	if (!password) {
 		yield put(registerResult(true,''));
 		return;
@@ -39,10 +36,11 @@ function* registerSaga(): SagaIterator {
 	}
 
 	try {
-		const response = yield call(register_api, name, email, phone, password);
+		const response = yield call(register_api, name, email, password);
 		const { data } = response;
 
 		yield put(registerResult(false,'', data.access_token));
+		yield put(navigate('Login'));
 	} catch (e) {
 		const { response } = e;
 		yield put(registerResult(true, response.data.message));
@@ -85,9 +83,10 @@ function* confirmEmailSaga(action: ConfirmEmailAction): SagaIterator {
 	yield put(showProgress('Confirming Email'));
 	try {
 		yield call(confirm_email_api, userId, token);
-		yield put(confirmEmailResult(false));
+		yield put(confirmEmailResult(false, ''));
 	} catch (e) {
-		yield put(confirmEmailResult(true));
+		const { response } = e;
+		yield put(confirmEmailResult(true, response.data.message));
 	} finally {
 		yield put(hideProgress());
 	}

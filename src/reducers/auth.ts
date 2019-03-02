@@ -9,7 +9,9 @@ const initialState: State = {
 	phone: '',
 	password: '',
 
+	isRegistered: false,
 	isEmailConfirmed: false,
+
 	isResettingPassword: false,
 	resetCode: '',
 	resetPassword: '',
@@ -66,6 +68,7 @@ export default (state: State = initialState, action: Action): State => {
 				accessToken: action.accessToken,
 				isLoggedIn: true,
 				isLoading: false,
+				isRegistered: true
 			};
 
 		case ActionTypes.login:
@@ -87,6 +90,7 @@ export default (state: State = initialState, action: Action): State => {
 			return {
 				...state,
 				isEmailConfirmed: !action.hasError,
+				errorMessage: action.errorMessage
 			};
 
 		case ActionTypes.send_forgot_password_email:

@@ -29,26 +29,14 @@ const ForgotPassword = (props: Props) => {
 	const handleResetCode = (e: any) => dispatch(changeResetCode(e.target.value));
 	const handleChangeEmail = (e: any) => dispatch(changeEmail(e.target.value));
 	const handleChangeResetPassword = (e: any) => dispatch(changeResetPassword(e.target.value));
-	const handleKeyPress = (e: any) => dispatch(login());
+
+	const message = errorMessage ? errorMessage : isResettingPassword ? 'We sent reset password to your mail' : 'Please enter your email to get reset password code';
 
 	return (
 		<AuthContainer className='page_auth' isLoading={isLoading}>
 			<div className='page_auth__content_container'>
 				<h1 className='page_auth__title'>Forgot Password</h1>
-				{isResettingPassword
-					?
-					<p className='page_auth__subtitle'>We sent reset password to your mail</p>
-					:
-					<p className='page_auth__subtitle'>Please enter your email to get reset password code</p>
-				}
-
-				{errorMessage
-					?
-					<p className='page_auth__subtitle'>{errorMessage}</p>
-					:
-					''
-				}
-
+				<p className='page_auth__subtitle'>{message}</p>
 
 				<form action='#'>
 					{isResettingPassword
@@ -57,7 +45,6 @@ const ForgotPassword = (props: Props) => {
 								className='page_auth__input'
 								value={resetCode}
 								onChange={handleResetCode}
-								onKeyPress={handleKeyPress}
 								type='text'
 								placeholder='Reset Code'
 								required
@@ -66,7 +53,6 @@ const ForgotPassword = (props: Props) => {
 								className='page_auth__input'
 								value={resetPassword}
 								onChange={handleChangeResetPassword}
-								onKeyPress={handleKeyPress}
 								type='password'
 								placeholder='New Password'
 								required
@@ -79,7 +65,6 @@ const ForgotPassword = (props: Props) => {
 								className='page_auth__input'
 								value={email}
 								onChange={handleChangeEmail}
-								onKeyPress={handleKeyPress}
 								type='email'
 								placeholder='Email'
 								required
@@ -90,12 +75,12 @@ const ForgotPassword = (props: Props) => {
 					{isResettingPassword
 						? <Button
 							type='submit'
-							className='page_auth__action_forgot_password_button'
+							className='page_auth__action_auth_button'
 							title={'Reset Password'}
 							onClick={() => props.dispatch(sendResetCode())}
 						/>
 						: <Button
-							className='page_auth__action_forgot_password_button'
+							className='page_auth__action_auth_button'
 							type='submit'
 							title={'Send Email'}
 							onClick={() => props.dispatch(sendForgotPasswordEmail())}

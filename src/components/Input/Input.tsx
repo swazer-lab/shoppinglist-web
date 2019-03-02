@@ -14,12 +14,12 @@ interface Props {
 	placeholder: string
 	required?: boolean,
 	pattern?: string,
-	onKeyPress: (e: any) => void,
 }
 
 const Input = (props: Props) => {
 
-	const { className, value, onChange, type, placeholder, required, pattern, onKeyPress } = props;
+	const { className, value, onChange, type, placeholder, required, pattern } = props;
+
 	return (
 		<div className={classNames('input-component__container', className)}>
 			<input
@@ -30,7 +30,6 @@ const Input = (props: Props) => {
 				placeholder={placeholder}
 				required={required}
 				pattern={pattern}
-				onKeyPress = {(e: any) => onKeyPress(e)}
 			/>
 		</div>
 	);

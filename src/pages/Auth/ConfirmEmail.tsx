@@ -3,10 +3,14 @@ import { connect } from 'react-redux';
 
 import { AppState, Location } from '../../types/store';
 import { navigate } from '../../actions/service';
-import { confirmEmail } from '../../actions/auth';
+import { confirmEmail, login } from '../../actions/auth';
+import { AuthContainer } from '../../components/AuthContainer';
+import { Input } from '../../components/Input';
+import { Button } from '../../components/Button';
 
 interface Props {
-	isEmailConfirmed: boolean;
+	isEmailConfirmed: boolean,
+	errorMessage: string,
 	dispatch: Function,
 	location: Location,
 }
@@ -23,30 +27,37 @@ class ConfirmEmail extends React.Component<Props> {
 			this.props.dispatch(confirmEmail(userId, token));
 	}
 
+	onLoginClicked = () => this.props.dispatch(login());
+	onRegisterClicked = () => this.props.dispatch(navigate('Register'));
+
 	render() {
-		const isConfirmed = this.props.isEmailConfirmed;
+		const { isEmailConfirmed, errorMessage } = this.props;
+
 		let content;
 
-		if (isConfirmed) {
-			content = <div>Your account has been activated</div>;
+		if (isEmailConfirmed) {
+			content = <div>Your account has been activated sucessfully</div>;
 		} else {
-			content = <div>Your account has not been activated</div>;
+			content = <div>{errorMessage}</div>;
 		}
 
 		return (
-			<div>
-				<button onClick={() => this.props.dispatch(navigate('Carts'))}>Navigate Carts</button>
-				{content}
-			</div>
+			<AuthContainer className='page_auth'>
+				<div className='page_auth__content_container'>
+					<h1 className='page_auth__title'>Confirm Email</h1>
+					<p className='page_auth__subtitle'>{content}</p>
+				</div>
+			</AuthContainer>
 		);
 	}
 }
 
 const mapStateToProps = (state: AppState) => {
-	const { isEmailConfirmed } = state.auth;
+	const { isEmailConfirmed, errorMessage } = state.auth;
 
 	return {
 		isEmailConfirmed,
+		errorMessage
 	};
 };
 

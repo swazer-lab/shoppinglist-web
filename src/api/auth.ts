@@ -3,11 +3,10 @@ import qs from 'qs';
 
 import * as urls from '../config/urls';
 
-export const register_api = (name: string, email: string, phone: string, password: string): Promise<any> => {
+export const register_api = (name: string, email: string, password: string): Promise<any> => {
     const body: any = {
         name,
         email,
-        mobile: phone,
         password,
     };
 

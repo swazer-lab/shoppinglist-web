@@ -5,7 +5,15 @@ import { AppState } from '../../types/store';
 import { Input } from '../../components/Input';
 import { Button } from '../../components/Button';
 import { AuthContainer } from '../../components/AuthContainer';
-import { changeEmail, changePassword, changePhone, changeName, register, login } from '../../actions/auth';
+import {
+	changeEmail,
+	changePassword,
+	changePhone,
+	changeName,
+	register,
+	login,
+	sendForgotPasswordEmail,
+} from '../../actions/auth';
 import { navigate } from '../../actions/service';
 
 interface Props {
@@ -18,41 +26,45 @@ interface Props {
 
 	errorMessage: string,
 
+	isRegistered: boolean,
+
+	isLoggedIn: boolean,
 	isLoading: boolean,
 }
 
 const Register = (props: Props) => {
-	const { dispatch, email, password, name, phone, errorMessage, isLoading } = props;
+	const { dispatch, email, password, name, phone, errorMessage, isLoading, isRegistered} = props;
 
 	const handleChangeEmail = (e: any) => dispatch(changeEmail(e.target.value));
 	const handleChangePassword = (e: any) => dispatch(changePassword(e.target.value));
 	const handlePhone = (e: any) => dispatch(changePhone(e.target.value));
 	const handleName = (e: any) => dispatch(changeName(e.target.value));
-	const handleKeyPress = (e: any) => dispatch(register());
 
 	const onRegisterClicked = () => dispatch(register());
+
+	const message = errorMessage ? errorMessage : 'create your account';
 
 	return (
 		<AuthContainer className='page_auth' isLoading={isLoading}>
 			<div className='page_auth__content_container'>
 				<h1 className='page_auth__title'>Register</h1>
-				<p className='page_auth__subtitle'></p>
-
-				{errorMessage
-					?
-					<p className='page_auth__subtitle'>{errorMessage}</p>
-					:
-					''
-				}
+				<p className='page_auth__subtitle'>{message}</p>
 
 				<form action='#'>
+					<Input
+						className='page_auth__input'
+						value={name}
+						onChange={handleName}
+						type='text'
+						placeholder='Name'
+						required
+					/>
 					<Input
 						className='page_auth__input'
 						value={email}
 						onChange={handleChangeEmail}
 						type='email'
 						placeholder='Email'
-						onKeyPress={handleKeyPress}
 						required
 					/>
 					<Input
@@ -61,29 +73,10 @@ const Register = (props: Props) => {
 						onChange={handleChangePassword}
 						type='password'
 						placeholder='Password'
-						onKeyPress={handleKeyPress}
 						required
 						pattern='.{6,}'
 					/>
-					<Input
-						className='page_auth__input'
-						value={phone}
-						onChange={handlePhone}
-						type='text'
-						placeholder='Mobile'
-						onKeyPress={handleKeyPress}
-						required
-					/>
-					<Input
-						className='page_auth__input'
-						value={name}
-						onChange={handleName}
-						type='text'
-						placeholder='Name'
-						onKeyPress={handleKeyPress}
-						required
-					/>
-					<div className='page_auth__buttons_container'>
+					<div className='page_auth__action_auth_button'>
 						<Button type='submit' title='Register' onClick={onRegisterClicked} />
 					</div>
 				</form>
@@ -93,8 +86,7 @@ const Register = (props: Props) => {
 };
 
 const mapStateToProps = (state: AppState) => {
-	const { email, name, phone, password, errorMessage, isLoading } = state.auth;
-	console.log(errorMessage);
+	const { email, name, phone, password, errorMessage, isLoading, isLoggedIn, isRegistered } = state.auth;
 
 	return {
 		email,
@@ -103,6 +95,8 @@ const mapStateToProps = (state: AppState) => {
 		password,
 		isLoading,
 		errorMessage,
+		isLoggedIn,
+		isRegistered
 	};
 };
 

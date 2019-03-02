@@ -83,6 +83,11 @@ export interface LoginResultAction extends AuthResultAction {
 	accessToken?: string,
 }
 
+export interface ConfirmEmailResultAction extends AuthResultAction {
+	type: ActionTypes.confirm_email_result,
+	errorMessage: string,
+}
+
 export interface ConfirmEmailAction extends AuthAction {
 	type: ActionTypes.confirm_email,
 	userId: string,
@@ -98,8 +103,9 @@ export type Action =
 	& ChangeResetCode
 	& RegisterResultAction
 	& LoginResultAction
-	&ChangeResetPasswordAction
+	& ChangeResetPasswordAction
 	& ConfirmEmailAction
+	& ConfirmEmailResultAction
 	& SendForgotPasswordEmailResultAction
 	& SendResetPasswordResultAction;
 
@@ -113,6 +119,8 @@ export interface State {
 	password: string,
 
 	isEmailConfirmed: boolean,
+    isRegistered: boolean,
+
 	isResettingPassword: boolean,
 	resetCode: string,
 	resetPassword: string,

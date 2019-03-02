@@ -24,7 +24,6 @@ const Login = (props: Props) => {
 
 	const handleChangeEmail = (e: any) => dispatch(changeEmail(e.target.value));
 	const handleChangePassword = (e: any) => dispatch(changePassword(e.target.value));
-	const handleKeyPress = (e: any) => { if(e.key == 13) dispatch(login())};
 
 	const onForgotPasswordClicked = () => dispatch(navigate('ForgotPassword'));
 	const onLoginClicked = () => dispatch(login());
@@ -40,7 +39,6 @@ const Login = (props: Props) => {
 						className='page_auth__input'
 						value={email}
 						onChange={handleChangeEmail}
-						onKeyPress={handleKeyPress}
 						type='email'
 						placeholder='Email'
 						required
@@ -49,7 +47,6 @@ const Login = (props: Props) => {
 						className='page_auth__input'
 						value={password}
 						onChange={handleChangePassword}
-						onKeyPress={handleKeyPress}
 						type='password'
 						placeholder='Password'
 						required
@@ -57,6 +54,7 @@ const Login = (props: Props) => {
 					/>
 					<Button
 						className='page_auth__forgot_password_button'
+						type='button'
 						mode='text'
 						title='Forgot Password'
 						onClick={onForgotPasswordClicked}
@@ -65,6 +63,7 @@ const Login = (props: Props) => {
 					<div className='page_auth__buttons_container'>
 						<Button
 							className='page_auth__action_button'
+							type='button'
 							mode='text'
 							title='Create Account'
 							onClick={onRegisterClicked}
