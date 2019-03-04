@@ -26,15 +26,19 @@ const Login = (props: Props) => {
 	const handleChangePassword = (e: any) => dispatch(changePassword(e.target.value));
 
 	const onForgotPasswordClicked = () => dispatch(navigate('ForgotPassword'));
-	const onLoginClicked = () => dispatch(login());
 	const onRegisterClicked = () => dispatch(navigate('Register'));
+
+	const submitLogin = (event: any) => {
+		dispatch(login());
+		event.preventDefault();
+	};
 
 	return (
 		<AuthContainer className='page_auth' isLoading={isLoading}>
 			<div className='page_auth__content_container'>
 				<h1 className='page_auth__title'>Login</h1>
 				<p className='page_auth__subtitle'>with your Google account</p>
-				<form action='#'>
+				<form onSubmit={submitLogin}>
 					<Input
 						className='page_auth__input'
 						value={email}
@@ -68,7 +72,7 @@ const Login = (props: Props) => {
 							title='Create Account'
 							onClick={onRegisterClicked}
 						/>
-						<Button type='submit' title='Login' onClick={onLoginClicked} />
+						<Button type='submit' title='Login'/>
 					</div>
 				</form>
 			</div>

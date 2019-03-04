@@ -72,6 +72,7 @@ function* loginSaga(): SagaIterator {
 		const { data } = response;
 
 		yield put(loginResult(false, data.access_token));
+		navigate('Carts')
 	} catch (e) {
 		yield put(loginResult(true));
 	}
@@ -94,7 +95,7 @@ function* confirmEmailSaga(action: ConfirmEmailAction): SagaIterator {
 
 function* sendForgotPasswordEmailSaga(): SagaIterator {
 	const { email } = yield select((state: AppState) => state.auth);
-
+    console.log('Email sending to the server to validate');
 	yield put(showProgress('Sending reset password email...'));
 	try {
 		yield call(forgot_password_api, email);

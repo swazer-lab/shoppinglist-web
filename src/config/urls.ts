@@ -1,4 +1,4 @@
-const root = 'http://localhost:63493/api/';
+const root = 'http://shopping.swazerlab.com/api/';
 
 // Account Urls
 const accountRoot = root.concat('account/');

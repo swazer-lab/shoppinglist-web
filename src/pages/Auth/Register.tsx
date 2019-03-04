@@ -42,6 +42,11 @@ const Register = (props: Props) => {
 
 	const onRegisterClicked = () => dispatch(register());
 
+	const submitRegister = (e: any) => {
+		dispatch(register());
+		e.preventDefault();
+	};
+
 	const message = errorMessage ? errorMessage : 'create your account';
 
 	return (
@@ -50,7 +55,7 @@ const Register = (props: Props) => {
 				<h1 className='page_auth__title'>Register</h1>
 				<p className='page_auth__subtitle'>{message}</p>
 
-				<form action='#'>
+				<form onSubmit={submitRegister}>
 					<Input
 						className='page_auth__input'
 						value={name}
