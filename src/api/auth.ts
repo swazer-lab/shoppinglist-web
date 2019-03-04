@@ -3,11 +3,10 @@ import qs from 'qs';
 
 import * as urls from '../config/urls';
 
-export const register_api = (name: string, email: string, phone: string, password: string): Promise<any> => {
+export const register_api = (name: string, email: string, password: string): Promise<any> => {
     const body: any = {
         name,
         email,
-        mobile: phone,
         password,
     };
 
@@ -45,10 +44,11 @@ export const forgot_password_api = (email: string): Promise<any> => {
     return axios.post(urls.forgot_password_url, body);
 };
 
-export const send_reset_code_api = (resetCode: string, resetPassword: string): Promise<any> => {
+export const send_reset_code_api = (code: string, password: string, email: string): Promise<any> => {
     const body = {
-        resetCode,
-        resetPassword
+        code,
+        password,
+        email
     };
 
     return axios.post(urls.reset_password_url, body);

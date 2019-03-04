@@ -9,11 +9,14 @@ const initialState: State = {
 	phone: '',
 	password: '',
 
+	isRegistered: false,
 	isEmailConfirmed: false,
+
 	isResettingPassword: false,
 	resetCode: '',
 	resetPassword: '',
 
+	errorMessage: '',
 	isLoading: false,
 };
 
@@ -56,15 +59,16 @@ export default (state: State = initialState, action: Action): State => {
 			return {
 				...state,
 				isLoading: true,
+				errorMessage: ''
 			};
 		case ActionTypes.register_result:
-			if (action.hasError) return { ...state, isLoading: false };
+			if (action.hasError) return { ...state, isLoading: false, errorMessage: action.message};
 			return {
 				...state,
 				accessToken: action.accessToken,
 				isLoggedIn: true,
-
 				isLoading: false,
+				isRegistered: true
 			};
 
 		case ActionTypes.login:
@@ -86,13 +90,36 @@ export default (state: State = initialState, action: Action): State => {
 			return {
 				...state,
 				isEmailConfirmed: !action.hasError,
+				errorMessage: action.errorMessage
+			};
+
+		case ActionTypes.send_forgot_password_email:
+			return {
+				...state,
+				isLoading: true,
+				errorMessage: ''
 			};
 
 		case ActionTypes.send_forgot_password_email_result:
-			console.log(!action.hasError);
 			return {
 				...state,
+				isLoading: false,
 				isResettingPassword: !action.hasError,
+				errorMessage: action.message
+			};
+
+		case ActionTypes.send_reset_password:
+			return {
+				...state,
+				isLoading: true,
+				errorMessage: ''
+			};
+
+		case ActionTypes.send_reset_password_result:
+			return {
+				...state,
+				isLoading: false,
+				errorMessage: action.message
 			};
 
 		default:

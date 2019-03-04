@@ -17,7 +17,9 @@ interface Props {
 }
 
 const Input = (props: Props) => {
+
 	const { className, value, onChange, type, placeholder, required, pattern } = props;
+
 	return (
 		<div className={classNames('input-component__container', className)}>
 			<input

@@ -4,7 +4,13 @@ import { connect } from 'react-redux';
 import { Input, Button } from '../../components';
 
 import { AppState } from '../../types/store';
-import { changeEmail, changePassword, changeResetCode, sendForgotPasswordEmail } from '../../actions/auth';
+import {
+	changeEmail,
+	changeResetCode,
+	sendForgotPasswordEmail,
+	changeResetPassword,
+	sendResetCode, login, sendForgotPasswordEmailResult,
+} from '../../actions/auth';
 import { AuthContainer } from '../../components/AuthContainer';
 
 interface Props {
@@ -12,76 +18,95 @@ interface Props {
 	resetCode: string,
 	isResettingPassword: boolean,
 	resetPassword: string,
+	isLoading: boolean,
+	errorMessage: string,
 	dispatch: Function,
 }
 
 const ForgotPassword = (props: Props) => {
-	const { email, isResettingPassword, resetCode, resetPassword, dispatch } = props;
+	const { email, isResettingPassword, resetCode, resetPassword, isLoading, errorMessage, dispatch } = props;
 
 	const handleResetCode = (e: any) => dispatch(changeResetCode(e.target.value));
 	const handleChangeEmail = (e: any) => dispatch(changeEmail(e.target.value));
-	const handleChangeResetPassword = (e: any) => dispatch(changePassword(e.target.value));
+	const handleChangeResetPassword = (e: any) => dispatch(changeResetPassword(e.target.value));
+
+	const onSubmitForgotPassword = (e: any) => {
+		dispatch(sendForgotPasswordEmail())
+		e.preventDefault();
+	};
+
+	const onSubmitResetPassword = (e: any) => {
+		dispatch(sendResetCode())
+		e.preventDefault();
+	};
+
+	const message = errorMessage ? errorMessage : isResettingPassword ? 'We sent reset password to your mail' : 'Please enter your email to get reset password code';
 
 	return (
-		<AuthContainer className='page_auth'>
+		<AuthContainer className='page_auth' isLoading={isLoading}>
 			<div className='page_auth__content_container'>
 				<h1 className='page_auth__title'>Forgot Password</h1>
-				<p className='page_auth__subtitle'/>
-
-				<form action='#'>
-					{isResettingPassword
-						? <div>
-							<Input
-							className='page_auth__input'
-							value={resetCode}
-							onChange={handleResetCode}
-							type='password'
-							placeholder='Reset Code'
-							required
-							pattern='.{6,}'
-						/>
-							<Input
-								className='page_auth__input'
-								value={resetPassword}
-								onChange={handleChangeResetPassword}
-								type='password'
-								placeholder='Password'
-								required
-								pattern='.{6,}'
+				<p className='page_auth__subtitle'>{message}</p>
+				{
+					isResettingPassword
+					?
+						<form onSubmit={onSubmitResetPassword}>
+								<Input
+									className='page_auth__input'
+									value={resetCode}
+									onChange={handleResetCode}
+									type='text'
+									placeholder='Reset Code'
+									required
+								/>
+								<Input
+									className='page_auth__input'
+									value={resetPassword}
+									onChange={handleChangeResetPassword}
+									type='password'
+									placeholder='New Password'
+									required
+									pattern='.{6,}'
+								/>
+							<Button
+								type='submit'
+								className='page_auth__action_auth_button'
+								title={'Reset Password'}
+								onClick={() => props.dispatch(sendResetCode())}
 							/>
-						</div>
-						: <Input
-							className='page_auth__input'
-							value={email}
-							onChange={handleChangeEmail}
-							type='email'
-							placeholder='Email'
-							required
-						/>
-					}
-
-					<div className='page_auth__buttons_container'>
-						<Button
-							type='submit'
-							title={isResettingPassword ? 'Reset Password' : 'Send Email'}
-							onClick={() => props.dispatch(sendForgotPasswordEmail())}
-						/>
-					</div>
-
-				</form>
+						</form>
+						:
+						<form onSubmit={onSubmitForgotPassword}>
+								<Input
+									className='page_auth__input'
+									value={email}
+									onChange={handleChangeEmail}
+									type='email'
+									placeholder='Email'
+									required
+								/>
+							<Button
+								className='page_auth__action_auth_button'
+								type='submit'
+								title={'Send Email'}
+							/>
+						</form>
+				}
 			</div>
 		</AuthContainer>
 	);
 };
 
 const mapStateToProps = (state: AppState) => {
-	const { email, isResettingPassword, resetCode, resetPassword } = state.auth;
+	const { email, isResettingPassword, resetCode, resetPassword, errorMessage, isLoading } = state.auth;
 
 	return {
 		isResettingPassword: isResettingPassword,
 		email,
 		resetCode,
-		resetPassword
+		isLoading,
+		resetPassword,
+		errorMessage,
 	};
 };
 
