@@ -4,10 +4,15 @@ import {
 	NavigateAction,
 	ReplaceAction,
 	ServiceAction,
+	SetAccessTokenAction,
+	SetActiveLanguageAction,
+	SetIsLoggedInAction,
 	ShowAlertAction,
 	ShowProgressAction,
 } from '../types/service';
 import { getHistory, getRoutes } from '../config/navigator';
+import { updateDefaultHeaders } from '../api';
+import language from '../assets/language';
 
 // Navigation
 export const navigate = (routeName: string): NavigateAction => {
@@ -63,3 +68,50 @@ export const showAlert = (alertType: AlertType, title?: string, message: string 
 export const clearAlert = (): ServiceAction => ({
 	type: ActionTypes.clear_alert,
 });
+
+export const showHttpErrorAlert = (error: { response: any }) => {
+	if (!error || !error.response || !error.response.status) {
+		return showAlert('error', language.titleUnexpectedError, language.textUnexpectedError);
+	}
+
+	const { response } = error;
+	if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') console.log(response);
+
+	switch (response.status) {
+		case 400: // Bad Request
+			return showAlert('warn', '', response.data.message);
+		case 500: // Internal Server Error
+		case 503: // Service Unavailable
+		case 404: // Not Found
+			return showAlert('error', language.titleServiceUnavailable, language.textServiceUnavailable);
+		default:
+			return showAlert('error', language.titleUnexpectedError, language.textUnexpectedError);
+	}
+};
+
+// LocalStorage
+export const setAccessToken = (accessToken: string): SetAccessTokenAction => {
+	localStorage.setItem('accessToken', accessToken);
+	updateDefaultHeaders(accessToken);
+
+	return ({
+		type: ActionTypes.setAccessToken,
+		accessToken,
+	});
+};
+export const setIsLoggedIn = (isLoggedIn: boolean): SetIsLoggedInAction => {
+	localStorage.setItem('isLoggedIn', isLoggedIn.toString());
+
+	return ({
+		type: ActionTypes.setIsLoggedIn,
+		isLoggedIn,
+	});
+};
+export const setActiveLanguage = (activeLanguage: string): SetActiveLanguageAction => {
+	localStorage.setItem('activeLanguage', activeLanguage);
+
+	return ({
+		type: ActionTypes.setActiveLanguage,
+		activeLanguage,
+	});
+};

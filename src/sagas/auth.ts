@@ -1,11 +1,11 @@
 import { SagaIterator } from 'redux-saga';
-import { call, put, select, takeLatest } from 'redux-saga/effects';
+import { all, call, put, select, takeLatest } from 'redux-saga/effects';
 import { AppState } from '../types/store';
 
 import { register_api, login_api, confirm_email_api, forgot_password_api, send_reset_code_api } from '../api/auth';
 import { registerResult, loginResult, confirmEmailResult, sendForgotPasswordEmailResult } from '../actions/auth';
 import { ActionTypes, ConfirmEmailAction } from '../types/auth';
-import { hideProgress, showProgress } from '../actions/service';
+import { hideProgress, showProgress, setAccessToken, setIsLoggedIn } from '../actions/service';
 
 import { EMAIL_VALIDATOR } from '../config/utilities';
 
@@ -69,9 +69,13 @@ function* loginSaga(): SagaIterator {
 
 	try {
 		const response = yield call(login_api, email, password);
-		const { data } = response;
+		const { access_token } = response.data;
 
-		yield put(loginResult(false, data.access_token));
+		yield all([
+			put(loginResult(false, access_token)),
+			put(setAccessToken(access_token)),
+			put(setIsLoggedIn(true)),
+		]);
 	} catch (e) {
 		yield put(loginResult(true));
 	}

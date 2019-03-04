@@ -8,6 +8,9 @@ export interface Profile {
 	photoUrl: string,
 }
 
+export type CartItemStatusType = 'active' | 'completed' | 'canceled';
+export type CartUserAccessLevelType = 'owner' | 'write' | 'read';
+
 export interface Cart {
 	id: string,
 	uuid: string,
@@ -25,7 +28,7 @@ export interface CartItem {
 	uuid: string,
 
 	title: string,
-	status: 'active' | 'completed' | 'canceled',
+	status: CartItemStatusType,
 }
 
 export interface CartUser {
@@ -36,5 +39,5 @@ export interface CartUser {
 	phone: string,
 
 	photoUrl: string,
-	accessLevel: 'owner' | 'write' | 'read',
+	accessLevel: CartUserAccessLevelType,
 }

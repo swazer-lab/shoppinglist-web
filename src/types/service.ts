@@ -10,7 +10,11 @@ export enum ActionTypes {
 	hide_progress = 'SERVICE_PROGRESS__HIDE_PROGRESS',
 
 	show_alert = 'SERVICE_ALERT__SHOW_ALERT',
-	clear_alert = 'SERVICE_ALERT__CLEAR_ALERT'
+	clear_alert = 'SERVICE_ALERT__CLEAR_ALERT',
+
+	setAccessToken = 'SERVICE_LOCALSTORAGE__SET_ACCESS_TOKEN',
+	setIsLoggedIn = 'SERVICE_LOCALSTORAGE__SET_IS_LOGGED_IN',
+	setActiveLanguage = 'SERVICE_LOCALSTORAGE__SET_ACTIVE_LANGUAGE',
 }
 
 export interface ServiceAction extends ReduxAction<ActionTypes> {
@@ -42,6 +46,22 @@ export interface ShowAlertAction extends ServiceAction {
 	title?: string,
 	message: string,
 	duration?: number,
+}
+
+// LocalStorage
+export interface SetAccessTokenAction extends ServiceAction {
+	type: ActionTypes.setAccessToken,
+	accessToken: string,
+}
+
+export interface SetIsLoggedInAction extends ServiceAction {
+	type: ActionTypes.setIsLoggedIn,
+	isLoggedIn: boolean,
+}
+
+export interface SetActiveLanguageAction extends ServiceAction {
+	type: ActionTypes.setActiveLanguage,
+	activeLanguage: string,
 }
 
 export type Action = & ServiceAction & NavigateAction & ReplaceAction & ShowProgressAction & ShowAlertAction;
