@@ -5,9 +5,8 @@ export enum ActionTypes {
 	change_email = 'AUTH__CHANGE_EMAIL',
 	change_phone = 'AUTH__CHANGE_PHONE',
 	change_password = 'AUTH__CHANGE_PASSWORD',
-	change_reset_password = 'AUTH__CHANGE_RESET_PASSWORD',
 
-	change_reset_code = 'AUTH__CHANGE_RESET_CODE',
+	change_reset_password_code = 'AUTH__CHANGE_RESET_PASSWORD_CODE',
 
 	register = 'AUTH__REGISTER',
 	register_result = 'AUTH__REGISTER_RESULT',
@@ -21,15 +20,16 @@ export enum ActionTypes {
 	send_forgot_password_email = 'AUTH__SEND_FORGOT_PASSWORD_EMAIL',
 	send_forgot_password_email_result = 'AUTH__SEND_FORGOT_PASSWORD_EMAIL_RESULT',
 
-	send_reset_password = 'AUTH__SEND_RESET_PASSWORD',
-	send_reset_password_result = 'AUTH__SEND_RESET_PASSWORD_RESULT',
+	reset_password = 'AUTH__RESET_PASSWORD',
+	reset_password_result = 'AUTH__RESET_PASSWORD_RESULT',
 }
 
 export interface AuthAction extends ReduxAction<ActionTypes> {
 }
 
-export interface AuthResultAction extends AuthAction {
+export interface AuthActionResult extends AuthAction {
 	hasError: boolean,
+	errorMessage?: string,
 }
 
 export interface ChangeNameAction extends AuthAction {
@@ -42,21 +42,6 @@ export interface ChangeEmailAction extends AuthAction {
 	email: string,
 }
 
-export interface ChangeResetCode extends AuthAction {
-	type: ActionTypes.change_reset_code,
-	resetCode: string,
-}
-
-export interface SendForgotPasswordEmailResultAction extends AuthResultAction {
-	type: ActionTypes.send_forgot_password_email_result,
-	message: string,
-}
-
-export interface SendResetPasswordResultAction extends AuthResultAction {
-	type: ActionTypes.send_reset_password_result,
-	message: string,
-}
-
 export interface ChangePhoneAction extends AuthAction {
 	type: ActionTypes.change_phone,
 	phone: string,
@@ -67,25 +52,9 @@ export interface ChangePasswordAction extends AuthAction {
 	password: string,
 }
 
-export interface ChangeResetPasswordAction extends AuthAction {
-	type: ActionTypes.change_reset_password,
-	resetPassword: string,
-}
-
-export interface RegisterResultAction extends AuthResultAction {
-	type: ActionTypes.register_result,
-	accessToken?: string,
-	message: string
-}
-
-export interface LoginResultAction extends AuthResultAction {
-	type: ActionTypes.login_result,
-	accessToken?: string,
-}
-
-export interface ConfirmEmailResultAction extends AuthResultAction {
-	type: ActionTypes.confirm_email_result,
-	errorMessage: string,
+export interface ChangeResetPasswordCode extends AuthAction {
+	type: ActionTypes.change_reset_password_code,
+	code: string,
 }
 
 export interface ConfirmEmailAction extends AuthAction {
@@ -96,36 +65,23 @@ export interface ConfirmEmailAction extends AuthAction {
 
 export type Action =
 	& AuthAction
+	& AuthActionResult
 	& ChangeNameAction
 	& ChangeEmailAction
 	& ChangePhoneAction
 	& ChangePasswordAction
-	& ChangeResetCode
-	& RegisterResultAction
-	& LoginResultAction
-	& ChangeResetPasswordAction
-	& ConfirmEmailAction
-	& ConfirmEmailResultAction
-	& SendForgotPasswordEmailResultAction
-	& SendResetPasswordResultAction;
+	& ChangeResetPasswordCode
+	& ConfirmEmailAction;
 
 export interface State {
-	accessToken?: string,
-	isLoggedIn: boolean,
-
 	name: string,
 	email: string,
 	phone: string,
 	password: string,
 
-	isEmailConfirmed: boolean,
-    isRegistered: boolean,
-
 	isResettingPassword: boolean,
-	resetCode: string,
-	resetPassword: string,
+	resetPasswordCode: string,
 
-	errorMessage: string,
+	errorMessage?: string,
 	isLoading: boolean,
-
 }

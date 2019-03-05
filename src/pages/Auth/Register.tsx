@@ -2,52 +2,39 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 
 import { AppState } from '../../types/store';
-import { Input } from '../../components/Input';
-import { Button } from '../../components/Button';
-import { AuthContainer } from '../../components/AuthContainer';
-import {
-	changeEmail,
-	changePassword,
-	changePhone,
-	changeName,
-	register,
-	login,
-	sendForgotPasswordEmail,
-} from '../../actions/auth';
+
+import { AuthContainer, Input, Button } from '../../components';
+
 import { navigate } from '../../actions/service';
+import { changeName, changeEmail, changePassword, register } from '../../actions/auth';
+
+import './styles.scss';
 
 interface Props {
 	dispatch: Function,
 
+	name: string,
 	email: string,
 	password: string,
-	name: string,
-	phone: string,
 
-	errorMessage: string,
-
-	isRegistered: boolean,
-
-	isLoggedIn: boolean,
 	isLoading: boolean,
+	errorMessage?: string,
 }
 
 const Register = (props: Props) => {
-	const { dispatch, email, password, name, phone, errorMessage, isLoading, isRegistered} = props;
+	const { dispatch, name, email, password, isLoading, errorMessage } = props;
 
-	const handleChangeEmail = (e: any) => dispatch(changeEmail(e.target.value));
-	const handleChangePassword = (e: any) => dispatch(changePassword(e.target.value));
-	const handlePhone = (e: any) => dispatch(changePhone(e.target.value));
-	const handleName = (e: any) => dispatch(changeName(e.target.value));
+	const handleNameChange = (e: any) => dispatch(changeName(e.target.value));
+	const handleEmailChange = (e: any) => dispatch(changeEmail(e.target.value));
+	const handlePasswordChange = (e: any) => dispatch(changePassword(e.target.value));
 
-	const onRegisterClicked = () => dispatch(register());
-
-	const submitRegister = (e: any) => {
+	const onLoginClicked = () => dispatch(navigate('Login'));
+	const onRegisterClicked = (e: any) => {
 		dispatch(register());
 		e.preventDefault();
 	};
 
-	const message = errorMessage ? errorMessage : 'create your account';
+	const message = errorMessage ? errorMessage : 'Create New Account';
 
 	return (
 		<AuthContainer className='page_auth' isLoading={isLoading}>
@@ -55,19 +42,19 @@ const Register = (props: Props) => {
 				<h1 className='page_auth__title'>Register</h1>
 				<p className='page_auth__subtitle'>{message}</p>
 
-				<form onSubmit={submitRegister}>
+				<form onSubmit={onRegisterClicked}>
 					<Input
 						className='page_auth__input'
 						value={name}
-						onChange={handleName}
-						type='text'
+						onChange={handleNameChange}
 						placeholder='Name'
+						type='text'
 						required
 					/>
 					<Input
 						className='page_auth__input'
 						value={email}
-						onChange={handleChangeEmail}
+						onChange={handleEmailChange}
 						type='email'
 						placeholder='Email'
 						required
@@ -75,14 +62,22 @@ const Register = (props: Props) => {
 					<Input
 						className='page_auth__input'
 						value={password}
-						onChange={handleChangePassword}
+						onChange={handlePasswordChange}
 						type='password'
 						placeholder='Password'
 						required
 						pattern='.{6,}'
 					/>
-					<div className='page_auth__action_auth_button'>
-						<Button type='submit' title='Register' onClick={onRegisterClicked} />
+
+					<div className='page_auth__buttons_container'>
+						<Button
+							className='page_auth__action_button'
+							type='button'
+							mode='text'
+							title='Login'
+							onClick={onLoginClicked}
+						/>
+						<Button type='submit' title='Create Account' />
 					</div>
 				</form>
 			</div>
@@ -91,17 +86,14 @@ const Register = (props: Props) => {
 };
 
 const mapStateToProps = (state: AppState) => {
-	const { email, name, phone, password, errorMessage, isLoading, isLoggedIn, isRegistered } = state.auth;
+	const { name, email, password, isLoading, errorMessage } = state.auth;
 
 	return {
-		email,
 		name,
-		phone,
+		email,
 		password,
 		isLoading,
 		errorMessage,
-		isLoggedIn,
-		isRegistered
 	};
 };
 

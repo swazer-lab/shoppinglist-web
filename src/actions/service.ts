@@ -6,6 +6,7 @@ import {
 	ServiceAction,
 	SetAccessTokenAction,
 	SetActiveLanguageAction,
+	SetIsEmailConfirmed,
 	SetIsLoggedInAction,
 	ShowAlertAction,
 	ShowProgressAction,
@@ -113,5 +114,13 @@ export const setActiveLanguage = (activeLanguage: string): SetActiveLanguageActi
 	return ({
 		type: ActionTypes.setActiveLanguage,
 		activeLanguage,
+	});
+};
+export const setIsEmailConfirmed = (isEmailConfirmed: boolean): SetIsEmailConfirmed => {
+	localStorage.setItem('isEmailConfirmed', isEmailConfirmed.toString());
+
+	return ({
+		type: ActionTypes.setIsEmailConfirmed,
+		isEmailConfirmed,
 	});
 };

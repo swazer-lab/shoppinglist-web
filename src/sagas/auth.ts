@@ -1,131 +1,94 @@
 import { SagaIterator } from 'redux-saga';
 import { all, call, put, select, takeLatest } from 'redux-saga/effects';
+
 import { AppState } from '../types/store';
 
-import { navigate } from '../actions/service';
-import { register_api, login_api, confirm_email_api, forgot_password_api, send_reset_code_api } from '../api/auth';
-import { registerResult, loginResult, confirmEmailResult, sendForgotPasswordEmailResult, sendResetPasswordEmailResult } from '../actions/auth';
-import { ActionTypes, ConfirmEmailAction } from '../types/auth';
-import { hideProgress, showProgress, setAccessToken, setIsLoggedIn } from '../actions/service';
+import { register_api, login_api, confirm_email_api, send_forgot_password_email_api, reset_password_api } from '../api';
 
-import { EMAIL_VALIDATOR } from '../config/utilities';
+import { navigate, setAccessToken, setIsLoggedIn, setIsEmailConfirmed } from '../actions/service';
+import {
+	registerResult,
+	loginResult,
+	confirmEmailResult,
+	sendForgotPasswordEmailResult,
+	resetPasswordResult,
+} from '../actions/auth';
+
+import { ActionTypes, ConfirmEmailAction } from '../types/auth';
 
 function* registerSaga(): SagaIterator {
-	const { name, email, phone, password } = yield select((state: AppState) => state.auth);
-
-	if (!name) {
-		yield put(registerResult(true,''));
-		return;
-	}
-	if (!email) {
-		yield put(registerResult(true,''));
-		return;
-	}
-
-	if (!password) {
-		yield put(registerResult(true,''));
-		return;
-	}
-	if (!EMAIL_VALIDATOR.test(String(email).toLowerCase())) {
-		yield put(registerResult(true,''));
-		return;
-	}
-	if (password.length > 6) {
-		yield put(registerResult(true,''));
-		return;
-	}
+	const { name, email, password } = yield select((state: AppState) => state.auth);
 
 	try {
 		const response = yield call(register_api, name, email, password);
-		const { data } = response;
+		const { access_token } = response.data;
 
-		yield put(registerResult(false,'', data.access_token));
-		yield put(navigate('Login'));
+		yield all([
+			put(registerResult(false)),
+			put(setAccessToken(access_token)),
+			put(setIsLoggedIn(true)),
+		]);
+		yield put(navigate('Carts'));
 	} catch (e) {
-		const { response } = e;
-		yield put(registerResult(true, response.data.message));
+		yield put(registerResult(true, e.response.data.message));
 	}
 }
 
 function* loginSaga(): SagaIterator {
 	const { email, password } = yield select((state: AppState) => state.auth);
 
-	if (!email) {
-		yield put(loginResult(true));
-		return;
-	}
-	if (!password) {
-		yield put(loginResult(true));
-		return;
-	}
-	if (!EMAIL_VALIDATOR.test(String(email).toLowerCase())) {
-		yield put(loginResult(true));
-		return;
-	}
-	if (password.length > 6) {
-		yield put(loginResult(true));
-		return;
-	}
-
 	try {
 		const response = yield call(login_api, email, password);
 		const { access_token } = response.data;
 
 		yield all([
-			put(loginResult(false, access_token)),
+			put(loginResult(false)),
 			put(setAccessToken(access_token)),
 			put(setIsLoggedIn(true)),
 		]);
-		yield put(loginResult(false, data.access_token));
-		navigate('Carts')
+		yield put(navigate('Carts'));
 	} catch (e) {
-		yield put(loginResult(true));
+		yield put(loginResult(true, e.response.data.message));
 	}
 }
 
 function* confirmEmailSaga(action: ConfirmEmailAction): SagaIterator {
 	const { userId, token } = action;
 
-	yield put(showProgress('Confirming Email'));
 	try {
 		yield call(confirm_email_api, userId, token);
-		yield put(confirmEmailResult(false, ''));
+		yield all([
+			put(confirmEmailResult(false)),
+			put(setIsEmailConfirmed(true)),
+		]);
 	} catch (e) {
-		const { response } = e;
-		yield put(confirmEmailResult(true, response.data.message));
-	} finally {
-		yield put(hideProgress());
+		yield put(confirmEmailResult(true, e.response.data.message));
 	}
 }
 
 function* sendForgotPasswordEmailSaga(): SagaIterator {
 	const { email } = yield select((state: AppState) => state.auth);
-    console.log('Email sending to the server to validate');
-	yield put(showProgress('Sending reset password email...'));
+
 	try {
-		yield call(forgot_password_api, email);
-		yield put(sendForgotPasswordEmailResult(false, ''));
+		yield call(send_forgot_password_email_api, email);
+		yield put(sendForgotPasswordEmailResult(false));
 	} catch (e) {
-		const { response } = e;
-		yield put(sendForgotPasswordEmailResult(true, response.data.message));
-	} finally {
-		yield put(hideProgress());
+		yield put(sendForgotPasswordEmailResult(true, e.response.data.message));
 	}
 }
 
-function* sendResetPasswordSaga(): SagaIterator {
-	const { email, resetCode, resetPassword } = yield select((state: AppState) => state.auth);
+function* resetPasswordSaga(): SagaIterator {
+	const { email, password, resetPasswordCode } = yield select((state: AppState) => state.auth);
 
-	yield put(showProgress('Sending Reset Password'));
 	try {
-		yield call(send_reset_code_api, resetCode, resetPassword, email);
-		yield put(sendResetPasswordEmailResult(false, ''));
-		yield put(navigate('Login'));
+		yield call(reset_password_api, email, password, resetPasswordCode);
+
+		yield all([
+			put(resetPasswordResult(false)),
+			put(navigate('Login')),
+		]);
 	} catch (e) {
-		const { response } = e;
-		yield put(sendResetPasswordEmailResult(true, response.data.message));
-	} finally {
-		yield put(hideProgress());
+		yield put(resetPasswordResult(true, e.response.data.message));
 	}
 }
 
@@ -134,5 +97,5 @@ export default [
 	takeLatest(ActionTypes.login, loginSaga),
 	takeLatest(ActionTypes.confirm_email, confirmEmailSaga),
 	takeLatest(ActionTypes.send_forgot_password_email, sendForgotPasswordEmailSaga),
-	takeLatest(ActionTypes.send_reset_password, sendResetPasswordSaga),
+	takeLatest(ActionTypes.reset_password, resetPasswordSaga),
 ];

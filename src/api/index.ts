@@ -15,4 +15,5 @@ export const updateDefaultHeaders = (accessToken?: string) => {
 	axios.defaults.headers.common.Authorization = 'bearer ' + auth;
 };
 
+export { register_api, login_api, confirm_email_api, send_forgot_password_email_api, reset_password_api } from './auth';
 export { fetch_carts_api, create_cart_api, remove_cart_api } from './carts';

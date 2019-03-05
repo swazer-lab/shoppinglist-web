@@ -3,7 +3,9 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
 import { AppState } from '../types/store';
+
 import { navigate } from '../actions/service';
+import { useLocalStorage } from '../config/utilities';
 
 interface Props {
 	children: any,
@@ -44,7 +46,7 @@ class Layout extends React.Component<Props> {
 }
 
 const mapStateToProps = (state: AppState) => {
-	const { isLoggedIn } = state.auth;
+	const { isLoggedIn } = useLocalStorage();
 
 	return {
 		isLoggedIn,

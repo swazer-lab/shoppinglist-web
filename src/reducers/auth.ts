@@ -1,20 +1,13 @@
 import { Action, ActionTypes, State } from '../types/auth';
 
 const initialState: State = {
-	accessToken: '',
-	isLoggedIn: false,
-
 	name: '',
 	email: '',
 	phone: '',
 	password: '',
 
-	isRegistered: false,
-	isEmailConfirmed: false,
-
 	isResettingPassword: false,
-	resetCode: '',
-	resetPassword: '',
+	resetPasswordCode: '',
 
 	errorMessage: '',
 	isLoading: false,
@@ -43,32 +36,23 @@ export default (state: State = initialState, action: Action): State => {
 				password: action.password,
 			};
 
-		case ActionTypes.change_reset_code:
+		case ActionTypes.change_reset_password_code:
 			return {
 				...state,
-				resetCode: action.resetCode,
-			};
-
-		case ActionTypes.change_reset_password:
-			return {
-				...state,
-				resetPassword: action.resetPassword,
+				resetPasswordCode: action.code,
 			};
 
 		case ActionTypes.register:
 			return {
 				...state,
 				isLoading: true,
-				errorMessage: ''
 			};
 		case ActionTypes.register_result:
-			if (action.hasError) return { ...state, isLoading: false, errorMessage: action.message};
+			if (action.hasError) return { ...state, isLoading: false, errorMessage: action.errorMessage };
 			return {
 				...state,
-				accessToken: action.accessToken,
-				isLoggedIn: true,
 				isLoading: false,
-				isRegistered: true
+				errorMessage: '',
 			};
 
 		case ActionTypes.login:
@@ -77,49 +61,54 @@ export default (state: State = initialState, action: Action): State => {
 				isLoading: true,
 			};
 		case ActionTypes.login_result:
-			if (action.hasError) return { ...state, isLoading: false };
+			if (action.hasError) return { ...state, isLoading: false, errorMessage: action.errorMessage };
 			return {
 				...state,
-				accessToken: action.accessToken,
-				isLoggedIn: true,
-
 				isLoading: false,
+				errorMessage: '',
 			};
 
-		case ActionTypes.confirm_email_result:
+		case ActionTypes.confirm_email:
 			return {
 				...state,
-				isEmailConfirmed: !action.hasError,
-				errorMessage: action.errorMessage
+				isLoading: true,
+			};
+		case ActionTypes.confirm_email_result:
+			if (action.hasError) return { ...state, isLoading: false, errorMessage: action.errorMessage };
+			return {
+				...state,
+				isLoading: false,
+				errorMessage: '',
 			};
 
 		case ActionTypes.send_forgot_password_email:
 			return {
 				...state,
 				isLoading: true,
-				errorMessage: ''
 			};
-
 		case ActionTypes.send_forgot_password_email_result:
+			if (action.hasError)
+				return { ...state, isLoading: false, errorMessage: action.errorMessage };
 			return {
 				...state,
 				isLoading: false,
-				isResettingPassword: !action.hasError,
-				errorMessage: action.message
+				errorMessage: '',
+
+				isResettingPassword: true,
 			};
 
-		case ActionTypes.send_reset_password:
+		case ActionTypes.reset_password:
 			return {
 				...state,
 				isLoading: true,
-				errorMessage: ''
 			};
 
-		case ActionTypes.send_reset_password_result:
+		case ActionTypes.reset_password_result:
+			if (action.hasError) return { ...state, isLoading: false, errorMessage: action.errorMessage };
 			return {
 				...state,
 				isLoading: false,
-				errorMessage: action.message
+				errorMessage: '',
 			};
 
 		default:

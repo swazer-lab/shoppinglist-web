@@ -29,9 +29,6 @@ export const routes = {
 			path: '/account',
 			index: Register,
 		},
-		layoutOptions: {
-			yaman: true,
-		},
 	},
 
 	carts: {

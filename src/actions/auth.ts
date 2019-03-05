@@ -1,18 +1,13 @@
 import {
 	ActionTypes,
 	AuthAction,
+	AuthActionResult,
 	ChangeEmailAction,
 	ChangeNameAction,
-	ChangePhoneAction,
 	ChangePasswordAction,
-	LoginResultAction,
-	RegisterResultAction,
+	ChangePhoneAction,
+	ChangeResetPasswordCode,
 	ConfirmEmailAction,
-	ConfirmEmailResultAction,
-	ChangeResetPasswordAction,
-	SendForgotPasswordEmailResultAction,
-	SendResetPasswordResultAction,
-	ChangeResetCode, AuthResultAction,
 } from '../types/auth';
 
 export const changeName = (name: string): ChangeNameAction => ({
@@ -27,34 +22,31 @@ export const changePhone = (phone: string): ChangePhoneAction => ({
 	type: ActionTypes.change_phone,
 	phone,
 });
-
 export const changePassword = (password: string): ChangePasswordAction => ({
 	type: ActionTypes.change_password,
 	password,
 });
-
-export const changeResetPassword = (resetPassword: string): ChangeResetPasswordAction => ({
-	type: ActionTypes.change_reset_password,
-	resetPassword,
+export const changeResetPasswordCode = (code: string): ChangeResetPasswordCode => ({
+	type: ActionTypes.change_reset_password_code,
+	code,
 });
 
 export const register = (): AuthAction => ({
 	type: ActionTypes.register,
 });
-export const registerResult = (hasError: boolean, message: string, accessToken?: string): RegisterResultAction => ({
+export const registerResult = (hasError: boolean, errorMessage?: string): AuthActionResult => ({
 	type: ActionTypes.register_result,
 	hasError,
-	accessToken,
-	message
+	errorMessage,
 });
 
 export const login = (): AuthAction => ({
 	type: ActionTypes.login,
 });
-export const loginResult = (hasError: boolean, accessToken?: string): LoginResultAction => ({
+export const loginResult = (hasError: boolean, errorMessage?: string): AuthActionResult => ({
 	type: ActionTypes.login_result,
 	hasError,
-	accessToken,
+	errorMessage,
 });
 
 export const confirmEmail = (userId: string, token: string): ConfirmEmailAction => ({
@@ -62,32 +54,26 @@ export const confirmEmail = (userId: string, token: string): ConfirmEmailAction 
 	userId,
 	token,
 });
-export const confirmEmailResult = (hasError: boolean, errorMessage: string): ConfirmEmailResultAction => ({
+export const confirmEmailResult = (hasError: boolean, errorMessage?: string): AuthActionResult => ({
 	type: ActionTypes.confirm_email_result,
 	hasError,
-	errorMessage
+	errorMessage,
 });
 
-export const changeResetCode = (resetCode: string): ChangeResetCode => ({
-	type: ActionTypes.change_reset_code,
-	resetCode,
-});
 export const sendForgotPasswordEmail = (): AuthAction => ({
 	type: ActionTypes.send_forgot_password_email,
 });
-
-export const sendResetCode = (): AuthAction => ({
-	type: ActionTypes.send_reset_password,
-});
-
-export const sendForgotPasswordEmailResult = (hasError: boolean, message: string): SendForgotPasswordEmailResultAction => ({
+export const sendForgotPasswordEmailResult = (hasError: boolean, errorMessage?: string): AuthActionResult => ({
 	type: ActionTypes.send_forgot_password_email_result,
 	hasError,
-	message
+	errorMessage,
 });
 
-export const sendResetPasswordEmailResult = (hasError: boolean, message: string): SendResetPasswordResultAction => ({
-	type: ActionTypes.send_reset_password_result,
+export const resetPassword = (): AuthAction => ({
+	type: ActionTypes.reset_password,
+});
+export const resetPasswordResult = (hasError: boolean, errorMessage?: string): AuthActionResult => ({
+	type: ActionTypes.reset_password_result,
 	hasError,
-	message
+	errorMessage,
 });

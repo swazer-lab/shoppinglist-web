@@ -15,6 +15,7 @@ export enum ActionTypes {
 	setAccessToken = 'SERVICE_LOCALSTORAGE__SET_ACCESS_TOKEN',
 	setIsLoggedIn = 'SERVICE_LOCALSTORAGE__SET_IS_LOGGED_IN',
 	setActiveLanguage = 'SERVICE_LOCALSTORAGE__SET_ACTIVE_LANGUAGE',
+	setIsEmailConfirmed = 'SERVICE_LOCALSTORAGE__SET_IS_EMAIL_CONFIRMED',
 }
 
 export interface ServiceAction extends ReduxAction<ActionTypes> {
@@ -62,6 +63,11 @@ export interface SetIsLoggedInAction extends ServiceAction {
 export interface SetActiveLanguageAction extends ServiceAction {
 	type: ActionTypes.setActiveLanguage,
 	activeLanguage: string,
+}
+
+export interface SetIsEmailConfirmed extends ServiceAction {
+	type: ActionTypes.setIsEmailConfirmed,
+	isEmailConfirmed: boolean
 }
 
 export type Action = & ServiceAction & NavigateAction & ReplaceAction & ShowProgressAction & ShowAlertAction;

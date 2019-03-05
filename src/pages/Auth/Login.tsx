@@ -17,6 +17,7 @@ interface Props {
 	password: string,
 
 	isLoading: boolean,
+	errorMessage?: string,
 }
 
 const Login = (props: Props) => {
@@ -28,7 +29,7 @@ const Login = (props: Props) => {
 	const onForgotPasswordClicked = () => dispatch(navigate('ForgotPassword'));
 	const onRegisterClicked = () => dispatch(navigate('Register'));
 
-	const submitLogin = (event: any) => {
+	const onLoginClicked = (event: any) => {
 		dispatch(login());
 		event.preventDefault();
 	};
@@ -38,7 +39,8 @@ const Login = (props: Props) => {
 			<div className='page_auth__content_container'>
 				<h1 className='page_auth__title'>Login</h1>
 				<p className='page_auth__subtitle'>with your Google account</p>
-				<form onSubmit={submitLogin}>
+
+				<form onSubmit={onLoginClicked}>
 					<Input
 						className='page_auth__input'
 						value={email}
@@ -72,7 +74,7 @@ const Login = (props: Props) => {
 							title='Create Account'
 							onClick={onRegisterClicked}
 						/>
-						<Button type='submit' title='Login'/>
+						<Button type='submit' title='Login' />
 					</div>
 				</form>
 			</div>
@@ -80,18 +82,15 @@ const Login = (props: Props) => {
 	);
 };
 
-Login.layoutOptions = {
-	title: 'Login',
-};
-
 const mapStateToProps = (state: AppState) => {
-	const { email, password, isLoading } = state.auth;
+	const { email, password, isLoading, errorMessage } = state.auth;
 
 	return {
 		email,
 		password,
 
 		isLoading,
+		errorMessage,
 	};
 };
 
