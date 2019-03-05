@@ -1,6 +1,7 @@
 import * as React from 'react';
-
 import { Cart } from '../../types/api';
+
+import './styles.scss';
 
 interface Props {
 	cart: Cart
@@ -9,7 +10,7 @@ interface Props {
 const CartObject = (props: Props) => {
 	const { title, notes, items } = props.cart;
 	return (
-		<div style={{ height: 150 }}>
+		<div className='cart_object'>
 			<h4>{title}</h4>
 			<h6>{notes}</h6>
 

@@ -32,7 +32,7 @@ const Carts = (props: Props) => {
 
 		const onScroll = () => {
 			if (window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight && !isLoading && carts.length < totalCount)
-				dispatch(fetchCarts(true, 'merge', pageNumber + 1));
+				dispatch(fetchCarts(false, 'merge', pageNumber + 1));
 		};
 
 		window.addEventListener('scroll', onScroll, false);

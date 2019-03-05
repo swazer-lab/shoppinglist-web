@@ -1,0 +1,14 @@
+@import "../assets/scss/main";
+
+.main_layout {
+  display: flex;
+
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+
+  min-height: 100vh;
+  padding-top: 9.5rem;
+
+  background-color: $color-highlight;
+}

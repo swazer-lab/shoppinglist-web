@@ -1,8 +1,10 @@
-import * as React from 'react';
+import React, { useState, FormEvent } from 'react';
 import { connect } from 'react-redux';
 
 import { AppState } from '../../types/store';
-import { Cart, CartItemStatusType } from '../../types/api';
+import { Cart } from '../../types/api';
+
+import { Button } from '../../components';
 
 import {
 	addDraftCartItem,
@@ -12,7 +14,8 @@ import {
 	changeDraftCartTitle, createCart,
 	removeDraftCartItem,
 } from '../../actions/carts';
-import CartItemObject from './CartItemObject';
+
+import './styles.scss';
 
 interface Props {
 	dispatch: Function,
@@ -20,41 +23,91 @@ interface Props {
 }
 
 const CreateCart = (props: Props) => {
+	const [isNotesInputVisible, setIsNotesInputVisible] = useState(false);
+
 	const { dispatch, draftCart } = props;
 
-	const handleDraftCartTitleChange = (e: any) => dispatch(changeDraftCartTitle(e.target.value));
-	const handleDraftCartNotesChange = (e: any) => dispatch(changeDraftCartNotes(e.target.value));
+	const handleDraftCartTitleChange = (e: FormEvent<HTMLInputElement>) => dispatch(changeDraftCartTitle(e.currentTarget.value));
+	const handleDraftCartNotesChange = (e: FormEvent<HTMLInputElement>) => dispatch(changeDraftCartNotes(e.currentTarget.value));
 
 	const onAddDraftCartItemClicked = () => dispatch(addDraftCartItem());
-	const handleDraftCartItemTitleChange = (uuid: string, title: string) => dispatch(changeDraftCartItemTitle(uuid, title));
-	const handleDraftCartItemStatusChange = (uuid: string, status: CartItemStatusType) => dispatch(changeDraftCartItemStatus(uuid, status));
-	const onRemoveDraftCartItemClicked = (uuid: string) => dispatch(removeDraftCartItem(uuid));
 
-	const onCreateCartClicked = (e: any) => {
+	const onCreateCartClicked = (e: FormEvent<HTMLFormElement>) => {
 		dispatch(createCart());
 		e.preventDefault();
 	};
 
-	const renderDraftCartItems = () => draftCart.items.map(item => (
-		<CartItemObject
-			key={item.uuid}
-			cartItem={item}
-			onDraftCartItemTitleChange={handleDraftCartItemTitleChange}
-			onDraftCartItemStatusChange={handleDraftCartItemStatusChange}
-			onRemoveDraftCartItemClick={onRemoveDraftCartItemClicked}
-		/>
-	));
+	const renderDraftCartItems = () => draftCart.items.map(item => {
+		const { uuid, title } = item;
+
+		const handleDraftCartItemTitleChange = (e: FormEvent<HTMLInputElement>) => dispatch(changeDraftCartItemTitle(uuid, e.currentTarget.value));
+		const handleDraftCartItemStatusChange = (e: FormEvent<HTMLInputElement>) => dispatch(changeDraftCartItemStatus(uuid, e.currentTarget.checked ? 'completed' : 'active'));
+
+		const onRemoveDraftCartItemClicked = () => dispatch(removeDraftCartItem(uuid));
+
+		return (
+			<div key={item.uuid} className='create_cart__cart_item'>
+				<input
+					type='checkbox'
+					onChange={handleDraftCartItemStatusChange}
+				/>
+				<input
+					className='create_cart__cart_item__title_input'
+					value={title}
+					onChange={handleDraftCartItemTitleChange}
+					type='text'
+					placeholder='Item Name'
+					required
+				/>
+
+				<input
+					type='button'
+					value='X'
+					onClick={onRemoveDraftCartItemClicked}
+				/>
+			</div>
+		);
+	});
 
 	return (
-		<form onSubmit={onCreateCartClicked}>
-			<input type='text' placeholder='Title' value={draftCart.title} onChange={handleDraftCartTitleChange} />
-			<input type='text' placeholder='Notes' value={draftCart.notes} onChange={handleDraftCartNotesChange} />
+		<div className='create_cart'>
+			<form className='create_cart__form' onSubmit={onCreateCartClicked}>
+				<input
+					className='create_cart__form__title_input'
+					type='text'
+					placeholder='Cart Name'
+					value={draftCart.title}
+					onChange={handleDraftCartTitleChange}
+					required
+				/>
 
-			{renderDraftCartItems()}
+				{isNotesInputVisible &&
+				<input
+					type='text'
+					placeholder='Notes'
+					value={draftCart.notes}
+					onChange={handleDraftCartNotesChange}
+				/>
+				}
 
-			<input type='button' value='Add Item' onClick={onAddDraftCartItemClicked} />
-			<input type="submit" value="Submit" />
-		</form>
+				<div className='create_cart__form__cart_items'>
+					{renderDraftCartItems()}
+				</div>
+
+				<input
+					className='create_cart__form__add_item_button'
+					type='button'
+					value='Add Item'
+					onClick={onAddDraftCartItemClicked}
+				/>
+
+				<Button
+					className='create_cart__form__submit_button'
+					type='submit'
+					title='Submit'
+				/>
+			</form>
+		</div>
 	);
 };
 
