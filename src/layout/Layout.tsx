@@ -1,6 +1,5 @@
-import * as React from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
 
 import { AppState } from '../types/store';
 
@@ -8,50 +7,27 @@ import { navigate } from '../actions/service';
 import { useLocalStorage } from '../config/utilities';
 
 interface Props {
-	children: any,
 	dispatch: Function,
+	children: any,
 
-	layoutOptions: any,
-	isLoggedIn: boolean,
+	layoutOptions?: any,
 }
 
-class Layout extends React.Component<Props> {
-	componentDidMount() {
-		this.setListenerUp();
-	}
-
-	componentDidUpdate(prevProps: Props) {
-		this.setListenerUp();
-	}
-
-	setListenerUp = () => {
-		const layoutOptions = this.props.layoutOptions ? this.props.layoutOptions() : {};
-		const { title, authorized } = layoutOptions;
-
-		if (title) document.title = title;
-		if (authorized) {
-			this.props.dispatch(navigate('Login'));
-			return;
-		}
-	};
-
-	render() {
-		const { children } = this.props;
-		return (
-			<div>
-				{children}
-			</div>
-		);
-	}
-}
-
-const mapStateToProps = (state: AppState) => {
+const Layout = (props: Props) => {
+	const { dispatch, children, layoutOptions } = props;
 	const { isLoggedIn } = useLocalStorage();
 
-	return {
-		isLoggedIn,
-	};
+	if (layoutOptions.authorized && !isLoggedIn) dispatch(navigate('Login'));
+
+	return (
+		<div>
+			{children}
+		</div>
+	);
 };
 
-// @ts-ignore
-export default withRouter(connect(mapStateToProps)(Layout));
+const mapStateToProps = (state: AppState) => {
+	return {};
+};
+
+export default connect(mapStateToProps)(Layout);

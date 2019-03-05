@@ -11,14 +11,14 @@ import {
 	ShowAlertAction,
 	ShowProgressAction,
 } from '../types/service';
-import { getHistory, getRoutes } from '../config/navigator';
+import { history, routes } from '../config/routes';
 import { updateDefaultHeaders } from '../api';
 import language from '../assets/language';
 
 // Navigation
 export const navigate = (routeName: string): NavigateAction => {
-	const route = getRoutes()[routeName];
-	getHistory().push(route.path);
+	// @ts-ignore
+	history.push(routes[routeName.charAt(0).toLowerCase() + routeName.substr(1)].path);
 
 	return {
 		type: ActionTypes.navigate,
@@ -26,8 +26,8 @@ export const navigate = (routeName: string): NavigateAction => {
 	};
 };
 export const replace = (routeName: string): ReplaceAction => {
-	const route = getRoutes()[routeName];
-	getHistory().replace(route.path);
+	// @ts-ignore
+	history.replace(routes[routeName.charAt(0).toLowerCase() + routeName.substr(1)].path);
 
 	return {
 		type: ActionTypes.replace,
@@ -35,14 +35,14 @@ export const replace = (routeName: string): ReplaceAction => {
 	};
 };
 export const goBack = (): ServiceAction => {
-	getHistory().goBack();
+	history.goBack();
 
 	return {
 		type: ActionTypes.go_back,
 	};
 };
 export const goForward = (): ServiceAction => {
-	getHistory().goBack();
+	history.goBack();
 
 	return {
 		type: ActionTypes.go_forward,
