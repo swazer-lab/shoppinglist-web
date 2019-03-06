@@ -1,4 +1,4 @@
-import React, { useState, FormEvent } from 'react';
+import React, { FormEvent } from 'react';
 import { connect } from 'react-redux';
 
 import { AppState } from '../../types/store';
@@ -10,7 +10,6 @@ import {
 	addDraftCartItem,
 	changeDraftCartItemStatus,
 	changeDraftCartItemTitle,
-	changeDraftCartNotes,
 	changeDraftCartTitle, createCart,
 	removeDraftCartItem,
 } from '../../actions/carts';
@@ -23,13 +22,9 @@ interface Props {
 }
 
 const CreateCart = (props: Props) => {
-	const [isNotesInputVisible, setIsNotesInputVisible] = useState(false);
-
 	const { dispatch, draftCart } = props;
 
 	const handleDraftCartTitleChange = (e: FormEvent<HTMLInputElement>) => dispatch(changeDraftCartTitle(e.currentTarget.value));
-	const handleDraftCartNotesChange = (e: FormEvent<HTMLInputElement>) => dispatch(changeDraftCartNotes(e.currentTarget.value));
-
 	const onAddDraftCartItemClicked = () => dispatch(addDraftCartItem());
 
 	const onCreateCartClicked = (e: FormEvent<HTMLFormElement>) => {
@@ -38,18 +33,18 @@ const CreateCart = (props: Props) => {
 	};
 
 	const renderDraftCartItems = () => draftCart.items.map(item => {
-		const { uuid, title } = item;
+		const { uuid, title, status } = item;
 
 		const handleDraftCartItemTitleChange = (e: FormEvent<HTMLInputElement>) => dispatch(changeDraftCartItemTitle(uuid, e.currentTarget.value));
-		const handleDraftCartItemStatusChange = (e: FormEvent<HTMLInputElement>) => dispatch(changeDraftCartItemStatus(uuid, e.currentTarget.checked ? 'completed' : 'active'));
+		const handleDraftCartItemStatusChange = () => dispatch(changeDraftCartItemStatus(uuid, status === 'active' ? 'completed' : 'active'));
 
 		const onRemoveDraftCartItemClicked = () => dispatch(removeDraftCartItem(uuid));
 
 		return (
 			<div key={item.uuid} className='create_cart__cart_item'>
-				<input
-					type='checkbox'
-					onChange={handleDraftCartItemStatusChange}
+				<i className='material-icons create_cart__cart_item__close_button'
+				   onClick={handleDraftCartItemStatusChange}
+				   children={status === 'active' ? 'check_box_outline_blank' : 'check_box'}
 				/>
 				<input
 					className='create_cart__cart_item__title_input'
@@ -60,10 +55,9 @@ const CreateCart = (props: Props) => {
 					required
 				/>
 
-				<input
-					type='button'
-					value='X'
-					onClick={onRemoveDraftCartItemClicked}
+				<i className='material-icons create_cart__cart_item__close_button'
+				   onClick={onRemoveDraftCartItemClicked}
+				   children='close'
 				/>
 			</div>
 		);
@@ -81,25 +75,16 @@ const CreateCart = (props: Props) => {
 					required
 				/>
 
-				{isNotesInputVisible &&
-				<input
-					type='text'
-					placeholder='Notes'
-					value={draftCart.notes}
-					onChange={handleDraftCartNotesChange}
-				/>
-				}
-
 				<div className='create_cart__form__cart_items'>
 					{renderDraftCartItems()}
 				</div>
 
-				<input
-					className='create_cart__form__add_item_button'
-					type='button'
-					value='Add Item'
-					onClick={onAddDraftCartItemClicked}
-				/>
+				<div className='create_cart__form__add_item_button' onClick={onAddDraftCartItemClicked}>
+					<i className='material-icons create_cart__cart_item__close_button'
+					   children='add'
+					/>
+					<span>Add Item</span>
+				</div>
 
 				<Button
 					className='create_cart__form__submit_button'
