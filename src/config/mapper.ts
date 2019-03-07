@@ -16,6 +16,29 @@ export const cartUserAccessLevelMapper: any = {
 	'read': 2,
 };
 
+export const profileMapper = (toApi: boolean = false) => {
+	const mapper = {
+		id: 'userId',
+
+		name: 'name',
+		email: 'email',
+		phone: 'mobile',
+
+		photoUrl: {
+			path: 'photoId',
+			fn: (value: number) => value !== null ? get_photo_url(value) : undefined,
+		},
+	};
+	const apiMapper = {
+		userId: 'id',
+
+		name: 'name',
+		mobile: 'phone',
+	};
+
+	return toApi ? apiMapper : mapper;
+};
+
 export const cartMapper = (toApi: boolean = false) => {
 	const mapper = {
 		id: 'cart.cartId',
