@@ -108,12 +108,60 @@
 .cart_object {
   display: flex;
   flex: 1;
+  flex-direction: column;
 
   width: 50rem;
-  padding: 1rem 1.5rem;
   margin-bottom: 1rem;
+  padding: 1rem 0;
 
   background-color: $color-white;
   border: .1rem solid $color-gray;
   border-radius: .6rem;
+
+  &__title {
+    flex: 1;
+    font-size: 1.6rem;
+
+    padding: 1rem 1.5rem;
+  }
+
+  &__items {
+    display: flex;
+
+    flex: 1;
+    flex-direction: column;
+
+    &__separator {
+      flex: 1;
+
+      height: .1rem;
+      margin-left: 1rem;
+
+      background-color: $color-gray;
+    }
+
+    &__item {
+      display: flex;
+
+      flex: 1;
+      align-items: center;
+
+      padding: .8rem 1.5rem;
+
+      border-top: .1rem solid transparent;
+      border-bottom: .1rem solid transparent;
+
+      transition: all .2s;
+
+      &:hover {
+        border-top: .1rem solid $color-gray;
+        border-bottom: .1rem solid $color-gray;
+      }
+
+      &__title {
+        margin-left: 1rem;
+        font-size: 1.4rem;
+      }
+    }
+  }
 }
