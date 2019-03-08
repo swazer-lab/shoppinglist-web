@@ -7,6 +7,8 @@ import {
 	ChangeDraftCartReminderDateAction,
 	ChangeDraftCartTitleAction,
 	CreateCartActionResult, FetchCartsAction,
+	RemoveCartAction,
+	RemoveCartActionResult,
 	FetchCartsActionResult,
 	RemoveDraftCartItemAction,
 	SetDraftCartAction,
@@ -74,3 +76,16 @@ export const createCartResult = (hasError: boolean, cart?: Cart): CreateCartActi
 	hasError,
 	cart,
 });
+
+export const removeCart = (cart: Cart): RemoveCartAction => ({
+	type: ActionTypes.remove_cart,
+	cart
+});
+
+export const removeCartResult = (hasError: boolean, cart?: Cart): RemoveCartActionResult => ({
+	type: ActionTypes.remove_cart_result,
+	hasError,
+	cart
+});
+
+

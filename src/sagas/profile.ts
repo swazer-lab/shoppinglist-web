@@ -8,9 +8,10 @@ import { showProgress, hideProgress, showHttpErrorAlert } from '../actions/servi
 import { fetchProfileResult } from '../actions/profile';
 
 import { ActionTypes } from '../types/profile';
+import language from '../assets/language';
 
 function* fetchProfileSaga() {
-	yield put(showProgress('Fetch Profile'));
+	yield put(showProgress(language.textFetchingProfile));
 	try {
 		const response = yield call(fetch_profile_api);
 		const data = yield call(morphism, profileMapper(), response.data);

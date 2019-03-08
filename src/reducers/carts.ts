@@ -71,6 +71,7 @@ export default (state: State = initialState, action: Action): State => {
 			}
 
 		case ActionTypes.create_cart_result:
+		case ActionTypes.remove_cart_result:
 			return {
 				...state,
 				carts: carts(state.carts, action),
@@ -87,6 +88,16 @@ export const carts = (state: Array<Cart> = initialState.carts, action: Action): 
 			return [
 				action.cart,
 				...state,
+			];
+
+		case ActionTypes.remove_cart_result:
+			if (action.hasError) return state;
+
+			const removed_cart_index = state.findIndex(cart => cart.uuid === action.cart.uuid);
+
+			return [
+				...state.slice(0, removed_cart_index),
+				...state.slice(removed_cart_index + 1),
 			];
 		default:
 			return state;

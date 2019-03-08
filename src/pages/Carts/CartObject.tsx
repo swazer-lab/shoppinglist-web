@@ -1,14 +1,18 @@
-import * as React from 'react';
-import { Cart, CartItem } from '../../types/api';
+import React from 'react';
+import { Cart } from '../../types/api';
 
 import './styles.scss';
 
 interface Props {
-	cart: Cart
+	cart: Cart,
+	onRemoveCartClick: (cart: Cart) => void,
 }
 
 const CartObject = (props: Props) => {
-	const { title, notes, items } = props.cart;
+	const { cart, onRemoveCartClick } = props;
+	const { title, items } = cart;
+
+	const onRemoveCartClicked = () => onRemoveCartClick(cart);
 
 	const renderItems = (status: string) => items.filter(item => item.status === status).map(item => (
 		<div className='cart_object__items__item'>
@@ -22,13 +26,17 @@ const CartObject = (props: Props) => {
 
 	return (
 		<div className='cart_object'>
+			<div className='cart_object__remove_button' onClick={onRemoveCartClicked}>
+				<i className='material-icons'>cancel</i>
+			</div>
+
 			<h4 className='cart_object__title'>{title}</h4>
 
 			<div className='cart_object__items'>
 				{renderItems('active')}
 				{
 					items.filter(item => item.status == 'completed').length !== 0 &&
-					<div className='cart_object__items__separator' />
+                    <div className='cart_object__items__separator'/>
 				}
 				{renderItems('completed')}
 			</div>

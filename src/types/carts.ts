@@ -105,6 +105,16 @@ export interface CreateCartActionResult extends CartsActionResult {
 	cart?: Cart,
 }
 
+export interface RemoveCartAction extends CartsAction {
+	type: ActionTypes.remove_cart,
+	cart: Cart,
+}
+
+export interface RemoveCartActionResult extends CartsActionResult {
+	type: ActionTypes.remove_cart_result,
+	cart?: Cart,
+}
+
 export type Action =
 	& CartsAction
 	& CartsActionResult
@@ -117,7 +127,9 @@ export type Action =
 	& SetDraftCartAction
 	& FetchCartsAction
 	& FetchCartsActionResult
-	& CreateCartActionResult;
+	& CreateCartActionResult
+	& RemoveCartAction
+    & RemoveCartActionResult;
 
 export type State = {
 	draftCart: Cart,

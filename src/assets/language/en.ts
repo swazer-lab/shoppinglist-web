@@ -52,12 +52,16 @@ export default {
 	textEmail: 'Email',
 	textPhoneNumber: 'Phone',
 
+	textFetchingProfile: 'Fetch Profile',
+
 	// Carts
 	textEnterCartTitle: 'Cart Name',
 	textEnterCartItemTitle: 'Item Name',
 	actionAddCartItem: 'Add Item',
-
 	actionCreateCart: 'Create Cart',
+	textFetchingCarts: 'Fetching Carts',
+	textCreatingCart: 'Creating Cart',
+	textRemovingCart: 'Deleting Cart',
 
 	// Privacy Policy
 	titlePrivacyPolicy: 'Privacy Policy',

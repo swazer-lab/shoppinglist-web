@@ -107,6 +107,8 @@
 
 .cart_object {
   display: flex;
+  position: relative;
+
   flex: 1;
   flex-direction: column;
 
@@ -117,6 +119,22 @@
   background-color: $color-white;
   border: .1rem solid $color-gray;
   border-radius: .6rem;
+
+  &:hover &__remove_button {
+      opacity: 1;
+  }
+
+  &__remove_button {
+    position: absolute;
+    top: -1.2rem;
+    right: -1.2rem;
+
+    color: $color-black;
+
+    cursor: pointer;
+    opacity: 0;
+    transition: all .2s;
+  }
 
   &__title {
     flex: 1;

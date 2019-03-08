@@ -6,19 +6,20 @@ import { all, call, put, select, takeLatest } from 'redux-saga/effects';
 import { AppState } from '../types/store';
 import { CartItem } from '../types/api';
 
-import { fetch_carts_api, create_cart_api } from '../api';
+import { fetch_carts_api, create_cart_api, remove_cart_api } from '../api';
 import { cartMapper } from '../config/mapper';
 
 import { showProgress, hideProgress, showAlert, showHttpErrorAlert } from '../actions/service';
-import { createCartResult, fetchCartsResult, clearDraftCart } from '../actions/carts';
+import { createCartResult, fetchCartsResult, clearDraftCart, removeCartResult } from '../actions/carts';
 
-import { ActionTypes, FetchCartsAction } from '../types/carts';
+import { ActionTypes, FetchCartsAction, RemoveCartAction } from '../types/carts';
+import language from '../assets/language';
 
 function* fetchCartsSaga(action: FetchCartsAction): SagaIterator {
 	const { silent, pageNumber, append } = action;
 	const pageSize = 15;
 
-	if (!silent) yield put(showProgress('Fetching Carts'));
+	if (!silent) yield put(showProgress(language.textFetchingCarts));
 
 	try {
 		const response = yield call(fetch_carts_api, pageNumber, pageSize);
@@ -39,16 +40,7 @@ function* fetchCartsSaga(action: FetchCartsAction): SagaIterator {
 function* createCartSaga(): SagaIterator {
 	const { draftCart } = yield select((state: AppState) => state.carts);
 
-	if (draftCart && !draftCart.title) {
-		yield put(showAlert('info', 'Cart Title Required'));
-		return;
-	}
-	if (draftCart.items.length > 0 && draftCart.items.filter((item: CartItem) => item.title === '').length > 0) {
-		yield put(showAlert('info', 'Cart Item Title Required'));
-		return;
-	}
-
-	yield put(showProgress('Creating Cart'));
+	yield put(showProgress(language.textCreatingCart));
 	try {
 		const cart = yield call(morphism, cartMapper(true), draftCart);
 
@@ -69,7 +61,27 @@ function* createCartSaga(): SagaIterator {
 	}
 }
 
+function* removeCartSaga(action: RemoveCartAction): SagaIterator {
+	yield put(showProgress(language.textCreatingCart));
+
+	try {
+		yield call(remove_cart_api, action.cart.id);
+
+		console.log(action.cart);
+
+		yield put(removeCartResult(false, action.cart));
+	} catch (e) {
+		yield all([
+			put(removeCartResult(true)),
+			put(showHttpErrorAlert(e)),
+		]);
+	} finally {
+		yield put(hideProgress());
+	}
+}
+
 export default [
 	takeLatest(ActionTypes.fetch_carts, fetchCartsSaga),
 	takeLatest(ActionTypes.create_cart, createCartSaga),
+	takeLatest(ActionTypes.remove_cart, removeCartSaga)
 ];

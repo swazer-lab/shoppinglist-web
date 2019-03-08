@@ -7,7 +7,7 @@ import { Cart } from '../../types/api';
 import CreateCart from './CreateCart';
 import CartObject from './CartObject';
 
-import { fetchCarts } from '../../actions/carts';
+import { fetchCarts, removeCart } from '../../actions/carts';
 import { useLocalStorage } from '../../config/utilities';
 
 interface Props {
@@ -41,13 +41,16 @@ const Carts = (props: Props) => {
 		};
 	});
 
-	const renderCarts = () => props.carts.map(cart => (
-		<CartObject key={cart.uuid} cart={cart} />
-	));
+	const onRemoveCartClicked = (cart: Cart) => props.dispatch(removeCart(cart));
+
+	const renderCarts = () =>
+		props.carts.map(cart => (
+			<CartObject key={cart.uuid} cart={cart} onRemoveCartClick={onRemoveCartClicked}/>
+		));
 
 	return (
 		<div>
-			<CreateCart />
+			<CreateCart/>
 			{renderCarts()}
 		</div>
 	);
