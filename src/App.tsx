@@ -10,6 +10,8 @@ import { updateDefaultHeaders } from './api';
 import { fetchProfile } from './actions/profile';
 
 import { useLocalStorage } from './config/utilities';
+import language from '../src/assets/language';
+
 import './assets/scss/main.scss';
 
 interface Props {
@@ -17,12 +19,16 @@ interface Props {
 
 	isLoggedIn: boolean,
 	accessToken: string,
+	activeLanguage: string
 }
 
 class Main extends Component<Props> {
 	componentDidMount() {
-		const { isLoggedIn, accessToken } = this.props;
+		const { isLoggedIn, accessToken, activeLanguage } = this.props;
 		if (isLoggedIn) updateDefaultHeaders(accessToken);
+
+		language.setLanguage(activeLanguage);
+		this.forceUpdate();
 	}
 
 	componentDidUpdate() {
@@ -38,11 +44,12 @@ class Main extends Component<Props> {
 }
 
 const mapStateToProps = (state: AppState) => {
-	const { isLoggedIn, accessToken } = useLocalStorage();
+	const { isLoggedIn, accessToken, activeLanguage } = useLocalStorage();
 
 	return {
 		isLoggedIn,
 		accessToken,
+		activeLanguage,
 	};
 };
 

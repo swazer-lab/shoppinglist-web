@@ -7,6 +7,7 @@ import { AuthContainer } from '../../components';
 
 import { confirmEmail } from '../../actions/auth';
 import { useLocalStorage } from '../../config/utilities';
+import language from '../../assets/language';
 
 interface Props {
 	dispatch: Function,
@@ -29,11 +30,11 @@ const ConfirmEmail = (props: Props) => {
 	const { isEmailConfirmed } = useLocalStorage();
 	const { isLoading, errorMessage } = props;
 
-	const message = (!isLoading && isEmailConfirmed) ? 'Your account has been activated sucessfully' : errorMessage || '';
+	const message = (!isLoading && isEmailConfirmed) ? language.textConfirmEmailSubTitle : errorMessage || '';
 	return (
 		<AuthContainer className='page_auth' isLoading={isLoading}>
 			<div className='page_auth__content_container'>
-				<h1 className='page_auth__title'>Confirm Email</h1>
+				<h1 className='page_auth__title'>{language.titleConfirmEmail}</h1>
 				<p className='page_auth__subtitle'>{message}</p>
 			</div>
 		</AuthContainer>

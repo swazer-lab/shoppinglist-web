@@ -1,5 +1,6 @@
 import React from 'react';
+import language from '../../assets/language';
 
-const NotFound = () => <h1>Terms of Service</h1>;
+const NotFound = () => <h1>{language.titleServiceTerms}</h1>;
 
 export default NotFound;

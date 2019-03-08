@@ -5,6 +5,8 @@ import classNames from 'classnames';
 import { AppState } from '../../types/store';
 
 import { Button, ProgressBar } from '../';
+
+import language from '../../assets/language';
 import './styles.scss';
 
 interface Props {
@@ -30,9 +32,9 @@ const AuthContainer = (props: Props) => {
 					{children}
 				</div>
 				<div className='auth_container__links'>
-					<Button mode='text' accentColor='text' title='Help' onClick={onHelpClicked} />
-					<Button mode='text' accentColor='text' title='Privacy' onClick={onPrivacyClicked} />
-					<Button mode='text' accentColor='text' title='Terms' onClick={onTermsClicked} />
+					<Button mode='text' accentColor='text' title={language.textHelp} onClick={onHelpClicked} />
+					<Button mode='text' accentColor='text' title={language.textPrivacy} onClick={onPrivacyClicked} />
+					<Button mode='text' accentColor='text' title={language.textTerms} onClick={onTermsClicked} />
 				</div>
 			</div>
 		</div>

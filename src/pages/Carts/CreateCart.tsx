@@ -15,6 +15,7 @@ import {
 } from '../../actions/carts';
 
 import './styles.scss';
+import language from '../../assets/language';
 
 interface Props {
 	dispatch: Function,
@@ -69,7 +70,7 @@ const CreateCart = (props: Props) => {
 				<input
 					className='create_cart__form__title_input'
 					type='text'
-					placeholder='Cart Name'
+					placeholder={language.textEnterCartTitle}
 					value={draftCart.title}
 					onChange={handleDraftCartTitleChange}
 					required
@@ -83,13 +84,13 @@ const CreateCart = (props: Props) => {
 					<i className='material-icons create_cart__cart_item__close_button'
 					   children='add'
 					/>
-					<span>Add Item</span>
+					<span>{language.actionAddCartItem}</span>
 				</div>
 
 				<Button
 					className='create_cart__form__submit_button'
 					type='submit'
-					title='Submit'
+					title={language.actionCreateCart}
 				/>
 			</form>
 		</div>

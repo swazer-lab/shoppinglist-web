@@ -9,6 +9,7 @@ import { navigate } from '../../actions/service';
 import { changeEmail, changePassword, login } from '../../actions/auth';
 
 import './styles.scss';
+import language from '../../assets/language';
 
 interface Props {
 	dispatch: Function,
@@ -37,8 +38,8 @@ const Login = (props: Props) => {
 	return (
 		<AuthContainer className='page_auth' isLoading={isLoading}>
 			<div className='page_auth__content_container'>
-				<h1 className='page_auth__title'>Login</h1>
-				<p className='page_auth__subtitle'>with your Google account</p>
+				<h1 className='page_auth__title'>{language.titleLogin}</h1>
+				<p className='page_auth__subtitle'>{language.textLoginSubTitle}</p>
 
 				<form onSubmit={onLoginClicked}>
 					<Input
@@ -46,7 +47,7 @@ const Login = (props: Props) => {
 						value={email}
 						onChange={handleChangeEmail}
 						type='email'
-						placeholder='Email'
+						placeholder={language.textEnterEmail}
 						required
 					/>
 					<Input
@@ -54,7 +55,7 @@ const Login = (props: Props) => {
 						value={password}
 						onChange={handleChangePassword}
 						type='password'
-						placeholder='Password'
+						placeholder={language.textEnterPassword}
 						required
 						pattern='.{6,}'
 					/>
@@ -62,7 +63,7 @@ const Login = (props: Props) => {
 						className='page_auth__forgot_password_button'
 						type='button'
 						mode='text'
-						title='Forgot Password'
+						title={language.actionForgotPassword}
 						onClick={onForgotPasswordClicked}
 					/>
 
@@ -71,10 +72,10 @@ const Login = (props: Props) => {
 							className='page_auth__action_button'
 							type='button'
 							mode='text'
-							title='Create Account'
+							title={language.actionRegister}
 							onClick={onRegisterClicked}
 						/>
-						<Button type='submit' title='Login' />
+						<Button type='submit' title={language.actionLogin} />
 					</div>
 				</form>
 			</div>

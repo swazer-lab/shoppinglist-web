@@ -2,6 +2,7 @@ import React from 'react';
 import { State as ServiceState } from '../../types/service';
 
 import './styles.scss';
+import language from '../../assets/language';
 
 interface Props {
 	progress: ServiceState['progress']
@@ -25,7 +26,7 @@ const NavigationBar = (props: Props) => {
 				<input
 					className='navigation_bar__search_bar__input'
 					type='text'
-					placeholder='Search'
+					placeholder={language.textEnterSearchQuery}
 				/>
 			</div>
 			<div className='navigation_bar__auth'>

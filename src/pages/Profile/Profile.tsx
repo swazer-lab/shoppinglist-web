@@ -7,6 +7,7 @@ import { AuthContainer } from '../../components';
 
 import { fetchProfile } from '../../actions/profile';
 import { useLocalStorage } from '../../config/utilities';
+import language from '../../assets/language';
 
 interface Props {
 	dispatch: Function,
@@ -27,11 +28,11 @@ const Profile = (props: Props) => {
 	return (
 		<AuthContainer className='page_auth'>
 			<div className='page_auth__content_container'>
-				<h1 className='page_auth__title'>Profile</h1>
-				<p className='page_auth__subtitle'>Your profile</p>
-				<div><span>Name:</span>{name}</div>
-				<div><span>Email:</span>{email}</div>
-				<div><span>Phone:</span>{phone}</div>
+				<h1 className='page_auth__title'>{language.titleProfile}</h1>
+				<p className='page_auth__subtitle'>{language.textSubtitleProfile}</p>
+				<div><span>{language.textEnterName}</span>{name}</div>
+				<div><span>{language.textEnterEmail}</span>{email}</div>
+				<div><span>{language.textEnterPhoneNumber}</span>{phone}</div>
 			</div>
 		</AuthContainer>
 	);

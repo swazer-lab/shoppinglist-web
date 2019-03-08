@@ -8,6 +8,8 @@ import { AuthContainer, Input, Button } from '../../components';
 import { navigate } from '../../actions/service';
 import { changeName, changeEmail, changePassword, register } from '../../actions/auth';
 
+import language from '../../assets/language';
+
 import './styles.scss';
 
 interface Props {
@@ -34,12 +36,12 @@ const Register = (props: Props) => {
 		e.preventDefault();
 	};
 
-	const message = errorMessage ? errorMessage : 'Create New Account';
+	const message = errorMessage ? errorMessage : language.textRegisterSubtitle;
 
 	return (
 		<AuthContainer className='page_auth' isLoading={isLoading}>
 			<div className='page_auth__content_container'>
-				<h1 className='page_auth__title'>Register</h1>
+				<h1 className='page_auth__title'>{language.titleRegister}</h1>
 				<p className='page_auth__subtitle'>{message}</p>
 
 				<form onSubmit={onRegisterClicked}>
@@ -47,7 +49,7 @@ const Register = (props: Props) => {
 						className='page_auth__input'
 						value={name}
 						onChange={handleNameChange}
-						placeholder='Name'
+						placeholder={language.textEnterName}
 						type='text'
 						required
 					/>
@@ -56,7 +58,7 @@ const Register = (props: Props) => {
 						value={email}
 						onChange={handleEmailChange}
 						type='email'
-						placeholder='Email'
+						placeholder={language.textEnterEmail}
 						required
 					/>
 					<Input
@@ -64,7 +66,7 @@ const Register = (props: Props) => {
 						value={password}
 						onChange={handlePasswordChange}
 						type='password'
-						placeholder='Password'
+						placeholder={language.textEnterPassword}
 						required
 						pattern='.{6,}'
 					/>
@@ -74,10 +76,10 @@ const Register = (props: Props) => {
 							className='page_auth__action_button'
 							type='button'
 							mode='text'
-							title='Login'
+							title={language.actionLoginInstead}
 							onClick={onLoginClicked}
 						/>
-						<Button type='submit' title='Create Account' />
+						<Button type='submit' title={language.actionRegister} />
 					</div>
 				</form>
 			</div>

@@ -13,6 +13,7 @@ import {
 } from '../../actions/auth';
 
 import './styles.scss';
+import language from '../../assets/language';
 
 interface Props {
 	dispatch: Function,
@@ -42,7 +43,7 @@ const ForgotPassword = (props: Props) => {
 		e.preventDefault();
 	};
 
-	const message = errorMessage ? errorMessage : isResettingPassword ? 'We sent reset password to your mail' : 'Please enter your email to get reset password code';
+	const message = errorMessage ? errorMessage : isResettingPassword ? language.textForgotPasswordSubTitleStep2 : language.textForgotPasswordSubTitleStep1;
 	const renderForm = () => {
 		if (!isResettingPassword) {
 			return (
@@ -52,14 +53,14 @@ const ForgotPassword = (props: Props) => {
 						value={email}
 						onChange={handleEmailChange}
 						type='email'
-						placeholder='Email'
+						placeholder={language.textEnterEmail}
 						required
 					/>
 
 					<Button
 						type='submit'
 						className='page_auth__action_auth_button'
-						title='Send Email'
+						title={language.actionSendResetPasswordEmail}
 					/>
 				</form>
 			);
@@ -71,7 +72,7 @@ const ForgotPassword = (props: Props) => {
 						value={resetPasswordCode}
 						onChange={handleResetPasswordCodeChange}
 						type='text'
-						placeholder='Reset Code'
+						placeholder={language.textEnterResetPasswordCode}
 						required
 					/>
 					<Input
@@ -79,7 +80,7 @@ const ForgotPassword = (props: Props) => {
 						value={password}
 						onChange={handlePasswordChange}
 						type='password'
-						placeholder='Password'
+						placeholder={language.textEnterNewPassword}
 						pattern='.{6,}'
 						required
 					/>
@@ -87,7 +88,7 @@ const ForgotPassword = (props: Props) => {
 					<Button
 						type='submit'
 						className='page_auth__action_auth_button'
-						title='Reset Password'
+						title={language.actionResetPassword}
 					/>
 				</form>
 			);
@@ -97,7 +98,7 @@ const ForgotPassword = (props: Props) => {
 	return (
 		<AuthContainer className='page_auth' isLoading={isLoading}>
 			<div className='page_auth__content_container'>
-				<h1 className='page_auth__title'>Forgot Password</h1>
+				<h1 className='page_auth__title'>{language.titleForgotPassword}</h1>
 				<p className='page_auth__subtitle'>{message}</p>
 				{renderForm()}
 			</div>
