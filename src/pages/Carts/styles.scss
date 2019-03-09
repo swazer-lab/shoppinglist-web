@@ -121,7 +121,7 @@
   border-radius: .6rem;
 
   &:hover &__remove_button {
-      opacity: 1;
+    opacity: 1;
   }
 
   &__remove_button {
@@ -180,6 +180,53 @@
         margin-left: 1rem;
         font-size: 1.4rem;
       }
+    }
+  }
+}
+
+.cart_object__update_cart {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  background-color: rgba($color-black, .5);
+
+  opacity: 0;
+  visibility: hidden;
+
+  transition: all .2s;
+
+  &_open {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  &__modal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
+    width: 0;
+    min-height: 0;
+
+    transform: translate(-50%, -50%);
+
+    background-color: $color-white;
+    border-radius: .6rem;
+
+    opacity: 0;
+    visibility: hidden;
+
+    transition: all .2s;
+
+    &_open {
+      width: 50rem;
+      min-height: 10rem;
+
+      opacity: 1;
+      visibility: visible;
     }
   }
 }

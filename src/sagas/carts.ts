@@ -92,7 +92,7 @@ function* updateCartSaga(action: any) {
 }
 
 function* removeCartSaga(action: RemoveCartAction): SagaIterator {
-	yield put(showProgress(language.textCreatingCart));
+	yield put(showProgress(language.textRemovingCart));
 
 	try {
 		yield call(remove_cart_api, action.cart.id);

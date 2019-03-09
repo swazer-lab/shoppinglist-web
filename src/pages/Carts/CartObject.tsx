@@ -1,5 +1,6 @@
 import React, { useState, FormEvent } from 'react';
 import { connect } from 'react-redux';
+import classNames from 'classnames';
 
 import { AppState } from '../../types/store';
 import { Cart, CartItem } from '../../types/api';
@@ -40,7 +41,7 @@ const CartObject = (props: Props) => {
 	};
 	const onRemoveCartClicked = () => dispatch(removeCart(cart));
 	const handleDraftCartTitleChange = (e: FormEvent<HTMLInputElement>) => dispatch(changeDraftCartTitle(e.currentTarget.value));
-	const onAddDraftCartItemClicked = (e: FormEvent<HTMLInputElement>) => dispatch(addDraftCartItem());
+	const onAddDraftCartItemClicked = () => dispatch(addDraftCartItem());
 
 	const renderItems = (status: string) => cart.items.filter(item => item.status === status).map(item => (
 		<div key={item.uuid} className='cart_object__items__item'>
@@ -70,18 +71,23 @@ const CartObject = (props: Props) => {
 		};
 
 		return (
-			<form onSubmit={onUpdateClicked}>
-				<input value={draftCart.title} onChange={handleDraftCartTitleChange}/>
-				<input type='button' value='New Item' onClick={onAddDraftCartItemClicked}/>
+			<div className={classNames('cart_object__update_cart', { cart_object__update_cart_open: isUpdating })}>
+				<form
+					className={classNames('cart_object__update_cart__modal', { cart_object__update_cart__modal_open: isUpdating })}
+					onSubmit={onUpdateClicked}>
 
-				{draftCart.items.map(item => renderDraftCartItem(item))}
+					<input value={draftCart.title} onChange={handleDraftCartTitleChange}/>
+					<input type='button' value='New Item' onClick={onAddDraftCartItemClicked}/>
 
-				<Button
-					className='page_auth__action_auth_button'
-					title='Update Cart Title'
-					type='submit'
-				/>
-			</form>
+					{draftCart.items.map(item => renderDraftCartItem(item))}
+
+					<Button
+						className='page_auth__action_auth_button'
+						title='Update Cart'
+						type='submit'
+					/>
+				</form>
+			</div>
 		);
 	};
 
@@ -101,7 +107,9 @@ const CartObject = (props: Props) => {
 				}
 				{renderItems('completed')}
 			</div>
-			{isUpdating && getUpdateCartForm()}
+
+			{getUpdateCartForm()}
+
 			<button onClick={onCartClicked}>Click Cart</button>
 		</div>
 	);
