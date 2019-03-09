@@ -4,16 +4,21 @@ import { SagaIterator } from 'redux-saga';
 import { all, call, put, select, takeLatest } from 'redux-saga/effects';
 
 import { AppState } from '../types/store';
-import { CartItem } from '../types/api';
 
 import { fetch_carts_api, create_cart_api, remove_cart_api } from '../api';
 import { cartMapper } from '../config/mapper';
 
-import { showProgress, hideProgress, showAlert, showHttpErrorAlert } from '../actions/service';
-import { createCartResult, fetchCartsResult, clearDraftCart, removeCartResult } from '../actions/carts';
+import { showProgress, hideProgress, showHttpErrorAlert } from '../actions/service';
+import {
+	createCartResult,
+	fetchCartsResult,
+	clearDraftCart,
+	removeCartResult,
+	updateCartResult,
+} from '../actions/carts';
 
-import { ActionTypes, FetchCartsAction, RemoveCartAction } from '../types/carts';
 import language from '../assets/language';
+import { ActionTypes, FetchCartsAction, RemoveCartAction } from '../types/carts';
 
 function* fetchCartsSaga(action: FetchCartsAction): SagaIterator {
 	const { silent, pageNumber, append } = action;
@@ -61,13 +66,36 @@ function* createCartSaga(): SagaIterator {
 	}
 }
 
+function* updateCartSaga(action: any) {
+	const { draftCart } = yield select((state: AppState) => state.carts);
+
+	yield put(showProgress(language.textUpdatingCart));
+
+	try {
+		const cart = yield call(morphism, cartMapper(true), draftCart);
+
+		const response = yield call(create_cart_api, cart);
+		const data = yield call(morphism, cartMapper(false), response.data);
+
+		yield all([
+			put(updateCartResult(false, { ...data, uuid: action.cart.uuid })),
+			put(clearDraftCart()),
+		]);
+	} catch (e) {
+		yield all([
+			put(updateCartResult(true)),
+			put(showHttpErrorAlert(e)),
+		]);
+	} finally {
+		yield put(hideProgress());
+	}
+}
+
 function* removeCartSaga(action: RemoveCartAction): SagaIterator {
 	yield put(showProgress(language.textCreatingCart));
 
 	try {
 		yield call(remove_cart_api, action.cart.id);
-
-		console.log(action.cart);
 
 		yield put(removeCartResult(false, action.cart));
 	} catch (e) {
@@ -83,5 +111,6 @@ function* removeCartSaga(action: RemoveCartAction): SagaIterator {
 export default [
 	takeLatest(ActionTypes.fetch_carts, fetchCartsSaga),
 	takeLatest(ActionTypes.create_cart, createCartSaga),
-	takeLatest(ActionTypes.remove_cart, removeCartSaga)
+	takeLatest(ActionTypes.update_cart, updateCartSaga),
+	takeLatest(ActionTypes.remove_cart, removeCartSaga),
 ];

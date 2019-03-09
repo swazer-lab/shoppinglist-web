@@ -62,6 +62,7 @@ export default {
 	textFetchingCarts: 'Fetching Carts',
 	textCreatingCart: 'Creating Cart',
 	textRemovingCart: 'Deleting Cart',
+	textUpdatingCart: 'Updating Cart',
 
 	// Privacy Policy
 	titlePrivacyPolicy: 'Privacy Policy',

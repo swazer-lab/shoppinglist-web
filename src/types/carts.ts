@@ -86,6 +86,16 @@ export interface SetDraftCartAction extends CartsAction {
 	cart: Cart,
 }
 
+export interface UpdateCartAction extends CartsAction {
+	type: ActionTypes.update_cart,
+	cart: Cart,
+}
+
+export interface UpdateCartResultAction extends CartsActionResult {
+	type: ActionTypes.update_cart_result,
+	cart?: Cart,
+}
+
 export interface FetchCartsAction extends CartsAction {
 	type: ActionTypes.fetch_carts,
 	silent?: boolean,
@@ -124,12 +134,14 @@ export type Action =
 	& ChangeDraftCartItemTitleAction
 	& ChangeDraftCartItemStatusAction
 	& RemoveDraftCartItemAction
-	& SetDraftCartAction
 	& FetchCartsAction
 	& FetchCartsActionResult
 	& CreateCartActionResult
 	& RemoveCartAction
-    & RemoveCartActionResult;
+    & RemoveCartActionResult
+    & UpdateCartResultAction
+	& UpdateCartAction
+	& SetDraftCartAction;
 
 export type State = {
 	draftCart: Cart,

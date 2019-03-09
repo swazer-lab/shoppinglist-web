@@ -1,21 +1,49 @@
-import React from 'react';
-import { Cart } from '../../types/api';
+import React, { useState, FormEvent } from 'react';
+import { connect } from 'react-redux';
+
+import { AppState } from '../../types/store';
+import { Cart, CartItem } from '../../types/api';
+
+import { Button } from '../../components/Button';
+
+import {
+	setDraftCart,
+	changeDraftCartTitle,
+	addDraftCartItem,
+	updateCart,
+	removeCart,
+	changeDraftCartItemTitle,
+	changeDraftCartItemStatus,
+} from '../../actions/carts';
 
 import './styles.scss';
 
 interface Props {
+	dispatch: Function,
+
 	cart: Cart,
-	onRemoveCartClick: (cart: Cart) => void,
+	draftCart: Cart
 }
 
 const CartObject = (props: Props) => {
-	const { cart, onRemoveCartClick } = props;
-	const { title, items } = cart;
+	const { dispatch, cart, draftCart } = props;
 
-	const onRemoveCartClicked = () => onRemoveCartClick(cart);
+	const [isUpdating, setIsUpdating] = useState(false);
+	const onCartClicked = () => {
+		setIsUpdating(true);
+		dispatch(setDraftCart(cart));
+	};
+	const onUpdateClicked = (e: FormEvent<HTMLFormElement>) => {
+		dispatch(updateCart(draftCart));
+		setIsUpdating(false);
+		e.preventDefault();
+	};
+	const onRemoveCartClicked = () => dispatch(removeCart(cart));
+	const handleDraftCartTitleChange = (e: FormEvent<HTMLInputElement>) => dispatch(changeDraftCartTitle(e.currentTarget.value));
+	const onAddDraftCartItemClicked = (e: FormEvent<HTMLInputElement>) => dispatch(addDraftCartItem());
 
-	const renderItems = (status: string) => items.filter(item => item.status === status).map(item => (
-		<div className='cart_object__items__item'>
+	const renderItems = (status: string) => cart.items.filter(item => item.status === status).map(item => (
+		<div key={item.uuid} className='cart_object__items__item'>
 			<i
 				className='material-icons create_cart__cart_item__close_button'
 				children={item.status === 'active' ? 'check_box_outline_blank' : 'check_box'}
@@ -24,24 +52,68 @@ const CartObject = (props: Props) => {
 		</div>
 	));
 
+	const getUpdateCartForm = () => {
+		const renderDraftCartItem = (cartItem: CartItem) => {
+			const handleDraftCartItemTitleChange = (e: FormEvent<HTMLInputElement>) => dispatch(changeDraftCartItemTitle(cartItem.uuid, e.currentTarget.value));
+			const handleDraftCartItemStatusChange = () => dispatch(changeDraftCartItemStatus(cartItem.uuid, cartItem.status === 'completed' ? 'active' : 'completed'));
+
+			return (
+				<div key={cartItem.uuid}>
+					<i
+						className='material-icons create_cart__cart_item__close_button'
+						children={cartItem.status === 'active' ? 'check_box_outline_blank' : 'check_box'}
+						onClick={handleDraftCartItemStatusChange}
+					/>
+					<input type='text' value={cartItem.title} onChange={handleDraftCartItemTitleChange}/>
+				</div>
+			);
+		};
+
+		return (
+			<form onSubmit={onUpdateClicked}>
+				<input value={draftCart.title} onChange={handleDraftCartTitleChange}/>
+				<input type='button' value='New Item' onClick={onAddDraftCartItemClicked}/>
+
+				{draftCart.items.map(item => renderDraftCartItem(item))}
+
+				<Button
+					className='page_auth__action_auth_button'
+					title='Update Cart Title'
+					type='submit'
+				/>
+			</form>
+		);
+	};
+
 	return (
 		<div className='cart_object'>
 			<div className='cart_object__remove_button' onClick={onRemoveCartClicked}>
 				<i className='material-icons'>cancel</i>
 			</div>
 
-			<h4 className='cart_object__title'>{title}</h4>
+			<h4 className='cart_object__title'>{cart.title}</h4>
 
 			<div className='cart_object__items'>
 				{renderItems('active')}
 				{
-					items.filter(item => item.status == 'completed').length !== 0 &&
+					cart.items.filter(item => item.status == 'completed').length !== 0 &&
                     <div className='cart_object__items__separator'/>
 				}
 				{renderItems('completed')}
 			</div>
+			{isUpdating && getUpdateCartForm()}
+			<button onClick={onCartClicked}>Click Cart</button>
 		</div>
 	);
 };
 
-export default CartObject;
+const mapStateToProps = (state: AppState) => {
+	const { draftCart } = state.carts;
+
+	return {
+		draftCart,
+	};
+};
+
+
+export default connect(mapStateToProps)(CartObject);

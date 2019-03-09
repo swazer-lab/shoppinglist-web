@@ -7,14 +7,14 @@ import { Cart } from '../../types/api';
 import CreateCart from './CreateCart';
 import CartObject from './CartObject';
 
-import { fetchCarts, removeCart } from '../../actions/carts';
+import { fetchCarts } from '../../actions/carts';
 import { useLocalStorage } from '../../config/utilities';
 
 interface Props {
 	dispatch: Function,
-	isLoggedIn: boolean,
 
 	carts: Array<Cart>,
+	draftCart: Cart,
 
 	isLoading: boolean,
 	totalCount: number,
@@ -22,14 +22,14 @@ interface Props {
 }
 
 const Carts = (props: Props) => {
+	const { dispatch, carts, isLoading, totalCount, pageNumber } = props;
+
 	useEffect(() => {
-		const { dispatch, isLoggedIn } = props;
+		const { isLoggedIn } = useLocalStorage();
 		if (isLoggedIn) dispatch(fetchCarts(false, 'merge', 1));
 	}, []);
 
 	useEffect(() => {
-		const { dispatch, carts, isLoading, totalCount, pageNumber } = props;
-
 		const onScroll = () => {
 			if (window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight && !isLoading && carts.length < totalCount)
 				dispatch(fetchCarts(false, 'merge', pageNumber + 1));
@@ -39,14 +39,9 @@ const Carts = (props: Props) => {
 		return () => {
 			window.removeEventListener('scroll', onScroll, false);
 		};
-	});
+	}, []);
 
-	const onRemoveCartClicked = (cart: Cart) => props.dispatch(removeCart(cart));
-
-	const renderCarts = () =>
-		props.carts.map(cart => (
-			<CartObject key={cart.uuid} cart={cart} onRemoveCartClick={onRemoveCartClicked}/>
-		));
+	const renderCarts = () => carts.map(cart => (<CartObject key={cart.uuid} cart={cart}/>));
 
 	return (
 		<div>
@@ -57,12 +52,9 @@ const Carts = (props: Props) => {
 };
 
 const mapStateToProps = (state: AppState) => {
-	const { isLoggedIn } = useLocalStorage();
 	const { carts, isLoading, totalCount, pageNumber } = state.carts;
 
 	return {
-		isLoggedIn,
-
 		carts,
 
 		isLoading,
