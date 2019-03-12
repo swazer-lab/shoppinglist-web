@@ -66,7 +66,7 @@ function* createCartSaga(): SagaIterator {
 	}
 }
 
-function* updateCartSaga(action: any) {
+function* updateCartSaga() {
 	const { draftCart } = yield select((state: AppState) => state.carts);
 
 	yield put(showProgress(language.textUpdatingCart));
@@ -78,7 +78,7 @@ function* updateCartSaga(action: any) {
 		const data = yield call(morphism, cartMapper(false), response.data);
 
 		yield all([
-			put(updateCartResult(false, { ...data, uuid: action.cart.uuid })),
+			put(updateCartResult(false, { ...data, uuid: draftCart.uuid })),
 			put(clearDraftCart()),
 		]);
 	} catch (e) {

@@ -59,6 +59,7 @@ export default {
 	textEnterCartItemTitle: 'Item Name',
 	actionAddCartItem: 'Add Item',
 	actionCreateCart: 'Create Cart',
+	actionUpdateCart: 'Update Cart',
 	textFetchingCarts: 'Fetching Carts',
 	textCreatingCart: 'Creating Cart',
 	textRemovingCart: 'Deleting Cart',

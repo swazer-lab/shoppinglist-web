@@ -12,7 +12,6 @@ import {
 	FetchCartsActionResult,
 	RemoveDraftCartItemAction,
 	SetDraftCartAction,
-	UpdateCartAction,
 	UpdateCartResultAction,
 } from '../types/carts';
 import { Cart, CartItemStatusType } from '../types/api';
@@ -53,9 +52,8 @@ export const setDraftCart = (cart: Cart): SetDraftCartAction => ({
 	cart,
 });
 
-export const updateCart = (cart: Cart) : UpdateCartAction => ({
+export const updateCart = () : CartsAction => ({
 	type: ActionTypes.update_cart,
-	cart,
 });
 
 export const updateCartResult = (hasError: boolean, cart?: Cart): UpdateCartResultAction => ({
