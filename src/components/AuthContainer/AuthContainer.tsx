@@ -28,7 +28,7 @@ const AuthContainer = (props: Props) => {
 		<div className={classNames('auth_container', className)}>
 			<div className='auth_container__box'>
 				<div className='auth_container__content_container'>
-					{isLoading && <ProgressBar />}
+					<ProgressBar isLoading={isLoading || false} />
 					{children}
 				</div>
 				<div className='auth_container__links'>

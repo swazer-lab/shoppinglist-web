@@ -43,7 +43,7 @@ const ProfileModal = (props: Props) => {
 
 	return (
 		<Modal isVisible={isVisible} onCloseModalClick={onCloseProfileModalClick} title='Profile'>
-			{isLoading && <ProgressBar />}
+			<ProgressBar isLoading={isLoading} />
 			<div className='profile_modal'>
 				<div
 					className='profile_modal__photo'

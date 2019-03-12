@@ -1,24 +1,32 @@
 @import "../../assets/scss/main";
 
 .progress_bar_component {
-  width: 100%;
-  height: .5rem;
+  &__container {
+    width: 100%;
+    height: .4rem;
 
-  background-color: $color-gray;
-  border-top-right-radius: .5rem;
-  border-top-left-radius: .5rem;
-  overflow: hidden;
+    transition: all .2s;
+    overflow: hidden;
+    opacity: 0;
+
+    &_loading {
+      opacity: 1;
+    }
+  }
 
   &__label {
     width: 0;
     margin-left: 0;
 
     height: 100%;
+
     background-color: $color-primary;
 
-    animation-name: progress_bar_component_animation;
-    animation-duration: 1s;
-    animation-iteration-count: 3000
+    &_loading {
+      animation-name: progress_bar_component_animation;
+      animation-duration: 1s;
+      animation-iteration-count: 3000;
+    }
   }
 }
 
