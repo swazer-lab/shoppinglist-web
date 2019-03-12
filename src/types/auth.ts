@@ -22,6 +22,8 @@ export enum ActionTypes {
 
 	reset_password = 'AUTH__RESET_PASSWORD',
 	reset_password_result = 'AUTH__RESET_PASSWORD_RESULT',
+
+	logout = 'AUTH__LOGOUT',
 }
 
 export interface AuthAction extends ReduxAction<ActionTypes> {

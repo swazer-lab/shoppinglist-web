@@ -4,17 +4,17 @@ const initialState: State = {
 	id: '',
 	name: '',
 	email: '',
-	phone: '',
+	phoneNumber: '',
 
 	photoUrl: '',
 
 	draftProfile: {
-		id:'',
+		id: '',
 		name: '',
-		phone: '',
+		phoneNumber: '',
 		email: '',
 
-		photoUrl: ''
+		photoUrl: '',
 	},
 };
 
@@ -28,6 +28,16 @@ export default (state: State = initialState, action: Action): State => {
 				...action.profile,
 
 				draftProfile: action.profile,
+			};
+
+		case ActionTypes.clear_profile:
+			return initialState;
+
+		case ActionTypes.update_profile_photo_result:
+			if (action.hasError) return state;
+			return {
+				...state,
+				photoUrl: action.photoUrl,
 			};
 
 		default:

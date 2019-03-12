@@ -22,7 +22,7 @@ export const profileMapper = (toApi: boolean = false) => {
 
 		name: 'name',
 		email: 'email',
-		phone: 'mobile',
+		phoneNumber: 'mobile',
 
 		photoUrl: {
 			path: 'photoId',
@@ -33,7 +33,7 @@ export const profileMapper = (toApi: boolean = false) => {
 		userId: 'id',
 
 		name: 'name',
-		mobile: 'phone',
+		mobile: 'phoneNumber',
 	};
 
 	return toApi ? apiMapper : mapper;

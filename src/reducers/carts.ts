@@ -78,6 +78,9 @@ export default (state: State = initialState, action: Action): State => {
 				carts: carts(state.carts, action),
 			};
 
+		case ActionTypes.clear_carts:
+			return initialState;
+
 		default:
 			return state;
 	}

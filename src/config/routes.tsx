@@ -8,15 +8,12 @@ import { Layout } from '../layout';
 import { Register, Login, ConfirmEmail, ForgotPassword } from '../pages/Auth';
 import { Carts } from '../pages/Carts';
 import { PrivacyPolicy, ServiceTerms, NotFound } from '../pages/Other';
-import { Profile } from '../pages/Profile';
 
 export const routes = {
 	register: { path: '/account/register', component: Register },
 	login: { path: '/account/login', component: Login },
 	confirmEmail: { path: '/account/confirmEmail', component: ConfirmEmail, layoutOptions: { authorized: true } },
 	forgotPassword: { path: '/account/forgotPassword', component: ForgotPassword },
-
-	profile: { path: '/profile', component: Profile, layoutOptions: { authorized: true } },
 
 	carts: { path: '/carts', component: Carts, layoutOptions: { authorized: true } },
 
@@ -33,7 +30,7 @@ export const AppNavigator = () => {
 
 		return () => (
 			<Layout layoutOptions={{ ...routeLayoutOptions, ...pageLayoutOptions }}>
-				<route.component/>
+				<route.component />
 			</Layout>
 		);
 	};
@@ -41,18 +38,16 @@ export const AppNavigator = () => {
 	return (
 		<Router history={history}>
 			<Switch>
-				<Route path={routes.register.path} component={routes.register.component}/>
-				<Route path={routes.login.path} component={routes.login.component}/>
-				<Route path={routes.confirmEmail.path} component={routes.confirmEmail.component}/>
-				<Route path={routes.forgotPassword.path} component={routes.forgotPassword.component}/>
+				<Route path={routes.register.path} component={routes.register.component} />
+				<Route path={routes.login.path} component={routes.login.component} />
+				<Route path={routes.confirmEmail.path} component={routes.confirmEmail.component} />
+				<Route path={routes.forgotPassword.path} component={routes.forgotPassword.component} />
 
-				<Route path={routes.profile.path} component={withMainLayout(routes.profile)}/>
+				<Route path={routes.carts.path} component={withMainLayout(routes.carts)} />
 
-				<Route path={routes.carts.path} component={withMainLayout(routes.carts)}/>
-
-				<Route path={routes.privacyPolicy.path} component={routes.privacyPolicy.component}/>
-				<Route path={routes.serviceTerms.path} component={routes.serviceTerms.component}/>
-				<Route component={NotFound}/>
+				<Route path={routes.privacyPolicy.path} component={routes.privacyPolicy.component} />
+				<Route path={routes.serviceTerms.path} component={routes.serviceTerms.component} />
+				<Route component={NotFound} />
 			</Switch>
 		</Router>
 	);

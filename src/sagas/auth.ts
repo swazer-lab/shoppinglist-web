@@ -13,6 +13,8 @@ import {
 	sendForgotPasswordEmailResult,
 	resetPasswordResult,
 } from '../actions/auth';
+import { clearProfile } from '../actions/profile';
+import { clearCarts } from '../actions/carts';
 
 import { ActionTypes, ConfirmEmailAction } from '../types/auth';
 
@@ -92,10 +94,21 @@ function* resetPasswordSaga(): SagaIterator {
 	}
 }
 
+function* logoutSaga(): SagaIterator {
+	yield all([
+		put(clearProfile()),
+		put(clearCarts()),
+		put(setIsLoggedIn(false)),
+		put(setIsEmailConfirmed(false)),
+		put(setAccessToken('')),
+	]);
+}
+
 export default [
 	takeLatest(ActionTypes.register, registerSaga),
 	takeLatest(ActionTypes.login, loginSaga),
 	takeLatest(ActionTypes.confirm_email, confirmEmailSaga),
 	takeLatest(ActionTypes.send_forgot_password_email, sendForgotPasswordEmailSaga),
 	takeLatest(ActionTypes.reset_password, resetPasswordSaga),
+	takeLatest(ActionTypes.logout, logoutSaga),
 ];

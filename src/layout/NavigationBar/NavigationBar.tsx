@@ -5,21 +5,26 @@ import './styles.scss';
 import language from '../../assets/language';
 
 interface Props {
-	progress: ServiceState['progress']
+	progress: ServiceState['progress'],
+
+	profilePhotoUrl?: string,
+	onOpenProfileModalClick: () => void,
 }
 
 const NavigationBar = (props: Props) => {
-	const { progress } = props;
+	const { progress, profilePhotoUrl, onOpenProfileModalClick } = props;
+
+	const renderProgress = () => progress.visible && (
+		<>
+			<div className='navigation_bar__progress__spinner' />
+			<span className='navigation_bar__progress__message'>{progress.message}</span>
+		</>
+	);
 
 	return (
 		<div className='navigation_bar'>
 			<div className='navigation_bar__progress'>
-				{progress.visible &&
-				<>
-					<div className='navigation_bar__progress__spinner' />
-					<span className='navigation_bar__progress__message'>{progress.message}</span>
-				</>
-				}
+				{renderProgress()}
 			</div>
 			<div className='navigation_bar__search_bar'>
 				<i className='material-icons navigation_bar__search_bar__icon'>search</i>
@@ -29,8 +34,8 @@ const NavigationBar = (props: Props) => {
 					placeholder={language.textEnterSearchQuery}
 				/>
 			</div>
-			<div className='navigation_bar__auth'>
-				<div className='navigation_bar__auth__photo' />
+			<div className='navigation_bar__auth' onClick={onOpenProfileModalClick}>
+				<img className='navigation_bar__auth__photo' src={profilePhotoUrl} />
 			</div>
 		</div>
 	);

@@ -111,6 +111,9 @@ export default (state: State = initialState, action: Action): State => {
 				errorMessage: '',
 			};
 
+		case ActionTypes.logout:
+			return initialState;
+
 		default:
 			return state;
 	}

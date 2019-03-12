@@ -6,10 +6,11 @@ import {
 	ChangeDraftCartNotesAction,
 	ChangeDraftCartReminderDateAction,
 	ChangeDraftCartTitleAction,
-	CreateCartActionResult, FetchCartsAction,
+	CreateCartActionResult,
+	FetchCartsAction,
+	FetchCartsActionResult,
 	RemoveCartAction,
 	RemoveCartActionResult,
-	FetchCartsActionResult,
 	RemoveDraftCartItemAction,
 	SetDraftCartAction,
 	UpdateCartResultAction,
@@ -52,7 +53,7 @@ export const setDraftCart = (cart: Cart): SetDraftCartAction => ({
 	cart,
 });
 
-export const updateCart = () : CartsAction => ({
+export const updateCart = (): CartsAction => ({
 	type: ActionTypes.update_cart,
 });
 
@@ -91,13 +92,15 @@ export const createCartResult = (hasError: boolean, cart?: Cart): CreateCartActi
 
 export const removeCart = (cart: Cart): RemoveCartAction => ({
 	type: ActionTypes.remove_cart,
-	cart
+	cart,
 });
 
 export const removeCartResult = (hasError: boolean, cart?: Cart): RemoveCartActionResult => ({
 	type: ActionTypes.remove_cart_result,
 	hasError,
-	cart
+	cart,
 });
 
-
+export const clearCarts = (): CartsAction => ({
+	type: ActionTypes.clear_carts,
+});

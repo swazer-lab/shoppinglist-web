@@ -77,3 +77,7 @@ export const resetPasswordResult = (hasError: boolean, errorMessage?: string): A
 	hasError,
 	errorMessage,
 });
+
+export const logout = (): AuthAction => ({
+	type: ActionTypes.logout,
+});
