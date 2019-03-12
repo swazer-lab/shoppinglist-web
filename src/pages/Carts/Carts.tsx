@@ -12,7 +12,7 @@ import {
 	addDraftCartItem, changeDraftCartItemStatus, changeDraftCartItemTitle,
 	changeDraftCartNotes,
 	changeDraftCartTitle,
-	clearDraftCart,
+	clearDraftCart, createCart,
 	fetchCarts,
 	removeCart, removeDraftCartItem,
 	setDraftCart,
@@ -62,6 +62,9 @@ const Carts = (props: Props) => {
 		setIsCartUpdating(false);
 	};
 
+	const onCreateCartClicked = () => {
+		dispatch(createCart());
+	};
 	const onUpdateCartClicked = () => {
 		dispatch(updateCart());
 		setIsCartUpdating(false);
@@ -86,14 +89,30 @@ const Carts = (props: Props) => {
 			key={cart.uuid}
 			cart={cart}
 			onOpenUpdateCartModalClick={onOpenUpdateCartModalClicked}
-			onCloseUpdateCartModalClick={onCloseUpdateCartModalClicked}
 			onRemoveCartClick={onRemoveCartClicked}
 		/>
 	));
 
+	const createCartDraftCart = isCartUpdating ? {
+		id: '',
+		title: '',
+		notes: '',
+		uuid: '',
+		reminderDate: '',
+		items: [],
+		users: [],
+	} : draftCart;
 	return (
 		<div>
-			<CreateCart/>
+			<CreateCart
+				draftCart={createCartDraftCart}
+				onDraftCartTitleChange={handleDraftCartTitleChange}
+				onAddDraftCartItemClick={onAddDraftCartItemClicked}
+				onRemoveDraftCartItemClick={onRemoveDraftCartItemClicked}
+				onDraftCartItemTitleChange={handleDraftCartItemTitleChange}
+				onDraftCartItemStatusChange={handleDraftCartItemStatusChange}
+				onCreateCartClick={onCreateCartClicked}
+			/>
 			<UpdateCart
 				draftCart={draftCart}
 

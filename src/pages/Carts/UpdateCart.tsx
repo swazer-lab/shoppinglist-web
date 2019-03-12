@@ -1,9 +1,11 @@
 import React, { FormEvent } from 'react';
 import classNames from 'classnames';
 
-import { Cart, CartItem, CartItemStatusType } from '../../types/api';
+import { Cart, CartItemStatusType } from '../../types/api';
 
 import { Button } from '../../components/Button';
+import CartItemObject from './CartItemObject';
+
 import language from '../../assets/language';
 
 import './styles.scss';
@@ -45,40 +47,14 @@ const UpdateCart = (props: Props) => {
 	const handleDraftCartTitleChange = (e: FormEvent<HTMLInputElement>) => onDraftCartTitleChange(e.currentTarget.value);
 
 	const onAddDraftCartItemClicked = () => onAddDraftCartItemClick();
-	const onCloseUpdateCartModalClicked = () => onCloseUpdateCartModalClick();
+
+	const onCloseUpdateCartModalClicked = () => {
+		onCloseUpdateCartModalClick();
+	};
 
 	const onUpdateCartClicked = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		onUpdateCartClick();
-	};
-
-	const renderDraftCartItem = (cartItem: CartItem) => {
-		const { uuid, title, status } = cartItem;
-
-		const handleDraftCartItemTitleChange = (e: FormEvent<HTMLInputElement>) => onDraftCartItemTitleChange(uuid, e.currentTarget.value);
-		const handleDraftCartItemStatusChange = () => onDraftCartItemStatusChange(uuid, status === 'completed' ? 'active' : 'completed');
-		const onRemoveDraftCartItemClicked = () => onRemoveDraftCartItemClick(uuid);
-
-		return (
-			<div key={cartItem.uuid} className='update_cart__cart_item'>
-				<i className='material-icons update_cart__cart_item__close_button'
-				   onClick={handleDraftCartItemStatusChange}
-				   children={status === 'active' ? 'check_box_outline_blank' : 'check_box'}
-				/>
-				<input
-					className='update_cart__cart_item__title_input'
-					value={title}
-					onChange={handleDraftCartItemTitleChange}
-					type='text'
-					placeholder='Item Name'
-					required
-				/>
-				<i className='material-icons update_cart__cart_item__close_button'
-				   onClick={onRemoveDraftCartItemClicked}
-				   children='close'
-				/>
-			</div>
-		);
 	};
 
 	const { title, items } = draftCart;
@@ -101,7 +77,7 @@ const UpdateCart = (props: Props) => {
 					/>
 
 					<div className='update_cart__form__cart_items'>
-						{items.map(item => renderDraftCartItem(item))}
+						{items.map(item => <CartItemObject key={item.uuid} cartItem={item} onRemoveDraftCartItemClick={onRemoveDraftCartItemClick} onDraftCartItemTitleChange={onDraftCartItemTitleChange} onDraftCartItemStatusChange={onDraftCartItemStatusChange}/>)}
 					</div>
 
 					<div className='update_cart__form__add_item_button' onClick={onAddDraftCartItemClicked}>
@@ -111,11 +87,21 @@ const UpdateCart = (props: Props) => {
 						<span>{language.actionAddCartItem}</span>
 					</div>
 
-					<Button
-						className='update_cart__form__submit_button'
-						type='submit'
-						title={language.actionUpdateCart}
-					/>
+					<div className='update_cart__form__button_container'>
+						<Button
+							className='update_cart__form__button_container__close_button'
+							mode='text'
+							type='button'
+							title='Close'
+							onClick={onCloseUpdateCartModalClicked}
+						/>
+
+						<Button
+							className='update_cart__form__button_container__submit_button'
+							type='submit'
+							title={language.actionUpdateCart}
+						/>
+					</div>
 				</form>
 			</div>
 		</div>

@@ -7,17 +7,17 @@ interface Props {
 	cart: Cart,
 
 	onOpenUpdateCartModalClick: (cart: Cart) => void,
-	onCloseUpdateCartModalClick: () => void,
-
 	onRemoveCartClick: (cart: Cart) => void
 }
 
 const CartObject = (props: Props) => {
-	const { cart, onOpenUpdateCartModalClick, onCloseUpdateCartModalClick, onRemoveCartClick } = props;
+	const { cart, onOpenUpdateCartModalClick, onRemoveCartClick } = props;
 
 	const onOpenUpdateCartModalClicked = () => onOpenUpdateCartModalClick(cart);
-	const onCloseUpdateCartModalClicked = () => onCloseUpdateCartModalClick();
-	const onRemoveCartClicked = () => onRemoveCartClick(cart);
+	const onRemoveCartClicked = (e: any) => {
+		e.stopPropagation();
+		onRemoveCartClick(cart);
+	};
 
 	const renderItems = (status: string) => cart.items.filter(item => item.status === status).map(item => (
 		<div key={item.uuid} className='cart_object__items__item'>
