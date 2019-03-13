@@ -9,6 +9,8 @@ import {
 	CreateCartActionResult,
 	FetchCartsAction,
 	FetchCartsActionResult,
+	ChangeSearchQueryAction,
+	FilterCartsActionResult,
 	RemoveCartAction,
 	RemoveCartActionResult,
 	RemoveDraftCartItemAction,
@@ -65,6 +67,20 @@ export const updateCartResult = (hasError: boolean, cart?: Cart): UpdateCartResu
 
 export const clearDraftCart = (): CartsAction => ({
 	type: ActionTypes.clear_draft_cart,
+});
+
+export const changeSearchQuery = (searchQuery: string): ChangeSearchQueryAction => ({
+	type: ActionTypes.change_search_query,
+	searchQuery,
+});
+
+export const filterCarts = (): CartsAction => ({
+	type: ActionTypes.filter_carts,
+});
+export const filterCartsResult = (hasError: boolean, carts?: Array<Cart>): FilterCartsActionResult => ({
+	type: ActionTypes.filter_carts_result,
+	hasError,
+	carts,
 });
 
 export const fetchCarts = (silent?: boolean, append?: 'merge' | 'replace', pageNumber?: number): FetchCartsAction => ({

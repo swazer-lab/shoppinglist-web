@@ -1,68 +1,53 @@
 import React, { FormEvent } from 'react';
-import { connect } from 'react-redux';
-
-import { AppState } from '../../types/store';
-import { Cart } from '../../types/api';
+import { Cart, CartItemStatusType } from '../../types/api';
 
 import { Button } from '../../components';
+import CartItemObject from './CartItemObject';
 
-import {
-	addDraftCartItem,
-	changeDraftCartItemStatus,
-	changeDraftCartItemTitle,
-	changeDraftCartTitle, createCart,
-	removeDraftCartItem,
-} from '../../actions/carts';
-
-import './styles.scss';
 import language from '../../assets/language';
+import './styles.scss';
 
 interface Props {
-	dispatch: Function,
 	draftCart: Cart
+
+	onDraftCartTitleChange: (title: string) => void,
+
+	onAddDraftCartItemClick: () => void,
+	onRemoveDraftCartItemClick: (uuid: string) => void,
+	onDraftCartItemTitleChange: (uuid: string, title: string) => void,
+	onDraftCartItemStatusChange: (uuid: string, status: CartItemStatusType) => void,
+
+	onCreateCartClick: () => void
 }
 
 const CreateCart = (props: Props) => {
-	const { dispatch, draftCart } = props;
+	const {
+		draftCart,
+		onDraftCartTitleChange,
+		onAddDraftCartItemClick,
+		onRemoveDraftCartItemClick,
+		onDraftCartItemTitleChange,
+		onDraftCartItemStatusChange,
+		onCreateCartClick,
+	} = props;
 
-	const handleDraftCartTitleChange = (e: FormEvent<HTMLInputElement>) => dispatch(changeDraftCartTitle(e.currentTarget.value));
-	const onAddDraftCartItemClicked = () => dispatch(addDraftCartItem());
-
+	const handleDraftCartTitleChange = (e: FormEvent<HTMLInputElement>) => onDraftCartTitleChange(e.currentTarget.value);
 	const onCreateCartClicked = (e: FormEvent<HTMLFormElement>) => {
-		dispatch(createCart());
+		onCreateCartClick();
 		e.preventDefault();
 	};
 
-	const renderDraftCartItems = () => draftCart.items.map(item => {
-		const { uuid, title, status } = item;
-
-		const handleDraftCartItemTitleChange = (e: FormEvent<HTMLInputElement>) => dispatch(changeDraftCartItemTitle(uuid, e.currentTarget.value));
-		const handleDraftCartItemStatusChange = () => dispatch(changeDraftCartItemStatus(uuid, status === 'active' ? 'completed' : 'active'));
-
-		const onRemoveDraftCartItemClicked = () => dispatch(removeDraftCartItem(uuid));
-
-		return (
-			<div key={item.uuid} className='create_cart__cart_item'>
-				<i className='material-icons create_cart__cart_item__close_button'
-				   onClick={handleDraftCartItemStatusChange}
-				   children={status === 'active' ? 'check_box_outline_blank' : 'check_box'}
-				/>
-				<input
-					className='create_cart__cart_item__title_input'
-					value={title}
-					onChange={handleDraftCartItemTitleChange}
-					type='text'
-					placeholder='Item Name'
-					required
-				/>
-
-				<i className='material-icons create_cart__cart_item__close_button'
-				   onClick={onRemoveDraftCartItemClicked}
-				   children='close'
-				/>
-			</div>
-		);
-	});
+	const renderDraftCartItems = () => {
+		return draftCart.items.map((item) => (
+			<CartItemObject
+				key={item.uuid}
+				cartItem={item}
+				onRemoveDraftCartItemClick={onRemoveDraftCartItemClick}
+				onDraftCartItemTitleChange={onDraftCartItemTitleChange}
+				onDraftCartItemStatusChange={onDraftCartItemStatusChange}
+			/>
+		));
+	};
 
 	return (
 		<div className='create_cart'>
@@ -80,7 +65,7 @@ const CreateCart = (props: Props) => {
 					{renderDraftCartItems()}
 				</div>
 
-				<div className='create_cart__form__add_item_button' onClick={onAddDraftCartItemClicked}>
+				<div className='create_cart__form__add_item_button' onClick={onAddDraftCartItemClick}>
 					<i className='material-icons create_cart__cart_item__close_button'
 					   children='add'
 					/>
@@ -97,12 +82,4 @@ const CreateCart = (props: Props) => {
 	);
 };
 
-const mapStateToProps = (state: AppState) => {
-	const { draftCart } = state.carts;
-
-	return {
-		draftCart,
-	};
-};
-
-export default connect(mapStateToProps)(CreateCart);
+export default CreateCart;

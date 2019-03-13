@@ -15,6 +15,9 @@ const initialState: State = {
 	},
 	carts: [],
 
+	searchQuery: '',
+	filteredCarts: [],
+
 	isLoading: false,
 	pageNumber: 0,
 	totalCount: 0,
@@ -42,6 +45,19 @@ export default (state: State = initialState, action: Action): State => {
 					...state.draftCart,
 					items: draftCartItems(state.draftCart.items, action),
 				},
+			};
+
+		case ActionTypes.change_search_query:
+			return {
+				...state,
+				searchQuery: action.searchQuery,
+			};
+
+		case ActionTypes.filter_carts_result:
+			if (action.hasError) return state;
+			return {
+				...state,
+				filteredCarts: action.carts,
 			};
 
 		case ActionTypes.fetch_carts:

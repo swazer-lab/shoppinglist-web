@@ -2,6 +2,7 @@ import { State as ServiceState } from './service';
 import { State as AuthState } from './auth';
 import { State as ProfileState } from './profile';
 import { State as CartsState } from './carts';
+import { State as ContactsState } from './contacts';
 
 import { Action, AnyAction, Dispatch } from 'redux';
 
@@ -10,6 +11,7 @@ export interface AppState {
 	auth: AuthState,
 	profile: ProfileState,
 	carts: CartsState,
+	contacts: ContactsState
 }
 
 export interface Location {

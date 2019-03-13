@@ -296,9 +296,18 @@
       }
     }
 
-    &__submit_button {
-      align-self: flex-end;
-      margin: 1.5rem;
+    &__button_container {
+      display: flex;
+      flex-direction: row;
+
+      &__submit_button {
+        margin: 1.5rem;
+        margin-left: auto;
+      }
+
+      &__close_button {
+        margin: 1.5rem;
+      }
     }
   }
 
