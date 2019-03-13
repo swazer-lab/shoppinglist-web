@@ -105,6 +105,78 @@
   }
 }
 
+.update_cart {
+  display: flex;
+
+  flex: 1;
+  align-self: center;
+
+  &__form {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+
+    &__title_input {
+      padding: 1.5rem;
+
+      font-family: inherit;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: $color-black;
+
+      background-color: transparent;
+      border: none;
+
+      &:focus {
+        outline: none;
+      }
+    }
+
+    &__cart_items {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+
+      & > * {
+        border-top: .1rem solid $color-gray;
+      }
+    }
+
+    &__add_item_button {
+      display: flex;
+      align-items: center;
+
+      padding: 1rem 1.5rem;
+
+      font-size: 1.2rem;
+      font-weight: 500;
+      color: $color-black;
+
+      border-top: .1rem solid $color-gray;
+      border-bottom: .1rem solid $color-gray;
+
+      cursor: text;
+
+      span {
+        margin-left: 1.5rem;
+      }
+    }
+
+    &__buttons_container {
+      display: flex;
+      flex-direction: row;
+
+      &__submit_button {
+        margin: 1.5rem 1.5rem 1.5rem auto;
+      }
+
+      &__close_button {
+        margin: 1.5rem;
+      }
+    }
+  }
+}
+
 .cart_object {
   display: flex;
   position: relative;
@@ -184,164 +256,36 @@
   }
 }
 
-.cart_object__update_cart {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-
-  background-color: rgba($color-black, .5);
-
-  opacity: 0;
-  visibility: hidden;
-
-  transition: all .2s;
-  z-index: 50;
-
-  &_open {
-    opacity: 1;
-    visibility: visible;
-  }
-
-  &__modal {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-
-    width: 0;
-    min-height: 0;
-
-    transform: translate(-50%, -50%);
-
-    background-color: $color-white;
-    border-radius: .6rem;
-
-    opacity: 0;
-    visibility: hidden;
-
-    transition: all .2s;
-
-    &_open {
-      width: 50rem;
-      min-height: 10rem;
-
-      opacity: 1;
-      visibility: visible;
-    }
-  }
-}
-
-.update_cart {
+.cart_item_object {
   display: flex;
 
   flex: 1;
-  align-self: center;
+  flex-direction: row;
+  align-items: center;
 
-  width: 50rem;
-  margin-bottom: 3rem;
+  padding: 1rem 1.5rem;
 
-  background-color: $color-white;
-  border: .1rem solid $color-gray;
-  border-radius: .6rem;
-
-  &__form {
-    display: flex;
+  &__title_input {
     flex: 1;
-    flex-direction: column;
+    margin-left: 1.5rem;
 
-    &__title_input {
-      padding: 1.5rem;
+    font-family: inherit;
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: $color-black;
 
-      font-family: inherit;
-      font-size: 1.6rem;
-      font-weight: 700;
-      color: $color-black;
+    background-color: transparent;
+    border: none;
 
-      background-color: transparent;
-      border: none;
-
-      &:focus {
-        outline: none;
-      }
-    }
-
-    &__cart_items {
-      display: flex;
-      flex: 1;
-      flex-direction: column;
-
-      & > * {
-        border-top: .1rem solid $color-gray;
-      }
-    }
-
-    &__add_item_button {
-      display: flex;
-      align-items: center;
-
-      padding: 1rem 1.5rem;
-
-      font-size: 1.2rem;
-      font-weight: 500;
-      color: $color-black;
-
-      border-top: .1rem solid $color-gray;
-      border-bottom: .1rem solid $color-gray;
-
-      cursor: text;
-
-      span {
-        margin-left: 1.5rem;
-      }
-    }
-
-    &__button_container {
-      display: flex;
-      flex-direction: row;
-
-      &__submit_button {
-        margin: 1.5rem;
-        margin-left: auto;
-      }
-
-      &__close_button {
-        margin: 1.5rem;
-      }
+    &:focus {
+      outline: none;
     }
   }
 
-  &__cart_item {
-    display: flex;
+  &__close_button {
+    font-size: 1.8rem;
+    color: $color-text;
 
-    flex: 1;
-    flex-direction: row;
-    align-items: center;
-
-    padding: 1rem 1.5rem;
-
-    &__title_input {
-      flex: 1;
-      margin-left: 1.5rem;
-
-      font-family: inherit;
-      font-size: 1.2rem;
-      font-weight: 500;
-      color: $color-black;
-
-      background-color: transparent;
-      border: none;
-
-      &:focus {
-        outline: none;
-      }
-    }
-
-    &__close_button {
-      font-size: 1.8rem;
-      color: $color-text;
-
-      cursor: pointer;
-    }
+    cursor: pointer;
   }
 }

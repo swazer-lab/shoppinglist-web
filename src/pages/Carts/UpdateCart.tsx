@@ -3,11 +3,10 @@ import classNames from 'classnames';
 
 import { Cart, CartItemStatusType } from '../../types/api';
 
-import { Button } from '../../components/Button';
+import { Modal, Button } from '../../components';
 import CartItemObject from './CartItemObject';
 
 import language from '../../assets/language';
-
 import './styles.scss';
 
 interface Props {
@@ -59,11 +58,10 @@ const UpdateCart = (props: Props) => {
 
 	const { title, items } = draftCart;
 	return (
-		<div className={classNames('cart_object__update_cart', { cart_object__update_cart_open: isVisible })}
-		     onClick={onCloseUpdateCartModalClicked}>
+		<Modal isVisible={isVisible} onCloseModalClick={onCloseUpdateCartModalClicked} title='Update Cart'>
 			<div className='update_cart'>
 				<form
-					className={classNames('update_cart__form cart_object__update_cart__modal', { cart_object__update_cart__modal_open: isVisible })}
+					className='update_cart__form'
 					onSubmit={onUpdateCartClicked}
 					onClick={(e: any) => e.stopPropagation()}>
 
@@ -87,9 +85,9 @@ const UpdateCart = (props: Props) => {
 						<span>{language.actionAddCartItem}</span>
 					</div>
 
-					<div className='update_cart__form__button_container'>
+					<div className='update_cart__form__buttons_container'>
 						<Button
-							className='update_cart__form__button_container__close_button'
+							className='update_cart__form__buttons_container__close_button'
 							mode='text'
 							type='button'
 							title='Close'
@@ -97,14 +95,14 @@ const UpdateCart = (props: Props) => {
 						/>
 
 						<Button
-							className='update_cart__form__button_container__submit_button'
+							className='update_cart__form__buttons_container__submit_button'
 							type='submit'
 							title={language.actionUpdateCart}
 						/>
 					</div>
 				</form>
 			</div>
-		</div>
+		</Modal>
 	);
 };
 
