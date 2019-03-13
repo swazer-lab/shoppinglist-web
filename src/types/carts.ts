@@ -14,6 +14,11 @@ export enum ActionTypes {
 	set_draft_cart = 'CARTS__SET_DRAFT_CART',
 	clear_draft_cart = 'CARTS__CLEAR_DRAFT_CART',
 
+	change_search_query = 'CARTS__CHANGE_SEARCH_QUERY',
+
+	filter_carts = 'CARTS__FILTER_CARTS',
+	filter_carts_result = 'CARTS__FILTER_CARTS_RESULT',
+
 	fetch_carts = 'CARTS__FETCH_CARTS',
 	fetch_carts_result = 'CARTS__FETCH_CARTS_RESULT',
 
@@ -86,6 +91,16 @@ export interface SetDraftCartAction extends CartsAction {
 	cart: Cart,
 }
 
+export interface ChangeSearchQueryAction extends CartsAction {
+	type: ActionTypes.change_search_query,
+	searchQuery: string
+}
+
+export interface FilterCartsActionResult extends CartsActionResult {
+	type: ActionTypes.filter_carts_result,
+	carts?: Array<Cart>
+}
+
 export interface UpdateCartResultAction extends CartsActionResult {
 	type: ActionTypes.update_cart_result,
 	cart?: Cart,
@@ -129,17 +144,22 @@ export type Action =
 	& ChangeDraftCartItemTitleAction
 	& ChangeDraftCartItemStatusAction
 	& RemoveDraftCartItemAction
+	& ChangeSearchQueryAction
+	& FilterCartsActionResult
 	& FetchCartsAction
 	& FetchCartsActionResult
 	& CreateCartActionResult
 	& RemoveCartAction
-    & RemoveCartActionResult
-    & UpdateCartResultAction
+	& RemoveCartActionResult
+	& UpdateCartResultAction
 	& SetDraftCartAction;
 
 export type State = {
 	draftCart: Cart,
 	carts: Array<Cart>,
+
+	filteredCarts?: Array<Cart>,
+	searchQuery?: string,
 
 	isLoading: boolean,
 	pageNumber: number,

@@ -15,10 +15,34 @@ import {
 	clearDraftCart,
 	removeCartResult,
 	updateCartResult,
+	filterCartsResult,
 } from '../actions/carts';
 
 import language from '../assets/language';
 import { ActionTypes, FetchCartsAction, RemoveCartAction } from '../types/carts';
+
+function* filterCartsSaga(): SagaIterator {
+	const { searchQuery } = yield select((state: AppState) => state.carts);
+	if (searchQuery.length < 3) return;
+
+	const pageNumber = 1;
+	const pageSize = 15;
+
+	yield put(showProgress('Searching for carts'));
+	try {
+		const response = yield call(fetch_carts_api, pageNumber, pageSize, searchQuery);
+		const data = yield call(morphism, cartMapper(), response.data.items);
+
+		yield put(filterCartsResult(false, data));
+	} catch (e) {
+		yield all([
+			put(filterCartsResult(true)),
+			put(showHttpErrorAlert(e)),
+		]);
+	} finally {
+		yield put(hideProgress());
+	}
+}
 
 function* fetchCartsSaga(action: FetchCartsAction): SagaIterator {
 	const { silent, pageNumber, append } = action;
@@ -109,6 +133,7 @@ function* removeCartSaga(action: RemoveCartAction): SagaIterator {
 }
 
 export default [
+	takeLatest(ActionTypes.filter_carts, filterCartsSaga),
 	takeLatest(ActionTypes.fetch_carts, fetchCartsSaga),
 	takeLatest(ActionTypes.create_cart, createCartSaga),
 	takeLatest(ActionTypes.update_cart, updateCartSaga),

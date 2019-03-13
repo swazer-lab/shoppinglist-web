@@ -8,6 +8,7 @@ import { store } from './config/store';
 
 import { updateDefaultHeaders } from './api';
 import { fetchProfile } from './actions/profile';
+import { fetchContacts } from './actions/contacts';
 
 import { useLocalStorage } from './config/utilities';
 import language from '../src/assets/language';
@@ -33,7 +34,10 @@ class Main extends Component<Props> {
 
 	componentDidUpdate() {
 		const { isLoggedIn, dispatch } = this.props;
-		if (isLoggedIn) dispatch(fetchProfile());
+		if (isLoggedIn) {
+			dispatch(fetchProfile());
+			dispatch(fetchContacts());
+		}
 	}
 
 	render() {

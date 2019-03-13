@@ -5,11 +5,12 @@ import { Cart } from '../types/api';
 
 import * as urls from '../config/urls';
 
-export const fetch_carts_api = (pageNumber?: number, pageSize?: number) => {
+export const fetch_carts_api = (pageNumber?: number, pageSize?: number, searchQuery?: string) => {
 	const config = {
 		params: {
 			currentPage: pageNumber,
 			pageSize: pageSize,
+			title: searchQuery,
 		},
 	};
 
