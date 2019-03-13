@@ -1,5 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Cart } from '../../types/api';
+
+import { Modal, Button } from '../../components';
+import ShareCart from './ShareCart';
 
 import './styles.scss';
 
@@ -11,12 +14,18 @@ interface Props {
 }
 
 const CartObject = (props: Props) => {
+	const [isShareModalVisible, setIsShareModalVisible] = useState(false);
 	const { cart, onOpenUpdateCartModalClick, onRemoveCartClick } = props;
 
 	const onOpenUpdateCartModalClicked = () => onOpenUpdateCartModalClick(cart);
 	const onRemoveCartClicked = (e: any) => {
 		e.stopPropagation();
 		onRemoveCartClick(cart);
+	};
+
+	const openShareModalClick = (e: any) => {
+		e.stopPropagation();
+		setIsShareModalVisible(true);
 	};
 
 	const renderItems = (status: string) => cart.items.filter(item => item.status === status).map(item => (
@@ -45,6 +54,28 @@ const CartObject = (props: Props) => {
 				}
 				{renderItems('completed')}
 			</div>
+
+			<div className='cart_object__users_container'>
+
+				<div className='cart_object__users_container__share_button' onClick={openShareModalClick}>
+					<i className='material-icons'>person_add</i>
+				</div>
+
+				<div className='cart_object__users_container__user_list'>
+					{cart.users.map((user) => (
+						<img src={user.photoUrl} width={30} height={30} alt='User Photo'/>
+					))}
+				</div>
+			</div>
+
+			<Modal
+				isVisible={isShareModalVisible}
+				onCloseModalClick={() => setIsShareModalVisible(false)}
+				title='Share'
+				buttons={[{ iconName: 'close', onClick: () => setIsShareModalVisible(false) }]}
+			>
+				<ShareCart cartId={cart.id}/>
+			</Modal>
 		</div>
 	);
 };

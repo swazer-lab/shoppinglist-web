@@ -30,3 +30,14 @@ export const remove_cart_api = (cartId: string) => {
 
 	return axios.post(urls.remove_cart_url, null, config);
 };
+
+
+export const share_cart_with_contacts_api = (cartId: string, emails: Array<string>) => {
+	const body = {
+		cartId,
+		emails
+	};
+
+	return axios.post(urls.share_cart_with_contacts_url, body);
+};
+

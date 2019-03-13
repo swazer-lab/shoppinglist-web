@@ -89,6 +89,8 @@ export default (state: State = initialState, action: Action): State => {
 		case ActionTypes.create_cart_result:
 		case ActionTypes.update_cart_result:
 		case ActionTypes.remove_cart_result:
+		case ActionTypes.share_cart_with_contacts_result:
+
 			return {
 				...state,
 				carts: carts(state.carts, action),
@@ -124,6 +126,19 @@ export const carts = (state: Array<Cart> = initialState.carts, action: Action): 
 				...state.slice(0, removed_cart_index),
 				...state.slice(removed_cart_index + 1),
 			];
+
+		case ActionTypes.share_cart_with_contacts_result:
+			if (action.hasError) return state;
+
+			const shared_cart_index = state.findIndex((cart) => cart.id === action.cartId);
+
+			console.log(state, action, shared_cart_index);
+			return [
+				...state.slice(0, shared_cart_index),
+				{ ...state[0], users: action.cartUsers ? action.cartUsers : state[0].users },
+				...state.slice(shared_cart_index + 1),
+			];
+
 		default:
 			return state;
 	}

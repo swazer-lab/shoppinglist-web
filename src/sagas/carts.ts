@@ -5,8 +5,8 @@ import { all, call, put, select, takeLatest } from 'redux-saga/effects';
 
 import { AppState } from '../types/store';
 
-import { fetch_carts_api, create_cart_api, remove_cart_api } from '../api';
-import { cartMapper } from '../config/mapper';
+import { fetch_carts_api, create_cart_api, remove_cart_api, share_cart_with_contacts_api } from '../api';
+import { cartMapper, cartUserMapper } from '../config/mapper';
 
 import { showProgress, hideProgress, showHttpErrorAlert } from '../actions/service';
 import {
@@ -16,10 +16,13 @@ import {
 	removeCartResult,
 	updateCartResult,
 	filterCartsResult,
+	shareCartWithContactsResult
 } from '../actions/carts';
 
 import language from '../assets/language';
-import { ActionTypes, FetchCartsAction, RemoveCartAction } from '../types/carts';
+import { ActionTypes, FetchCartsAction, RemoveCartAction, ShareCartWithContactsAction } from '../types/carts';
+import { Profile } from '../types/api';
+import { clearSelectedContacts } from '../actions/contacts';
 
 function* filterCartsSaga(): SagaIterator {
 	const { searchQuery } = yield select((state: AppState) => state.carts);
@@ -132,10 +135,43 @@ function* removeCartSaga(action: RemoveCartAction): SagaIterator {
 	}
 }
 
+function* shareCartWithContactsSaga(action: ShareCartWithContactsAction): SagaIterator {
+	const { cartId} = action;
+	const { selectedContacts } = yield select((state: AppState) => state.contacts);
+
+	const emails = selectedContacts.map((item: Profile) => item.email);
+
+	if (selectedContacts.length === 0) {
+
+		return;
+	}
+
+	yield put(showProgress('Sharing cart to contacts you selected'));
+	try {
+		const response = yield call(share_cart_with_contacts_api, cartId, emails);
+		const data = yield call(morphism, cartUserMapper(), response.data);
+
+		yield put(shareCartWithContactsResult(false, cartId, data));
+
+	} catch (e) {
+		yield all([
+			put(shareCartWithContactsResult(true)),
+			put(showHttpErrorAlert(e)),
+		]);
+
+	} finally {
+		yield all([
+			put(hideProgress()),
+			put(clearSelectedContacts()),
+		]);
+	}
+}
+
 export default [
 	takeLatest(ActionTypes.filter_carts, filterCartsSaga),
 	takeLatest(ActionTypes.fetch_carts, fetchCartsSaga),
 	takeLatest(ActionTypes.create_cart, createCartSaga),
 	takeLatest(ActionTypes.update_cart, updateCartSaga),
 	takeLatest(ActionTypes.remove_cart, removeCartSaga),
+	takeLatest(ActionTypes.share_cart_with_contacts, shareCartWithContactsSaga)
 ];

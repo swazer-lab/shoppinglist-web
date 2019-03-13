@@ -3,7 +3,7 @@ import morphism from 'morphism';
 import { SagaIterator } from 'redux-saga';
 import { all, call, put, takeLatest } from 'redux-saga/effects';
 
-import { fetch_contacts_api } from '../api';
+import { fetch_contacts_api} from '../api';
 import { profileMapper } from '../config/mapper';
 
 import { showProgress, hideProgress, showHttpErrorAlert } from '../actions/service';

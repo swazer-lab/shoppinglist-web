@@ -16,8 +16,10 @@ import {
 	RemoveDraftCartItemAction,
 	SetDraftCartAction,
 	UpdateCartResultAction,
+	ShareCartWithContactsAction,
+	ShareCartWithContactsActionResult
 } from '../types/carts';
-import { Cart, CartItemStatusType } from '../types/api';
+import { Cart, CartItemStatusType, CartUser } from '../types/api';
 
 export const changeDraftCartTitle = (title: string): ChangeDraftCartTitleAction => ({
 	type: ActionTypes.change_draft_cart_title,
@@ -119,4 +121,16 @@ export const removeCartResult = (hasError: boolean, cart?: Cart): RemoveCartActi
 
 export const clearCarts = (): CartsAction => ({
 	type: ActionTypes.clear_carts,
+});
+
+export const shareCartWithContacts = (cartId: string): ShareCartWithContactsAction => ({
+	type: ActionTypes.share_cart_with_contacts,
+	cartId,
+});
+
+export const shareCartWithContactsResult = (hasError: boolean, cartId?: string, cartUsers?: Array<CartUser>): ShareCartWithContactsActionResult => ({
+	type: ActionTypes.share_cart_with_contacts_result,
+	hasError,
+	cartId,
+	cartUsers,
 });
