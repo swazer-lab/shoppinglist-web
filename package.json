@@ -9,7 +9,6 @@
 		"eject": "react-scripts eject"
 	},
 	"dependencies": {
-		"@types/react-slick": "^0.23.3",
 		"axios": "^0.18.0",
 		"axios-response-logger": "^0.1.0",
 		"classnames": "^2.2.6",
@@ -31,8 +30,7 @@
 		"redux": "^4.0.1",
 		"redux-devtools-extension": "^2.13.8",
 		"redux-logger": "^3.0.6",
-		"redux-saga": "^0.16.2",
-		"slick-carousel": "^1.8.1"
+		"redux-saga": "^0.16.2"
 	},
 	"devDependencies": {
 		"@types/classnames": "^2.2.7",
@@ -46,6 +44,7 @@
 		"@types/react-redux": "^7.0.1",
 		"@types/react-router": "^4.4.4",
 		"@types/react-router-dom": "^4.3.1",
+		"@types/react-slick": "^0.23.3",
 		"@types/redux-logger": "^3.0.7",
 		"typescript": "^3.3.3333"
 	},

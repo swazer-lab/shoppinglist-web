@@ -9,11 +9,12 @@ interface Props {
 	isVisible: boolean,
 	onCloseModalClick: () => void,
 
-	title: string
+	title: string,
+	buttons?: Array<{ iconName: string, onClick: () => void }>
 }
 
 const Modal = (props: Props) => {
-	const { children, isVisible, onCloseModalClick, title } = props;
+	const { children, isVisible, onCloseModalClick, title, buttons } = props;
 
 	const containerClassNames = classNames('modal_component__container', { modal_component__container_visible: isVisible });
 	const contentContainerClassNames = classNames('modal_component__content_container', { modal_component__content_container_visible: isVisible });
@@ -25,7 +26,13 @@ const Modal = (props: Props) => {
 			<div className={contentContainerClassNames} onClick={(e: any) => e.stopPropagation()}>
 				<div className={headerClassNames}>
 					<span>{title}</span>
-					<i className='material-icons' onClick={onCloseModalClick}>close</i>
+					<div className='modal_component__actions_container'>
+						{buttons && buttons.map((button) => (
+							<i className='material-icons' onClick={button.onClick}>
+								{button.iconName}
+							</i>
+						))}
+					</div>
 				</div>
 
 				<div className='modal_component_body'>

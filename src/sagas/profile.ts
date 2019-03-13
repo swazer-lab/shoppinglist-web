@@ -1,13 +1,15 @@
 import { morphism } from 'morphism';
 import { SagaIterator } from 'redux-saga';
-import { all, call, put, takeLatest } from 'redux-saga/effects';
+import { all, call, put, select, takeLatest } from 'redux-saga/effects';
 
-import { fetch_profile_api, update_profile_photo_api } from '../api';
+import { AppState } from '../types/store';
+
+import { fetch_profile_api, update_profile_api, update_profile_photo_api } from '../api';
 import { profileMapper } from '../config/mapper';
 import { get_photo_url } from '../config/urls';
 
 import { showProgress, hideProgress, showHttpErrorAlert } from '../actions/service';
-import { fetchProfileResult, updateProfilePhotoResult } from '../actions/profile';
+import { fetchProfileResult, updateProfilePhotoResult, updateProfileResult } from '../actions/profile';
 
 import language from '../assets/language';
 import { ActionTypes, UpdateProfilePhotoAction } from '../types/profile';
@@ -23,6 +25,26 @@ function* fetchProfileSaga(): SagaIterator {
 	} catch (e) {
 		yield all([
 			put(fetchProfileResult(true)),
+			put(showHttpErrorAlert(e)),
+		]);
+	} finally {
+		yield put(hideProgress());
+	}
+}
+
+function* updateProfileSaga(): SagaIterator {
+	const { draftProfile } = yield select((state: AppState) => state.profile);
+
+	yield put(showProgress('Updating Profile'));
+
+	try {
+		const profile = yield call(morphism, profileMapper(true), draftProfile);
+		yield call(update_profile_api, profile);
+
+		yield put(updateProfileResult(false));
+	} catch (e) {
+		yield all([
+			put(updateProfileResult(true)),
 			put(showHttpErrorAlert(e)),
 		]);
 	} finally {
@@ -51,5 +73,6 @@ function* updateProfilePhotoSaga(action: UpdateProfilePhotoAction): SagaIterator
 
 export default [
 	takeLatest(ActionTypes.fetch_profile, fetchProfileSaga),
+	takeLatest(ActionTypes.update_profile, updateProfileSaga),
 	takeLatest(ActionTypes.update_profile_photo, updateProfilePhotoSaga),
 ];

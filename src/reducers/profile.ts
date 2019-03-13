@@ -20,6 +20,24 @@ const initialState: State = {
 
 export default (state: State = initialState, action: Action): State => {
 	switch (action.type) {
+		case ActionTypes.change_draft_profile_name:
+			return {
+				...state,
+				draftProfile: {
+					...state.draftProfile,
+					name: action.name,
+				},
+			};
+		case ActionTypes.change_draft_profile_phone_number:
+			return {
+				...state,
+				draftProfile: {
+					...state.draftProfile,
+					phoneNumber: action.phoneNumber,
+				},
+			};
+
+
 		case ActionTypes.fetch_profile_result:
 			if (action.hasError) return state;
 
@@ -27,11 +45,17 @@ export default (state: State = initialState, action: Action): State => {
 				...state,
 				...action.profile,
 
-				draftProfile: action.profile,
+				draftProfile: action.profile ? action.profile : state.draftProfile,
 			};
 
-		case ActionTypes.clear_profile:
-			return initialState;
+		case ActionTypes.update_profile:
+			if (action.hasError) return state;
+			return {
+				...state.draftProfile,
+				draftProfile: {
+					...state.draftProfile,
+				},
+			};
 
 		case ActionTypes.update_profile_photo_result:
 			if (action.hasError) return state;
@@ -39,6 +63,9 @@ export default (state: State = initialState, action: Action): State => {
 				...state,
 				photoUrl: action.photoUrl,
 			};
+
+		case ActionTypes.clear_profile:
+			return initialState;
 
 		default:
 			return state;

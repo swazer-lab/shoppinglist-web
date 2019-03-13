@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useState, useEffect, useRef, FormEvent } from 'react';
+import Slider from 'react-slick';
 
-import { Modal, Button, ProgressBar } from '../../components';
+import { Profile } from '../../types/api';
+
+import { Modal, Button, Input, ProgressBar } from '../../components';
 import { useLocalStorage } from '../../config/utilities';
 
 import './styles.scss';
+import language from '../../assets/language';
 
 interface Props {
 	isVisible: boolean,
@@ -15,13 +19,40 @@ interface Props {
 	phoneNumber?: string,
 	photoUrl?: string,
 
-	onLogoutClick: () => void,
+	draftProfile: Profile,
+	onDraftProfileNameChange: (name: string) => void,
+	onDraftProfilePhoneNumberChange: (phoneNumber: string) => void,
+
+	onUpdateProfileClick: () => void,
 	onUpdateProfilePhotoClick: (photoData: string) => void,
+	onLogoutClick: () => void,
 }
 
 const ProfileModal = (props: Props) => {
-	const { isVisible, isLoading, onCloseProfileModalClick, name, email, photoUrl, onLogoutClick, onUpdateProfilePhotoClick } = props;
+	const [isUpdating, setIsUpdating] = useState(false);
+	const slider = useRef(null);
 	const { isEmailConfirmed } = useLocalStorage();
+
+	const {
+		isVisible,
+		isLoading,
+		onCloseProfileModalClick,
+		name,
+		email,
+		photoUrl,
+		draftProfile,
+		onDraftProfileNameChange,
+		onDraftProfilePhoneNumberChange,
+		onUpdateProfileClick,
+		onUpdateProfilePhotoClick,
+		onLogoutClick,
+	} = props;
+
+	useEffect(() => {
+		if (isUpdating && !isLoading) {
+			onBackToOverviewClicked();
+		}
+	}, [isLoading]);
 
 	const onSelectImageClicked = () => {
 		const input = document.getElementById('profile_photo_input');
@@ -41,14 +72,28 @@ const ProfileModal = (props: Props) => {
 		}
 	};
 
-	return (
-		<Modal isVisible={isVisible} onCloseModalClick={onCloseProfileModalClick} title='Profile'>
-			<ProgressBar isLoading={isLoading} />
+	const onGoToUpdateProfileClicked = () => {
+		setIsUpdating(true);
+
+		// @ts-ignore
+		slider.current.slickGoTo(1, false);
+	};
+	const onBackToOverviewClicked = () => {
+		setIsUpdating(false);
+
+		// @ts-ignore
+		slider.current.slickGoTo(0, false);
+	};
+
+	const handleDraftProfileNameChange = (e: FormEvent<HTMLFormElement>) => onDraftProfileNameChange(e.currentTarget.value);
+	const handleDraftProfilePhoneNumberChange = (e: FormEvent<HTMLFormElement>) => onDraftProfilePhoneNumberChange(e.currentTarget.value);
+
+	const overviewContent = (
+		<div>
 			<div className='profile_modal'>
-				<div
-					className='profile_modal__photo'
-					style={{ backgroundImage: `url(${photoUrl})` }}
-					onClick={onSelectImageClicked}>
+				<div className='profile_modal__photo'
+				     style={{ backgroundImage: `url(${photoUrl})` }}
+				     onClick={onSelectImageClicked}>
 
 					<i className='material-icons'>camera_alt</i>
 				</div>
@@ -62,6 +107,43 @@ const ProfileModal = (props: Props) => {
 					<Button mode='text' accentColor='text' title='Logout' onClick={onLogoutClick} />
 				</div>
 			</div>
+		</div>
+	);
+
+	const updateContent = (
+		<div>
+			<div className='update_profile_modal'>
+				<Input
+					value={draftProfile.name}
+					onChange={handleDraftProfileNameChange}
+					placeholder={language.textEnterName}
+					required
+				/>
+				<Input
+					value={draftProfile.phoneNumber}
+					onChange={handleDraftProfilePhoneNumberChange}
+					placeholder={language.textEnterPhoneNumber}
+				/>
+
+				<div className='update_profile_modal__actions_container'>
+					<Button title='Update' onClick={onUpdateProfileClick} />
+				</div>
+			</div>
+		</div>
+	);
+
+	const buttons = isUpdating ? [{ iconName: 'arrow_forward', onClick: onBackToOverviewClicked }] : [
+		{ iconName: 'edit', onClick: onGoToUpdateProfileClicked },
+		{ iconName: 'close', onClick: onCloseProfileModalClick },
+	];
+
+	return (
+		<Modal isVisible={isVisible} onCloseModalClick={onCloseProfileModalClick} title='Profile' buttons={buttons}>
+			<ProgressBar isLoading={isLoading} />
+			<Slider ref={slider} swipe={false} arrows={false} speed={300}>
+				{overviewContent}
+				{updateContent}
+			</Slider>
 		</Modal>
 	);
 };

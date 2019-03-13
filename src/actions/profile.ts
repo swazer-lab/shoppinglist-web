@@ -2,11 +2,22 @@ import { Profile } from '../types/api';
 
 import {
 	ActionTypes,
+	ChangeDraftProfileNameAction,
+	ChangeDraftProfilePhoneNumberAction,
 	FetchProfileActionResult,
-	ProfileAction,
+	ProfileAction, ProfileActionResult,
 	UpdateProfilePhotoAction,
 	UpdateProfilePhotoActionResult,
 } from '../types/profile';
+
+export const changeDraftProfileName = (name: string): ChangeDraftProfileNameAction => ({
+	type: ActionTypes.change_draft_profile_name,
+	name,
+});
+export const changeDraftProfilePhoneNumber = (phoneNumber: string): ChangeDraftProfilePhoneNumberAction => ({
+	type: ActionTypes.change_draft_profile_phone_number,
+	phoneNumber,
+});
 
 export const fetchProfile = (): ProfileAction => ({
 	type: ActionTypes.fetch_profile,
@@ -16,6 +27,14 @@ export const fetchProfileResult = (hasError: boolean, profile?: Profile): FetchP
 	type: ActionTypes.fetch_profile_result,
 	hasError,
 	profile,
+});
+
+export const updateProfile = (): ProfileAction => ({
+	type: ActionTypes.update_profile,
+});
+export const updateProfileResult = (hasError: boolean): ProfileActionResult => ({
+	type: ActionTypes.update_profile_result,
+	hasError,
 });
 
 export const updateProfilePhoto = (photoData: string): UpdateProfilePhotoAction => ({

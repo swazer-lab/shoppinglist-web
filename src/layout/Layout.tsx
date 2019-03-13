@@ -2,12 +2,18 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 
 import { AppState } from '../types/store';
+import { Profile } from '../types/api';
 
 import { NavigationBar, ProfileModal } from './';
 
 import { navigate } from '../actions/service';
 import { logout } from '../actions/auth';
-import { updateProfilePhoto } from '../actions/profile';
+import {
+	changeDraftProfileName,
+	changeDraftProfilePhoneNumber,
+	updateProfile,
+	updateProfilePhoto,
+} from '../actions/profile';
 
 import { useLocalStorage } from '../config/utilities';
 import './styles.scss';
@@ -23,10 +29,11 @@ interface Props {
 	email?: string,
 	phoneNumber?: string,
 	photoUrl?: string,
+	draftProfile: Profile,
 }
 
 const Layout = (props: Props) => {
-	const { dispatch, children, layoutOptions, progress, name, email, phoneNumber, photoUrl } = props;
+	const { dispatch, children, layoutOptions, progress, name, email, phoneNumber, photoUrl, draftProfile } = props;
 	const { isLoggedIn } = useLocalStorage();
 
 	if (layoutOptions.authorized && !isLoggedIn) dispatch(navigate('Login'));
@@ -35,6 +42,10 @@ const Layout = (props: Props) => {
 
 	const onOpenProfileModalClicked = () => setIsProfileModalVisible(true);
 	const onCloseProfileModalClicked = () => setIsProfileModalVisible(false);
+
+	const onChangeDraftProfileName = (name: string) => dispatch(changeDraftProfileName(name));
+	const onChangeDraftProfilePhoneNumber = (phoneNumber: string) => dispatch(changeDraftProfilePhoneNumber(phoneNumber));
+	const onUpdateProfileClicked = () => dispatch(updateProfile());
 
 	const onUpdateProfilePhotoClicked = (photoData: string) => dispatch(updateProfilePhoto(photoData));
 	const onLogoutClicked = () => dispatch(logout());
@@ -54,8 +65,12 @@ const Layout = (props: Props) => {
 				email={email}
 				phoneNumber={phoneNumber}
 				photoUrl={photoUrl}
-				onLogoutClick={onLogoutClicked}
+				draftProfile={draftProfile}
+				onDraftProfileNameChange={onChangeDraftProfileName}
+				onDraftProfilePhoneNumberChange={onChangeDraftProfilePhoneNumber}
+				onUpdateProfileClick={onUpdateProfileClicked}
 				onUpdateProfilePhotoClick={onUpdateProfilePhotoClicked}
+				onLogoutClick={onLogoutClicked}
 			/>
 			{children}
 		</div>
@@ -64,7 +79,7 @@ const Layout = (props: Props) => {
 
 const mapStateToProps = (state: AppState) => {
 	const { progress } = state.service;
-	const { name, email, phoneNumber, photoUrl } = state.profile;
+	const { name, email, phoneNumber, photoUrl, draftProfile } = state.profile;
 
 	return {
 		progress,
@@ -73,6 +88,7 @@ const mapStateToProps = (state: AppState) => {
 		email,
 		phoneNumber,
 		photoUrl,
+		draftProfile,
 	};
 };
 

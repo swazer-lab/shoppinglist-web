@@ -16,5 +16,5 @@ export const updateDefaultHeaders = (accessToken?: string) => {
 };
 
 export { register_api, login_api, confirm_email_api, send_forgot_password_email_api, reset_password_api } from './auth';
-export { fetch_profile_api, update_profile_photo_api } from './profile';
+export { fetch_profile_api, update_profile_api, update_profile_photo_api } from './profile';
 export { fetch_carts_api, create_cart_api, remove_cart_api } from './carts';
