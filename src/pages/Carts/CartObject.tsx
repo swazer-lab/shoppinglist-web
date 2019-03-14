@@ -1,12 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+
+import { AppState } from '../../types/store';
 import { Cart } from '../../types/api';
 
-import { Modal, Button } from '../../components';
+import { Modal, ProgressBar } from '../../components';
 import ShareCart from './ShareCart';
 
+import avatar from '../../assets/images/avatar.jpeg';
 import './styles.scss';
 
 interface Props {
+	progress: AppState['service']['progress'],
 	cart: Cart,
 
 	onOpenUpdateCartModalClick: (cart: Cart) => void,
@@ -15,7 +19,13 @@ interface Props {
 
 const CartObject = (props: Props) => {
 	const [isShareModalVisible, setIsShareModalVisible] = useState(false);
-	const { cart, onOpenUpdateCartModalClick, onRemoveCartClick } = props;
+	const { progress, cart, onOpenUpdateCartModalClick, onRemoveCartClick } = props;
+
+	useEffect(() => {
+		if (!progress.visible && isShareModalVisible) {
+			setIsShareModalVisible(false);
+		}
+	}, [progress.visible]);
 
 	const onOpenUpdateCartModalClicked = () => onOpenUpdateCartModalClick(cart);
 	const onRemoveCartClicked = (e: any) => {
@@ -23,9 +33,14 @@ const CartObject = (props: Props) => {
 		onRemoveCartClick(cart);
 	};
 
-	const openShareModalClick = (e: any) => {
+	const onOpenShareModalClick = (e: any) => {
 		e.stopPropagation();
 		setIsShareModalVisible(true);
+	};
+
+	const onCloseShareModalClick = (e: any) => {
+		e.stopPropagation();
+		setIsShareModalVisible(false);
 	};
 
 	const renderItems = (status: string) => cart.items.filter(item => item.status === status).map(item => (
@@ -56,25 +71,25 @@ const CartObject = (props: Props) => {
 			</div>
 
 			<div className='cart_object__users_container'>
-
-				<div className='cart_object__users_container__share_button' onClick={openShareModalClick}>
+				<div className='cart_object__users_container__share_button' onClick={onOpenShareModalClick}>
 					<i className='material-icons'>person_add</i>
 				</div>
 
 				<div className='cart_object__users_container__user_list'>
 					{cart.users.map((user) => (
-						<img src={user.photoUrl} width={30} height={30} alt='User Photo'/>
+						<img src={user.photoUrl || avatar} width={30} height={30} alt='User Photo'/>
 					))}
 				</div>
 			</div>
 
 			<Modal
 				isVisible={isShareModalVisible}
-				onCloseModalClick={() => setIsShareModalVisible(false)}
+				onCloseModalClick={onCloseShareModalClick}
 				title='Share'
-				buttons={[{ iconName: 'close', onClick: () => setIsShareModalVisible(false) }]}
-			>
-				<ShareCart cartId={cart.id}/>
+				buttons={[{ iconName: 'close', onClick: onCloseShareModalClick }]}>
+
+				<ProgressBar isLoading={progress.visible}/>
+				<ShareCart cart={cart}/>
 			</Modal>
 		</div>
 	);

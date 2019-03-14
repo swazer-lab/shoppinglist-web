@@ -7,10 +7,10 @@ interface Props {
 	children?: any,
 
 	isVisible: boolean,
-	onCloseModalClick: () => void,
+	onCloseModalClick: (e?: any) => void,
 
 	title: string,
-	buttons?: Array<{ iconName: string, onClick: () => void }>
+	buttons?: Array<{ iconName: string, onClick: (e?: any) => void }>
 }
 
 const Modal = (props: Props) => {

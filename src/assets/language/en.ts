@@ -52,6 +52,8 @@ export default {
 	textEmail: 'Email',
 	textPhoneNumber: 'Phone',
 
+	textUpdatingProfile: 'Updating Profile',
+	textUpdatingProfilePhoto: 'Updating Profile Photo',
 	textFetchingProfile: 'Fetch Profile',
 
 	// Carts
@@ -64,6 +66,11 @@ export default {
 	textCreatingCart: 'Creating Cart',
 	textRemovingCart: 'Deleting Cart',
 	textUpdatingCart: 'Updating Cart',
+	textSearchingCarts: 'Searching Carts',
+	textSharingCarts: 'Sharing Carts to users you choosed',
+
+	// Contacts
+	textFetchingContacts: 'Fetching Contacts',
 
 	// Privacy Policy
 	titlePrivacyPolicy: 'Privacy Policy',

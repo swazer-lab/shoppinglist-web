@@ -12,12 +12,13 @@ import {
 } from '../actions/contacts';
 
 import { ActionTypes, FetchContactsAction } from '../types/contacts';
+import language from '../assets/language';
 
 function* fetchContactsSaga(action: FetchContactsAction): SagaIterator {
 	const { silent, pageNumber, append } = action;
 	const pageSize = 15;
 
-	if (!silent) yield put(showProgress('Fetching Contact'));
+	if (!silent) yield put(showProgress(language.textFetchingContacts));
 
 	try {
 		const response = yield call(fetch_contacts_api, pageNumber, pageSize);

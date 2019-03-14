@@ -22,6 +22,7 @@ import { useLocalStorage } from '../../config/utilities';
 
 interface Props {
 	dispatch: Function,
+	progress: AppState['service']['progress'],
 
 	carts: Array<Cart>,
 	draftCart: Cart,
@@ -32,7 +33,7 @@ interface Props {
 }
 
 const Carts = (props: Props) => {
-	const { dispatch, carts, draftCart, isLoading, totalCount, pageNumber } = props;
+	const { dispatch,progress, carts, draftCart, isLoading, totalCount, pageNumber } = props;
 
 	useEffect(() => {
 		const { isLoggedIn } = useLocalStorage();
@@ -87,6 +88,7 @@ const Carts = (props: Props) => {
 	const renderCarts = () => carts.map(cart => (
 		<CartObject
 			key={cart.uuid}
+			progress={progress}
 			cart={cart}
 			onOpenUpdateCartModalClick={onOpenUpdateCartModalClicked}
 			onRemoveCartClick={onRemoveCartClicked}
@@ -135,9 +137,12 @@ const Carts = (props: Props) => {
 };
 
 const mapStateToProps = (state: AppState) => {
+	const {progress} = state.service;
 	const { carts, draftCart, isLoading, totalCount, pageNumber } = state.carts;
 
 	return {
+		progress,
+
 		carts,
 		draftCart,
 

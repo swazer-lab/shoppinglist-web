@@ -35,7 +35,7 @@ function* fetchProfileSaga(): SagaIterator {
 function* updateProfileSaga(): SagaIterator {
 	const { draftProfile } = yield select((state: AppState) => state.profile);
 
-	yield put(showProgress('Updating Profile'));
+	yield put(showProgress(language.textUpdatingProfile));
 
 	try {
 		const profile = yield call(morphism, profileMapper(true), draftProfile);
@@ -54,7 +54,7 @@ function* updateProfileSaga(): SagaIterator {
 
 function* updateProfilePhotoSaga(action: UpdateProfilePhotoAction): SagaIterator {
 	const { photoData } = action;
-	yield put(showProgress('Updating Profile Photo'));
+	yield put(showProgress(language.textUpdatingProfilePhoto));
 
 	try {
 		const response = yield call(update_profile_photo_api, photoData);

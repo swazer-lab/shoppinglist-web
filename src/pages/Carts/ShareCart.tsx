@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import classNames from 'classnames';
 
 import { AppState } from '../../types/store';
-import { Profile } from '../../types/api';
+import { Profile, Cart, CartUser } from '../../types/api';
 
 import { Button } from '../../components';
 
@@ -13,27 +13,27 @@ import { shareCartWithContacts } from '../../actions/carts';
 import avatar from '../../assets/images/avatar.jpeg';
 
 interface Props {
-	dispatch: Function,
+	dispatch?: Function,
 
-	contacts: Array<Profile>,
-	selectedContacts: Array<Profile>,
+	visibleContacts?: Array<Profile>,
+	selectedContacts?: Array<Profile>,
 
-	cartId: string
+	cart: Cart
 }
 
 const ShareCart = (props: Props) => {
-	const { dispatch, contacts, selectedContacts, cartId } = props;
+	const { dispatch, visibleContacts, selectedContacts, cart } = props;
 
 	const onShareCartButtonClicked = () => {
-		dispatch(shareCartWithContacts(cartId));
+		dispatch!(shareCartWithContacts(cart.id));
 	};
 
-	const renderContacts = contacts.map((contact) => {
+	const renderContacts = visibleContacts!.map((contact) => {
 		const { id, name, email, photoUrl } = contact;
-		const isSelected = selectedContacts.filter((contact) => contact.id === id).length !== 0;
+		const isSelected = selectedContacts!.filter((contact) => contact.id === id).length !== 0;
 
 		const onToggleContactClicked = () => {
-			dispatch(toggleContact(contact));
+			dispatch!(toggleContact(contact));
 		};
 
 		return (
@@ -57,18 +57,26 @@ const ShareCart = (props: Props) => {
 				{renderContacts}
 			</div>
 
-			<Button
-				title='Share'
-				onClick={onShareCartButtonClicked}
-			/>
+			<div className='share_cart__sharing_button'>
+				<Button
+					title='Share'
+					onClick={onShareCartButtonClicked}
+				/>
+			</div>
 		</div>
 	);
 };
 
-const mapStateToProps = (state: AppState) => {
+const mapStateToProps = (state: AppState, ownProps: Props) => {
 	const { contacts, selectedContacts } = state.contacts;
+	const { cart } = ownProps;
+
+	const selectedUsersEmails = cart.users.map((user: CartUser) => user.email);
+
+	const visibleContacts = contacts.filter((contact: Profile) => !selectedUsersEmails.includes(contact.email));
+
 	return {
-		contacts,
+		visibleContacts,
 		selectedContacts,
 	};
 };

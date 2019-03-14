@@ -325,12 +325,17 @@
     overflow-x: scroll;
   }
 
+  &__sharing_button{
+    margin: 1rem;
+    margin-left: 1.5rem;
+  }
+
   &__contact {
     display: flex;
     flex-direction: column;
     align-items: center;
 
-    margin: 30px 10px;
+    margin: 3rem 1rem;
 
     cursor: pointer;
 

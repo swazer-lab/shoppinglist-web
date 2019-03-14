@@ -31,7 +31,7 @@ function* filterCartsSaga(): SagaIterator {
 	const pageNumber = 1;
 	const pageSize = 15;
 
-	yield put(showProgress('Searching for carts'));
+	yield put(showProgress(language.textSearchingCarts));
 	try {
 		const response = yield call(fetch_carts_api, pageNumber, pageSize, searchQuery);
 		const data = yield call(morphism, cartMapper(), response.data.items);
@@ -142,11 +142,10 @@ function* shareCartWithContactsSaga(action: ShareCartWithContactsAction): SagaIt
 	const emails = selectedContacts.map((item: Profile) => item.email);
 
 	if (selectedContacts.length === 0) {
-
 		return;
 	}
 
-	yield put(showProgress('Sharing cart to contacts you selected'));
+	yield put(showProgress(language.textSharingCarts));
 	try {
 		const response = yield call(share_cart_with_contacts_api, cartId, emails);
 		const data = yield call(morphism, cartUserMapper(), response.data);
