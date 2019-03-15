@@ -69,6 +69,9 @@ export default {
 	textSearchingCarts: 'Searching Carts',
 	textSharingCarts: 'Sharing Carts to users you choosed',
 
+	textAccessLevelRead: 'Anyone with the link can read on the cart',
+	textAccessLevelWrite: 'Anyone with the link can write on the cart',
+
 	// Contacts
 	textFetchingContacts: 'Fetching Contacts',
 

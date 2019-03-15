@@ -779,6 +779,13 @@
   version "2.2.7"
   resolved "https://registry.yarnpkg.com/@types/classnames/-/classnames-2.2.7.tgz#fb68cc9be8487e6ea5b13700e759bfbab7e0fefd"
 
+"@types/hashids@^1.0.30":
+  version "1.0.30"
+  resolved "https://registry.yarnpkg.com/@types/hashids/-/hashids-1.0.30.tgz#c0a056b25c5b13c80bf330fb8d379ac4d4049999"
+  integrity sha512-ESXJxz/GRY+SGa3n0WuWZLR0xM3k8LTr4+2xOoj/a0ZThglF/UfEeKVaMQNNFvFQ+mw3ng8LbC3gmJx/GmR5EQ==
+  dependencies:
+    "@types/node" "*"
+
 "@types/history@*", "@types/history@^4.7.2":
   version "4.7.2"
   resolved "https://registry.yarnpkg.com/@types/history/-/history-4.7.2.tgz#0e670ea254d559241b6eeb3894f8754991e73220"
@@ -3915,6 +3922,11 @@ hash.js@^1.0.0, hash.js@^1.0.3:
   dependencies:
     inherits "^2.0.3"
     minimalistic-assert "^1.0.1"
+
+hashids@^1.2.2:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/hashids/-/hashids-1.2.2.tgz#28635c7f2f7360ba463686078eee837479e8eafb"
+  integrity sha512-dEHCG2LraR6PNvSGxosZHIRgxF5sNLOIBFEHbj8lfP9WWmu/PWPMzsip1drdVSOFi51N2pU7gZavrgn7sbGFuw==
 
 hast-util-from-parse5@^5.0.0:
   version "5.0.0"

@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
+
 import classNames from 'classnames';
+import Hashids from 'hashids';
 
 import { AppState } from '../../types/store';
 import { Profile, Cart, CartUser } from '../../types/api';
@@ -10,7 +12,10 @@ import { Button } from '../../components';
 import { toggleContact } from '../../actions/contacts';
 import { shareCartWithContacts } from '../../actions/carts';
 
+import * as urls from '../../config/urls';
+
 import avatar from '../../assets/images/avatar.jpeg';
+import language from '../../assets/language';
 
 interface Props {
 	dispatch?: Function,
@@ -23,6 +28,30 @@ interface Props {
 
 const ShareCart = (props: Props) => {
 	const { dispatch, visibleContacts, selectedContacts, cart } = props;
+
+	const [shareLink, setShareLink] = useState('');
+
+	const handleShareLinkChange = (e?: any) => {
+		const accessLevel = e ? e.currentTarget.value : 1;
+
+		const hashids = new Hashids('shoppinglist', 30);
+		const shareLink = urls.get_access_to_cart_url_web + '/' + hashids.encode([+cart.id, accessLevel]);
+
+		setShareLink(shareLink);
+	};
+
+	const shareLinkRef: React.RefObject<HTMLInputElement> = useRef(null);
+
+	const onCopyLinkButtonClicked = (e: any) => {
+		if (shareLinkRef.current)
+			shareLinkRef.current!.select();
+
+		document.execCommand('copy');
+	};
+
+	useEffect(() => {
+		handleShareLinkChange();
+	}, []);
 
 	const onShareCartButtonClicked = () => {
 		dispatch!(shareCartWithContacts(cart.id));
@@ -51,18 +80,50 @@ const ShareCart = (props: Props) => {
 		);
 	});
 
+	const renderShareWithContactsSection = () => {
+		if (visibleContacts!.length === 0) return;
+
+		return (
+			<>
+				<div className='share_cart__separator'/>
+
+				<div className='share_cart__subtitle'>
+					Share With Contact
+				</div>
+				<div className='share_cart__contacts_container'>
+					{renderContacts}
+				</div>
+
+				<div className='share_cart__sharing_button'>
+					<Button
+						title='Share'
+						onClick={onShareCartButtonClicked}
+					/>
+				</div>
+			</>
+		);
+	};
+
 	return (
 		<div className='share_cart'>
-			<div className='share_cart__contacts_container'>
-				{renderContacts}
+			<div className='share_cart__subtitle'>
+				Share With Link
 			</div>
-
-			<div className='share_cart__sharing_button'>
-				<Button
-					title='Share'
-					onClick={onShareCartButtonClicked}
+			<div className='share_cart__create_share_cart_link'>
+				<select onChange={handleShareLinkChange}>
+					<option value='1' label={language.textAccessLevelWrite}/>
+					<option value='2' label={language.textAccessLevelRead}/>
+				</select>
+				<input type="button" value="Copy Link" onClick={onCopyLinkButtonClicked}/>
+				<input
+					ref={shareLinkRef}
+					type='text'
+					value={shareLink}
+					placeholder=''
+					readOnly={true}
 				/>
 			</div>
+			{renderShareWithContactsSection()}
 		</div>
 	);
 };

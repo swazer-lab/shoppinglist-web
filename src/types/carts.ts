@@ -1,6 +1,5 @@
 import { Action as ReduxAction } from 'redux';
 import { Cart, CartItemStatusType, CartUser } from './api';
-import { ContactsAction, ContactsActionResult } from './contacts';
 
 export enum ActionTypes {
 	change_draft_cart_title = 'CARTS__CHANGE_DRAFT_CART_TITLE',
@@ -148,6 +147,16 @@ export interface ShareCartWithContactsActionResult extends CartsActionResult {
 	cartUsers?: Array<CartUser>
 }
 
+export interface GetAccessToCartAction extends CartsAction {
+	type: ActionTypes.get_access_to_cart,
+	accessCode: string,
+}
+
+export interface GetAccessToCartActionResult extends CartsActionResult {
+	type: ActionTypes.get_access_to_cart_result,
+	cart?: Cart,
+}
+
 export type Action =
 	& CartsAction
 	& CartsActionResult
@@ -167,7 +176,9 @@ export type Action =
 	& UpdateCartResultAction
 	& SetDraftCartAction
 	& ShareCartWithContactsAction
-	& ShareCartWithContactsActionResult;
+	& ShareCartWithContactsActionResult
+	& GetAccessToCartAction
+	& GetAccessToCartActionResult;
 
 export type State = {
 	draftCart: Cart,

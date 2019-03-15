@@ -255,21 +255,25 @@
     }
   }
 
-  &__users_container{
+  &__users_container {
     margin: 1.5rem 1.5rem 0 1.5rem;
 
-   &__share_button{
-     float: left;
+    &__share_button {
+      float: left;
 
-     &:hover {
-       cursor: pointer;
-     }
-   }
+      & i {
+        color: $color-text;
+      }
 
-    &__user_list{
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
+    &__user_list {
       float: right;
 
-      & img{
+      & img {
         margin: -0.5rem;
         border: 0.3rem solid white;
         border-radius: 50%;
@@ -318,16 +322,27 @@
   display: flex;
   flex-direction: column;
 
+  &__subtitle {
+    display: flex;
+    margin-left: 1.5rem;
+    margin-top: 1.5rem;
+
+    font-weight: 500;
+    font-size: 1.4rem;
+    color: $color-text;
+  }
+
   &__contacts_container {
+    margin: 1.5rem;
+
     display: flex;
     flex-direction: row;
 
     overflow-x: scroll;
   }
 
-  &__sharing_button{
+  &__sharing_button {
     margin: 1rem;
-    margin-left: 1.5rem;
   }
 
   &__contact {
@@ -400,6 +415,107 @@
     &__email {
       font-size: 1.2rem;
       color: $color-text;
+    }
+  }
+
+  &__separator {
+    width: 100%;
+    height: .1rem;
+    background-color: $color-gray;
+  }
+
+  &__create_share_cart_link {
+    margin: 1.5rem;
+
+    &:hover select {
+      cursor: pointer;
+    }
+
+    &:hover input[type='button'] {
+      cursor: pointer;
+    }
+
+    & select {
+      float: left;
+
+      width: 80%;
+      height: 4rem;
+
+      padding-left: 1.2rem;
+
+      font-family: inherit;
+      font-weight: 500;
+
+      background-color: #f5f5f5;
+      border: .1rem solid #dcdcdc;
+      border-top-left-radius: .3rem;
+
+      transition: all .2s;
+
+      &:hover {
+        background-color: darken(#f5f5f5, 1);
+        border: .1rem solid darken(#dcdcdc, 5);
+      }
+
+      &:focus {
+        background-color: darken(#f5f5f5, 2);
+        border: .1rem solid darken(#dcdcdc, 10);
+        outline: none;
+      }
+
+      & option {
+        font-family: inherit;
+        font-weight: 500;
+      }
+    }
+
+    & input[type='button'] {
+      float: right;
+
+      width: 20%;
+      height: 4rem;
+
+      background-color: #f5f5f5;
+      border: .1rem solid #dcdcdc;
+      border-left: none;
+      border-top-right-radius: .3rem;
+
+      font-family: inherit;
+      font-weight: 500;
+      color: $color-black;
+
+      transition: all .2s;
+
+      &:hover {
+        background-color: darken(#f5f5f5, 1);
+        border: .1rem solid darken(#dcdcdc, 5);
+        border-left: none;
+      }
+
+      &:focus {
+        background-color: darken(#f5f5f5, 2);
+        border: .1rem solid darken(#dcdcdc, 10);
+        outline: none;
+      }
+    }
+
+    & input[type='text'] {
+      width: 100%;
+      height: 4rem;
+
+      padding-left: 1.2rem;
+
+      font-family: inherit;
+      color: $color-text;
+
+      border: .1rem solid #dcdcdc;
+      border-top: none;
+      border-bottom-right-radius: .3rem;
+      border-bottom-left-radius: .3rem;
+
+      &:focus {
+        outline: none;
+      }
     }
   }
 }

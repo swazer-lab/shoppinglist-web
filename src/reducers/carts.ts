@@ -66,6 +66,7 @@ export default (state: State = initialState, action: Action): State => {
 				isLoading: true,
 				pageNumber: action.pageNumber || 1,
 			};
+
 		case ActionTypes.fetch_carts_result:
 			if (action.hasError || !action.carts) return { ...state, isLoading: false };
 			if (action.append === 'merge') {
@@ -90,7 +91,7 @@ export default (state: State = initialState, action: Action): State => {
 		case ActionTypes.update_cart_result:
 		case ActionTypes.remove_cart_result:
 		case ActionTypes.share_cart_with_contacts_result:
-
+		case ActionTypes.get_access_to_cart_result:
 			return {
 				...state,
 				carts: carts(state.carts, action),
@@ -132,7 +133,6 @@ export const carts = (state: Array<Cart> = initialState.carts, action: Action): 
 
 			const shared_cart_index = state.findIndex((cart) => cart.id === action.cartId);
 
-			console.log(state, action, shared_cart_index);
 			return [
 				...state.slice(0, shared_cart_index),
 				{ ...state[0], users: action.cartUsers ? action.cartUsers : state[0].users },

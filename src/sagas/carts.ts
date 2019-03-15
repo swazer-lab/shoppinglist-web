@@ -5,10 +5,16 @@ import { all, call, put, select, takeLatest } from 'redux-saga/effects';
 
 import { AppState } from '../types/store';
 
-import { fetch_carts_api, create_cart_api, remove_cart_api, share_cart_with_contacts_api } from '../api';
+import {
+	fetch_carts_api,
+	create_cart_api,
+	remove_cart_api,
+	share_cart_with_contacts_api,
+	get_access_to_cart_api,
+} from '../api';
 import { cartMapper, cartUserMapper } from '../config/mapper';
 
-import { showProgress, hideProgress, showHttpErrorAlert } from '../actions/service';
+import { showProgress, hideProgress, showHttpErrorAlert, navigate, showAlert } from '../actions/service';
 import {
 	createCartResult,
 	fetchCartsResult,
@@ -16,13 +22,20 @@ import {
 	removeCartResult,
 	updateCartResult,
 	filterCartsResult,
-	shareCartWithContactsResult
+	shareCartWithContactsResult, getAccessToCartResult,
 } from '../actions/carts';
 
 import language from '../assets/language';
-import { ActionTypes, FetchCartsAction, RemoveCartAction, ShareCartWithContactsAction } from '../types/carts';
+import {
+	ActionTypes,
+	FetchCartsAction,
+	GetAccessToCartAction,
+	RemoveCartAction,
+	ShareCartWithContactsAction,
+} from '../types/carts';
 import { Profile } from '../types/api';
 import { clearSelectedContacts } from '../actions/contacts';
+import { useLocalStorage } from '../config/utilities';
 
 function* filterCartsSaga(): SagaIterator {
 	const { searchQuery } = yield select((state: AppState) => state.carts);
@@ -58,7 +71,9 @@ function* fetchCartsSaga(action: FetchCartsAction): SagaIterator {
 		const { totalCount, items } = response.data;
 
 		const carts = yield call(morphism, cartMapper(), items);
+
 		yield put(fetchCartsResult(false, carts, totalCount, append));
+
 	} catch (e) {
 		yield all([
 			put(fetchCartsResult(true)),
@@ -136,7 +151,7 @@ function* removeCartSaga(action: RemoveCartAction): SagaIterator {
 }
 
 function* shareCartWithContactsSaga(action: ShareCartWithContactsAction): SagaIterator {
-	const { cartId} = action;
+	const { cartId } = action;
 	const { selectedContacts } = yield select((state: AppState) => state.contacts);
 
 	const emails = selectedContacts.map((item: Profile) => item.email);
@@ -166,11 +181,37 @@ function* shareCartWithContactsSaga(action: ShareCartWithContactsAction): SagaIt
 	}
 }
 
+function* getAccessToCartSaga(action: GetAccessToCartAction): SagaIterator {
+	const { isLoggedIn } = useLocalStorage();
+	if (!isLoggedIn) yield put(navigate('Login'));
+
+	yield put(showProgress('Accessing is being gotten'));
+
+	try {
+		const response = yield call(get_access_to_cart_api, action.accessCode);
+		const data = yield call(morphism, cartMapper(), response.data);
+
+		yield all([
+			put(getAccessToCartResult(false, data)),
+			put(showAlert('success', 'You have been added to Cart')),
+			put(navigate('Carts'))
+		]);
+	} catch (e) {
+		yield all([
+			put(getAccessToCartResult(true)),
+			put(showHttpErrorAlert(e)),
+		]);
+	} finally {
+		yield put(hideProgress());
+	}
+}
+
 export default [
 	takeLatest(ActionTypes.filter_carts, filterCartsSaga),
 	takeLatest(ActionTypes.fetch_carts, fetchCartsSaga),
 	takeLatest(ActionTypes.create_cart, createCartSaga),
 	takeLatest(ActionTypes.update_cart, updateCartSaga),
 	takeLatest(ActionTypes.remove_cart, removeCartSaga),
-	takeLatest(ActionTypes.share_cart_with_contacts, shareCartWithContactsSaga)
+	takeLatest(ActionTypes.share_cart_with_contacts, shareCartWithContactsSaga),
+	takeLatest(ActionTypes.get_access_to_cart, getAccessToCartSaga),
 ];

@@ -27,8 +27,8 @@ const Modal = (props: Props) => {
 				<div className={headerClassNames}>
 					<span>{title}</span>
 					<div className='modal_component__actions_container'>
-						{buttons && buttons.map((button) => (
-							<i className='material-icons' onClick={button.onClick}>
+						{buttons && buttons.map((button, index) => (
+							<i key={index} className='material-icons' onClick={button.onClick}>
 								{button.iconName}
 							</i>
 						))}

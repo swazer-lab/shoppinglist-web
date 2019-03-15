@@ -13,6 +13,7 @@
 		"axios-response-logger": "^0.1.0",
 		"classnames": "^2.2.6",
 		"connected-react-router": "^4.5.0",
+		"hashids": "^1.2.2",
 		"history": "^4.7.2",
 		"lodash": "^4.17.11",
 		"morphism": "^1.8.5",
@@ -34,6 +35,7 @@
 	},
 	"devDependencies": {
 		"@types/classnames": "^2.2.7",
+		"@types/hashids": "^1.0.30",
 		"@types/history": "^4.7.2",
 		"@types/lodash": "^4.14.121",
 		"@types/node": "^11.9.4",

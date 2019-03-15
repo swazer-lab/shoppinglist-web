@@ -6,7 +6,7 @@ import { createBrowserHistory } from 'history';
 import { Layout } from '../layout';
 
 import { Register, Login, ConfirmEmail, ForgotPassword } from '../pages/Auth';
-import { Carts } from '../pages/Carts';
+import { Carts, GetAccess } from '../pages/Carts';
 import { PrivacyPolicy, ServiceTerms, NotFound } from '../pages/Other';
 
 export const routes = {
@@ -16,6 +16,8 @@ export const routes = {
 	forgotPassword: { path: '/account/forgotPassword', component: ForgotPassword },
 
 	carts: { path: '/carts', component: Carts, layoutOptions: { authorized: true } },
+
+	getAccess: { path: '/cart/getAccess/:id', component: GetAccess},
 
 	privacyPolicy: { path: '/privacyPolicy', component: PrivacyPolicy },
 	serviceTerms: { path: '/serviceTerms', component: ServiceTerms },
@@ -44,9 +46,11 @@ export const AppNavigator = () => {
 				<Route path={routes.forgotPassword.path} component={routes.forgotPassword.component} />
 
 				<Route path={routes.carts.path} component={withMainLayout(routes.carts)} />
+				<Route path={routes.getAccess.path} component={routes.getAccess.component} />
 
 				<Route path={routes.privacyPolicy.path} component={routes.privacyPolicy.component} />
 				<Route path={routes.serviceTerms.path} component={routes.serviceTerms.component} />
+
 				<Route component={NotFound} />
 			</Switch>
 		</Router>

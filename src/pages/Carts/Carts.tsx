@@ -33,7 +33,7 @@ interface Props {
 }
 
 const Carts = (props: Props) => {
-	const { dispatch,progress, carts, draftCart, isLoading, totalCount, pageNumber } = props;
+	const { dispatch, progress, carts, draftCart, isLoading, totalCount, pageNumber } = props;
 
 	useEffect(() => {
 		const { isLoggedIn } = useLocalStorage();
@@ -85,7 +85,7 @@ const Carts = (props: Props) => {
 	const handleDraftCartItemTitleChange = (uuid: string, title: string) => dispatch(changeDraftCartItemTitle(uuid, title));
 	const handleDraftCartItemStatusChange = (uuid: string, status: CartItemStatusType) => dispatch(changeDraftCartItemStatus(uuid, status));
 
-	const renderCarts = () => carts.map(cart => (
+	const renderCarts = () => carts.map((cart) => (
 		<CartObject
 			key={cart.uuid}
 			progress={progress}
@@ -137,7 +137,7 @@ const Carts = (props: Props) => {
 };
 
 const mapStateToProps = (state: AppState) => {
-	const {progress} = state.service;
+	const { progress } = state.service;
 	const { carts, draftCart, isLoading, totalCount, pageNumber } = state.carts;
 
 	return {

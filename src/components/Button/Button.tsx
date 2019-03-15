@@ -10,7 +10,7 @@ interface Props {
 
 	type?: string,
 	title: string,
-	onClick?: () => void,
+	onClick?: (e?: any) => void,
 }
 
 const Button = (props: Props) => {

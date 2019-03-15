@@ -41,3 +41,10 @@ export const share_cart_with_contacts_api = (cartId: string, emails: Array<strin
 	return axios.post(urls.share_cart_with_contacts_url, body);
 };
 
+export const get_access_to_cart_api = (getAccessCode: string) => {
+	const body = {
+		Id: getAccessCode,
+	};
+
+	return axios.post(urls.get_access_to_cart_url, body);
+};

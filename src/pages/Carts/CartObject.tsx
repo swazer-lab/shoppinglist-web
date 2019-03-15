@@ -77,7 +77,7 @@ const CartObject = (props: Props) => {
 
 				<div className='cart_object__users_container__user_list'>
 					{cart.users.map((user) => (
-						<img src={user.photoUrl || avatar} width={30} height={30} alt='User Photo'/>
+						<img key={user.uuid} src={user.photoUrl || avatar} width={30} height={30} alt='User Photo'/>
 					))}
 				</div>
 			</div>

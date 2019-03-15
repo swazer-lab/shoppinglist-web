@@ -17,7 +17,9 @@ import {
 	SetDraftCartAction,
 	UpdateCartResultAction,
 	ShareCartWithContactsAction,
-	ShareCartWithContactsActionResult
+	ShareCartWithContactsActionResult,
+	GetAccessToCartAction,
+	GetAccessToCartActionResult,
 } from '../types/carts';
 import { Cart, CartItemStatusType, CartUser } from '../types/api';
 
@@ -79,6 +81,7 @@ export const changeSearchQuery = (searchQuery: string): ChangeSearchQueryAction 
 export const filterCarts = (): CartsAction => ({
 	type: ActionTypes.filter_carts,
 });
+
 export const filterCartsResult = (hasError: boolean, carts?: Array<Cart>): FilterCartsActionResult => ({
 	type: ActionTypes.filter_carts_result,
 	hasError,
@@ -133,4 +136,15 @@ export const shareCartWithContactsResult = (hasError: boolean, cartId?: string, 
 	hasError,
 	cartId,
 	cartUsers,
+});
+
+export const getAccessToCart = (accessCode: string): GetAccessToCartAction => ({
+	type: ActionTypes.get_access_to_cart,
+	accessCode,
+});
+
+export const getAccessToCartResult = (hasError: boolean, cart?: Cart): GetAccessToCartActionResult => ({
+	type: ActionTypes.get_access_to_cart_result,
+	hasError,
+	cart
 });
