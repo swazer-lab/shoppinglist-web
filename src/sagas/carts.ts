@@ -6,23 +6,24 @@ import { all, call, put, select, takeLatest } from 'redux-saga/effects';
 import { AppState } from '../types/store';
 
 import {
-	fetch_carts_api,
 	create_cart_api,
+	fetch_carts_api,
+	get_access_to_cart_api,
 	remove_cart_api,
 	share_cart_with_contacts_api,
-	get_access_to_cart_api,
 } from '../api';
 import { cartMapper, cartUserMapper } from '../config/mapper';
 
-import { showProgress, hideProgress, showHttpErrorAlert, navigate, showAlert } from '../actions/service';
+import { hideProgress, navigate, showAlert, showHttpErrorAlert, showProgress } from '../actions/service';
 import {
+	clearDraftCart,
 	createCartResult,
 	fetchCartsResult,
-	clearDraftCart,
-	removeCartResult,
-	updateCartResult,
 	filterCartsResult,
-	shareCartWithContactsResult, getAccessToCartResult,
+	getAccessToCartResult,
+	removeCartResult,
+	shareCartWithContactsResult,
+	updateCartResult,
 } from '../actions/carts';
 
 import language from '../assets/language';
@@ -194,7 +195,7 @@ function* getAccessToCartSaga(action: GetAccessToCartAction): SagaIterator {
 		yield all([
 			put(getAccessToCartResult(false, data)),
 			put(showAlert('success', 'You have been added to Cart')),
-			put(navigate('Carts'))
+			put(navigate('Carts')),
 		]);
 	} catch (e) {
 		yield all([

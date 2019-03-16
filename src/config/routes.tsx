@@ -1,13 +1,13 @@
 import React from 'react';
 
-import { Router, Switch, Route } from 'react-router';
+import { Route, Router, Switch } from 'react-router';
 import { createBrowserHistory } from 'history';
 
 import { Layout } from '../layout';
 
-import { Register, Login, ConfirmEmail, ForgotPassword } from '../pages/Auth';
+import { ConfirmEmail, ForgotPassword, Login, Register } from '../pages/Auth';
 import { Carts, GetAccess } from '../pages/Carts';
-import { PrivacyPolicy, ServiceTerms, NotFound } from '../pages/Other';
+import { NotFound, PrivacyPolicy, ServiceTerms } from '../pages/Other';
 
 export const routes = {
 	register: { path: '/account/register', component: Register },
@@ -17,7 +17,7 @@ export const routes = {
 
 	carts: { path: '/carts', component: Carts, layoutOptions: { authorized: true } },
 
-	getAccess: { path: '/cart/getAccess/:id', component: GetAccess},
+	getAccess: { path: '/cart/getAccess/:id', component: GetAccess },
 
 	privacyPolicy: { path: '/privacyPolicy', component: PrivacyPolicy },
 	serviceTerms: { path: '/serviceTerms', component: ServiceTerms },
@@ -32,7 +32,7 @@ export const AppNavigator = () => {
 
 		return () => (
 			<Layout layoutOptions={{ ...routeLayoutOptions, ...pageLayoutOptions }}>
-				<route.component />
+				<route.component/>
 			</Layout>
 		);
 	};
@@ -40,18 +40,18 @@ export const AppNavigator = () => {
 	return (
 		<Router history={history}>
 			<Switch>
-				<Route path={routes.register.path} component={routes.register.component} />
-				<Route path={routes.login.path} component={routes.login.component} />
-				<Route path={routes.confirmEmail.path} component={routes.confirmEmail.component} />
-				<Route path={routes.forgotPassword.path} component={routes.forgotPassword.component} />
+				<Route path={routes.register.path} component={routes.register.component}/>
+				<Route path={routes.login.path} component={routes.login.component}/>
+				<Route path={routes.confirmEmail.path} component={routes.confirmEmail.component}/>
+				<Route path={routes.forgotPassword.path} component={routes.forgotPassword.component}/>
 
-				<Route path={routes.carts.path} component={withMainLayout(routes.carts)} />
-				<Route path={routes.getAccess.path} component={routes.getAccess.component} />
+				<Route path={routes.carts.path} component={withMainLayout(routes.carts)}/>
+				<Route path={routes.getAccess.path} component={routes.getAccess.component}/>
 
-				<Route path={routes.privacyPolicy.path} component={routes.privacyPolicy.component} />
-				<Route path={routes.serviceTerms.path} component={routes.serviceTerms.component} />
+				<Route path={routes.privacyPolicy.path} component={routes.privacyPolicy.component}/>
+				<Route path={routes.serviceTerms.path} component={routes.serviceTerms.component}/>
 
-				<Route component={NotFound} />
+				<Route component={NotFound}/>
 			</Switch>
 		</Router>
 	);

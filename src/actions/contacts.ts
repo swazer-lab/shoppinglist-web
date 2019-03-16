@@ -1,12 +1,12 @@
 import {
 	ActionTypes,
+	ContactsAction,
 	FetchContactsAction,
 	FetchContactsActionResult,
 	ToggleContactAction,
-	ContactsAction,
 } from '../types/contacts';
 
-import { Profile} from '../types/api';
+import { Profile } from '../types/api';
 
 export const fetchContacts = (silent?: boolean, append?: 'merge' | 'replace', pageNumber?: number): FetchContactsAction => ({
 	type: ActionTypes.fetch_contacts,
@@ -25,7 +25,7 @@ export const fetchContactsResult = (hasError: boolean, contacts?: Array<Profile>
 
 export const toggleContact = (contact: Profile): ToggleContactAction => ({
 	type: ActionTypes.toggle_contact,
-	contact
+	contact,
 });
 
 export const clearSelectedContacts = (): ContactsAction => ({

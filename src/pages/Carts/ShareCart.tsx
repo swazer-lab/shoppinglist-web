@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 
 import classNames from 'classnames';
 import Hashids from 'hashids';
 
 import { AppState } from '../../types/store';
-import { Profile, Cart, CartUser } from '../../types/api';
+import { Cart, CartUser, Profile } from '../../types/api';
 
 import { Button } from '../../components';
 

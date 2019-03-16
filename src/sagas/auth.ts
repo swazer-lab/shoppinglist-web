@@ -3,15 +3,15 @@ import { all, call, put, select, takeLatest } from 'redux-saga/effects';
 
 import { AppState } from '../types/store';
 
-import { register_api, login_api, confirm_email_api, send_forgot_password_email_api, reset_password_api } from '../api';
+import { confirm_email_api, login_api, register_api, reset_password_api, send_forgot_password_email_api } from '../api';
 
-import { navigate, setAccessToken, setIsLoggedIn, setIsEmailConfirmed } from '../actions/service';
+import { navigate, setAccessToken, setIsEmailConfirmed, setIsLoggedIn } from '../actions/service';
 import {
-	registerResult,
-	loginResult,
 	confirmEmailResult,
-	sendForgotPasswordEmailResult,
+	loginResult,
+	registerResult,
 	resetPasswordResult,
+	sendForgotPasswordEmailResult,
 } from '../actions/auth';
 import { clearProfile } from '../actions/profile';
 import { clearCarts } from '../actions/carts';

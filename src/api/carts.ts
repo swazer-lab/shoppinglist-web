@@ -35,7 +35,7 @@ export const remove_cart_api = (cartId: string) => {
 export const share_cart_with_contacts_api = (cartId: string, emails: Array<string>) => {
 	const body = {
 		cartId,
-		emails
+		emails,
 	};
 
 	return axios.post(urls.share_cart_with_contacts_url, body);

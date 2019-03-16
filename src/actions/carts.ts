@@ -6,20 +6,20 @@ import {
 	ChangeDraftCartNotesAction,
 	ChangeDraftCartReminderDateAction,
 	ChangeDraftCartTitleAction,
+	ChangeSearchQueryAction,
 	CreateCartActionResult,
 	FetchCartsAction,
 	FetchCartsActionResult,
-	ChangeSearchQueryAction,
 	FilterCartsActionResult,
+	GetAccessToCartAction,
+	GetAccessToCartActionResult,
 	RemoveCartAction,
 	RemoveCartActionResult,
 	RemoveDraftCartItemAction,
 	SetDraftCartAction,
-	UpdateCartResultAction,
 	ShareCartWithContactsAction,
 	ShareCartWithContactsActionResult,
-	GetAccessToCartAction,
-	GetAccessToCartActionResult,
+	UpdateCartResultAction,
 } from '../types/carts';
 import { Cart, CartItemStatusType, CartUser } from '../types/api';
 
@@ -146,5 +146,5 @@ export const getAccessToCart = (accessCode: string): GetAccessToCartAction => ({
 export const getAccessToCartResult = (hasError: boolean, cart?: Cart): GetAccessToCartActionResult => ({
 	type: ActionTypes.get_access_to_cart_result,
 	hasError,
-	cart
+	cart,
 });

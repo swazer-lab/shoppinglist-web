@@ -12,5 +12,5 @@ export default combineReducers<AppState>({
 	auth,
 	carts,
 	profile,
-	contacts
+	contacts,
 });

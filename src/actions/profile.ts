@@ -5,7 +5,8 @@ import {
 	ChangeDraftProfileNameAction,
 	ChangeDraftProfilePhoneNumberAction,
 	FetchProfileActionResult,
-	ProfileAction, ProfileActionResult,
+	ProfileAction,
+	ProfileActionResult,
 	UpdateProfilePhotoAction,
 	UpdateProfilePhotoActionResult,
 } from '../types/profile';

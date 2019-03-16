@@ -3,13 +3,11 @@ import morphism from 'morphism';
 import { SagaIterator } from 'redux-saga';
 import { all, call, put, takeLatest } from 'redux-saga/effects';
 
-import { fetch_contacts_api} from '../api';
+import { fetch_contacts_api } from '../api';
 import { profileMapper } from '../config/mapper';
 
-import { showProgress, hideProgress, showHttpErrorAlert } from '../actions/service';
-import {
-	fetchContactsResult
-} from '../actions/contacts';
+import { hideProgress, showHttpErrorAlert, showProgress } from '../actions/service';
+import { fetchContactsResult } from '../actions/contacts';
 
 import { ActionTypes, FetchContactsAction } from '../types/contacts';
 import language from '../assets/language';
@@ -37,5 +35,5 @@ function* fetchContactsSaga(action: FetchContactsAction): SagaIterator {
 }
 
 export default [
-	takeLatest(ActionTypes.fetch_contacts, fetchContactsSaga)
+	takeLatest(ActionTypes.fetch_contacts, fetchContactsSaga),
 ];

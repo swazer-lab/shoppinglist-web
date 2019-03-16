@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import { AppState } from '../../types/store';
 
-import { AuthContainer, Input, Button } from '../../components';
+import { AuthContainer, Button, Input } from '../../components';
 
 import { navigate } from '../../actions/service';
 import { changeEmail, changePassword, login } from '../../actions/auth';
@@ -75,7 +75,7 @@ const Login = (props: Props) => {
 							title={language.actionRegister}
 							onClick={onRegisterClicked}
 						/>
-						<Button type='submit' title={language.actionLogin} />
+						<Button type='submit' title={language.actionLogin}/>
 					</div>
 				</form>
 			</div>

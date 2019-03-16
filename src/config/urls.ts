@@ -1,6 +1,5 @@
 const root = 'http://shopping.swazerlab.com/api/';
-
-const rootWeb = 'http://localhost:3000/';
+const rootWeb = process.env.NODE_ENV === 'development' ? 'http://localhost:3000/' : 'http://shoppingweb.swazerlab.com/';
 
 // Account Urls
 const accountRoot = root.concat('account/');

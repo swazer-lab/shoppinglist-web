@@ -1,12 +1,12 @@
 import { Action as ReduxAction } from 'redux';
-import { Profile, CartUser } from './api';
+import { Profile } from './api';
 
-export enum ActionTypes{
+export enum ActionTypes {
 	fetch_contacts = 'CONTACTS__FETCH_CONTACTS',
 	fetch_contacts_result = 'CONTACTS__FETCH_CONTACTS_RESULT',
 
 	toggle_contact = 'CONTACTS__TOGGLE_CONTACT',
-    share_cart_with_contacts = 'CONTACTS__SHARE_CART_WITH_CONTACTS',
+	share_cart_with_contacts = 'CONTACTS__SHARE_CART_WITH_CONTACTS',
 	share_cart_with_contacts_result = 'CONTACTS__SHARE_CART_WITH_CONTACTS_RESULT',
 
 	clear_selected_contacts = 'CONTACTS__CLEAR_SELECTED_CONTACTS'

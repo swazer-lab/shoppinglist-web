@@ -8,7 +8,7 @@ import { fetch_profile_api, update_profile_api, update_profile_photo_api } from 
 import { profileMapper } from '../config/mapper';
 import { get_photo_url } from '../config/urls';
 
-import { showProgress, hideProgress, showHttpErrorAlert } from '../actions/service';
+import { hideProgress, showHttpErrorAlert, showProgress } from '../actions/service';
 import { fetchProfileResult, updateProfilePhotoResult, updateProfileResult } from '../actions/profile';
 
 import language from '../assets/language';

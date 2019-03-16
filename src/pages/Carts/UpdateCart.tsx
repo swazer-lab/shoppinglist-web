@@ -1,9 +1,8 @@
 import React, { FormEvent } from 'react';
-import classNames from 'classnames';
 
 import { Cart, CartItemStatusType } from '../../types/api';
 
-import { Modal, Button } from '../../components';
+import { Button, Modal } from '../../components';
 import CartItemObject from './CartItemObject';
 
 import language from '../../assets/language';
@@ -75,7 +74,10 @@ const UpdateCart = (props: Props) => {
 					/>
 
 					<div className='update_cart__form__cart_items'>
-						{items.map(item => <CartItemObject key={item.uuid} cartItem={item} onRemoveDraftCartItemClick={onRemoveDraftCartItemClick} onDraftCartItemTitleChange={onDraftCartItemTitleChange} onDraftCartItemStatusChange={onDraftCartItemStatusChange}/>)}
+						{items.map(item => <CartItemObject key={item.uuid} cartItem={item}
+						                                   onRemoveDraftCartItemClick={onRemoveDraftCartItemClick}
+						                                   onDraftCartItemTitleChange={onDraftCartItemTitleChange}
+						                                   onDraftCartItemStatusChange={onDraftCartItemStatusChange}/>)}
 					</div>
 
 					<div className='update_cart__form__add_item_button' onClick={onAddDraftCartItemClicked}>

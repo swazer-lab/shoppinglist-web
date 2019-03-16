@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { AppState } from '../../types/store';
 import { Cart } from '../../types/api';
@@ -13,21 +13,32 @@ interface Props {
 	progress: AppState['service']['progress'],
 	cart: Cart,
 
+	currentUserEmail?: string,
+
 	onOpenUpdateCartModalClick: (cart: Cart) => void,
 	onRemoveCartClick: (cart: Cart) => void
 }
 
 const CartObject = (props: Props) => {
 	const [isShareModalVisible, setIsShareModalVisible] = useState(false);
-	const { progress, cart, onOpenUpdateCartModalClick, onRemoveCartClick } = props;
+	const { progress, cart, onOpenUpdateCartModalClick, onRemoveCartClick, currentUserEmail } = props;
 
 	useEffect(() => {
+		console.log(cart.users);
+		console.log(currentUserEmail);
+
 		if (!progress.visible && isShareModalVisible) {
 			setIsShareModalVisible(false);
 		}
 	}, [progress.visible]);
 
-	const onOpenUpdateCartModalClicked = () => onOpenUpdateCartModalClick(cart);
+	const accessLevel = cart.users.filter(user => user.email === currentUserEmail)[0].accessLevel;
+
+	const onOpenUpdateCartModalClicked = () => {
+		console.log(accessLevel, accessLevel, accessLevel, accessLevel, accessLevel);
+		if (accessLevel !== 'read') onOpenUpdateCartModalClick(cart);
+	};
+
 	const onRemoveCartClicked = (e: any) => {
 		e.stopPropagation();
 		onRemoveCartClick(cart);
@@ -55,9 +66,11 @@ const CartObject = (props: Props) => {
 
 	return (
 		<div className='cart_object' onClick={onOpenUpdateCartModalClicked}>
-			<div className='cart_object__remove_button' onClick={onRemoveCartClicked}>
-				<i className='material-icons'>cancel</i>
-			</div>
+			{accessLevel === 'owner' &&
+            <div className='cart_object__remove_button' onClick={onRemoveCartClicked}>
+                <i className='material-icons'>cancel</i>
+            </div>
+			}
 
 			<h4 className='cart_object__title'>{cart.title}</h4>
 
@@ -82,15 +95,15 @@ const CartObject = (props: Props) => {
 				</div>
 			</div>
 
-			<Modal
-				isVisible={isShareModalVisible}
-				onCloseModalClick={onCloseShareModalClick}
-				title='Share'
-				buttons={[{ iconName: 'close', onClick: onCloseShareModalClick }]}>
+			{accessLevel !== 'read' && <Modal
+                isVisible={isShareModalVisible}
+                onCloseModalClick={onCloseShareModalClick}
+                title='Share'
+                buttons={[{ iconName: 'close', onClick: onCloseShareModalClick }]}>
 
-				<ProgressBar isLoading={progress.visible}/>
-				<ShareCart cart={cart}/>
-			</Modal>
+                <ProgressBar isLoading={progress.visible}/>
+                <ShareCart cart={cart}/>
+            </Modal>}
 		</div>
 	);
 };

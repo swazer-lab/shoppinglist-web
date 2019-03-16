@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Provider, connect } from 'react-redux';
+import { connect, Provider } from 'react-redux';
 
 import { AppState } from './types/store';
 

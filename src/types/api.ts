@@ -32,6 +32,7 @@ export interface CartItem {
 }
 
 export interface CartUser {
+	id: string,
 	uuid: string,
 
 	name: string,

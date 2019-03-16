@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 
 import { AppState } from '../../types/store';
@@ -9,12 +9,16 @@ import UpdateCart from './UpdateCart';
 import CartObject from './CartObject';
 
 import {
-	addDraftCartItem, changeDraftCartItemStatus, changeDraftCartItemTitle,
+	addDraftCartItem,
+	changeDraftCartItemStatus,
+	changeDraftCartItemTitle,
 	changeDraftCartNotes,
 	changeDraftCartTitle,
-	clearDraftCart, createCart,
+	clearDraftCart,
+	createCart,
 	fetchCarts,
-	removeCart, removeDraftCartItem,
+	removeCart,
+	removeDraftCartItem,
 	setDraftCart,
 	updateCart,
 } from '../../actions/carts';
@@ -27,13 +31,15 @@ interface Props {
 	carts: Array<Cart>,
 	draftCart: Cart,
 
+	email?: string,
+
 	isLoading: boolean,
 	totalCount: number,
 	pageNumber: number,
 }
 
 const Carts = (props: Props) => {
-	const { dispatch, progress, carts, draftCart, isLoading, totalCount, pageNumber } = props;
+	const { dispatch, progress, carts, draftCart, isLoading, totalCount, pageNumber, email } = props;
 
 	useEffect(() => {
 		const { isLoggedIn } = useLocalStorage();
@@ -92,6 +98,7 @@ const Carts = (props: Props) => {
 			cart={cart}
 			onOpenUpdateCartModalClick={onOpenUpdateCartModalClicked}
 			onRemoveCartClick={onRemoveCartClicked}
+			currentUserEmail={email}
 		/>
 	));
 
@@ -138,10 +145,12 @@ const Carts = (props: Props) => {
 
 const mapStateToProps = (state: AppState) => {
 	const { progress } = state.service;
-	const { carts, draftCart, isLoading, totalCount, pageNumber } = state.carts;
+	const { email } = state.profile;
 
+	const { carts, draftCart, isLoading, totalCount, pageNumber } = state.carts;
 	return {
 		progress,
+		email,
 
 		carts,
 		draftCart,

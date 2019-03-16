@@ -16,7 +16,7 @@ const NavigationBar = (props: Props) => {
 
 	const renderProgress = () => progress.visible && (
 		<>
-			<div className='navigation_bar__progress__spinner' />
+			<div className='navigation_bar__progress__spinner'/>
 			<span className='navigation_bar__progress__message'>{progress.message}</span>
 		</>
 	);
@@ -35,7 +35,7 @@ const NavigationBar = (props: Props) => {
 				/>
 			</div>
 			<div className='navigation_bar__auth' onClick={onOpenProfileModalClick}>
-				<img className='navigation_bar__auth__photo' src={profilePhotoUrl} />
+				<img className='navigation_bar__auth__photo' src={profilePhotoUrl}/>
 			</div>
 		</div>
 	);

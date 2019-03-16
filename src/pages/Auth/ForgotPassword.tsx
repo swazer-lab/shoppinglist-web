@@ -2,7 +2,7 @@ import React, { FormEvent } from 'react';
 import { connect } from 'react-redux';
 
 import { AppState } from '../../types/store';
-import { AuthContainer, Input, Button } from '../../components';
+import { AuthContainer, Button, Input } from '../../components';
 
 import {
 	changeEmail,

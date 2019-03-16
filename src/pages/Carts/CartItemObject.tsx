@@ -1,5 +1,5 @@
 import React, { FormEvent } from 'react';
-import { CartItemStatusType, CartItem } from '../../types/api';
+import { CartItem, CartItemStatusType } from '../../types/api';
 
 interface Props {
 	onDraftCartItemTitleChange: (uuid: string, title: string) => void,

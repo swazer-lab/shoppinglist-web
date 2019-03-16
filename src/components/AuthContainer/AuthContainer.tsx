@@ -28,13 +28,13 @@ const AuthContainer = (props: Props) => {
 		<div className={classNames('auth_container', className)}>
 			<div className='auth_container__box'>
 				<div className='auth_container__content_container'>
-					<ProgressBar isLoading={isLoading || false} />
+					<ProgressBar isLoading={isLoading || false}/>
 					{children}
 				</div>
 				<div className='auth_container__links'>
-					<Button mode='text' accentColor='text' title={language.textHelp} onClick={onHelpClicked} />
-					<Button mode='text' accentColor='text' title={language.textPrivacy} onClick={onPrivacyClicked} />
-					<Button mode='text' accentColor='text' title={language.textTerms} onClick={onTermsClicked} />
+					<Button mode='text' accentColor='text' title={language.textHelp} onClick={onHelpClicked}/>
+					<Button mode='text' accentColor='text' title={language.textPrivacy} onClick={onPrivacyClicked}/>
+					<Button mode='text' accentColor='text' title={language.textTerms} onClick={onTermsClicked}/>
 				</div>
 			</div>
 		</div>

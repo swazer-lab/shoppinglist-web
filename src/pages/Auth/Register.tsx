@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 
 import { AppState } from '../../types/store';
 
-import { AuthContainer, Input, Button } from '../../components';
+import { AuthContainer, Button, Input } from '../../components';
 
 import { navigate } from '../../actions/service';
-import { changeName, changeEmail, changePassword, register } from '../../actions/auth';
+import { changeEmail, changeName, changePassword, register } from '../../actions/auth';
 
 import language from '../../assets/language';
 
@@ -79,7 +79,7 @@ const Register = (props: Props) => {
 							title={language.actionLoginInstead}
 							onClick={onLoginClicked}
 						/>
-						<Button type='submit' title={language.actionRegister} />
+						<Button type='submit' title={language.actionRegister}/>
 					</div>
 				</form>
 			</div>
