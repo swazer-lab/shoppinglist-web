@@ -6,12 +6,13 @@
   flex: 1;
   align-self: center;
 
-  width: 50rem;
   margin-bottom: 3rem;
 
   background-color: $color-white;
   border: .1rem solid $color-gray;
   border-radius: .6rem;
+
+  @include respond-width();
 
   &__form {
     display: flex;
@@ -185,13 +186,14 @@
   flex: 1;
   flex-direction: column;
 
-  width: 50rem;
   margin-bottom: 1rem;
   padding: 1rem 0;
 
   background-color: $color-white;
   border: .1rem solid $color-gray;
   border-radius: .6rem;
+
+  @include respond-width();
 
   &:hover &__remove_button {
     opacity: 1;
@@ -281,8 +283,6 @@
       }
     }
   }
-
-
 }
 
 .cart_item_object {
