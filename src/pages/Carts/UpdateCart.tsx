@@ -92,7 +92,7 @@ const UpdateCart = (props: Props) => {
 							className='update_cart__form__buttons_container__close_button'
 							mode='text'
 							type='button'
-							title='Close'
+							title={language.actionCloseUpdateCartModal}
 							onClick={onCloseUpdateCartModalClicked}
 						/>
 

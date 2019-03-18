@@ -8,6 +8,7 @@ import { Button, ProgressBar } from '../';
 
 import language from '../../assets/language';
 import './styles.scss';
+import { navigate } from '../../actions/service';
 
 interface Props {
 	dispatch: Function,
@@ -20,9 +21,8 @@ interface Props {
 const AuthContainer = (props: Props) => {
 	const { dispatch, children, className, isLoading } = props;
 
-	const onHelpClicked = () => dispatch('');
-	const onPrivacyClicked = () => dispatch('');
-	const onTermsClicked = () => dispatch('');
+	const onPrivacyClicked = () => dispatch(navigate('privacyPolicy'));
+	const onTermsClicked = () => dispatch(navigate('serviceTerms'));
 
 	return (
 		<div className={classNames('auth_container', className)}>
@@ -32,7 +32,6 @@ const AuthContainer = (props: Props) => {
 					{children}
 				</div>
 				<div className='auth_container__links'>
-					<Button mode='text' accentColor='text' title={language.textHelp} onClick={onHelpClicked}/>
 					<Button mode='text' accentColor='text' title={language.textPrivacy} onClick={onPrivacyClicked}/>
 					<Button mode='text' accentColor='text' title={language.textTerms} onClick={onTermsClicked}/>
 				</div>

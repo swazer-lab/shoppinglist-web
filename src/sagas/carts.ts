@@ -186,7 +186,7 @@ function* getAccessToCartSaga(action: GetAccessToCartAction): SagaIterator {
 	const { isLoggedIn } = useLocalStorage();
 	if (!isLoggedIn) yield put(navigate('Login'));
 
-	yield put(showProgress('Accessing is being gotten'));
+	yield put(showProgress(language.textAccessingCart));
 
 	try {
 		const response = yield call(get_access_to_cart_api, action.accessCode);
@@ -194,7 +194,7 @@ function* getAccessToCartSaga(action: GetAccessToCartAction): SagaIterator {
 
 		yield all([
 			put(getAccessToCartResult(false, data)),
-			put(showAlert('success', 'You have been added to Cart')),
+			put(showAlert('success', language.textPersonAddingCart)),
 			put(navigate('Carts')),
 		]);
 	} catch (e) {

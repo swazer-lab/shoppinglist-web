@@ -22,7 +22,7 @@ interface Props {
 }
 
 const Login = (props: Props) => {
-	const { dispatch, email, password, isLoading } = props;
+	const { dispatch, email, password, isLoading, errorMessage } = props;
 
 	const handleChangeEmail = (e: any) => dispatch(changeEmail(e.target.value));
 	const handleChangePassword = (e: any) => dispatch(changePassword(e.target.value));
@@ -35,11 +35,13 @@ const Login = (props: Props) => {
 		event.preventDefault();
 	};
 
+	const message = errorMessage ? errorMessage : language.textLoginSubTitle;
+
 	return (
 		<AuthContainer className='page_auth' isLoading={isLoading}>
 			<div className='page_auth__content_container'>
 				<h1 className='page_auth__title'>{language.titleLogin}</h1>
-				<p className='page_auth__subtitle'>{language.textLoginSubTitle}</p>
+				<p className='page_auth__subtitle'>{message}</p>
 
 				<form onSubmit={onLoginClicked}>
 					<Input

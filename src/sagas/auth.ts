@@ -17,6 +17,7 @@ import { clearProfile } from '../actions/profile';
 import { clearCarts } from '../actions/carts';
 
 import { ActionTypes, ConfirmEmailAction } from '../types/auth';
+import language from '../assets/language';
 
 function* registerSaga(): SagaIterator {
 	const { name, email, password } = yield select((state: AppState) => state.auth);
@@ -50,7 +51,7 @@ function* loginSaga(): SagaIterator {
 		]);
 		yield put(navigate('Carts'));
 	} catch (e) {
-		yield put(loginResult(true, e.response.data.message));
+		yield put(loginResult(true, language.titleAuthFailed));
 	}
 }
 

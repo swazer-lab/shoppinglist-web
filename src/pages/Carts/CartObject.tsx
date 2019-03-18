@@ -8,6 +8,7 @@ import ShareCart from './ShareCart';
 
 import avatar from '../../assets/images/avatar.jpeg';
 import './styles.scss';
+import language from '../../assets/language';
 
 interface Props {
 	progress: AppState['service']['progress'],
@@ -98,7 +99,7 @@ const CartObject = (props: Props) => {
 			{accessLevel !== 'read' && <Modal
                 isVisible={isShareModalVisible}
                 onCloseModalClick={onCloseShareModalClick}
-                title='Share'
+                title={language.textShareCartTitle}
                 buttons={[{ iconName: 'close', onClick: onCloseShareModalClick }]}>
 
                 <ProgressBar isLoading={progress.visible}/>

@@ -1,0 +1,67 @@
+@import "../../assets/scss/main";
+
+.services {
+  padding: 15rem 20%;
+
+  & h2 {
+    font-weight: 700;
+    font-style: normal;
+    color: #576d96;
+    letter-spacing: -.05rem;
+
+    margin-top: 2.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  & h3 {
+    font-weight: 700;
+    font-size: 2rem;
+    color: #576d96;
+
+    margin-top: 2.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  & p {
+    margin-top: 2.5rem;
+    margin-bottom: 2.5rem;
+
+    font-size: 1.7rem;
+    color: #576d96;
+  }
+
+  & ol {
+    padding-left: 4rem;
+    font-size: 1.7rem;
+
+    & li {
+      margin-top: 2rem;
+      margin-bottom: 2rem;
+
+      font-size: 1.7rem;
+      color: #576d96;
+    }
+  }
+
+  & a{
+    font-weight: 700;
+    color: $color-primary;
+    text-decoration: none;
+  }
+
+  @include respond-landing {
+    padding: 8rem 8%;
+  }
+
+  @include respond-portal {
+    padding: 5rem 5%;
+  }
+
+  @include respond-phone {
+    padding: 1rem 2%;
+  }
+
+  @include respond-big-desktop {
+    padding: 10rem 15%;
+  }
+}

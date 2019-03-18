@@ -88,7 +88,7 @@ const ShareCart = (props: Props) => {
 				<div className='share_cart__separator'/>
 
 				<div className='share_cart__subtitle'>
-					Share With Contact
+					{language.textShareCartWithContactSubtitle}
 				</div>
 				<div className='share_cart__contacts_container'>
 					{renderContacts}
@@ -96,7 +96,7 @@ const ShareCart = (props: Props) => {
 
 				<div className='share_cart__sharing_button'>
 					<Button
-						title='Share'
+						title={language.actionShareCart}
 						onClick={onShareCartButtonClicked}
 					/>
 				</div>
@@ -107,7 +107,7 @@ const ShareCart = (props: Props) => {
 	return (
 		<div className='share_cart'>
 			<div className='share_cart__subtitle'>
-				Share With Link
+				{language.textShareCartWithLinkSubtitle}
 			</div>
 			<div className='share_cart__create_share_cart_link'>
 				<select onChange={handleShareLinkChange}>

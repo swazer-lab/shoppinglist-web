@@ -1,5 +1,6 @@
 import React, { FormEvent } from 'react';
 import { CartItem, CartItemStatusType } from '../../types/api';
+import language from '../../assets/language';
 
 interface Props {
 	onDraftCartItemTitleChange: (uuid: string, title: string) => void,
@@ -28,7 +29,7 @@ const CartItemObject = (props: Props) => {
 				value={title}
 				onChange={handleDraftCartItemTitleChange}
 				type='text'
-				placeholder='Item Name'
+				placeholder={language.textEnterCartItemTitle}
 				required
 			/>
 			<i className='material-icons cart_item_object__close_button'

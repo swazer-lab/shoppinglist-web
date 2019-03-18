@@ -1,3 +1,5 @@
+import language from './index';
+
 export default {
 	// Common
 	titleServiceUnavailable: 'We\'re sorry',
@@ -18,6 +20,7 @@ export default {
 	textEnterNewPassword: 'Enter New Password',
 	textEnterPhoneNumber: 'Enter Phone Number',
 	textEnterResetPasswordCode: 'Enter Reset Password Code',
+	titleAuthFailed: 'Your credentials seem to be wrong',
 
 	// Register
 	titleRegister: 'Register',
@@ -59,15 +62,25 @@ export default {
 	// Carts
 	textEnterCartTitle: 'Cart Name',
 	textEnterCartItemTitle: 'Item Name',
+
+	textShareCartWithContactSubtitle: 'Share with Contact',
+	textShareCartWithLinkSubtitle: 'Share with Link',
+	textShareCartTitle: 'Share',
+
 	actionAddCartItem: 'Add Item',
 	actionCreateCart: 'Create Cart',
 	actionUpdateCart: 'Update Cart',
+	actionCloseUpdateCartModal: 'Close',
+	actionShareCart: 'Share',
+
 	textFetchingCarts: 'Fetching Carts',
 	textCreatingCart: 'Creating Cart',
 	textRemovingCart: 'Deleting Cart',
 	textUpdatingCart: 'Updating Cart',
 	textSearchingCarts: 'Searching Carts',
 	textSharingCarts: 'Sharing Carts to users you choosed',
+	textAccessingCart: 'Accessing is being ensured',
+	textPersonAddingCart:  'You have been added to Cart',
 
 	textAccessLevelRead: 'Anyone with the link can read on the cart',
 	textAccessLevelWrite: 'Anyone with the link can write on the cart',
@@ -80,6 +93,7 @@ export default {
 
 	// Service Terms
 	titleServiceTerms: 'Term of service',
+
 
 	// Not Found
 	titleNotFound: 'Not Found',
