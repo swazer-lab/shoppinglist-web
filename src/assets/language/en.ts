@@ -20,7 +20,7 @@ export default {
 	textEnterNewPassword: 'Enter New Password',
 	textEnterPhoneNumber: 'Enter Phone Number',
 	textEnterResetPasswordCode: 'Enter Reset Password Code',
-	titleAuthFailed: 'Your credentials seem to be wrong',
+	titleAuthFailed: 'Looks like you\'ve entered wrong credentials. Please try again.',
 
 	// Register
 	titleRegister: 'Register',
@@ -30,7 +30,7 @@ export default {
 
 	// Login
 	titleLogin: 'Login',
-	textLoginSubTitle: 'with your Google account',
+	textLoginSubTitle: 'Login to your Account',
 
 	actionForgotPassword: 'Forgot Password',
 	actionLogin: 'Login',
