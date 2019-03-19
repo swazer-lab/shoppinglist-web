@@ -29,6 +29,8 @@
 
     overflow: hidden;
 
+    @include respond-width();
+
     &__icon {
       margin-left: 1.5rem;
 
