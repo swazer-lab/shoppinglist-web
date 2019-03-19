@@ -69,11 +69,11 @@ const Landing = (props: Props) => {
 					<div>
 						<Button
 							mode='text'
-							title='Login'
+							title={language.actionLogin}
 							onClick={navigateLogin}
 						/>
 						<Button
-							title='Register'
+							title={language.actionLandingRegister}
 							onClick={navigateRegister}
 						/>
 					</div>
@@ -82,9 +82,9 @@ const Landing = (props: Props) => {
 
 			<header className='landing_page__header landing_page__row'>
 				<div className='landing_page__column landing_page__header__auth_container'>
-					<h1>Shopping List App.</h1>
+					<h1>{language.textTitleLanding}</h1>
 					<h2>
-						A simple way to text, video chat and plan things all in one place.
+						{language.textSubtitleLanding}
 					</h2>
 					<form onSubmit={onLoginClicked}>
 						<Input
@@ -103,7 +103,7 @@ const Landing = (props: Props) => {
 							pattern='.{6,}'
 						/>
 
-						<Button title='Login' onClick={onLoginClicked} />
+						<Button title={language.actionLogin} onClick={onLoginClicked} />
 					</form>
 
 					<div className='landing_page__header__keep_signed_in'>
@@ -111,19 +111,19 @@ const Landing = (props: Props) => {
 						   children={isKeepSignedInActive ? 'check_box' : 'check_box_outline_blank'}
 						   onClick={onKeepSignedInClicked}
 						/>
-						<label onClick={onKeepSignedInClicked}>Keep me signed in</label>
+						<label onClick={onKeepSignedInClicked}>{language.actionKeepSignedMe}</label>
 					</div>
 
-					<span onClick={navigateForgotPassword} className='landing_page__header__forgot_password'>Did you forgot your Password?</span>
+					<span onClick={navigateForgotPassword} className='landing_page__header__forgot_password'>{language.actionLandingForgotPassword}</span>
 
 					<div className='landing_page__header__store_buttons'>
 						<img
-							src='https://static.xx.fbcdn.net/rsrc.php/v3/yA/r/BTZJR_yyOiL.png'
+							src={require('../../assets/images/app_store_badge.svg')}
 							alt='Apple Store'
 							onClick={onAppStoreBadgeClicked}
 						/>
 						<img
-							src='https://static.xx.fbcdn.net/rsrc.php/v3/yW/r/5peqYnG03DY.png'
+							src={require('../../assets/images/google_play_badge.svg')}
 							alt='Google Play'
 							onClick={onGooglePlayBadgeClicked}
 						/>
@@ -132,12 +132,12 @@ const Landing = (props: Props) => {
 				<div className='landing_page__column landing_page__header__phone_container'>
 					<img
 						className='landing_page__header__phone'
-						src={require('../../assets/images/iphone.png')}
+						src={require('../../assets/images/iphoneLanding.png')}
 						alt='iPhone'
 					/>
 					<img
 						className='landing_page__header__phone'
-						src={require('../../assets/images/android.png')}
+						src={require('../../assets/images/androidLanding.png')}
 						alt='Android'
 					/>
 				</div>
@@ -150,8 +150,8 @@ const Landing = (props: Props) => {
 							alt='feature_1'
 						/>
 						<div>
-							<h1>Lorem ipsum dolor sit amet.</h1>
-							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus accusantium aut</p>
+							<h1>{language.textTitlePhotoCart1}</h1>
+							<p>{language.textSubtitlePhotoCart1}</p>
 						</div>
 					</div>
 					<div className='landing_page__column landing_page__features_section__feature'>
@@ -160,8 +160,8 @@ const Landing = (props: Props) => {
 							alt='feature_2'
 						/>
 						<div>
-							<h1>Lorem ipsum dolor sit amet.</h1>
-							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus accusantium aut</p>
+							<h1>{language.textTitlePhotoCart2}</h1>
+							<p>{language.textSubtitlePhotoCart2}</p>
 						</div>
 					</div>
 					<div className='landing_page__column landing_page__features_section__feature'>
@@ -170,8 +170,8 @@ const Landing = (props: Props) => {
 							alt='feature_3'
 						/>
 						<div>
-							<h1>Lorem ipsum dolor sit amet.</h1>
-							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus accusantium aut</p>
+							<h1>{language.textTitlePhotoCart3}</h1>
+							<p>{language.textSubtitlePhotoCart3}</p>
 						</div>
 					</div>
 					<div className='landing_page__column landing_page__features_section__feature'>
@@ -180,8 +180,8 @@ const Landing = (props: Props) => {
 							alt='feature_4'
 						/>
 						<div>
-							<h1>Lorem ipsum dolor sit amet.</h1>
-							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus accusantium aut</p>
+							<h1>{language.textTitlePhotoCart4}</h1>
+							<p>{language.textSubtitlePhotoCart4}</p>
 						</div>
 					</div>
 				</div>

@@ -94,7 +94,28 @@ export default {
 	// Service Terms
 	titleServiceTerms: 'Term of service',
 
-
 	// Not Found
 	titleNotFound: 'Not Found',
+
+	// Landing Page
+	actionLandingRegister: 'Register',
+	actionKeepSignedMe: 'Keep me signed in',
+	actionLandingForgotPassword: 'Did you forgot your Password?',
+
+	textTitleLanding: 'Shopping List App.',
+	textSubtitleLanding: 'Start creating lists now.\n' +
+		'\n' +
+		'It\'s free and easy',
+
+	textTitlePhotoCart1:'CREATE',
+	textSubtitlePhotoCart1:'New carts to save list of things to buy later',
+
+	textTitlePhotoCart2:'MODIFY',
+	textSubtitlePhotoCart2:'The carts and add more items during planning to go to market',
+
+	textTitlePhotoCart3:'SHARE',
+	textSubtitlePhotoCart3:'The carts with your family and let them help you what to buy',
+
+	textTitlePhotoCart4:'CHECK-IN',
+	textSubtitlePhotoCart4:'Check the bought items in the cart in to mark as completed'
 };
