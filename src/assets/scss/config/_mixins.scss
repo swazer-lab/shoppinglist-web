@@ -22,3 +22,20 @@
     @content //1800px -> +
   }
 }
+
+@mixin respond-value($property, $values...) {
+  #{$property}: nth($values, 1);
+
+  @include respond-landing {
+    #{$property}: nth($values, 2);
+  }
+  @include respond-portal {
+    #{$property}: nth($values, 3);
+  }
+  @include respond-phone {
+    #{$property}: nth($values, 4);
+  }
+  @include respond-big-desktop {
+    #{$property}: nth($values, 5);
+  }
+}

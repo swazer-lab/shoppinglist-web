@@ -1,0 +1,279 @@
+@import "../../assets/scss/main";
+
+.landing_page {
+  &__row {
+    margin-right: auto;
+    margin-left: auto;
+    padding-left: 15px;
+    padding-right: 15px;
+
+    @media (min-width: 768px) {
+      width: 750px;
+    }
+    @media (min-width: 992px) {
+      width: 970px;
+    }
+    @media (min-width: 1200px) {
+      width: 1170px;
+    }
+  }
+
+  &__column {
+    display: flex;
+    flex: 1;
+  }
+
+  &__nav {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+
+    @include respond-value(height, 10rem, 6.5rem, 6.5rem, 6.5rem, 10rem);
+    background-color: rgba($color-white, .96);
+
+    z-index: 100;
+    transition: all .2s;
+
+    &__scrolled {
+      height: 6.5rem;
+      border-bottom: .1rem solid $color-gray;
+    }
+
+    &__content_container {
+      display: flex;
+      flex: 1;
+
+      flex-flow: row wrap;
+      justify-content: space-between;
+      align-items: center;
+
+      height: inherit;
+
+      & img {
+        width: 5rem;
+        height: 5rem;
+      }
+
+      & div {
+        & > * {
+          margin-left: 1.5rem;
+        }
+      }
+    }
+  }
+
+  &__header {
+    display: flex;
+
+    flex: 1;
+    flex-flow: row wrap;
+    align-items: center;
+
+    @include respond-value(padding-top, 14rem, 10rem, 8rem, 8rem, 18rem);
+    padding-bottom: 8rem;
+
+    &__auth_container {
+      display: flex;
+      flex-direction: column;
+
+      max-width: 35rem;
+    }
+
+    &__phone_container {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
+
+      @include respond-portal {
+        display: none;
+        visibility: hidden;
+      }
+    }
+
+    & h1 {
+      font-size: 3.6rem;
+      font-weight: 600;
+      color: $color-black;
+      letter-spacing: -0.76px;
+      line-height: 4.4rem;
+    }
+
+    & h2 {
+      margin-top: .5rem;
+
+      font-size: 1.8rem;
+      color: $color-text;
+      font-weight: 500;
+      text-align: left;
+      word-break: keep-all;
+    }
+
+    & form {
+      margin-top: 2rem;
+      margin-bottom: 2rem;
+
+      & input {
+        margin-bottom: 1rem;
+        padding: 1.2rem 1.8rem;
+
+        background-color: $color-highlight;
+
+        &:hover {
+          box-shadow: none;
+        }
+
+        &:focus {
+          box-shadow: none;
+        }
+      }
+    }
+
+    &__keep_signed_in {
+      display: flex;
+
+      flex: 1;
+      align-items: center;
+
+      color: $color-text;
+
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+
+      & i {
+        font-size: 2.2rem;
+        cursor: pointer;
+      }
+
+      & label {
+        margin-left: .8rem;
+        font-size: 1.4rem;
+
+        cursor: pointer;
+      }
+    }
+
+    &__forgot_password {
+      margin-top: 1.5rem;
+
+      font-size: 1.6rem;
+      font-weight: 500;
+      color: $color-text;
+
+      cursor: pointer;
+    }
+
+    &__store_buttons {
+      margin-top: 1.5rem;
+
+      & > * {
+        width: 14rem;
+        margin-right: 1rem;
+
+        cursor: pointer;
+      }
+    }
+
+    &__phone {
+      width: calc(64.5rem / 2.4);
+      height: calc(138rem / 2.4);
+      margin-right: 2rem;
+
+      transform: rotate(7deg);
+      transition: all 1s;
+
+      &:hover {
+        transform: scale(.9) rotate(0deg);
+      }
+    }
+  }
+
+  &__features_section {
+    display: flex;
+    flex: 1;
+
+    padding-top: 10rem;
+    padding-bottom: 10rem;
+    background-color: $color-highlight;
+
+    &__content_container {
+      display: flex;
+      flex-flow: row wrap;
+    }
+
+    &__feature {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      margin: 1rem;
+      padding: 3rem 2rem;
+
+      background-color: $color-white;
+      box-shadow: 0 .2rem .6rem 0 rgba($color-black, .1);
+      border-radius: 2rem;
+
+      & img {
+        display: flex;
+        flex: 1;
+
+        width: 15rem;
+      }
+
+      & div {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+
+        padding: 1rem 20px;
+
+        text-align: center;
+
+        & h1 {
+          margin-bottom: 1rem;
+
+          font-size: 1.6rem;
+          font-weight: 600;
+          color: #000;
+          word-break: keep-all;
+        }
+
+        & p {
+          font-size: 15px;
+          font-weight: 400;
+          color: $color-text;
+          word-break: keep-all;
+        }
+      }
+    }
+  }
+
+  &__footer {
+    display: flex;
+    flex: 1;
+    background-color: $color-highlight;
+    padding-bottom: 5rem;
+
+    &__content_container {
+      display: flex;
+
+      flex-flow: row wrap;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    & p {
+      font-size: 1.4rem;
+      font-weight: 500;
+      color: $color-text;
+
+      text-align: center;
+    }
+
+    & a {
+      color: $color-primary;
+    }
+  }
+}
