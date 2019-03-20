@@ -12,8 +12,10 @@ import {
 	sendForgotPasswordEmail,
 } from '../../actions/auth';
 
-import './styles.scss';
+import { useDocumentTitle } from '../../config/utilities';
 import language from '../../assets/language';
+
+import './styles.scss';
 
 interface Props {
 	dispatch: Function,
@@ -29,6 +31,8 @@ interface Props {
 
 const ForgotPassword = (props: Props) => {
 	const { dispatch, email, password, resetPasswordCode, isResettingPassword, isLoading, errorMessage } = props;
+
+	useDocumentTitle(language.titleForgotPassword);
 
 	const handleEmailChange = (e: FormEvent<HTMLInputElement>) => dispatch(changeEmail(e.currentTarget.value));
 	const handleResetPasswordCodeChange = (e: FormEvent<HTMLInputElement>) => dispatch(changeResetPasswordCode(e.currentTarget.value));

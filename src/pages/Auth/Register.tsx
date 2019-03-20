@@ -8,6 +8,7 @@ import { AuthContainer, Button, Input } from '../../components';
 import { navigate } from '../../actions/service';
 import { changeEmail, changeName, changePassword, register } from '../../actions/auth';
 
+import { useDocumentTitle } from '../../config/utilities';
 import language from '../../assets/language';
 
 import './styles.scss';
@@ -25,6 +26,8 @@ interface Props {
 
 const Register = (props: Props) => {
 	const { dispatch, name, email, password, isLoading, errorMessage } = props;
+
+	useDocumentTitle(language.titleRegister);
 
 	const handleNameChange = (e: any) => dispatch(changeName(e.target.value));
 	const handleEmailChange = (e: any) => dispatch(changeEmail(e.target.value));

@@ -8,8 +8,10 @@ import { AuthContainer, Button, Input } from '../../components';
 import { navigate } from '../../actions/service';
 import { changeEmail, changePassword, login } from '../../actions/auth';
 
-import './styles.scss';
+import { useDocumentTitle } from '../../config/utilities';
 import language from '../../assets/language';
+
+import './styles.scss';
 
 interface Props {
 	dispatch: Function,
@@ -23,6 +25,8 @@ interface Props {
 
 const Login = (props: Props) => {
 	const { dispatch, email, password, isLoading, errorMessage } = props;
+
+	useDocumentTitle(language.titleLogin);
 
 	const handleChangeEmail = (e: any) => dispatch(changeEmail(e.target.value));
 	const handleChangePassword = (e: any) => dispatch(changePassword(e.target.value));

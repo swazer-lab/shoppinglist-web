@@ -143,6 +143,10 @@ const Carts = (props: Props) => {
 	);
 };
 
+Carts.layoutOptions = {
+	title: 'Carts',
+};
+
 const mapStateToProps = (state: AppState) => {
 	const { progress } = state.service;
 	const { email } = state.profile;

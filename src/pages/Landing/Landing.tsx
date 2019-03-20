@@ -11,6 +11,7 @@ import { changeEmail, changePassword, login } from '../../actions/auth';
 
 import language from '../../assets/language';
 import './styles.scss';
+import { useDocumentTitle } from '../../config/utilities';
 
 interface Props {
 	dispatch: Function,
@@ -23,6 +24,7 @@ interface Props {
 }
 
 const Landing = (props: Props) => {
+
 	const { dispatch, email, password, errorMessage } = props;
 
 	const [isScrolled, setIsScrolled] = useState(false);

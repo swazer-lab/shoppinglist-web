@@ -4,10 +4,12 @@ import { connect } from 'react-redux';
 import { AppState } from '../../types/store';
 
 import { AuthContainer } from '../../components';
-
 import { confirmEmail } from '../../actions/auth';
-import { useLocalStorage } from '../../config/utilities';
+
+import { useDocumentTitle, useLocalStorage } from '../../config/utilities';
 import language from '../../assets/language';
+
+import './styles.scss';
 
 interface Props {
 	dispatch: Function,
@@ -18,6 +20,8 @@ interface Props {
 }
 
 const ConfirmEmail = (props: Props) => {
+	useDocumentTitle(language.titleConfirmEmail);
+
 	useEffect(() => {
 		const { dispatch, location } = props;
 		const queryParams = new URLSearchParams(location.search);

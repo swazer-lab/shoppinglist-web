@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 
 import { AppState } from '../types/store';
@@ -36,7 +36,13 @@ const Layout = (props: Props) => {
 	const { dispatch, children, layoutOptions, progress, name, email, phoneNumber, photoUrl, draftProfile } = props;
 	const { isLoggedIn } = useLocalStorage();
 
-	if (layoutOptions.authorized && !isLoggedIn) dispatch(navigate('Login'));
+	useEffect(() => {
+		document.title = 'Shopping List | ' + layoutOptions.title;
+	}, [layoutOptions.title]);
+
+	if (layoutOptions.authorized && !isLoggedIn) {
+		dispatch(navigate('Login'));
+	}
 
 	const [isProfileModalVisible, setIsProfileModalVisible] = useState(false);
 
