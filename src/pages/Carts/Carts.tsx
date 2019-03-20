@@ -56,7 +56,7 @@ const Carts = (props: Props) => {
 		return () => {
 			window.removeEventListener('scroll', onScroll, false);
 		};
-	}, []);
+	}, [carts, totalCount, isLoading]);
 
 	const [isCartUpdating, setIsCartUpdating] = useState(false);
 
@@ -79,9 +79,6 @@ const Carts = (props: Props) => {
 	const onRemoveCartClicked = (cart: Cart) => {
 		dispatch(removeCart(cart));
 	};
-
-	const onSetDraftCartClicked = (cart: Cart) => dispatch(setDraftCart(cart));
-	const onClearDraftCartClicked = () => dispatch(clearDraftCart());
 
 	const handleDraftCartTitleChange = (title: string) => dispatch(changeDraftCartTitle(title));
 	const handleDraftCartNotesChange = (notes: string) => dispatch(changeDraftCartNotes(notes));

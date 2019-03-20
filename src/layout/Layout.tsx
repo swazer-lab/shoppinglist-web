@@ -6,6 +6,8 @@ import { Profile } from '../types/api';
 
 import { NavigationBar, ProfileModal } from './';
 
+import { changeSearchQuery, filterCarts } from '../actions/carts';
+
 import { navigate } from '../actions/service';
 import { logout } from '../actions/auth';
 import {
@@ -56,12 +58,17 @@ const Layout = (props: Props) => {
 	const onUpdateProfilePhotoClicked = (photoData: string) => dispatch(updateProfilePhoto(photoData));
 	const onLogoutClicked = () => dispatch(logout());
 
+	const onSearchQueryChanged = (queryString: string) => dispatch(changeSearchQuery(queryString));
+	const onFilterClicked = () => dispatch(filterCarts());
+
 	return (
 		<div className='main_layout'>
 			<NavigationBar
 				progress={progress}
 				profilePhotoUrl={photoUrl}
 				onOpenProfileModalClick={onOpenProfileModalClicked}
+				onSearchQueryChange={onSearchQueryChanged}
+				onFilterClick = {onFilterClicked}
 			/>
 			<ProfileModal
 				isVisible={isProfileModalVisible}

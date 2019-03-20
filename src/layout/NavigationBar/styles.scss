@@ -29,6 +29,8 @@
     border: .1rem solid $color-gray;
     border-radius: .8rem;
 
+    z-index: 600;
+
     overflow: hidden;
 
     @include respond-width();
@@ -102,6 +104,26 @@
       border-radius: 2.5rem;
       border: 0;
     }
+  }
+}
+
+.search_bar_container{
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  background-color: rgba($color-black, .5);
+  z-index: 500;
+
+  opacity: 0;
+  visibility: hidden;
+  transition: all .2s;
+
+  &_visible {
+    opacity: 1;
+    visibility: visible;
   }
 }
 
