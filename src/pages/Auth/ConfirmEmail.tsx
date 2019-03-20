@@ -26,7 +26,8 @@ const ConfirmEmail = (props: Props) => {
 		const token = queryParams.get('token');
 
 		if (userId && token) dispatch(confirmEmail(userId, token));
-	});
+	}, []);
+
 	const { isEmailConfirmed } = useLocalStorage();
 	const { isLoading, errorMessage } = props;
 
