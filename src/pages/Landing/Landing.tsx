@@ -17,10 +17,13 @@ interface Props {
 
 	email: string,
 	password: string,
+
+	isLoading: boolean,
+	errorMessage?: string,
 }
 
 const Landing = (props: Props) => {
-	const { dispatch, email, password } = props;
+	const { dispatch, email, password, errorMessage } = props;
 
 	const [isScrolled, setIsScrolled] = useState(false);
 	const [isKeepSignedInActive, setIsKeepSignedInActive] = useState(false);
@@ -86,6 +89,9 @@ const Landing = (props: Props) => {
 					<h2>
 						{language.textSubtitleLanding}
 					</h2>
+					<div className='landing_page__column landing_page__header__auth_container__error_message'>
+						{errorMessage}
+					</div>
 					<form onSubmit={onLoginClicked}>
 						<Input
 							value={email}
@@ -103,7 +109,7 @@ const Landing = (props: Props) => {
 							pattern='.{6,}'
 						/>
 
-						<Button title={language.actionLogin} onClick={onLoginClicked} />
+						<Button title={language.actionLogin} onClick={onLoginClicked}/>
 					</form>
 
 					<div className='landing_page__header__keep_signed_in'>
@@ -114,7 +120,8 @@ const Landing = (props: Props) => {
 						<label onClick={onKeepSignedInClicked}>{language.actionKeepSignedMe}</label>
 					</div>
 
-					<span onClick={navigateForgotPassword} className='landing_page__header__forgot_password'>{language.actionLandingForgotPassword}</span>
+					<span onClick={navigateForgotPassword}
+					      className='landing_page__header__forgot_password'>{language.actionLandingForgotPassword}</span>
 
 					<div className='landing_page__header__store_buttons'>
 						<img
@@ -211,10 +218,13 @@ const Landing = (props: Props) => {
 };
 
 const mapStateToProps = (state: AppState) => {
-	const { email, password } = state.auth;
+	const { email, password, isLoading, errorMessage } = state.auth;
+
 	return {
 		email,
 		password,
+		isLoading,
+		errorMessage,
 	};
 };
 
