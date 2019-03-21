@@ -1,11 +1,10 @@
-import language from './index';
-
 export default {
 	// Common
 	titleServiceUnavailable: 'We\'re sorry',
 	textServiceUnavailable: 'Service is temporarily unavailable. Our engineers are working quickly to resolve this issue.',
 	titleUnexpectedError: 'Oops! Something went wrong!',
 	textUnexpectedError: 'It doesn\'t appear to have affected your data. We\'ll do our best to make sure this never happens again.',
+	actionUndo: 'Undo',
 
 	// Layout
 	textEnterSearchQuery: 'Search',
@@ -75,12 +74,12 @@ export default {
 
 	textFetchingCarts: 'Fetching Carts',
 	textCreatingCart: 'Creating Cart',
-	textRemovingCart: 'Deleting Cart',
+	textRemovingCart: 'Cart has been removed',
 	textUpdatingCart: 'Updating Cart',
 	textSearchingCarts: 'Searching Carts',
 	textSharingCarts: 'Sharing Carts to users you choosed',
 	textAccessingCart: 'Accessing is being ensured',
-	textPersonAddingCart:  'You have been added to Cart',
+	textPersonAddingCart: 'You have been added to Cart',
 
 	textAccessLevelRead: 'Anyone with the link can read on the cart',
 	textAccessLevelWrite: 'Anyone with the link can write on the cart',
@@ -103,19 +102,17 @@ export default {
 	actionLandingForgotPassword: 'Did you forgot your Password?',
 
 	textTitleLanding: 'Shopping List App.',
-	textSubtitleLanding: 'Start creating lists now.\n' +
-		'\n' +
-		'It\'s free and easy',
+	textSubtitleLanding: 'Start creating lists now. It\'s free and easy',
 
-	textTitlePhotoCart1:'CREATE',
-	textSubtitlePhotoCart1:'New carts to save list of things to buy later',
+	textTitlePhotoCart1: 'CREATE',
+	textSubtitlePhotoCart1: 'New carts to save list of things to buy later',
 
-	textTitlePhotoCart2:'MODIFY',
-	textSubtitlePhotoCart2:'The carts and add more items during planning to go to market',
+	textTitlePhotoCart2: 'MODIFY',
+	textSubtitlePhotoCart2: 'The carts and add more items during planning to go to market',
 
-	textTitlePhotoCart3:'SHARE',
-	textSubtitlePhotoCart3:'The carts with your family and let them help you what to buy',
+	textTitlePhotoCart3: 'SHARE',
+	textSubtitlePhotoCart3: 'The carts with your family and let them help you what to buy',
 
-	textTitlePhotoCart4:'CHECK-IN',
-	textSubtitlePhotoCart4:'Check the bought items in the cart in to mark as completed'
+	textTitlePhotoCart4: 'CHECK-IN',
+	textSubtitlePhotoCart4: 'Check the bought items in the cart in to mark as completed',
 };

@@ -135,19 +135,14 @@ function* updateCartSaga() {
 }
 
 function* removeCartSaga(action: RemoveCartAction): SagaIterator {
-	yield put(showProgress(language.textRemovingCart));
-
 	try {
 		yield call(remove_cart_api, action.cart.id);
-
 		yield put(removeCartResult(false, action.cart));
 	} catch (e) {
 		yield all([
 			put(removeCartResult(true)),
 			put(showHttpErrorAlert(e)),
 		]);
-	} finally {
-		yield put(hideProgress());
 	}
 }
 

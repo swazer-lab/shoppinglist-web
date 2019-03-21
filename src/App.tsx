@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect, Provider } from 'react-redux';
 
 import { AppState } from './types/store';
@@ -10,34 +10,29 @@ import { updateDefaultHeaders } from './api';
 import { fetchProfile } from './actions/profile';
 import { fetchContacts } from './actions/contacts';
 
-import { useLocalStorage } from './config/utilities';
 import language from '../src/assets/language';
-
 import './assets/scss/main.scss';
 
 interface Props {
 	dispatch: Function,
-
-	isLoggedIn: boolean,
-	accessToken: string,
-	activeLanguage: string
 }
 
-class Main extends Component<Props> {
-	componentDidMount() {
-		const { isLoggedIn, accessToken, activeLanguage } = this.props;
-		if (isLoggedIn) updateDefaultHeaders(accessToken);
+class Main extends React.Component<Props> {
+	componentWillMount(): void {
+		const activeLanguage = localStorage.getItem('activeLanguage') || 'en';
+		const isLoggedIn = localStorage.getItem('isLoggedIn');
+		const accessToken = localStorage.getItem('accessToken') || '';
 
-		language.setLanguage(activeLanguage);
-		this.forceUpdate();
-	}
+		const { dispatch } = this.props;
 
-	componentDidUpdate() {
-		const { isLoggedIn, dispatch } = this.props;
 		if (isLoggedIn) {
+			updateDefaultHeaders(accessToken);
+
 			dispatch(fetchProfile());
 			dispatch(fetchContacts());
 		}
+
+		language.setLanguage(activeLanguage);
 	}
 
 	render() {
@@ -48,13 +43,7 @@ class Main extends Component<Props> {
 }
 
 const mapStateToProps = (state: AppState) => {
-	const { isLoggedIn, accessToken, activeLanguage } = useLocalStorage();
-
-	return {
-		isLoggedIn,
-		accessToken,
-		activeLanguage,
-	};
+	return {};
 };
 
 export default () => {

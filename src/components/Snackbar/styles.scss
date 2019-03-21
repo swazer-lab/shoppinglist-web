@@ -1,0 +1,50 @@
+@import "../../assets/scss/main";
+
+.snackbar_component {
+  position: fixed;
+  right: 5rem;
+  bottom: -8rem;
+
+  display: flex;
+  flex: 1;
+  align-items: center;
+
+  max-width: 60rem;
+  padding: .8rem 2.5rem;
+
+  background-color: #323232;
+  border-radius: .6rem;
+
+  transition: .2s all;
+
+  @include respond-portal {
+    right: 0;
+    left: 0;
+
+    max-width: none;
+    border-radius: 0;
+  }
+
+  & span {
+    display: flex;
+    flex: 1;
+
+    margin-right: 2rem;
+
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #E5E5E5;
+  }
+
+  & button {
+    padding: 1rem .3rem;
+  }
+
+  &_open {
+    bottom: 4rem;
+
+    @include respond-portal {
+      bottom: 0;
+    }
+  }
+}

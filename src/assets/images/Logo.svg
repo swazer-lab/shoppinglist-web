@@ -1,7 +1,5 @@
 <svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g filter="url(#filter0_dd)">
 <path d="M256 41.5C89.1667 41.5 41.5 89.1667 41.5 256C41.5 422.833 89.2858 470.5 256 470.5C422.714 470.5 470.5 422.833 470.5 256C470.5 89.1667 422.714 41.5 256 41.5Z" fill="#0336FF"/>
-</g>
 <mask id="mask0" mask-type="alpha" maskUnits="userSpaceOnUse" x="41" y="41" width="430" height="430">
 <path d="M256 41.5C89.1667 41.5 41.5 89.1667 41.5 256C41.5 422.833 89.2858 470.5 256 470.5C422.714 470.5 470.5 422.833 470.5 256C470.5 89.1667 422.714 41.5 256 41.5Z" fill="#0336FF"/>
 </mask>
@@ -23,46 +21,18 @@
 </g>
 <rect x="120" y="190" width="65" height="65" rx="32.5" fill="#0336FF"/>
 <rect x="324" y="124" width="67" height="67" rx="33.5" fill="#0336FF"/>
-<g filter="url(#filter1_ddii)">
+<g filter="url(#filter0_i)">
 <path d="M152 227.216C152 283.982 198.115 330 255 330C311.885 330 358 283.982 358 227.216V162" stroke="white" stroke-width="30" stroke-linecap="round"/>
 </g>
 <defs>
-<filter id="filter0_dd" x="31.5" y="31.75" width="449" height="454.75" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<filter id="filter0_i" x="137" y="147" width="236" height="198" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
 <feFlood flood-opacity="0" result="BackgroundImageFix"/>
-<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"/>
-<feOffset dy="6"/>
-<feGaussianBlur stdDeviation="5"/>
-<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.1 0"/>
-<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/>
-<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"/>
-<feOffset/>
-<feGaussianBlur stdDeviation="4.875"/>
-<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.24 0"/>
-<feBlend mode="normal" in2="effect1_dropShadow" result="effect2_dropShadow"/>
-<feBlend mode="normal" in="SourceGraphic" in2="effect2_dropShadow" result="shape"/>
-</filter>
-<filter id="filter1_ddii" x="133" y="147" width="244" height="206" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-<feFlood flood-opacity="0" result="BackgroundImageFix"/>
-<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"/>
-<feOffset dy="4"/>
-<feGaussianBlur stdDeviation="2"/>
-<feColorMatrix type="matrix" values="0 0 0 0 0.0117647 0 0 0 0 0.211764 0 0 0 0 1 0 0 0 0.15 0"/>
-<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/>
-<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"/>
-<feOffset dy="1"/>
-<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0.0980972 0 0 0 0 0.484716 0 0 0 0.15 0"/>
-<feBlend mode="normal" in2="effect1_dropShadow" result="effect2_dropShadow"/>
-<feBlend mode="normal" in="SourceGraphic" in2="effect2_dropShadow" result="shape"/>
-<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
-<feOffset dy="-1"/>
-<feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
-<feColorMatrix type="matrix" values="0 0 0 0 0.0117647 0 0 0 0 0.211764 0 0 0 0 1 0 0 0 0.15 0"/>
-<feBlend mode="normal" in2="shape" result="effect3_innerShadow"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
 <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
 <feOffset dy="1"/>
 <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
 <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.25 0"/>
-<feBlend mode="normal" in2="effect3_innerShadow" result="effect4_innerShadow"/>
+<feBlend mode="normal" in2="shape" result="effect1_innerShadow"/>
 </filter>
 <radialGradient id="paint0_radial" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(41.5 65) rotate(45) scale(606.698)">
 <stop stop-color="white" stop-opacity="0.1"/>

@@ -10,9 +10,13 @@ import {
 	SetIsLoggedInAction,
 	ShowAlertAction,
 	ShowProgressAction,
+	ShowSnackbarAction,
+	State,
 } from '../types/service';
+
 import { history, routes } from '../config/routes';
 import { updateDefaultHeaders } from '../api';
+
 import language from '../assets/language';
 
 // Navigation
@@ -89,6 +93,17 @@ export const showHttpErrorAlert = (error: { response: any }) => {
 			return showAlert('error', language.titleUnexpectedError, language.textUnexpectedError);
 	}
 };
+
+// Snackbar
+export const showSnackbar = (message: string, actions?: State['snackbar']['actions'], duration: number = 3000): ShowSnackbarAction => ({
+	type: ActionTypes.show_snackbar,
+	message,
+	actions,
+	duration,
+});
+export const hideSnackbar = (): ServiceAction => ({
+	type: ActionTypes.hide_snackbar,
+});
 
 // LocalStorage
 export const setAccessToken = (accessToken: string): SetAccessTokenAction => {

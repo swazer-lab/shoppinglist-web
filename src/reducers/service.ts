@@ -12,6 +12,12 @@ const initialState: State = {
 		message: '',
 		duration: 3000,
 	},
+	snackbar: {
+		visible: false,
+		message: '',
+		actions: [],
+		duration: 3000,
+	},
 };
 
 export default (state: State = initialState, action: Action): State => {
@@ -45,6 +51,25 @@ export default (state: State = initialState, action: Action): State => {
 			return {
 				...state,
 				alert: initialState.alert,
+			};
+
+		case ActionTypes.show_snackbar:
+			return {
+				...state,
+				snackbar: {
+					...state.snackbar,
+					visible: true,
+					message: action.message,
+					actions: action.actions,
+					duration: action.duration,
+				},
+			};
+		case ActionTypes.hide_snackbar:
+			return {
+				...state,
+				snackbar: {
+					...initialState.snackbar,
+				},
 			};
 
 		default:

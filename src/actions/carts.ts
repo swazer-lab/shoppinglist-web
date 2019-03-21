@@ -13,6 +13,8 @@ import {
 	FilterCartsActionResult,
 	GetAccessToCartAction,
 	GetAccessToCartActionResult,
+	PullCartAction,
+	PushCartAction,
 	RemoveCartAction,
 	RemoveCartActionResult,
 	RemoveDraftCartItemAction,
@@ -52,6 +54,16 @@ export const changeDraftCartItemStatus = (uuid: string, status: CartItemStatusTy
 export const removeDraftCartItem = (uuid: string): RemoveDraftCartItemAction => ({
 	type: ActionTypes.remove_draft_cart_item,
 	uuid,
+});
+
+export const pullCart = (index: number): PullCartAction => ({
+	type: ActionTypes.pull_cart,
+	index,
+});
+export const pushCart = (index: number, cart: Cart): PushCartAction => ({
+	type: ActionTypes.push_cart,
+	index,
+	cart,
 });
 
 export const setDraftCart = (cart: Cart): SetDraftCartAction => ({
