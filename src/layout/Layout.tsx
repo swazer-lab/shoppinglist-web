@@ -17,6 +17,11 @@ import {
 	updateProfilePhoto,
 } from '../actions/profile';
 
+import {
+	changeSearchQuery,
+	filterCarts
+} from '../actions/carts';
+
 import { useDocumentTitle, useLocalStorage } from '../config/utilities';
 import './styles.scss';
 
