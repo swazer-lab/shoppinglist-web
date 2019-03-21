@@ -13,5 +13,5 @@ export const useLocalStorage = (): { accessToken: string, isLoggedIn: boolean, a
 export const useDocumentTitle = (pageName: string) => {
 	useEffect(() => {
 		document.title = 'Shopping List | ' + pageName;
-	}, [pageName]);
+	}, []);
 };
