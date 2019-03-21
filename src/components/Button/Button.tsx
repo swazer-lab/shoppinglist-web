@@ -5,7 +5,7 @@ import './styles.scss';
 
 interface Props {
 	className?: string,
-	accentColor?: 'primary' | 'text',
+	accentColor?: 'primary' | 'text' | 'white',
 	mode?: 'normal' | 'text',
 
 	type?: string,

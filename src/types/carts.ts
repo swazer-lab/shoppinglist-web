@@ -11,6 +11,9 @@ export enum ActionTypes {
 	change_draft_cart_item_status = 'CARTS__CHANGE_DRAFT_CART_ITEM_STATUS',
 	remove_draft_cart_item = 'CARTS__REMOVE_DRAFT_CART_ITEM',
 
+	pull_cart = 'CARTS__PULL_CART',
+	push_cart = 'CARTS__PUSH_CART',
+
 	set_draft_cart = 'CARTS__SET_DRAFT_CART',
 	clear_draft_cart = 'CARTS__CLEAR_DRAFT_CART',
 
@@ -84,6 +87,17 @@ export interface ChangeDraftCartItemStatusAction extends CartsAction {
 export interface RemoveDraftCartItemAction extends CartsAction {
 	type: ActionTypes.remove_draft_cart_item,
 	uuid: string,
+}
+
+export interface PullCartAction extends CartsAction {
+	type: ActionTypes.pull_cart,
+	index: number,
+}
+
+export interface PushCartAction extends CartsAction {
+	type: ActionTypes.push_cart,
+	index: number,
+	cart: Cart
 }
 
 export interface SetDraftCartAction extends CartsAction {
@@ -173,6 +187,8 @@ export type Action =
 	& CreateCartActionResult
 	& RemoveCartAction
 	& RemoveCartActionResult
+	& PullCartAction
+	& PushCartAction
 	& UpdateCartResultAction
 	& SetDraftCartAction
 	& ShareCartWithContactsAction

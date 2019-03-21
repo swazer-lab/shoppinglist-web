@@ -12,6 +12,9 @@ export enum ActionTypes {
 	show_alert = 'SERVICE_ALERT__SHOW_ALERT',
 	clear_alert = 'SERVICE_ALERT__CLEAR_ALERT',
 
+	show_snackbar = 'SERVICE_SNACKBAR__SHOW_SNACKBAR',
+	hide_snackbar = 'SERVICE_SNACKBAR__CLOSE_SNACKBAR',
+
 	setAccessToken = 'SERVICE_LOCALSTORAGE__SET_ACCESS_TOKEN',
 	setIsLoggedIn = 'SERVICE_LOCALSTORAGE__SET_IS_LOGGED_IN',
 	setActiveLanguage = 'SERVICE_LOCALSTORAGE__SET_ACTIVE_LANGUAGE',
@@ -49,6 +52,14 @@ export interface ShowAlertAction extends ServiceAction {
 	duration?: number,
 }
 
+// Snackbar
+export interface ShowSnackbarAction extends ServiceAction {
+	type: ActionTypes.show_snackbar,
+	message: string,
+	actions?: State['snackbar']['actions'],
+	duration?: number
+}
+
 // LocalStorage
 export interface SetAccessTokenAction extends ServiceAction {
 	type: ActionTypes.setAccessToken,
@@ -70,7 +81,13 @@ export interface SetIsEmailConfirmed extends ServiceAction {
 	isEmailConfirmed: boolean
 }
 
-export type Action = & ServiceAction & NavigateAction & ReplaceAction & ShowProgressAction & ShowAlertAction;
+export type Action = &
+	ServiceAction
+	& NavigateAction
+	& ReplaceAction
+	& ShowProgressAction
+	& ShowAlertAction
+	& ShowSnackbarAction;
 
 export interface State {
 	progress: {
@@ -83,5 +100,11 @@ export interface State {
 		title?: string,
 		message: string,
 		duration?: number,
+	},
+	snackbar: {
+		visible: boolean,
+		message: string,
+		actions?: { title: string, onClick: (e: any) => void }[],
+		duration?: number
 	}
 }

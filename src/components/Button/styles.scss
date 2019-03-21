@@ -57,4 +57,17 @@
       background-color: rgba($color-text, .1);
     }
   }
+
+  &-text-white {
+    background-color: transparent;
+    color: $color-white;
+
+    &:hover {
+      background-color: rgba($color-white, .04);
+    }
+
+    &:focus {
+      background-color: rgba($color-white, .1);
+    }
+  }
 }

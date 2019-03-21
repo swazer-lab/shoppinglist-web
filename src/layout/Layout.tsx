@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 
 import { AppState } from '../types/store';
 import { Profile } from '../types/api';
 
+import { Snackbar } from '../components';
 import { NavigationBar, ProfileModal } from './';
 
-import { changeSearchQuery, filterCarts } from '../actions/carts';
-
-import { navigate } from '../actions/service';
+import { hideSnackbar, navigate } from '../actions/service';
 import { logout } from '../actions/auth';
+
 import {
 	changeDraftProfileName,
 	changeDraftProfilePhoneNumber,
@@ -17,7 +17,7 @@ import {
 	updateProfilePhoto,
 } from '../actions/profile';
 
-import { useLocalStorage } from '../config/utilities';
+import { useDocumentTitle, useLocalStorage } from '../config/utilities';
 import './styles.scss';
 
 interface Props {
@@ -26,6 +26,7 @@ interface Props {
 
 	layoutOptions?: any,
 	progress: AppState['service']['progress'],
+	snackbar: AppState['service']['snackbar'],
 
 	name?: string,
 	email?: string,
@@ -36,21 +37,16 @@ interface Props {
 }
 
 const Layout = (props: Props) => {
-	const { dispatch, children, layoutOptions, progress, name, email, phoneNumber, photoUrl, draftProfile, searchQuery } = props;
+	const { children, dispatch, layoutOptions, progress, snackbar, name, email, phoneNumber, photoUrl, draftProfile, searchQuery } = props;
 	const { isLoggedIn } = useLocalStorage();
 
-	useEffect(() => {
-		document.title = 'Shopping List | ' + layoutOptions.title;
-	}, [layoutOptions.title]);
+	useDocumentTitle(layoutOptions.title);
 
 	if (layoutOptions.authorized && !isLoggedIn) {
 		dispatch(navigate('Login'));
 	}
 
 	const [isProfileModalVisible, setIsProfileModalVisible] = useState(false);
-
-	const onOpenProfileModalClicked = () => setIsProfileModalVisible(true);
-	const onCloseProfileModalClicked = () => setIsProfileModalVisible(false);
 
 	const onChangeDraftProfileName = (name: string) => dispatch(changeDraftProfileName(name));
 	const onChangeDraftProfilePhoneNumber = (phoneNumber: string) => dispatch(changeDraftProfilePhoneNumber(phoneNumber));
@@ -62,20 +58,26 @@ const Layout = (props: Props) => {
 	const onSearchQueryChanged = (queryString: string) => dispatch(changeSearchQuery(queryString));
 	const onFilterClicked = () => dispatch(filterCarts());
 
+	const onSnackbarRequestClose = () => {
+		if (snackbar.visible) {
+			dispatch(hideSnackbar());
+		}
+	};
+
 	return (
 		<div className='main_layout'>
 			<NavigationBar
 				progress={progress}
 				profilePhotoUrl={photoUrl}
 				searchQuery={searchQuery}
-				onOpenProfileModalClick={onOpenProfileModalClicked}
+				onOpenProfileModalClick={() => setIsProfileModalVisible(true)}
 				onSearchQueryChange={onSearchQueryChanged}
 				onFilterClick = {onFilterClicked}
 			/>
 			<ProfileModal
 				isVisible={isProfileModalVisible}
 				isLoading={progress.visible}
-				onCloseProfileModalClick={onCloseProfileModalClicked}
+				onCloseProfileModalClick={() => setIsProfileModalVisible(false)}
 				name={name}
 				email={email}
 				phoneNumber={phoneNumber}
@@ -87,18 +89,27 @@ const Layout = (props: Props) => {
 				onUpdateProfilePhotoClick={onUpdateProfilePhotoClicked}
 				onLogoutClick={onLogoutClicked}
 			/>
+			<Snackbar
+				visible={snackbar.visible}
+				message={snackbar.message}
+				actions={snackbar.actions}
+				duration={snackbar.duration}
+				onRequestClose={onSnackbarRequestClose}
+			/>
+
 			{children}
 		</div>
 	);
 };
 
 const mapStateToProps = (state: AppState) => {
-	const { progress } = state.service;
+	const { progress, snackbar } = state.service;
 	const { name, email, phoneNumber, photoUrl, draftProfile } = state.profile;
 	const { searchQuery } = state.carts;
 
 	return {
 		progress,
+		snackbar,
 
 		name,
 		email,

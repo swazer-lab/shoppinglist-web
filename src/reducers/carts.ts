@@ -89,7 +89,8 @@ export default (state: State = initialState, action: Action): State => {
 
 		case ActionTypes.create_cart_result:
 		case ActionTypes.update_cart_result:
-		case ActionTypes.remove_cart_result:
+		case ActionTypes.pull_cart:
+		case ActionTypes.push_cart:
 		case ActionTypes.share_cart_with_contacts_result:
 		case ActionTypes.get_access_to_cart_result:
 			return {
@@ -120,12 +121,17 @@ export const carts = (state: Array<Cart> = initialState.carts, action: Action): 
 				action.cart,
 				...state.slice(updated_cart_index + 1),
 			];
-		case ActionTypes.remove_cart_result:
-			if (action.hasError) return state;
-			const removed_cart_index = state.findIndex(cart => cart.uuid === action.cart.uuid);
+
+		case ActionTypes.pull_cart:
 			return [
-				...state.slice(0, removed_cart_index),
-				...state.slice(removed_cart_index + 1),
+				...state.slice(0, action.index),
+				...state.slice(action.index + 1),
+			];
+		case ActionTypes.push_cart:
+			return [
+				...state.slice(0, action.index),
+				action.cart,
+				...state.slice((action.index)),
 			];
 
 		case ActionTypes.share_cart_with_contacts_result:
