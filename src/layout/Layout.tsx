@@ -9,6 +9,7 @@ import { NavigationBar, ProfileModal } from './';
 
 import { hideSnackbar, navigate } from '../actions/service';
 import { logout } from '../actions/auth';
+import { changeSearchQuery, filterCarts } from '../actions/carts';
 
 import {
 	changeDraftProfileName,
@@ -54,6 +55,9 @@ const Layout = (props: Props) => {
 	const onUpdateProfilePhotoClicked = (photoData: string) => dispatch(updateProfilePhoto(photoData));
 	const onLogoutClicked = () => dispatch(logout());
 
+	const onSearchQueryChanged = (queryString: string) => dispatch(changeSearchQuery(queryString));
+	const onFilterClicked = () => dispatch(filterCarts());
+
 	const onSnackbarRequestClose = () => {
 		if (snackbar.visible) {
 			dispatch(hideSnackbar());
@@ -66,6 +70,8 @@ const Layout = (props: Props) => {
 				progress={progress}
 				profilePhotoUrl={photoUrl}
 				onOpenProfileModalClick={() => setIsProfileModalVisible(true)}
+				onSearchQueryChange={onSearchQueryChanged}
+				onFilterClick = {onFilterClicked}
 			/>
 			<ProfileModal
 				isVisible={isProfileModalVisible}

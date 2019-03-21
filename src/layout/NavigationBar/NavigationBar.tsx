@@ -2,17 +2,19 @@ import React from 'react';
 import { State as ServiceState } from '../../types/service';
 
 import './styles.scss';
-import language from '../../assets/language';
+import SearchBar from './SearchBar';
 
 interface Props {
 	progress: ServiceState['progress'],
 
 	profilePhotoUrl?: string,
 	onOpenProfileModalClick: () => void,
+	onSearchQueryChange: (searchQuery: string) => void
+	onFilterClick: () => void
 }
 
 const NavigationBar = (props: Props) => {
-	const { progress, profilePhotoUrl, onOpenProfileModalClick } = props;
+	const { progress, profilePhotoUrl, onOpenProfileModalClick, onSearchQueryChange, onFilterClick } = props;
 
 	const renderProgress = () => progress.visible && (
 		<>
@@ -26,14 +28,7 @@ const NavigationBar = (props: Props) => {
 			<div className='navigation_bar__progress'>
 				{renderProgress()}
 			</div>
-			<div className='navigation_bar__search_bar'>
-				<i className='material-icons navigation_bar__search_bar__icon'>search</i>
-				<input
-					className='navigation_bar__search_bar__input'
-					type='text'
-					placeholder={language.textEnterSearchQuery}
-				/>
-			</div>
+			<SearchBar onSearchQueryChange={onSearchQueryChange} onFilterClick={onFilterClick}/>
 			<div className='navigation_bar__auth' onClick={onOpenProfileModalClick}>
 				<img className='navigation_bar__auth__photo' src={profilePhotoUrl}/>
 			</div>
