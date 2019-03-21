@@ -5,16 +5,25 @@ import { Cart } from '../types/api';
 
 import * as urls from '../config/urls';
 
-export const fetch_carts_api = (pageNumber?: number, pageSize?: number, searchQuery?: string) => {
+export const fetch_carts_api = (pageNumber?: number, pageSize?: number) => {
 	const config = {
 		params: {
 			currentPage: pageNumber,
 			pageSize: pageSize,
-			title: searchQuery,
 		},
 	};
 
 	return axios.get(urls.fetch_carts_url, config);
+};
+
+export const search_carts_api = (searchQuery?: string) => {
+	const config = {
+		params: {
+			title: searchQuery,
+		},
+	};
+
+	return axios.get(urls.search_carts_url, config);
 };
 
 export const create_cart_api = (cart: Cart) => {

@@ -1,20 +1,23 @@
 import React from 'react';
 import { State as ServiceState } from '../../types/service';
 
+import { SearchBar } from '../';
+
 import './styles.scss';
-import SearchBar from './SearchBar';
 
 interface Props {
 	progress: ServiceState['progress'],
 
 	profilePhotoUrl?: string,
+	searchQuery?: string,
+
 	onOpenProfileModalClick: () => void,
 	onSearchQueryChange: (searchQuery: string) => void
 	onFilterClick: () => void
 }
 
 const NavigationBar = (props: Props) => {
-	const { progress, profilePhotoUrl, onOpenProfileModalClick, onSearchQueryChange, onFilterClick } = props;
+	const { progress, profilePhotoUrl, onOpenProfileModalClick, onSearchQueryChange, onFilterClick, searchQuery } = props;
 
 	const renderProgress = () => progress.visible && (
 		<>
@@ -28,7 +31,7 @@ const NavigationBar = (props: Props) => {
 			<div className='navigation_bar__progress'>
 				{renderProgress()}
 			</div>
-			<SearchBar onSearchQueryChange={onSearchQueryChange} onFilterClick={onFilterClick}/>
+			<SearchBar onSearchQueryChange={onSearchQueryChange} onFilterClick={onFilterClick} searchQuery={searchQuery}/>
 			<div className='navigation_bar__auth' onClick={onOpenProfileModalClick}>
 				<img className='navigation_bar__auth__photo' src={profilePhotoUrl}/>
 			</div>

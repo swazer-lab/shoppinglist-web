@@ -22,6 +22,7 @@ const cartRoot = root.concat('cart/');
 const cartRootWeb = rootWeb.concat('cart/');
 
 export const fetch_carts_url = cartRoot.concat('fetch');
+export const search_carts_url = cartRoot.concat('getCarts');
 export const create_cart_url = cartRoot.concat('create');
 export const remove_cart_url = cartRoot.concat('remove');
 

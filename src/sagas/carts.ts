@@ -11,6 +11,7 @@ import {
 	get_access_to_cart_api,
 	remove_cart_api,
 	share_cart_with_contacts_api,
+	search_carts_api
 } from '../api';
 import { cartMapper, cartUserMapper } from '../config/mapper';
 
@@ -40,14 +41,14 @@ import { useLocalStorage } from '../config/utilities';
 
 function* filterCartsSaga(): SagaIterator {
 	const { searchQuery } = yield select((state: AppState) => state.carts);
-	if (searchQuery.length < 3) return;
-
-	const pageNumber = 1;
-	const pageSize = 15;
+	if (searchQuery.length < 3) {
+		yield put(filterCartsResult(false, []));
+		return;
+	}
 
 	yield put(showProgress(language.textSearchingCarts));
 	try {
-		const response = yield call(fetch_carts_api, pageNumber, pageSize, searchQuery);
+		const response = yield call(search_carts_api, searchQuery);
 		const data = yield call(morphism, cartMapper(), response.data.items);
 
 		yield put(filterCartsResult(false, data));

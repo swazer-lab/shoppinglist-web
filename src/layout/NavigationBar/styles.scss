@@ -32,10 +32,8 @@
     z-index: 600;
 
     overflow: hidden;
-
-    @include respond-width();
-
     &__icon {
+      margin-top: 0.5rem;
       margin-left: 1.5rem;
 
       font-size: 2.2rem;
@@ -104,26 +102,6 @@
       border-radius: 2.5rem;
       border: 0;
     }
-  }
-}
-
-.search_bar_container{
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-
-  background-color: rgba($color-black, .5);
-  z-index: 500;
-
-  opacity: 0;
-  visibility: hidden;
-  transition: all .2s;
-
-  &_visible {
-    opacity: 1;
-    visibility: visible;
   }
 }
 

@@ -31,11 +31,12 @@ interface Props {
 	email?: string,
 	phoneNumber?: string,
 	photoUrl?: string,
+	searchQuery?: string,
 	draftProfile: Profile,
 }
 
 const Layout = (props: Props) => {
-	const { dispatch, children, layoutOptions, progress, name, email, phoneNumber, photoUrl, draftProfile } = props;
+	const { dispatch, children, layoutOptions, progress, name, email, phoneNumber, photoUrl, draftProfile, searchQuery } = props;
 	const { isLoggedIn } = useLocalStorage();
 
 	useEffect(() => {
@@ -66,6 +67,7 @@ const Layout = (props: Props) => {
 			<NavigationBar
 				progress={progress}
 				profilePhotoUrl={photoUrl}
+				searchQuery={searchQuery}
 				onOpenProfileModalClick={onOpenProfileModalClicked}
 				onSearchQueryChange={onSearchQueryChanged}
 				onFilterClick = {onFilterClicked}
@@ -93,6 +95,7 @@ const Layout = (props: Props) => {
 const mapStateToProps = (state: AppState) => {
 	const { progress } = state.service;
 	const { name, email, phoneNumber, photoUrl, draftProfile } = state.profile;
+	const { searchQuery } = state.carts;
 
 	return {
 		progress,
@@ -102,6 +105,8 @@ const mapStateToProps = (state: AppState) => {
 		phoneNumber,
 		photoUrl,
 		draftProfile,
+
+		searchQuery
 	};
 };
 
