@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect, Provider } from 'react-redux';
 
 import { AppState } from './types/store';
@@ -12,18 +12,18 @@ import { fetchContacts } from './actions/contacts';
 
 import language from '../src/assets/language';
 import './assets/scss/main.scss';
+import { useLoStorage } from './config/utilities';
 
 interface Props {
 	dispatch: Function,
 }
 
-class Main extends React.Component<Props> {
-	componentWillMount(): void {
-		const activeLanguage = localStorage.getItem('activeLanguage') || 'en';
-		const isLoggedIn = localStorage.getItem('isLoggedIn');
-		const accessToken = localStorage.getItem('accessToken') || '';
+const Main = (props: Props) => {
+	const { dispatch } = props;
+	const { isLoggedIn, accessToken, activeLanguage } = useLoStorage();
 
-		const { dispatch } = this.props;
+	useEffect(() => {
+		console.log('______________________,', isLoggedIn, accessToken, activeLanguage);
 
 		if (isLoggedIn) {
 			updateDefaultHeaders(accessToken);
@@ -33,14 +33,12 @@ class Main extends React.Component<Props> {
 		}
 
 		language.setLanguage(activeLanguage);
-	}
+	}, [isLoggedIn, accessToken, activeLanguage]);
 
-	render() {
-		return (
-			<AppNavigator />
-		);
-	}
-}
+	return (
+		<AppNavigator/>
+	);
+};
 
 const mapStateToProps = (state: AppState) => {
 	return {};
@@ -51,7 +49,7 @@ export default () => {
 
 	return (
 		<Provider store={store}>
-			<AppWithNavigation />
+			<AppWithNavigation/>
 		</Provider>
 	);
 }

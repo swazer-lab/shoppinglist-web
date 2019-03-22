@@ -22,6 +22,8 @@ interface Props {
 
 const CartObject = (props: Props) => {
 	const [isShareModalVisible, setIsShareModalVisible] = useState(false);
+	const [accessLevel, setAccessLevel] = useState('');
+
 	const { progress, cart, onOpenUpdateCartModalClick, onRemoveCartClick, currentUserEmail } = props;
 
 	useEffect(() => {
@@ -30,7 +32,14 @@ const CartObject = (props: Props) => {
 		}
 	}, [progress.visible]);
 
-	const accessLevel = cart.users.filter(user => user.email === currentUserEmail)[0].accessLevel;
+	useEffect(() => {
+		if (!currentUserEmail) return;
+
+		const currentUser = cart.users.filter(user => user.email === currentUserEmail)[0];
+		if (currentUser) {
+			setAccessLevel(currentUser.accessLevel);
+		}
+	}, [currentUserEmail]);
 
 	const onOpenUpdateCartModalClicked = () => {
 		if (accessLevel !== 'read') onOpenUpdateCartModalClick(cart);
@@ -64,9 +73,9 @@ const CartObject = (props: Props) => {
 	return (
 		<div className='cart_object' onClick={onOpenUpdateCartModalClicked}>
 			{accessLevel === 'owner' &&
-			<div className='cart_object__remove_button' onClick={onRemoveCartClicked}>
-				<i className='material-icons'>cancel</i>
-			</div>
+            <div className='cart_object__remove_button' onClick={onRemoveCartClicked}>
+                <i className='material-icons'>cancel</i>
+            </div>
 			}
 
 			<h4 className='cart_object__title'>{cart.title}</h4>
@@ -75,7 +84,7 @@ const CartObject = (props: Props) => {
 				{renderItems('active')}
 				{
 					cart.items.filter(item => item.status == 'completed').length !== 0 &&
-					<div className='cart_object__items__separator' />
+                    <div className='cart_object__items__separator'/>
 				}
 				{renderItems('completed')}
 			</div>
@@ -87,20 +96,22 @@ const CartObject = (props: Props) => {
 
 				<div className='cart_object__users_container__user_list'>
 					{cart.users.map((user) => (
-						<img key={user.uuid} src={user.photoUrl || avatar} width={30} height={30} alt='User Photo' />
+						<img key={user.uuid} src={user.photoUrl || avatar} width={30} height={30} alt='User Photo'/>
 					))}
 				</div>
 			</div>
 
-			{accessLevel !== 'read' && <Modal
-				isVisible={isShareModalVisible}
-				onCloseModalClick={onCloseShareModalClick}
-				title={language.textShareCartTitle}
-				buttons={[{ iconName: 'close', onClick: onCloseShareModalClick }]}>
+			{accessLevel !== 'read' &&
+            <Modal
+                isVisible={isShareModalVisible}
+                onCloseModalClick={onCloseShareModalClick}
+                title={language.textShareCartTitle}
+                buttons={[{ iconName: 'close', onClick: onCloseShareModalClick }]}>
 
-				<ProgressBar isLoading={progress.visible} />
-				<ShareCart cart={cart} />
-			</Modal>}
+                <ProgressBar isLoading={progress.visible}/>
+                <ShareCart cart={cart}/>
+            </Modal>
+			}
 		</div>
 	);
 };

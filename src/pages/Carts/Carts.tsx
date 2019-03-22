@@ -96,6 +96,7 @@ class Carts extends React.Component<Props, State> {
 		const onCreateCartClicked = () => {
 			dispatch(createCart());
 		};
+
 		const onUpdateCartClicked = () => {
 			dispatch(updateCart());
 			this.setIsCartUpdating(false);

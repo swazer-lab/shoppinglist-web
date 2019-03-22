@@ -17,10 +17,7 @@ import {
 	updateProfilePhoto,
 } from '../actions/profile';
 
-import {
-	changeSearchQuery,
-	filterCarts
-} from '../actions/carts';
+import { changeSearchQuery, filterCarts } from '../actions/carts';
 
 import { useDocumentTitle, useLocalStorage } from '../config/utilities';
 import './styles.scss';
@@ -43,6 +40,7 @@ interface Props {
 
 const Layout = (props: Props) => {
 	const { children, dispatch, layoutOptions, progress, snackbar, name, email, phoneNumber, photoUrl, draftProfile, searchQuery } = props;
+
 	const { isLoggedIn } = useLocalStorage();
 
 	useDocumentTitle(layoutOptions.title);
@@ -77,7 +75,7 @@ const Layout = (props: Props) => {
 				searchQuery={searchQuery}
 				onOpenProfileModalClick={() => setIsProfileModalVisible(true)}
 				onSearchQueryChange={onSearchQueryChanged}
-				onFilterClick = {onFilterClicked}
+				onFilterClick={onFilterClicked}
 			/>
 			<ProfileModal
 				isVisible={isProfileModalVisible}
@@ -110,6 +108,7 @@ const Layout = (props: Props) => {
 const mapStateToProps = (state: AppState) => {
 	const { progress, snackbar } = state.service;
 	const { name, email, phoneNumber, photoUrl, draftProfile } = state.profile;
+
 	const { searchQuery } = state.carts;
 
 	return {
@@ -122,7 +121,7 @@ const mapStateToProps = (state: AppState) => {
 		photoUrl,
 		draftProfile,
 
-		searchQuery
+		searchQuery,
 	};
 };
 
