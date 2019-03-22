@@ -9,6 +9,8 @@ import { useLocalStorage } from '../../config/utilities';
 import './styles.scss';
 import language from '../../assets/language';
 
+import avatar from '../../assets/images/avatar.jpeg';
+
 interface Props {
 	isVisible: boolean,
 	isLoading: boolean,
@@ -92,7 +94,7 @@ const ProfileModal = (props: Props) => {
 		<div>
 			<div className='profile_modal'>
 				<div className='profile_modal__photo'
-				     style={{ backgroundImage: `url(${photoUrl})` }}
+				     style={{ backgroundImage: `url(${photoUrl ? photoUrl : avatar})` }}
 				     onClick={onSelectImageClicked}>
 
 					<i className='material-icons'>camera_alt</i>

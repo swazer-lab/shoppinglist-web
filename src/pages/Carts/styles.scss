@@ -63,6 +63,7 @@
 
       span {
         margin-left: 1.5rem;
+        cursor: pointer;
       }
     }
 
@@ -301,7 +302,6 @@
     font-family: inherit;
     font-size: 1.2rem;
     font-weight: 500;
-    color: $color-black;
 
     background-color: transparent;
     border: none;

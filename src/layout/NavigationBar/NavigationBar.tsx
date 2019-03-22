@@ -5,6 +5,8 @@ import { SearchBar } from '../';
 
 import './styles.scss';
 
+import avatar from '../../assets/images/avatar.jpeg';
+
 interface Props {
 	progress: ServiceState['progress'],
 
@@ -33,7 +35,7 @@ const NavigationBar = (props: Props) => {
 			</div>
 			<SearchBar onSearchQueryChange={onSearchQueryChange} onFilterClick={onFilterClick} searchQuery={searchQuery}/>
 			<div className='navigation_bar__auth' onClick={onOpenProfileModalClick}>
-				<img className='navigation_bar__auth__photo' src={profilePhotoUrl}/>
+				<img className='navigation_bar__auth__photo' src={profilePhotoUrl ? profilePhotoUrl : avatar}/>
 			</div>
 		</div>
 	);
