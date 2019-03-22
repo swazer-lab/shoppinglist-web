@@ -14,8 +14,9 @@ import {
 	State,
 } from '../types/service';
 
-import { history, routes } from '../config/routes';
 import { updateDefaultHeaders } from '../api';
+import { history, routes } from '../config/routes';
+import { localstorage } from '../config/localstorage';
 
 import language from '../assets/language';
 
@@ -107,7 +108,7 @@ export const hideSnackbar = (): ServiceAction => ({
 
 // LocalStorage
 export const setAccessToken = (accessToken: string): SetAccessTokenAction => {
-	localStorage.setItem('accessToken', accessToken);
+	localstorage.setItem('accessToken', accessToken);
 	updateDefaultHeaders(accessToken);
 
 	return ({
@@ -116,7 +117,7 @@ export const setAccessToken = (accessToken: string): SetAccessTokenAction => {
 	});
 };
 export const setIsLoggedIn = (isLoggedIn: boolean): SetIsLoggedInAction => {
-	localStorage.setItem('isLoggedIn', isLoggedIn.toString());
+	localstorage.setItem('isLoggedIn', isLoggedIn.toString());
 
 	return ({
 		type: ActionTypes.setIsLoggedIn,
@@ -124,7 +125,7 @@ export const setIsLoggedIn = (isLoggedIn: boolean): SetIsLoggedInAction => {
 	});
 };
 export const setActiveLanguage = (activeLanguage: string): SetActiveLanguageAction => {
-	localStorage.setItem('activeLanguage', activeLanguage);
+	localstorage.setItem('activeLanguage', activeLanguage);
 
 	return ({
 		type: ActionTypes.setActiveLanguage,
@@ -132,7 +133,7 @@ export const setActiveLanguage = (activeLanguage: string): SetActiveLanguageActi
 	});
 };
 export const setIsEmailConfirmed = (isEmailConfirmed: boolean): SetIsEmailConfirmed => {
-	localStorage.setItem('isEmailConfirmed', isEmailConfirmed.toString());
+	localstorage.setItem('isEmailConfirmed', isEmailConfirmed.toString());
 
 	return ({
 		type: ActionTypes.setIsEmailConfirmed,

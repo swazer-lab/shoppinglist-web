@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 
 import { AppState } from '../../types/store';
@@ -26,6 +26,8 @@ import {
 	updateCart,
 } from '../../actions/carts';
 
+import { useLocalStorage } from '../../config/localstorage';
+
 import language from '../../assets/language';
 
 interface Props {
@@ -47,153 +49,147 @@ interface State {
 	isCartUpdating: boolean,
 }
 
-class Carts extends React.Component<Props, State> {
-	static layoutOptions = {
-		title: 'Carts',
-	};
+const Carts = (props: Props) => {
+	const { dispatch, progress, snackbar, carts, draftCart, email } = props;
+	const { isLoggedIn, accessToken } = useLocalStorage();
 
-	constructor(props: Props) {
-		super(props);
-		this.state = { isCartUpdating: false };
-	}
+	const [isCartUpdating, setIsCartUpdating] = useState(false);
 
-	componentDidMount(): void {
-		this.props.dispatch(fetchCarts(false, 'replace', 1));
-		document.addEventListener('scroll', this.handleScroll);
-	}
-
-	componentWillUnmount(): void {
-		document.removeEventListener('scroll', this.handleScroll);
-	}
-
-	handleScroll = () => {
-		const { dispatch, carts, isLoading, totalCount, pageNumber } = this.props;
-		const reachedEnd = window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight;
-		const shouldFetchCarts = !isLoading && carts.length < totalCount;
-
-		if (reachedEnd && shouldFetchCarts) {
-			dispatch(fetchCarts(false, 'merge', pageNumber + 1));
+	useEffect(() => {
+		if (isLoggedIn && accessToken) {
+			dispatch(fetchCarts(false, 'replace', 1));
 		}
-	};
+	}, [isLoggedIn, accessToken]);
 
-	setIsCartUpdating = (value: boolean): void => {
-		this.setState({ isCartUpdating: value });
-	};
+	useEffect(() => {
+		const handleScroll = () => {
+			const { dispatch, carts, isLoading, totalCount, pageNumber } = props;
+			const reachedEnd = window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight;
+			const shouldFetchCarts = !isLoading && carts.length < totalCount;
 
-	render() {
-		const { dispatch, progress, snackbar, carts, draftCart, email } = this.props;
-		const { isCartUpdating } = this.state;
-
-		const onOpenUpdateCartModalClicked = (cart: Cart) => {
-			dispatch(setDraftCart(cart));
-			this.setIsCartUpdating(true);
-		};
-		const onCloseUpdateCartModalClicked = () => {
-			dispatch(clearDraftCart());
-			this.setIsCartUpdating(false);
-		};
-
-		const onCreateCartClicked = () => {
-			dispatch(createCart());
-		};
-
-		const onUpdateCartClicked = () => {
-			dispatch(updateCart());
-			this.setIsCartUpdating(false);
-		};
-		const onRemoveCartClicked = (cart: Cart) => {
-			if (snackbar.visible) {
-				dispatch(hideSnackbar());
+			if (reachedEnd && shouldFetchCarts) {
+				dispatch(fetchCarts(false, 'merge', pageNumber + 1));
 			}
-
-			const cartIndex = carts.indexOf(cart);
-			dispatch(pullCart(cartIndex));
-
-			let isUndoClicked = false;
-
-			const onUndoClicked = () => {
-				isUndoClicked = true;
-
-				dispatch(pushCart(cartIndex, cart));
-				dispatch(hideSnackbar());
-			};
-
-			dispatch(showSnackbar(language.textRemovingCart, [{
-				title: language.actionUndo,
-				onClick: onUndoClicked,
-			}]));
-
-			setTimeout(() => {
-				if (!isUndoClicked) {
-					dispatch(removeCart(cart));
-				}
-			}, 3000);
 		};
 
-		const onSetDraftCartClicked = (cart: Cart) => dispatch(setDraftCart(cart));
-		const onClearDraftCartClicked = () => dispatch(clearDraftCart());
+		window.addEventListener('scroll', handleScroll);
+		return () => {
+			window.removeEventListener('scroll', handleScroll);
+		};
+	});
 
-		const handleDraftCartTitleChange = (title: string) => dispatch(changeDraftCartTitle(title));
-		const handleDraftCartNotesChange = (notes: string) => dispatch(changeDraftCartNotes(notes));
+	const onOpenUpdateCartModalClicked = (cart: Cart) => {
+		dispatch(setDraftCart(cart));
+		setIsCartUpdating(true);
+	};
+	const onCloseUpdateCartModalClicked = () => {
+		dispatch(clearDraftCart());
+		setIsCartUpdating(false);
+	};
 
-		const onAddDraftCartItemClicked = () => dispatch(addDraftCartItem());
-		const onRemoveDraftCartItemClicked = (uuid: string) => dispatch(removeDraftCartItem(uuid));
-		const handleDraftCartItemTitleChange = (uuid: string, title: string) => dispatch(changeDraftCartItemTitle(uuid, title));
-		const handleDraftCartItemStatusChange = (uuid: string, status: CartItemStatusType) => dispatch(changeDraftCartItemStatus(uuid, status));
+	const onCreateCartClicked = () => {
+		dispatch(createCart());
+	};
 
-		const renderCarts = () => carts.map((cart) => (
-			<CartObject
-				key={cart.uuid}
-				progress={progress}
-				cart={cart}
-				onOpenUpdateCartModalClick={onOpenUpdateCartModalClicked}
-				onRemoveCartClick={onRemoveCartClicked}
-				currentUserEmail={email}
+	const onUpdateCartClicked = () => {
+		dispatch(updateCart());
+		setIsCartUpdating(false);
+	};
+	const onRemoveCartClicked = (cart: Cart) => {
+		if (snackbar.visible) {
+			dispatch(hideSnackbar());
+		}
+
+		const cartIndex = carts.indexOf(cart);
+		dispatch(pullCart(cartIndex));
+
+		let isUndoClicked = false;
+
+		const onUndoClicked = () => {
+			isUndoClicked = true;
+
+			dispatch(pushCart(cartIndex, cart));
+			dispatch(hideSnackbar());
+		};
+
+		dispatch(showSnackbar(language.textRemovingCart, [{
+			title: language.actionUndo,
+			onClick: onUndoClicked,
+		}]));
+
+		setTimeout(() => {
+			if (!isUndoClicked) {
+				dispatch(removeCart(cart));
+			}
+		}, 3000);
+	};
+
+	const onSetDraftCartClicked = (cart: Cart) => dispatch(setDraftCart(cart));
+	const onClearDraftCartClicked = () => dispatch(clearDraftCart());
+
+	const handleDraftCartTitleChange = (title: string) => dispatch(changeDraftCartTitle(title));
+	const handleDraftCartNotesChange = (notes: string) => dispatch(changeDraftCartNotes(notes));
+
+	const onAddDraftCartItemClicked = () => dispatch(addDraftCartItem());
+	const onRemoveDraftCartItemClicked = (uuid: string) => dispatch(removeDraftCartItem(uuid));
+	const handleDraftCartItemTitleChange = (uuid: string, title: string) => dispatch(changeDraftCartItemTitle(uuid, title));
+	const handleDraftCartItemStatusChange = (uuid: string, status: CartItemStatusType) => dispatch(changeDraftCartItemStatus(uuid, status));
+
+	const renderCarts = () => carts.map((cart) => (
+		<CartObject
+			key={cart.uuid}
+			progress={progress}
+			cart={cart}
+			onOpenUpdateCartModalClick={onOpenUpdateCartModalClicked}
+			onRemoveCartClick={onRemoveCartClicked}
+			currentUserEmail={email}
+		/>
+	));
+
+	const createCartDraftCart = isCartUpdating ? {
+		id: '',
+		title: '',
+		notes: '',
+		uuid: '',
+		reminderDate: '',
+		items: [],
+		users: [],
+	} : draftCart;
+	return (
+		<div>
+			<CreateCart
+				draftCart={createCartDraftCart}
+				onDraftCartTitleChange={handleDraftCartTitleChange}
+				onAddDraftCartItemClick={onAddDraftCartItemClicked}
+				onRemoveDraftCartItemClick={onRemoveDraftCartItemClicked}
+				onDraftCartItemTitleChange={handleDraftCartItemTitleChange}
+				onDraftCartItemStatusChange={handleDraftCartItemStatusChange}
+				onCreateCartClick={onCreateCartClicked}
 			/>
-		));
+			<UpdateCart
+				draftCart={draftCart}
 
-		const createCartDraftCart = isCartUpdating ? {
-			id: '',
-			title: '',
-			notes: '',
-			uuid: '',
-			reminderDate: '',
-			items: [],
-			users: [],
-		} : draftCart;
-		return (
-			<div>
-				<CreateCart
-					draftCart={createCartDraftCart}
-					onDraftCartTitleChange={handleDraftCartTitleChange}
-					onAddDraftCartItemClick={onAddDraftCartItemClicked}
-					onRemoveDraftCartItemClick={onRemoveDraftCartItemClicked}
-					onDraftCartItemTitleChange={handleDraftCartItemTitleChange}
-					onDraftCartItemStatusChange={handleDraftCartItemStatusChange}
-					onCreateCartClick={onCreateCartClicked}
-				/>
-				<UpdateCart
-					draftCart={draftCart}
+				onDraftCartTitleChange={handleDraftCartTitleChange}
+				onDraftCartNotesChange={handleDraftCartNotesChange}
 
-					onDraftCartTitleChange={handleDraftCartTitleChange}
-					onDraftCartNotesChange={handleDraftCartNotesChange}
+				onAddDraftCartItemClick={onAddDraftCartItemClicked}
+				onRemoveDraftCartItemClick={onRemoveDraftCartItemClicked}
+				onDraftCartItemTitleChange={handleDraftCartItemTitleChange}
+				onDraftCartItemStatusChange={handleDraftCartItemStatusChange}
 
-					onAddDraftCartItemClick={onAddDraftCartItemClicked}
-					onRemoveDraftCartItemClick={onRemoveDraftCartItemClicked}
-					onDraftCartItemTitleChange={handleDraftCartItemTitleChange}
-					onDraftCartItemStatusChange={handleDraftCartItemStatusChange}
+				isVisible={isCartUpdating}
 
-					isVisible={isCartUpdating}
+				onCloseUpdateCartModalClick={onCloseUpdateCartModalClicked}
+				onUpdateCartClick={onUpdateCartClicked}
+			/>
+			{renderCarts()}
+		</div>
+	);
+};
 
-					onCloseUpdateCartModalClick={onCloseUpdateCartModalClicked}
-					onUpdateCartClick={onUpdateCartClicked}
-				/>
-				{renderCarts()}
-			</div>
-		);
-	}
-
-}
+Carts.layoutOptions = {
+	title: 'Carts',
+};
 
 const mapStateToProps = (state: AppState) => {
 	const { progress, snackbar } = state.service;

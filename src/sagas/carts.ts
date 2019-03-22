@@ -10,8 +10,8 @@ import {
 	fetch_carts_api,
 	get_access_to_cart_api,
 	remove_cart_api,
+	search_carts_api,
 	share_cart_with_contacts_api,
-	search_carts_api
 } from '../api';
 import { cartMapper, cartUserMapper } from '../config/mapper';
 

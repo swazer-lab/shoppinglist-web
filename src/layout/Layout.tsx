@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 
 import { AppState } from '../types/store';
@@ -40,14 +40,15 @@ interface Props {
 
 const Layout = (props: Props) => {
 	const { children, dispatch, layoutOptions, progress, snackbar, name, email, phoneNumber, photoUrl, draftProfile, searchQuery } = props;
-
 	const { isLoggedIn } = useLocalStorage();
 
 	useDocumentTitle(layoutOptions.title);
 
-	if (layoutOptions.authorized && !isLoggedIn) {
-		dispatch(navigate('Login'));
-	}
+	useEffect(() => {
+		if (layoutOptions.authorized && !isLoggedIn) {
+			dispatch(navigate('Login'));
+		}
+	}, [isLoggedIn]);
 
 	const [isProfileModalVisible, setIsProfileModalVisible] = useState(false);
 

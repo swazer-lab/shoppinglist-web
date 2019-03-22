@@ -101,8 +101,7 @@ function* logoutSaga(): SagaIterator {
 		put(clearCarts()),
 		put(setIsLoggedIn(false)),
 		put(setIsEmailConfirmed(false)),
-		put(setAccessToken('')),
-		put(navigate('Landing'))
+		put(setAccessToken(''))
 	]);
 }
 
