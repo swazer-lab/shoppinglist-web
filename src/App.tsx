@@ -6,13 +6,14 @@ import { AppState } from './types/store';
 import { AppNavigator } from './config/routes';
 import { store } from './config/store';
 
-import { updateDefaultHeaders } from './api';
 import { fetchProfile } from './actions/profile';
 import { fetchContacts } from './actions/contacts';
 
-import language from '../src/assets/language';
+import { useLocalStorage } from './config/localstorage';
+import { updateDefaultHeaders } from './api';
+
 import './assets/scss/main.scss';
-import { useLoStorage } from './config/utilities';
+import language from './assets/language';
 
 interface Props {
 	dispatch: Function,
@@ -20,23 +21,23 @@ interface Props {
 
 const Main = (props: Props) => {
 	const { dispatch } = props;
-	const { isLoggedIn, accessToken, activeLanguage } = useLoStorage();
+	const { isLoggedIn, accessToken, activeLanguage } = useLocalStorage();
 
 	useEffect(() => {
-		console.log('______________________,', isLoggedIn, accessToken, activeLanguage);
-
-		if (isLoggedIn) {
+		if (isLoggedIn && accessToken) {
 			updateDefaultHeaders(accessToken);
 
 			dispatch(fetchProfile());
 			dispatch(fetchContacts());
 		}
+	}, [isLoggedIn, accessToken]);
 
+	useEffect(() => {
 		language.setLanguage(activeLanguage);
-	}, [isLoggedIn, accessToken, activeLanguage]);
+	}, [activeLanguage]);
 
 	return (
-		<AppNavigator/>
+		<AppNavigator />
 	);
 };
 
@@ -49,7 +50,7 @@ export default () => {
 
 	return (
 		<Provider store={store}>
-			<AppWithNavigation/>
+			<AppWithNavigation />
 		</Provider>
 	);
 }

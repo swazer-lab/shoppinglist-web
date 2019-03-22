@@ -6,7 +6,8 @@ import { AppState } from '../../types/store';
 import { AuthContainer } from '../../components';
 import { confirmEmail } from '../../actions/auth';
 
-import { useDocumentTitle, useLocalStorage } from '../../config/utilities';
+import { useLocalStorage } from '../../config/localstorage';
+import { useDocumentTitle } from '../../config/utilities';
 import language from '../../assets/language';
 
 import './styles.scss';
@@ -20,6 +21,9 @@ interface Props {
 }
 
 const ConfirmEmail = (props: Props) => {
+	const { isLoading, errorMessage } = props;
+	const { isEmailConfirmed } = useLocalStorage();
+
 	useDocumentTitle(language.titleConfirmEmail);
 
 	useEffect(() => {
@@ -31,9 +35,6 @@ const ConfirmEmail = (props: Props) => {
 
 		if (userId && token) dispatch(confirmEmail(userId, token));
 	}, []);
-
-	const { isEmailConfirmed } = useLocalStorage();
-	const { isLoading, errorMessage } = props;
 
 	const message = (!isLoading && isEmailConfirmed) ? language.textConfirmEmailSubTitle : errorMessage || '';
 	return (

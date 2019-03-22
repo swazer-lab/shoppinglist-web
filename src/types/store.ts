@@ -4,8 +4,6 @@ import { State as ProfileState } from './profile';
 import { State as CartsState } from './carts';
 import { State as ContactsState } from './contacts';
 
-import { Action, AnyAction, Dispatch } from 'redux';
-
 export interface AppState {
 	service: ServiceState,
 	auth: AuthState,
@@ -14,13 +12,11 @@ export interface AppState {
 	contacts: ContactsState
 }
 
-export interface Location {
-	hash: string,
-	pathname: string,
-	search: string,
-	state: any,
+export interface Localstorage {
+	isLoggedIn: boolean,
+	accessToken: string,
+	isEmailConfirmed: boolean,
+	activeLanguage: 'en' | 'tr' | 'ar',
 }
 
-export interface ConnectedReduxProps<A extends Action = AnyAction> {
-	dispatch: Dispatch<A>
-}
+export type LocalstorageListener = ((storage: Localstorage) => void)
