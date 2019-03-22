@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 
 import { AppState } from '../../types/store';
 import { getAccessToCart } from '../../actions/carts';
+import { useLocalStorage } from '../../config/localstorage';
+import { navigate } from '../../actions/service';
 
 interface Props {
 	dispatch: Function,
@@ -10,9 +12,15 @@ interface Props {
 }
 
 const GetAccess = (props: Props) => {
+	const { isLoggedIn } = useLocalStorage();
+
 	useEffect(() => {
 		const { dispatch, match } = props;
-		if (match.params.id) dispatch(getAccessToCart(match.params.id));
+		if (match.params.id && isLoggedIn) {
+			dispatch(getAccessToCart(match.params.id));
+		} else {
+			dispatch(navigate('Login'));
+		}
 	}, []);
 
 	return (
