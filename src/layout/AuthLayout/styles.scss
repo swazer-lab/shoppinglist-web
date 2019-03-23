@@ -9,8 +9,56 @@
 
   height: 100vh;
 
+  &__progress {
+    height: .4rem;
+
+    border-top-right-radius: .6rem;
+    border-top-left-radius: .6rem;
+
+    &__label {
+      width: 0;
+      margin-left: 0;
+      height: 100%;
+
+      background-color: $color-primary;
+      overflow: hidden;
+
+      &_visible {
+        animation-name: progress_bar_animation;
+        animation-duration: 1s;
+        animation-iteration-count: 3000;
+      }
+    }
+  }
+
+  &__alert {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    height: 0;
+    margin: 4rem 4rem 1rem;
+    padding-right: 1rem;
+    padding-left: 1rem;
+
+    background-color: rgba($color-secondary, .05);
+    border-radius: .6rem;
+
+    font-size: 1.6rem;
+    text-align: center;
+    color: transparent;
+
+    transition: height .2s linear, color .2s linear .2s;
+
+    &_visible {
+      height: 6rem;
+      color: $color-secondary;
+    }
+  }
+
   &__container {
     display: flex;
+    font-size: 1.6rem;
     flex-direction: column;
 
     width: 45rem;
@@ -28,6 +76,10 @@
       @include respond-phone {
         border: unset;
       }
+
+      &__children {
+        padding: 1rem 4rem 5rem;
+      }
     }
 
     &__links {
@@ -39,5 +91,20 @@
         font-weight: 900;
       }
     }
+  }
+}
+
+@keyframes progress_bar_animation {
+  0% {
+    width: 0;
+    margin-left: 0;
+  }
+  50% {
+    width: 50%;
+    margin-left: 25%;
+  }
+  100% {
+    width: 0;
+    margin-left: 100%;
   }
 }

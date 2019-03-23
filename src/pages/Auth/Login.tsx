@@ -1,14 +1,12 @@
-import * as React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 
 import { AppState } from '../../types/store';
 
 import { Button, Input } from '../../components';
 
-import { navigate } from '../../actions/service';
+import { clearAlert, navigate } from '../../actions/service';
 import { changeEmail, changePassword, login } from '../../actions/auth';
-
-import { useDocumentTitle } from '../../config/utilities';
 import language from '../../assets/language';
 
 import './styles.scss';
@@ -18,15 +16,12 @@ interface Props {
 
 	email: string,
 	password: string,
-
-	isLoading: boolean,
-	errorMessage?: string,
 }
 
 const Login = (props: Props) => {
-	const { dispatch, email, password, isLoading, errorMessage } = props;
+	const { dispatch, email, password } = props;
 
-	useDocumentTitle(language.titleLogin);
+	useEffect(() => () => dispatch(clearAlert()), []);
 
 	const handleChangeEmail = (e: any) => dispatch(changeEmail(e.target.value));
 	const handleChangePassword = (e: any) => dispatch(changePassword(e.target.value));
@@ -39,12 +34,10 @@ const Login = (props: Props) => {
 		event.preventDefault();
 	};
 
-	const message = errorMessage ? errorMessage : language.textLoginSubTitle;
-
 	return (
 		<div className='page_auth__content_container'>
 			<h1 className='page_auth__title'>{language.titleLogin}</h1>
-			<p className='page_auth__subtitle'>{message}</p>
+			<p className='page_auth__subtitle'>{language.textLoginSubtitle}</p>
 
 			<form onSubmit={onLoginClicked}>
 				<Input
@@ -88,19 +81,16 @@ const Login = (props: Props) => {
 };
 
 Login.layoutOptions = {
-	title: 'Login',
+	title: language.titleLogin,
 	layout: 'Auth',
 };
 
 const mapStateToProps = (state: AppState) => {
-	const { email, password, isLoading, errorMessage } = state.auth;
+	const { email, password } = state.auth;
 
 	return {
 		email,
 		password,
-
-		isLoading,
-		errorMessage,
 	};
 };
 
