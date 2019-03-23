@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import { AppState } from '../../types/store';
 
-import { AuthContainer, Button, Input } from '../../components';
+import { Button, Input } from '../../components';
 
 import { navigate } from '../../actions/service';
 import { changeEmail, changePassword, login } from '../../actions/auth';
@@ -42,51 +42,54 @@ const Login = (props: Props) => {
 	const message = errorMessage ? errorMessage : language.textLoginSubTitle;
 
 	return (
-		<AuthContainer className='page_auth' isLoading={isLoading}>
-			<div className='page_auth__content_container'>
-				<h1 className='page_auth__title'>{language.titleLogin}</h1>
-				<p className='page_auth__subtitle'>{message}</p>
+		<div className='page_auth__content_container'>
+			<h1 className='page_auth__title'>{language.titleLogin}</h1>
+			<p className='page_auth__subtitle'>{message}</p>
 
-				<form onSubmit={onLoginClicked}>
-					<Input
-						className='page_auth__input'
-						value={email}
-						onChange={handleChangeEmail}
-						type='email'
-						placeholder={language.textEnterEmail}
-						required
-					/>
-					<Input
-						className='page_auth__input'
-						value={password}
-						onChange={handleChangePassword}
-						type='password'
-						placeholder={language.textEnterPassword}
-						required
-						pattern='.{6,}'
-					/>
+			<form onSubmit={onLoginClicked}>
+				<Input
+					className='page_auth__input'
+					value={email}
+					onChange={handleChangeEmail}
+					type='email'
+					placeholder={language.textEnterEmail}
+					required
+				/>
+				<Input
+					className='page_auth__input'
+					value={password}
+					onChange={handleChangePassword}
+					type='password'
+					placeholder={language.textEnterPassword}
+					required
+					pattern='.{6,}'
+				/>
+				<Button
+					className='page_auth__forgot_password_button'
+					type='button'
+					mode='text'
+					title={language.actionForgotPassword}
+					onClick={onForgotPasswordClicked}
+				/>
+
+				<div className='page_auth__buttons_container'>
 					<Button
-						className='page_auth__forgot_password_button'
+						className='page_auth__action_button'
 						type='button'
 						mode='text'
-						title={language.actionForgotPassword}
-						onClick={onForgotPasswordClicked}
+						title={language.actionRegister}
+						onClick={onRegisterClicked}
 					/>
-
-					<div className='page_auth__buttons_container'>
-						<Button
-							className='page_auth__action_button'
-							type='button'
-							mode='text'
-							title={language.actionRegister}
-							onClick={onRegisterClicked}
-						/>
-						<Button type='submit' title={language.actionLogin}/>
-					</div>
-				</form>
-			</div>
-		</AuthContainer>
+					<Button type='submit' title={language.actionLogin} />
+				</div>
+			</form>
+		</div>
 	);
+};
+
+Login.layoutOptions = {
+	title: 'Login',
+	layout: 'Auth',
 };
 
 const mapStateToProps = (state: AppState) => {

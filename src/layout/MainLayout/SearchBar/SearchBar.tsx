@@ -1,9 +1,9 @@
 import React, { FormEvent, useState } from 'react';
-import language from '../../assets/language';
+import language from '../../../assets/language';
 import classNames from 'classnames';
-import { AppState } from '../../types/store';
+import { AppState } from '../../../types/store';
 import { connect } from 'react-redux';
-import { Cart } from '../../types/api';
+import { Cart } from '../../../types/api';
 
 import './styles.scss';
 import SearchResultObject from './SearchResultObject';

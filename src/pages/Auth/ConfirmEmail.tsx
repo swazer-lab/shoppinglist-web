@@ -2,8 +2,6 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 
 import { AppState } from '../../types/store';
-
-import { AuthContainer } from '../../components';
 import { confirmEmail } from '../../actions/auth';
 
 import { useLocalStorage } from '../../config/localstorage';
@@ -38,12 +36,10 @@ const ConfirmEmail = (props: Props) => {
 
 	const message = (!isLoading && isEmailConfirmed) ? language.textConfirmEmailSubTitle : errorMessage || '';
 	return (
-		<AuthContainer className='page_auth' isLoading={isLoading}>
-			<div className='page_auth__content_container'>
-				<h1 className='page_auth__title'>{language.titleConfirmEmail}</h1>
-				<p className='page_auth__subtitle'>{message}</p>
-			</div>
-		</AuthContainer>
+		<div className='page_auth__content_container'>
+			<h1 className='page_auth__title'>{language.titleConfirmEmail}</h1>
+			<p className='page_auth__subtitle'>{message}</p>
+		</div>
 	);
 };
 
@@ -54,6 +50,11 @@ const mapStateToProps = (state: AppState) => {
 		isLoading,
 		errorMessage,
 	};
+};
+
+ConfirmEmail.layoutOptions = {
+	title: 'Login',
+	layout: 'ConfirmEmail',
 };
 
 export default connect(mapStateToProps)(ConfirmEmail);

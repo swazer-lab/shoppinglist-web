@@ -2,7 +2,7 @@ import React, { FormEvent } from 'react';
 import { connect } from 'react-redux';
 
 import { AppState } from '../../types/store';
-import { AuthContainer, Button, Input } from '../../components';
+import { Button, Input } from '../../components';
 
 import {
 	changeEmail,
@@ -100,13 +100,11 @@ const ForgotPassword = (props: Props) => {
 	};
 
 	return (
-		<AuthContainer className='page_auth' isLoading={isLoading}>
-			<div className='page_auth__content_container'>
-				<h1 className='page_auth__title'>{language.titleForgotPassword}</h1>
-				<p className='page_auth__subtitle'>{message}</p>
-				{renderForm()}
-			</div>
-		</AuthContainer>
+		<div className='page_auth__content_container'>
+			<h1 className='page_auth__title'>{language.titleForgotPassword}</h1>
+			<p className='page_auth__subtitle'>{message}</p>
+			{renderForm()}
+		</div>
 	);
 };
 
@@ -121,6 +119,11 @@ const mapStateToProps = (state: AppState) => {
 		isLoading,
 		errorMessage,
 	};
+};
+
+ForgotPassword.layoutOptions = {
+	title: 'Forgot Password',
+	layout: 'Auth',
 };
 
 export default connect(mapStateToProps)(ForgotPassword);

@@ -13,43 +13,48 @@ const localstorage = ((initialStorage: Localstorage) => {
 	let listeners: LocalstorageListener[] = [];
 
 	const rehydrateStorage = () => {
-		Object.keys(initialStorage).forEach((key) => {
+		const keys = Object.keys(initialStorage);
+		keys.forEach((key: any) => {
 			const value = localStorage.getItem(key);
-
-			if (value !== null) {
+			if (value === null) {
 				// @ts-ignore
-				storage[key] = value;
+				setItem(key, initialStorage[key]);
 			} else {
 				// @ts-ignore
-				localStorage.setItem(key, initialStorage[key]);
+				storage[key] = typeof initialStorage[key] === 'number' ? Number(value) : typeof initialStorage[key] === 'boolean' ? value === 'true' : String(value);
 			}
-			listeners.filter((listener: LocalstorageListener) => {
-				listener(storage);
-			});
 		});
 	};
-	rehydrateStorage();
-
-	const getStorage = () => storage;
-	const getItem = (key: keyof Localstorage) => storage[key];
 
 	const setItem = (key: keyof Localstorage, value: any) => {
-		localStorage.setItem(key, value);
-		storage[key] = value;
+		localStorage.setItem(key, String(value));
 
+		// @ts-ignore
+		storage[key] = typeof initialStorage[key] === 'number' ? Number(value) : typeof initialStorage[key] === 'boolean' ? value === 'true' : String(value);
 		listeners.forEach((listener: LocalstorageListener) => listener(storage));
 	};
 
 	const subscribe = (listener: LocalstorageListener) => {
 		listeners.push(listener);
 		listener(storage);
+
 		return () => {
 			listeners = listeners.filter((l: LocalstorageListener) => l !== listener);
 		};
 	};
 
-	return { getStorage, getItem, setItem, subscribe };
+	rehydrateStorage();
+	return { setItem, subscribe };
 })(initialStorage);
+
+const useLocalStorageSubscription = (listener: LocalstorageListener) => {
+	useEffect(() => {
+		const subscription = localstorage.subscribe(listener);
+		return () => {
+			subscription();
+		};
+	});
+};
 
 const useLocalStorage = (): Localstorage => {
 	const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
@@ -57,21 +62,14 @@ const useLocalStorage = (): Localstorage => {
 	const [isEmailConfirmed, setIsEmailConfirmed] = useState<boolean>(false);
 	const [activeLanguage, setActiveLanguage] = useState<Localstorage['activeLanguage']>('en');
 
-	useEffect(() => {
-		const handleStorageChange = (storage: Localstorage) => {
-			setIsLoggedIn(storage.isLoggedIn);
-			setAccessToken(storage.accessToken);
-			setIsEmailConfirmed(storage.isEmailConfirmed);
-			setActiveLanguage(storage.activeLanguage);
-		};
-
-		const listener = localstorage.subscribe(handleStorageChange);
-		return () => {
-			listener();
-		};
-	}, []);
+	useLocalStorageSubscription((storage: Localstorage) => {
+		setIsLoggedIn(Boolean(storage.isLoggedIn));
+		setAccessToken(storage.accessToken);
+		setIsEmailConfirmed(Boolean(storage.isEmailConfirmed));
+		setActiveLanguage(storage.activeLanguage);
+	});
 
 	return { isLoggedIn, accessToken, isEmailConfirmed, activeLanguage };
 };
 
-export { localstorage, useLocalStorage };
+export { localstorage, useLocalStorage, useLocalStorageSubscription };

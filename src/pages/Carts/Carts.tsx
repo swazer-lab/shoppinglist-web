@@ -189,6 +189,8 @@ const Carts = (props: Props) => {
 
 Carts.layoutOptions = {
 	title: 'Carts',
+	layout: 'Main',
+	authorized: true,
 };
 
 const mapStateToProps = (state: AppState) => {

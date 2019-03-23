@@ -1,6 +1,5 @@
 import Layout from './Layout';
+import { MainLayout } from './MainLayout';
+import { AuthLayout } from './AuthLayout';
 
-export { Layout };
-export { NavigationBar } from './NavigationBar';
-export { ProfileModal } from './ProfileModal';
-export { SearchBar } from './SearchBar';
+export { Layout, MainLayout, AuthLayout };

@@ -13,6 +13,7 @@ import {
 	ShowSnackbarAction,
 	State,
 } from '../types/service';
+import { RouteName } from '../types/store';
 
 import { updateDefaultHeaders } from '../api';
 import { history, routes } from '../config/routes';
@@ -21,9 +22,9 @@ import { localstorage } from '../config/localstorage';
 import language from '../assets/language';
 
 // Navigation
-export const navigate = (routeName: string): NavigateAction => {
-	// @ts-ignore
-	history.push(routes[routeName.charAt(0).toLowerCase() + routeName.substr(1)].path);
+export const navigate = (routeName: RouteName): NavigateAction => {
+	const route = routes[routes.findIndex((route) => route.name === routeName)];
+	history.push(route.path);
 
 	return {
 		type: ActionTypes.navigate,
@@ -31,8 +32,8 @@ export const navigate = (routeName: string): NavigateAction => {
 	};
 };
 export const replace = (routeName: string): ReplaceAction => {
-	// @ts-ignore
-	history.replace(routes[routeName.charAt(0).toLowerCase() + routeName.substr(1)].path);
+	const route = routes[routes.findIndex((route) => route.name === routeName)];
+	history.replace(route.path);
 
 	return {
 		type: ActionTypes.replace,

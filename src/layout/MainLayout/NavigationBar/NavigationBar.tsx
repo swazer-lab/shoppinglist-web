@@ -1,5 +1,5 @@
 import React from 'react';
-import { State as ServiceState } from '../../types/service';
+import { State as ServiceState } from '../../../types/service';
 
 import { SearchBar } from '../';
 

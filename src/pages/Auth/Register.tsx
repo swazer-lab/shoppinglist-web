@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import { AppState } from '../../types/store';
 
-import { AuthContainer, Button, Input } from '../../components';
+import { Button, Input } from '../../components';
 
 import { navigate } from '../../actions/service';
 import { changeEmail, changeName, changePassword, register } from '../../actions/auth';
@@ -42,52 +42,55 @@ const Register = (props: Props) => {
 	const message = errorMessage ? errorMessage : language.textRegisterSubtitle;
 
 	return (
-		<AuthContainer className='page_auth' isLoading={isLoading}>
-			<div className='page_auth__content_container'>
-				<h1 className='page_auth__title'>{language.titleRegister}</h1>
-				<p className='page_auth__subtitle'>{message}</p>
+		<div className='page_auth__content_container'>
+			<h1 className='page_auth__title'>{language.titleRegister}</h1>
+			<p className='page_auth__subtitle'>{message}</p>
 
-				<form onSubmit={onRegisterClicked}>
-					<Input
-						className='page_auth__input'
-						value={name}
-						onChange={handleNameChange}
-						placeholder={language.textEnterName}
-						type='text'
-						required
-					/>
-					<Input
-						className='page_auth__input'
-						value={email}
-						onChange={handleEmailChange}
-						type='email'
-						placeholder={language.textEnterEmail}
-						required
-					/>
-					<Input
-						className='page_auth__input'
-						value={password}
-						onChange={handlePasswordChange}
-						type='password'
-						placeholder={language.textEnterPassword}
-						required
-						pattern='.{6,}'
-					/>
+			<form onSubmit={onRegisterClicked}>
+				<Input
+					className='page_auth__input'
+					value={name}
+					onChange={handleNameChange}
+					placeholder={language.textEnterName}
+					type='text'
+					required
+				/>
+				<Input
+					className='page_auth__input'
+					value={email}
+					onChange={handleEmailChange}
+					type='email'
+					placeholder={language.textEnterEmail}
+					required
+				/>
+				<Input
+					className='page_auth__input'
+					value={password}
+					onChange={handlePasswordChange}
+					type='password'
+					placeholder={language.textEnterPassword}
+					required
+					pattern='.{6,}'
+				/>
 
-					<div className='page_auth__buttons_container'>
-						<Button
-							className='page_auth__action_button'
-							type='button'
-							mode='text'
-							title={language.actionLoginInstead}
-							onClick={onLoginClicked}
-						/>
-						<Button type='submit' title={language.actionRegister}/>
-					</div>
-				</form>
-			</div>
-		</AuthContainer>
+				<div className='page_auth__buttons_container'>
+					<Button
+						className='page_auth__action_button'
+						type='button'
+						mode='text'
+						title={language.actionLoginInstead}
+						onClick={onLoginClicked}
+					/>
+					<Button type='submit' title={language.actionRegister} />
+				</div>
+			</form>
+		</div>
 	);
+};
+
+Register.layoutOptions = {
+	title: 'Register',
+	layout: 'Auth',
 };
 
 const mapStateToProps = (state: AppState) => {

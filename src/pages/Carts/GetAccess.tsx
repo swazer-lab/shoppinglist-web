@@ -12,11 +12,13 @@ interface Props {
 const GetAccess = (props: Props) => {
 	useEffect(() => {
 		const { dispatch, match } = props;
-		if (match.params.id) dispatch(getAccessToCart(match.params.id));
+		if (match.params.id) {
+			dispatch(getAccessToCart(match.params.id));
+		}
 	}, []);
 
 	return (
-		<div/>
+		<div />
 	);
 };
 
