@@ -33,8 +33,7 @@ export type RouteName =
 	| 'Carts'
 	| 'GetAccess'
 	| 'PrivacyPolicy'
-	| 'ServiceTerms'
-	| 'Auth';
+	| 'ServiceTerms';
 
 export interface Route {
 	name: RouteName,

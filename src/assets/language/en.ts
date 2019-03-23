@@ -41,8 +41,8 @@ export default {
 
 	// Forgot Password
 	titleForgotPassword: 'ForgotPassword',
-	textForgotPasswordSubTitleStep1: 'Please enter your email to get reset password code',
-	textForgotPasswordSubTitleStep2: 'We sent reset password to your mail',
+	textForgotPasswordSubtitle: 'Please enter your email to get reset password code',
+	textWeSentResetPasswordEmail: 'We sent reset password to your mail',
 
 	actionSendResetPasswordEmail: 'Send Email',
 	actionResetPassword: 'Reset Password',

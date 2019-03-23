@@ -33,6 +33,13 @@ export default (state: State = initialState, action: Action): State => {
 				password: action.password,
 			};
 
+		case ActionTypes.send_forgot_password_email_result:
+			if (action.hasError) return state;
+			return {
+				...state,
+				isResettingPassword: true,
+			};
+
 		case ActionTypes.change_reset_password_code:
 			return {
 				...state,

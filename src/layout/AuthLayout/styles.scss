@@ -37,11 +37,10 @@
     align-items: center;
 
     height: 0;
-    margin: 4rem 4rem 1rem;
-    padding-right: 1rem;
-    padding-left: 1rem;
+    margin-top: 3.5rem;
+    padding-right: 5rem;
+    padding-left: 5rem;
 
-    background-color: rgba($color-secondary, .05);
     border-radius: .6rem;
 
     font-size: 1.6rem;
@@ -78,11 +77,17 @@
       }
 
       &__children {
-        padding: 1rem 4rem 5rem;
+        padding: 1.5rem 4rem 4rem;
       }
     }
 
     &__links {
+      margin-top: 2rem;
+
+      @include respond-phone {
+        margin: 3rem 3rem;
+      }
+
       button {
         float: right;
         padding: .5rem 1rem;

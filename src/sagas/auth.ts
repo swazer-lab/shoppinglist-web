@@ -102,7 +102,10 @@ function* sendForgotPasswordEmailSaga(): SagaIterator {
 	yield put(showProgress());
 	try {
 		yield call(send_forgot_password_email_api, email);
-		yield put(sendForgotPasswordEmailResult(false));
+		yield all([
+			put(sendForgotPasswordEmailResult(false)),
+			put(showAlert('success', '', language.textWeSentResetPasswordEmail)),
+		]);
 	} catch (e) {
 		yield all([
 			put(sendForgotPasswordEmailResult(true)),

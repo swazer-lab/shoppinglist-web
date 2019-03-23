@@ -43,7 +43,6 @@ const ForgotPassword = (props: Props) => {
 		e.preventDefault();
 	};
 
-	const message = isResettingPassword ? language.textForgotPasswordSubTitleStep2 : language.textForgotPasswordSubTitleStep1;
 	const renderForm = () => {
 		if (!isResettingPassword) {
 			return (
@@ -98,7 +97,8 @@ const ForgotPassword = (props: Props) => {
 	return (
 		<div className='page_auth__content_container'>
 			<h1 className='page_auth__title'>{language.titleForgotPassword}</h1>
-			<p className='page_auth__subtitle'>{message}</p>
+			<p className='page_auth__subtitle'>{language.textForgotPasswordSubtitle}</p>
+
 			{renderForm()}
 		</div>
 	);
