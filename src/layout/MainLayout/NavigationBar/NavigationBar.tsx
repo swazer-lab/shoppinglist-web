@@ -5,12 +5,12 @@ import { SearchBar } from '../';
 
 import './styles.scss';
 
-import avatar from '../../../assets/images/avatar.jpeg'
-
 interface Props {
 	progress: ServiceState['progress'],
 
 	profilePhotoUrl?: string,
+	profileAvatarUrl?: string,
+
 	searchQuery?: string,
 
 	onOpenProfileModalClick: () => void,
@@ -19,7 +19,7 @@ interface Props {
 }
 
 const NavigationBar = (props: Props) => {
-	const { progress, profilePhotoUrl, onOpenProfileModalClick, onSearchQueryChange, onFilterClick, searchQuery } = props;
+	const { progress, profilePhotoUrl, profileAvatarUrl, searchQuery, onOpenProfileModalClick, onSearchQueryChange, onFilterClick } = props;
 
 	const renderProgress = () => progress.visible && (
 		<>
@@ -33,9 +33,13 @@ const NavigationBar = (props: Props) => {
 			<div className='navigation_bar__progress'>
 				{renderProgress()}
 			</div>
-			<SearchBar onSearchQueryChange={onSearchQueryChange} onFilterClick={onFilterClick} searchQuery={searchQuery}/>
+			<SearchBar onSearchQueryChange={onSearchQueryChange} onFilterClick={onFilterClick}
+			           searchQuery={searchQuery}/>
 			<div className='navigation_bar__auth' onClick={onOpenProfileModalClick}>
-				<img className='navigation_bar__auth__photo' src={profilePhotoUrl ? profilePhotoUrl : avatar}/>
+				<img
+					className='navigation_bar__auth__photo'
+					src={profilePhotoUrl ? profilePhotoUrl : profileAvatarUrl}
+				/>
 			</div>
 		</div>
 	);

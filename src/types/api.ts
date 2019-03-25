@@ -5,7 +5,8 @@ export interface Profile {
 	email: string,
 	phoneNumber: string,
 
-	photoUrl: string,
+	photoUrl?: string,
+	avatarUrl?: string,
 }
 
 export type CartItemStatusType = 'active' | 'completed' | 'canceled';

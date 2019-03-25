@@ -7,6 +7,7 @@ import {
 	FetchProfileActionResult,
 	ProfileAction,
 	ProfileActionResult,
+	SetProfileAvatarUrl,
 	UpdateProfilePhotoAction,
 	UpdateProfilePhotoActionResult,
 } from '../types/profile';
@@ -46,6 +47,11 @@ export const updateProfilePhotoResult = (hasError: boolean, photoUrl?: string): 
 	type: ActionTypes.update_profile_photo_result,
 	hasError,
 	photoUrl,
+});
+
+export const setProfileAvatarUrl = (avatarUrl: string): SetProfileAvatarUrl => ({
+	type: ActionTypes.set_avatar_url,
+	avatarUrl,
 });
 
 export const clearProfile = (): ProfileAction => ({

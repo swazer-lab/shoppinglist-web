@@ -9,8 +9,6 @@ import { useLocalStorage } from '../../../config/utilities';
 import './styles.scss';
 import language from '../../../assets/language';
 
-import avatar from '../../../assets/images/avatar.jpeg';
-
 interface Props {
 	isVisible: boolean,
 	isLoading: boolean,
@@ -20,6 +18,7 @@ interface Props {
 	email?: string,
 	phoneNumber?: string,
 	photoUrl?: string,
+	avatarUrl?: string,
 
 	draftProfile: Profile,
 	onDraftProfileNameChange: (name: string) => void,
@@ -42,6 +41,7 @@ const ProfileModal = (props: Props) => {
 		name,
 		email,
 		photoUrl,
+		avatarUrl,
 		draftProfile,
 		onDraftProfileNameChange,
 		onDraftProfilePhoneNumberChange,
@@ -94,19 +94,19 @@ const ProfileModal = (props: Props) => {
 		<div>
 			<div className='profile_modal'>
 				<div className='profile_modal__photo'
-				     style={{ backgroundImage: `url(${photoUrl ? photoUrl : avatar})` }}
+				     style={{ backgroundImage: `url(${photoUrl ? photoUrl : avatarUrl})` }}
 				     onClick={onSelectImageClicked}>
 
 					<i className='material-icons'>camera_alt</i>
 				</div>
-				<input id='profile_photo_input' type='file' name='pic' accept='image/*' onChange={handleImageChange} />
+				<input id='profile_photo_input' type='file' name='pic' accept='image/*' onChange={handleImageChange}/>
 				<h3 className='profile_modal__name'>{name}</h3>
 
 				<div className='profile_modal__email'>{email}</div>
 				<span className='profile_modal__verify_label'>{isEmailConfirmed ? 'Verified!' : 'Not verified!'}</span>
 
 				<div className='profile_modal__actions_container'>
-					<Button mode='text' accentColor='text' title='Logout' onClick={onLogoutClick} />
+					<Button mode='text' accentColor='text' title='Logout' onClick={onLogoutClick}/>
 				</div>
 			</div>
 		</div>
@@ -128,7 +128,7 @@ const ProfileModal = (props: Props) => {
 				/>
 
 				<div className='update_profile_modal__actions_container'>
-					<Button title='Update' onClick={onUpdateProfileClick} />
+					<Button title='Update' onClick={onUpdateProfileClick}/>
 				</div>
 			</div>
 		</div>
@@ -141,7 +141,7 @@ const ProfileModal = (props: Props) => {
 
 	return (
 		<Modal isVisible={isVisible} onCloseModalClick={onCloseProfileModalClick} title='Profile' buttons={buttons}>
-			<ProgressBar isLoading={isLoading} />
+			<ProgressBar isLoading={isLoading}/>
 			<Slider ref={slider} swipe={false} arrows={false} speed={300}>
 				{overviewContent}
 				{updateContent}

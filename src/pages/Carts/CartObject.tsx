@@ -7,8 +7,9 @@ import { Modal, ProgressBar } from '../../components';
 import ShareCart from './ShareCart';
 
 import avatar from '../../assets/images/avatar.jpeg';
-import './styles.scss';
 import language from '../../assets/language';
+
+import './styles.scss';
 
 interface Props {
 	progress: AppState['service']['progress'],

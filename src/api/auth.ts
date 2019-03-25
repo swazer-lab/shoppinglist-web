@@ -21,7 +21,7 @@ export const login_external_api = (name: string, email: string, token: string, p
 		provider,
 	};
 
-	return axios.post(urls.external_register_url, body);
+	return axios.post(urls.external_login_url, body);
 };
 
 export const login_api = (email: string, password: string): Promise<any> => {

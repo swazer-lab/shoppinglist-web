@@ -12,7 +12,6 @@ export enum ActionTypes {
 	register_result = 'AUTH__REGISTER_RESULT',
 
 	external_login = 'AUTH__EXTERNAL_LOGIN',
-	external_login_result = 'AUTH__EXTERNAL_LOGIN_RESULT',
 
 	login = 'AUTH__LOGIN',
 	login_result = 'AUTH__LOGIN_RESULT',

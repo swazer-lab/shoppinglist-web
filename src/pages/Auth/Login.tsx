@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 
 import GoogleLogin from 'react-google-login';
+import FacebookLogin from 'react-facebook-login';
 
 import { AppState } from '../../types/store';
 
@@ -9,6 +10,7 @@ import { Button, Input } from '../../components';
 
 import { clearAlert, navigate, showAlert } from '../../actions/service';
 import { changeEmail, changePassword, externalLogin, login } from '../../actions/auth';
+import { setProfileAvatarUrl } from '../../actions/profile';
 import language from '../../assets/language';
 
 import './styles.scss';
@@ -37,14 +39,23 @@ const Login = (props: Props) => {
 	const onRegisterClicked = () => dispatch(navigate('Register'));
 
 	const loginWithGoogle = (response: any) => {
-		const { w3, Zi } = response;
-		const { U3, ig } = w3;
-		const { access_token } = Zi;
+		const name = response.w3.ig;
+		const email = response.w3.U3;
+		const profilePhoto = response.w3.Paa;
+		const accessToken = response.Zi.access_token;
 
-		dispatch(externalLogin(ig, U3, access_token, 'Google'));
+		dispatch(setProfileAvatarUrl(profilePhoto));
+		dispatch(externalLogin(name, email, accessToken, 'Google'));
 	};
 
 	const loginWithGoogleFailure = () => dispatch(showAlert('error', language.textUnexpectedError));
+
+	const loginWithFacebook = (response: any) => {
+		const { accessToken, name, email, picture } = response;
+
+		dispatch(setProfileAvatarUrl(picture.data.url));
+		dispatch(externalLogin(name, email, accessToken, 'Facebook'));
+	};
 
 	const onLoginClicked = (event: any) => {
 		dispatch(login());
@@ -92,6 +103,12 @@ const Login = (props: Props) => {
 					<Button type='submit' title={language.actionLogin}/>
 				</div>
 			</form>
+
+			<FacebookLogin
+				appId="395394161261342"
+				fields="name, email, picture"
+				callback={loginWithFacebook}
+			/>
 
 			<GoogleLogin
 				clientId="423023829234-3rdcs6s6q0v8nbp2akd6ir91m25knq1e.apps.googleusercontent.com"

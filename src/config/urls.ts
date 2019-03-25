@@ -1,10 +1,11 @@
 const root = 'http://localhost:63493/api/';
+// const root = 'http://shopping.swazerlab.com/api/';
 const rootWeb = process.env.NODE_ENV === 'development' ? 'http://localhost:3000/' : 'http://shoppingweb.swazerlab.com/';
 
 // Account Urls
 const accountRoot = root.concat('account/');
 export const register_url = accountRoot.concat('register');
-export const external_register_url = accountRoot.concat('registerExternal');
+export const external_login_url = accountRoot.concat('registerExternal');
 export const login_url = accountRoot.concat('token');
 export const confirm_email_url = accountRoot.concat('confirmEmail');
 export const fetch_profile_url = accountRoot.concat('profile');

@@ -32,12 +32,14 @@ interface Props {
 	email?: string,
 	phoneNumber?: string,
 	photoUrl?: string,
-	searchQuery?: string,
+	avatarUrl?: string,
 	draftProfile: Profile,
+
+	searchQuery?: string,
 }
 
 const MainLayout = (props: Props) => {
-	const { children, dispatch, progress, snackbar, name, email, phoneNumber, photoUrl, draftProfile, searchQuery } = props;
+	const { children, dispatch, progress, snackbar, name, email, phoneNumber, photoUrl, avatarUrl, draftProfile, searchQuery } = props;
 
 	const [isProfileModalVisible, setIsProfileModalVisible] = useState(false);
 
@@ -62,6 +64,7 @@ const MainLayout = (props: Props) => {
 			<NavigationBar
 				progress={progress}
 				profilePhotoUrl={photoUrl}
+				profileAvatarUrl={avatarUrl}
 				searchQuery={searchQuery}
 				onOpenProfileModalClick={() => setIsProfileModalVisible(true)}
 				onSearchQueryChange={onSearchQueryChanged}
@@ -75,6 +78,7 @@ const MainLayout = (props: Props) => {
 				email={email}
 				phoneNumber={phoneNumber}
 				photoUrl={photoUrl}
+				avatarUrl={avatarUrl}
 				draftProfile={draftProfile}
 				onDraftProfileNameChange={onChangeDraftProfileName}
 				onDraftProfilePhoneNumberChange={onChangeDraftProfilePhoneNumber}
@@ -97,7 +101,7 @@ const MainLayout = (props: Props) => {
 
 const mapStateToProps = (state: AppState) => {
 	const { progress, snackbar } = state.service;
-	const { name, email, phoneNumber, photoUrl, draftProfile } = state.profile;
+	const { name, email, phoneNumber, photoUrl, avatarUrl, draftProfile } = state.profile;
 	const { searchQuery } = state.carts;
 
 	return {
@@ -108,6 +112,7 @@ const mapStateToProps = (state: AppState) => {
 		email,
 		phoneNumber,
 		photoUrl,
+		avatarUrl,
 		draftProfile,
 
 		searchQuery,

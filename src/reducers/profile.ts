@@ -7,6 +7,7 @@ const initialState: State = {
 	phoneNumber: '',
 
 	photoUrl: '',
+	avatarUrl: (require('../assets/images/avatar.jpeg')),
 
 	draftProfile: {
 		id: '',
@@ -15,6 +16,7 @@ const initialState: State = {
 		email: '',
 
 		photoUrl: '',
+		avatarUrl: (require('../assets/images/avatar.jpeg')),
 	},
 };
 
@@ -62,6 +64,16 @@ export default (state: State = initialState, action: Action): State => {
 			return {
 				...state,
 				photoUrl: action.photoUrl,
+			};
+
+		case ActionTypes.set_avatar_url:
+			return {
+				...state,
+				avatarUrl: action.avatarUrl,
+				draftProfile: {
+					...state.draftProfile,
+					avatarUrl: action.avatarUrl,
+				},
 			};
 
 		case ActionTypes.clear_profile:
