@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { AppState } from '../../types/store';
-import { Cart } from '../../types/api';
+import { AppState } from '../../../types/store';
+import { Cart } from '../../../types/api';
 
 import './styles.scss';
 

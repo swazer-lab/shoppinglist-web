@@ -16,12 +16,11 @@
   transition: all .3s;
 
   &:hover {
-    box-shadow: 0 .5rem 1rem rgba($color-black, .1);
+    border: .1rem solid darken($color-gray, 15);
   }
 
   &:focus {
     border: .1rem solid rgba($color-primary, .8);
-    box-shadow: 0 1rem 2rem rgba($color-black, .1);
     outline: none;
 
     &:invalid {

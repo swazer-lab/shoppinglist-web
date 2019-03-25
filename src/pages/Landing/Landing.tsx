@@ -11,21 +11,17 @@ import { changeEmail, changePassword, login } from '../../actions/auth';
 
 import language from '../../assets/language';
 import './styles.scss';
-import { useDocumentTitle } from '../../config/utilities';
 
 interface Props {
 	dispatch: Function,
 
 	email: string,
 	password: string,
-
-	isLoading: boolean,
-	errorMessage?: string,
 }
 
 const Landing = (props: Props) => {
 
-	const { dispatch, email, password, errorMessage } = props;
+	const { dispatch, email, password } = props;
 
 	const [isScrolled, setIsScrolled] = useState(false);
 	const [isKeepSignedInActive, setIsKeepSignedInActive] = useState(false);
@@ -92,7 +88,7 @@ const Landing = (props: Props) => {
 						{language.textSubtitleLanding}
 					</h2>
 					<div className='landing_page__column landing_page__header__auth_container__error_message'>
-						{errorMessage}
+						some message for error
 					</div>
 					<form onSubmit={onLoginClicked}>
 						<Input
@@ -111,7 +107,7 @@ const Landing = (props: Props) => {
 							pattern='.{6,}'
 						/>
 
-						<Button title={language.actionLogin} onClick={onLoginClicked}/>
+						<Button title={language.actionLogin} onClick={onLoginClicked} />
 					</form>
 
 					<div className='landing_page__header__keep_signed_in'>
@@ -220,13 +216,11 @@ const Landing = (props: Props) => {
 };
 
 const mapStateToProps = (state: AppState) => {
-	const { email, password, isLoading, errorMessage } = state.auth;
+	const { email, password } = state.auth;
 
 	return {
 		email,
 		password,
-		isLoading,
-		errorMessage,
 	};
 };
 

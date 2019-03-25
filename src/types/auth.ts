@@ -30,8 +30,7 @@ export interface AuthAction extends ReduxAction<ActionTypes> {
 }
 
 export interface AuthActionResult extends AuthAction {
-	hasError: boolean,
-	errorMessage?: string,
+	hasError: boolean
 }
 
 export interface ChangeNameAction extends AuthAction {
@@ -83,7 +82,4 @@ export interface State {
 
 	isResettingPassword: boolean,
 	resetPasswordCode: string,
-
-	errorMessage?: string,
-	isLoading: boolean,
 }

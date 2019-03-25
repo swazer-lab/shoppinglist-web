@@ -34,19 +34,17 @@ export const changeResetPasswordCode = (code: string): ChangeResetPasswordCode =
 export const register = (): AuthAction => ({
 	type: ActionTypes.register,
 });
-export const registerResult = (hasError: boolean, errorMessage?: string): AuthActionResult => ({
+export const registerResult = (hasError: boolean): AuthActionResult => ({
 	type: ActionTypes.register_result,
 	hasError,
-	errorMessage,
 });
 
 export const login = (): AuthAction => ({
 	type: ActionTypes.login,
 });
-export const loginResult = (hasError: boolean, errorMessage?: string): AuthActionResult => ({
+export const loginResult = (hasError: boolean): AuthActionResult => ({
 	type: ActionTypes.login_result,
 	hasError,
-	errorMessage,
 });
 
 export const confirmEmail = (userId: string, token: string): ConfirmEmailAction => ({
@@ -54,28 +52,25 @@ export const confirmEmail = (userId: string, token: string): ConfirmEmailAction 
 	userId,
 	token,
 });
-export const confirmEmailResult = (hasError: boolean, errorMessage?: string): AuthActionResult => ({
+export const confirmEmailResult = (hasError: boolean): AuthActionResult => ({
 	type: ActionTypes.confirm_email_result,
 	hasError,
-	errorMessage,
 });
 
 export const sendForgotPasswordEmail = (): AuthAction => ({
 	type: ActionTypes.send_forgot_password_email,
 });
-export const sendForgotPasswordEmailResult = (hasError: boolean, errorMessage?: string): AuthActionResult => ({
+export const sendForgotPasswordEmailResult = (hasError: boolean): AuthActionResult => ({
 	type: ActionTypes.send_forgot_password_email_result,
 	hasError,
-	errorMessage,
 });
 
 export const resetPassword = (): AuthAction => ({
 	type: ActionTypes.reset_password,
 });
-export const resetPasswordResult = (hasError: boolean, errorMessage?: string): AuthActionResult => ({
+export const resetPasswordResult = (hasError: boolean): AuthActionResult => ({
 	type: ActionTypes.reset_password_result,
 	hasError,
-	errorMessage,
 });
 
 export const logout = (): AuthAction => ({

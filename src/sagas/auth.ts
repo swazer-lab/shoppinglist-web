@@ -5,7 +5,16 @@ import { AppState } from '../types/store';
 
 import { confirm_email_api, login_api, register_api, reset_password_api, send_forgot_password_email_api } from '../api';
 
-import { navigate, setAccessToken, setIsEmailConfirmed, setIsLoggedIn } from '../actions/service';
+import {
+	hideProgress,
+	navigate,
+	setAccessToken,
+	setIsEmailConfirmed,
+	setIsLoggedIn,
+	showAlert,
+	showHttpErrorAlert,
+	showProgress,
+} from '../actions/service';
 import {
 	confirmEmailResult,
 	loginResult,
@@ -22,6 +31,7 @@ import language from '../assets/language';
 function* registerSaga(): SagaIterator {
 	const { name, email, password } = yield select((state: AppState) => state.auth);
 
+	yield put(showProgress());
 	try {
 		const response = yield call(register_api, name, email, password);
 		const { access_token } = response.data;
@@ -33,13 +43,19 @@ function* registerSaga(): SagaIterator {
 		]);
 		yield put(navigate('Carts'));
 	} catch (e) {
-		yield put(registerResult(true, e.response.data.message));
+		yield all([
+			put(registerResult(true)),
+			put(showHttpErrorAlert(e)),
+		]);
+	} finally {
+		yield put(hideProgress());
 	}
 }
 
 function* loginSaga(): SagaIterator {
 	const { email, password } = yield select((state: AppState) => state.auth);
 
+	yield put(showProgress());
 	try {
 		const response = yield call(login_api, email, password);
 		const { access_token } = response.data;
@@ -51,13 +67,19 @@ function* loginSaga(): SagaIterator {
 		]);
 		yield put(navigate('Carts'));
 	} catch (e) {
-		yield put(loginResult(true, language.titleAuthFailed));
+		yield all([
+			put(loginResult(true)),
+			put(showAlert('error', '', language.titleAuthFailed)),
+		]);
+	} finally {
+		yield put(hideProgress());
 	}
 }
 
 function* confirmEmailSaga(action: ConfirmEmailAction): SagaIterator {
 	const { userId, token } = action;
 
+	yield put(showProgress());
 	try {
 		yield call(confirm_email_api, userId, token);
 		yield all([
@@ -65,24 +87,39 @@ function* confirmEmailSaga(action: ConfirmEmailAction): SagaIterator {
 			put(setIsEmailConfirmed(true)),
 		]);
 	} catch (e) {
-		yield put(confirmEmailResult(true, e.response.data.message));
+		yield all([
+			put(confirmEmailResult(true)),
+			put(showHttpErrorAlert(e)),
+		]);
+	} finally {
+		yield put(hideProgress());
 	}
 }
 
 function* sendForgotPasswordEmailSaga(): SagaIterator {
 	const { email } = yield select((state: AppState) => state.auth);
 
+	yield put(showProgress());
 	try {
 		yield call(send_forgot_password_email_api, email);
-		yield put(sendForgotPasswordEmailResult(false));
+		yield all([
+			put(sendForgotPasswordEmailResult(false)),
+			put(showAlert('success', '', language.textWeSentResetPasswordEmail)),
+		]);
 	} catch (e) {
-		yield put(sendForgotPasswordEmailResult(true, e.response.data.message));
+		yield all([
+			put(sendForgotPasswordEmailResult(true)),
+			put(showHttpErrorAlert(e)),
+		]);
+	} finally {
+		yield put(hideProgress());
 	}
 }
 
 function* resetPasswordSaga(): SagaIterator {
 	const { email, password, resetPasswordCode } = yield select((state: AppState) => state.auth);
 
+	yield put(showProgress());
 	try {
 		yield call(reset_password_api, email, password, resetPasswordCode);
 
@@ -91,7 +128,12 @@ function* resetPasswordSaga(): SagaIterator {
 			put(navigate('Login')),
 		]);
 	} catch (e) {
-		yield put(resetPasswordResult(true, e.response.data.message));
+		yield all([
+			put(resetPasswordResult(true)),
+			put(showHttpErrorAlert(e)),
+		]);
+	} finally {
+		yield put(hideProgress());
 	}
 }
 
@@ -101,7 +143,7 @@ function* logoutSaga(): SagaIterator {
 		put(clearCarts()),
 		put(setIsLoggedIn(false)),
 		put(setIsEmailConfirmed(false)),
-		put(setAccessToken(''))
+		put(setAccessToken('')),
 	]);
 }
 

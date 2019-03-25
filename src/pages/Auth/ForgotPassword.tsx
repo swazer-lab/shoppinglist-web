@@ -1,8 +1,8 @@
-import React, { FormEvent } from 'react';
+import React, { FormEvent, useEffect } from 'react';
 import { connect } from 'react-redux';
 
 import { AppState } from '../../types/store';
-import { AuthContainer, Button, Input } from '../../components';
+import { Button, Input } from '../../components';
 
 import {
 	changeEmail,
@@ -11,11 +11,10 @@ import {
 	resetPassword,
 	sendForgotPasswordEmail,
 } from '../../actions/auth';
-
-import { useDocumentTitle } from '../../config/utilities';
 import language from '../../assets/language';
 
 import './styles.scss';
+import { clearAlert } from '../../actions/service';
 
 interface Props {
 	dispatch: Function,
@@ -24,15 +23,12 @@ interface Props {
 	password: string,
 	resetPasswordCode: string,
 	isResettingPassword: boolean,
-
-	isLoading: boolean,
-	errorMessage?: string,
 }
 
 const ForgotPassword = (props: Props) => {
-	const { dispatch, email, password, resetPasswordCode, isResettingPassword, isLoading, errorMessage } = props;
+	const { dispatch, email, password, resetPasswordCode, isResettingPassword } = props;
 
-	useDocumentTitle(language.titleForgotPassword);
+	useEffect(() => () => dispatch(clearAlert()), []);
 
 	const handleEmailChange = (e: FormEvent<HTMLInputElement>) => dispatch(changeEmail(e.currentTarget.value));
 	const handleResetPasswordCodeChange = (e: FormEvent<HTMLInputElement>) => dispatch(changeResetPasswordCode(e.currentTarget.value));
@@ -47,7 +43,6 @@ const ForgotPassword = (props: Props) => {
 		e.preventDefault();
 	};
 
-	const message = errorMessage ? errorMessage : isResettingPassword ? language.textForgotPasswordSubTitleStep2 : language.textForgotPasswordSubTitleStep1;
 	const renderForm = () => {
 		if (!isResettingPassword) {
 			return (
@@ -100,27 +95,29 @@ const ForgotPassword = (props: Props) => {
 	};
 
 	return (
-		<AuthContainer className='page_auth' isLoading={isLoading}>
-			<div className='page_auth__content_container'>
-				<h1 className='page_auth__title'>{language.titleForgotPassword}</h1>
-				<p className='page_auth__subtitle'>{message}</p>
-				{renderForm()}
-			</div>
-		</AuthContainer>
+		<div className='page_auth__content_container'>
+			<h1 className='page_auth__title'>{language.titleForgotPassword}</h1>
+			<p className='page_auth__subtitle'>{language.textForgotPasswordSubtitle}</p>
+
+			{renderForm()}
+		</div>
 	);
 };
 
 const mapStateToProps = (state: AppState) => {
-	const { email, password, resetPasswordCode, isResettingPassword, isLoading, errorMessage } = state.auth;
+	const { email, password, resetPasswordCode, isResettingPassword } = state.auth;
 
 	return {
 		email,
 		password,
 		resetPasswordCode,
 		isResettingPassword,
-		isLoading,
-		errorMessage,
 	};
+};
+
+ForgotPassword.layoutOptions = {
+	title: language.titleForgotPassword,
+	layout: 'Auth',
 };
 
 export default connect(mapStateToProps)(ForgotPassword);
