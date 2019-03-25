@@ -8,6 +8,7 @@ import {
 	ChangePhoneAction,
 	ChangeResetPasswordCode,
 	ConfirmEmailAction,
+	ExternalLoginAction
 } from '../types/auth';
 
 export const changeName = (name: string): ChangeNameAction => ({
@@ -71,6 +72,14 @@ export const resetPassword = (): AuthAction => ({
 export const resetPasswordResult = (hasError: boolean): AuthActionResult => ({
 	type: ActionTypes.reset_password_result,
 	hasError,
+});
+
+export const externalLogin = (name: string, email: string, tokenId: string, provider: string): ExternalLoginAction => ({
+	type: ActionTypes.external_login,
+	name,
+	email,
+	tokenId,
+	provider
 });
 
 export const logout = (): AuthAction => ({

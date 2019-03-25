@@ -11,6 +11,9 @@ export enum ActionTypes {
 	register = 'AUTH__REGISTER',
 	register_result = 'AUTH__REGISTER_RESULT',
 
+	external_login = 'AUTH__EXTERNAL_LOGIN',
+	external_login_result = 'AUTH__EXTERNAL_LOGIN_RESULT',
+
 	login = 'AUTH__LOGIN',
 	login_result = 'AUTH__LOGIN_RESULT',
 
@@ -64,6 +67,14 @@ export interface ConfirmEmailAction extends AuthAction {
 	token: string,
 }
 
+export interface ExternalLoginAction extends AuthAction {
+	type: ActionTypes.external_login,
+	name: string,
+	email: string,
+	provider: string,
+	tokenId: string
+}
+
 export type Action =
 	& AuthAction
 	& AuthActionResult
@@ -72,7 +83,8 @@ export type Action =
 	& ChangePhoneAction
 	& ChangePasswordAction
 	& ChangeResetPasswordCode
-	& ConfirmEmailAction;
+	& ConfirmEmailAction
+	& ExternalLoginAction;
 
 export interface State {
 	name: string,

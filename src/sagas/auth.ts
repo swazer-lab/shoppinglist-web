@@ -3,7 +3,14 @@ import { all, call, put, select, takeLatest } from 'redux-saga/effects';
 
 import { AppState } from '../types/store';
 
-import { confirm_email_api, login_api, register_api, reset_password_api, send_forgot_password_email_api } from '../api';
+import {
+	confirm_email_api,
+	login_api,
+	login_external_api,
+	register_api,
+	reset_password_api,
+	send_forgot_password_email_api,
+} from '../api';
 
 import {
 	hideProgress,
@@ -22,10 +29,11 @@ import {
 	resetPasswordResult,
 	sendForgotPasswordEmailResult,
 } from '../actions/auth';
+
 import { clearProfile } from '../actions/profile';
 import { clearCarts } from '../actions/carts';
 
-import { ActionTypes, ConfirmEmailAction } from '../types/auth';
+import { ActionTypes, ConfirmEmailAction, ExternalLoginAction } from '../types/auth';
 import language from '../assets/language';
 
 function* registerSaga(): SagaIterator {
@@ -58,6 +66,30 @@ function* loginSaga(): SagaIterator {
 	yield put(showProgress());
 	try {
 		const response = yield call(login_api, email, password);
+		const { access_token } = response.data;
+
+		yield all([
+			put(loginResult(false)),
+			put(setAccessToken(access_token)),
+			put(setIsLoggedIn(true)),
+		]);
+		yield put(navigate('Carts'));
+	} catch (e) {
+		yield all([
+			put(loginResult(true)),
+			put(showAlert('error', '', language.titleAuthFailed)),
+		]);
+	} finally {
+		yield put(hideProgress());
+	}
+}
+
+function* externalLoginSaga(action: ExternalLoginAction): SagaIterator {
+	const { name, email, tokenId, provider } = action;
+
+	yield put(showProgress());
+	try {
+		const response = yield call(login_external_api, name, email, tokenId, provider);
 		const { access_token } = response.data;
 
 		yield all([
@@ -154,4 +186,5 @@ export default [
 	takeLatest(ActionTypes.send_forgot_password_email, sendForgotPasswordEmailSaga),
 	takeLatest(ActionTypes.reset_password, resetPasswordSaga),
 	takeLatest(ActionTypes.logout, logoutSaga),
+	takeLatest(ActionTypes.external_login, externalLoginSaga),
 ];

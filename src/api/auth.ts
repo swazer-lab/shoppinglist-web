@@ -12,6 +12,18 @@ export const register_api = (name: string, email: string, password: string): Pro
 
 	return axios.post(urls.register_url, body);
 };
+
+export const login_external_api = (name: string, email: string, token: string, provider: string): Promise<any> => {
+	const body: any = {
+		name,
+		email,
+		token,
+		provider,
+	};
+
+	return axios.post(urls.external_register_url, body);
+};
+
 export const login_api = (email: string, password: string): Promise<any> => {
 	const headers: any = {
 		'content-type': 'application/x-www-form-urlencoded',
@@ -25,6 +37,7 @@ export const login_api = (email: string, password: string): Promise<any> => {
 
 	return axios.post(urls.login_url, qs.stringify(body), headers);
 };
+
 export const confirm_email_api = (userId: string, token: string): Promise<any> => {
 	const body = {
 		userId,
