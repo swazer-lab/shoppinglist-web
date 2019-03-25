@@ -36,4 +36,9 @@ const PrivacyPolicy = () => {
 	);
 }
 
+PrivacyPolicy.layoutOptions = {
+	title: 'Privacy Policy',
+	layout: ''
+};
+
 export default PrivacyPolicy;

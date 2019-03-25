@@ -22,7 +22,12 @@ interface Props {
 const Register = (props: Props) => {
 	const { dispatch, name, email, password } = props;
 
-	useEffect(() => () => dispatch(clearAlert()), []);
+	useEffect(() => {
+		dispatch(clearAlert());
+		return () => {
+			dispatch(clearAlert());
+		};
+	});
 
 	const handleNameChange = (e: any) => dispatch(changeName(e.target.value));
 	const handleEmailChange = (e: any) => dispatch(changeEmail(e.target.value));

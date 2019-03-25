@@ -6,7 +6,7 @@ import { AppState } from '../../types/store';
 
 import { Button, Input } from '../../components';
 
-import { navigate } from '../../actions/service';
+import { clearAlert, navigate } from '../../actions/service';
 import { changeEmail, changePassword, login } from '../../actions/auth';
 
 import language from '../../assets/language';
@@ -17,11 +17,13 @@ interface Props {
 
 	email: string,
 	password: string,
+
+	alert: AppState['service']['alert'],
 }
 
 const Landing = (props: Props) => {
 
-	const { dispatch, email, password } = props;
+	const { dispatch, email, password, alert } = props;
 
 	const [isScrolled, setIsScrolled] = useState(false);
 	const [isKeepSignedInActive, setIsKeepSignedInActive] = useState(false);
@@ -88,7 +90,7 @@ const Landing = (props: Props) => {
 						{language.textSubtitleLanding}
 					</h2>
 					<div className='landing_page__column landing_page__header__auth_container__error_message'>
-						some message for error
+						{alert.message}
 					</div>
 					<form onSubmit={onLoginClicked}>
 						<Input
@@ -107,7 +109,7 @@ const Landing = (props: Props) => {
 							pattern='.{6,}'
 						/>
 
-						<Button title={language.actionLogin} onClick={onLoginClicked} />
+						<Button title={language.actionLogin} onClick={onLoginClicked}/>
 					</form>
 
 					<div className='landing_page__header__keep_signed_in'>
@@ -215,12 +217,19 @@ const Landing = (props: Props) => {
 	);
 };
 
+Landing.layoutOptions = {
+	title: '',
+	layout: ''
+};
+
 const mapStateToProps = (state: AppState) => {
 	const { email, password } = state.auth;
+	const { alert } = state.service;
 
 	return {
 		email,
 		password,
+		alert
 	};
 };
 

@@ -28,7 +28,12 @@ interface Props {
 const ForgotPassword = (props: Props) => {
 	const { dispatch, email, password, resetPasswordCode, isResettingPassword } = props;
 
-	useEffect(() => () => dispatch(clearAlert()), []);
+	useEffect(() => {
+		dispatch(clearAlert());
+		return () => {
+			dispatch(clearAlert());
+		};
+	});
 
 	const handleEmailChange = (e: FormEvent<HTMLInputElement>) => dispatch(changeEmail(e.currentTarget.value));
 	const handleResetPasswordCodeChange = (e: FormEvent<HTMLInputElement>) => dispatch(changeResetPasswordCode(e.currentTarget.value));

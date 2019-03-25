@@ -5,7 +5,7 @@ import { SearchBar } from '../';
 
 import './styles.scss';
 
-import avatar from '../../assets/images/avatar.jpeg';
+import avatar from '../../../assets/images/avatar.jpeg'
 
 interface Props {
 	progress: ServiceState['progress'],

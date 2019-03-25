@@ -26,7 +26,12 @@ const ConfirmEmail = (props: Props) => {
 		if (userId && token) dispatch(confirmEmail(userId, token));
 	}, []);
 
-	useEffect(() => () => dispatch(clearAlert()), []);
+	useEffect(() => {
+		dispatch(clearAlert());
+		return () => {
+			dispatch(clearAlert());
+		};
+	});
 
 	return (
 		<div className='page_auth__content_container'>

@@ -9,7 +9,7 @@ import { useLocalStorage } from '../../../config/utilities';
 import './styles.scss';
 import language from '../../../assets/language';
 
-import avatar from '../../assets/images/avatar.jpeg';
+import avatar from '../../../assets/images/avatar.jpeg';
 
 interface Props {
 	isVisible: boolean,

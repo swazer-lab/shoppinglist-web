@@ -3,6 +3,7 @@ import language from '../../assets/language';
 
 import './styles.scss';
 import { useDocumentTitle } from '../../config/utilities';
+import PrivacyPolicy from './PrivacyPolicy';
 
 const ServiceTerms = () => {
 	useDocumentTitle(language.titleServiceTerms);
@@ -75,5 +76,10 @@ const ServiceTerms = () => {
 		</div>
 	);
 }
+
+ServiceTerms.layoutOptions = {
+	title: 'Service Terms',
+	layout: ''
+};
 
 export default ServiceTerms;

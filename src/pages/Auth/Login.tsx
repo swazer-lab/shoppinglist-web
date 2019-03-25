@@ -21,7 +21,12 @@ interface Props {
 const Login = (props: Props) => {
 	const { dispatch, email, password } = props;
 
-	useEffect(() => () => dispatch(clearAlert()), []);
+	useEffect(() => {
+		dispatch(clearAlert());
+		return () => {
+			dispatch(clearAlert());
+		};
+	});
 
 	const handleChangeEmail = (e: any) => dispatch(changeEmail(e.target.value));
 	const handleChangePassword = (e: any) => dispatch(changePassword(e.target.value));
@@ -64,7 +69,6 @@ const Login = (props: Props) => {
 					title={language.actionForgotPassword}
 					onClick={onForgotPasswordClicked}
 				/>
-
 				<div className='page_auth__buttons_container'>
 					<Button
 						className='page_auth__action_button'
@@ -73,7 +77,7 @@ const Login = (props: Props) => {
 						title={language.actionRegister}
 						onClick={onRegisterClicked}
 					/>
-					<Button type='submit' title={language.actionLogin} />
+					<Button type='submit' title={language.actionLogin}/>
 				</div>
 			</form>
 		</div>
