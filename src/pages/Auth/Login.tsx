@@ -14,6 +14,7 @@ import { setProfileAvatarUrl } from '../../actions/profile';
 import language from '../../assets/language';
 
 import './styles.scss';
+import ExternalLogin from './ExternalLogin';
 
 interface Props {
 	dispatch: Function,
@@ -38,6 +39,11 @@ const Login = (props: Props) => {
 	const onForgotPasswordClicked = () => dispatch(navigate('ForgotPassword'));
 	const onRegisterClicked = () => dispatch(navigate('Register'));
 
+	const onLoginClicked = (event: any) => {
+		dispatch(login());
+		event.preventDefault();
+	};
+
 	const loginWithGoogle = (response: any) => {
 		const name = response.w3.ig;
 		const email = response.w3.U3;
@@ -48,7 +54,7 @@ const Login = (props: Props) => {
 		dispatch(externalLogin(name, email, accessToken, 'Google'));
 	};
 
-	const loginWithGoogleFailure = () => dispatch(showAlert('error', language.textUnexpectedError));
+	const loginWithGoogleFailure = () => dispatch(showAlert('error', '', language.textUnexpectedError));
 
 	const loginWithFacebook = (response: any) => {
 		const { accessToken, name, email, picture } = response;
@@ -57,10 +63,7 @@ const Login = (props: Props) => {
 		dispatch(externalLogin(name, email, accessToken, 'Facebook'));
 	};
 
-	const onLoginClicked = (event: any) => {
-		dispatch(login());
-		event.preventDefault();
-	};
+	const loginWithFacebookFailure = () => dispatch(showAlert('error', '', language.textUnexpectedError));
 
 	return (
 		<div className='page_auth__content_container'>
@@ -104,18 +107,7 @@ const Login = (props: Props) => {
 				</div>
 			</form>
 
-			<FacebookLogin
-				appId="395394161261342"
-				fields="name, email, picture"
-				callback={loginWithFacebook}
-			/>
-
-			<GoogleLogin
-				clientId="423023829234-3rdcs6s6q0v8nbp2akd6ir91m25knq1e.apps.googleusercontent.com"
-				buttonText="LOGIN WITH GOOGLE"
-				onSuccess={loginWithGoogle}
-				onFailure={loginWithGoogleFailure}
-			/>
+			<ExternalLogin loginWithFacebook={loginWithFacebook} loginWithFacebookFailure={loginWithFacebookFailure} loginWithGoogle={loginWithGoogle} loginWithGoogleFailure={loginWithGoogleFailure} />
 		</div>
 	);
 };

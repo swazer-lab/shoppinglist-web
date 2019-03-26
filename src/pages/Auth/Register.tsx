@@ -14,6 +14,7 @@ import language from '../../assets/language';
 
 import './styles.scss';
 import { setProfileAvatarUrl } from '../../actions/profile';
+import ExternalLogin from './ExternalLogin';
 
 interface Props {
 	dispatch: Function,
@@ -43,7 +44,7 @@ const Register = (props: Props) => {
 		e.preventDefault();
 	};
 
-	const registerWithGoogle = (response: any) => {
+	const loginWithGoogle = (response: any) => {
 		const name = response.w3.ig;
 		const email = response.w3.U3;
 		const profilePhoto = response.w3.Paa;
@@ -53,7 +54,7 @@ const Register = (props: Props) => {
 		dispatch(externalLogin(name, email, accessToken, 'Google'));
 	};
 
-	const registerWithGoogleFailure = () => dispatch(showAlert('error', language.textUnexpectedError));
+	const loginWithGoogleFailure = () => dispatch(showAlert('error', '', language.textUnexpectedError));
 
 	const loginWithFacebook = (response: any) => {
 		const { accessToken, name, email, picture } = response;
@@ -61,6 +62,8 @@ const Register = (props: Props) => {
 		dispatch(setProfileAvatarUrl(picture.data.url));
 		dispatch(externalLogin(name, email, accessToken, 'Facebook'));
 	};
+
+	const loginWithFacebookFailure = () => dispatch(showAlert('error', '', language.textUnexpectedError));
 
 	return (
 		<div className='page_auth__content_container'>
@@ -102,22 +105,11 @@ const Register = (props: Props) => {
 						title={language.actionLoginInstead}
 						onClick={onLoginClicked}
 					/>
-					<Button type='submit' title={language.actionRegister} />
+					<Button type='submit' title={language.actionRegister}/>
 				</div>
 			</form>
 
-			<FacebookLogin
-				appId="395394161261342"
-				fields="name, email"
-				callback={loginWithFacebook}
-			/>
-
-			<GoogleLogin
-				clientId="423023829234-3rdcs6s6q0v8nbp2akd6ir91m25knq1e.apps.googleusercontent.com"
-				buttonText="REGISTER WITH GOOGLE"
-				onSuccess={registerWithGoogle}
-				onFailure={registerWithGoogleFailure}
-			/>
+			<ExternalLogin loginWithFacebook={loginWithFacebook} loginWithFacebookFailure={loginWithFacebookFailure} loginWithGoogle={loginWithGoogle} loginWithGoogleFailure={loginWithGoogleFailure} />
 		</div>
 	);
 };
