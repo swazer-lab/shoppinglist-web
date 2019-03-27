@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 
 import { AppState } from '../../types/store';
@@ -13,13 +13,16 @@ import { logout, resendConfirmEmail } from '../../actions/auth';
 import {
 	changeDraftProfileName,
 	changeDraftProfilePhoneNumber,
+	fetchProfile,
 	updateProfile,
 	updateProfilePhoto,
 } from '../../actions/profile';
 
+import { useLocalStorage } from '../../config/localstorage';
+
 import { changeSearchQuery, filterCarts } from '../../actions/carts';
 import './styles.scss';
-import { useLocalStorage } from '../../config/utilities';
+import { fetchContacts } from '../../actions/contacts';
 
 interface Props {
 	dispatch: Function,
@@ -43,9 +46,16 @@ interface Props {
 const MainLayout = (props: Props) => {
 	const { children, dispatch, progress, snackbar, id, name, email, phoneNumber, photoUrl, avatarUrl, draftProfile, searchQuery } = props;
 
-	const { isEmailConfirmed } = useLocalStorage();
+	const { isLoggedIn, accessToken, isEmailConfirmed } = useLocalStorage();
 
 	const [isProfileModalVisible, setIsProfileModalVisible] = useState(false);
+
+	useEffect(() => {
+		if (isLoggedIn && accessToken) {
+			dispatch(fetchProfile());
+			dispatch(fetchContacts());
+		}
+	}, [isLoggedIn, accessToken]);
 
 	const onChangeDraftProfileName = (name: string) => dispatch(changeDraftProfileName(name));
 	const onChangeDraftProfilePhoneNumber = (phoneNumber: string) => dispatch(changeDraftProfilePhoneNumber(phoneNumber));

@@ -53,7 +53,7 @@ const ExternalLogin = (props: Props) => {
 				/>
 
 				<div onClick={onLoginWithGoogleClicked}>{language.actionLoginWithGoogle}</div>
-				<div onClick={onLoginWithFacebookClicked}>{language.actionLoginWithGoogle}</div>
+				<div onClick={onLoginWithFacebookClicked}>{language.actionLoginWithFacebook}</div>
 			</div>
 		</>
 	);

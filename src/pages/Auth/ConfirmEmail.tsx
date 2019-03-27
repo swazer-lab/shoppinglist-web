@@ -17,14 +17,15 @@ interface Props {
 const ConfirmEmail = (props: Props) => {
 	const { dispatch, location } = props;
 
-	useEffect(() => {
+	const conf = (() => {
 		const queryParams = new URLSearchParams(location.search);
-
 		const userId = queryParams.get('userId');
 		const token = queryParams.get('token');
 
-		if (userId && token) dispatch(confirmEmail(userId, token));
-	}, []);
+		if (userId && token) {
+			dispatch(confirmEmail(userId, token));
+		}
+	})();
 
 	useEffect(() => {
 		dispatch(clearAlert());

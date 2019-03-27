@@ -25,6 +25,7 @@ export const routes: RouteType[] = [
 export const history = createBrowserHistory({});
 
 export const AppNavigator = () => {
+
 	const renderRoutes = routes.map(({ name, path, Component }: RouteType) => {
 		const routeComponent = (props: any) => (
 			<Layout layoutOptions={(Component.layoutOptions ? Component.layoutOptions : {})} {...props}>

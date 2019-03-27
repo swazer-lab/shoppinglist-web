@@ -6,9 +6,6 @@ import { AppState } from './types/store';
 import { AppNavigator } from './config/routes';
 import { store } from './config/store';
 
-import { fetchProfile } from './actions/profile';
-import { fetchContacts } from './actions/contacts';
-
 import { useLocalStorage } from './config/localstorage';
 import { updateDefaultHeaders } from './api';
 
@@ -20,15 +17,14 @@ interface Props {
 }
 
 const Main = (props: Props) => {
-	const { dispatch } = props;
+
+	console.log('---------------------------------------');
+
 	const { isLoggedIn, accessToken, activeLanguage } = useLocalStorage();
 
 	useEffect(() => {
 		if (isLoggedIn && accessToken) {
 			updateDefaultHeaders(accessToken);
-
-			dispatch(fetchProfile());
-			dispatch(fetchContacts());
 		}
 	}, [isLoggedIn, accessToken]);
 
