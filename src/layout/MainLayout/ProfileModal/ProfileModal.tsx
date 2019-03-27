@@ -113,11 +113,15 @@ const ProfileModal = (props: Props) => {
 
 				<div className='profile_modal__email'>{email}</div>
 				<span className='profile_modal__verify_label'>{isEmailConfirmed ? 'Verified!' : 'Not verified!'}</span>
-				{
-					!isEmailConfirmed ?
-						<Button mode='text' title='Resend Confirm Email'
-						        onClick={onResendConfirmEmailConfirmClicked}/> : ''
-				}
+
+				<div className='profile_modal__resend_confirm_email'>
+					{
+						!isEmailConfirmed ?
+							<Button mode='normal' title='Resend Confirm Email'
+							        onClick={onResendConfirmEmailConfirmClicked}/> : ''
+					}
+				</div>
+
 				<div className='profile_modal__actions_container'>
 					<Button mode='text' accentColor='text' title='Logout' onClick={onLogoutClick}/>
 				</div>

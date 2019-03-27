@@ -2,6 +2,7 @@ import React from 'react';
 import GoogleLogin from 'react-google-login';
 import FacebookLogin from 'react-facebook-login';
 import { FACEBOOK_APP_ID, GOOGLE_CLIENT_ID } from '../../config/constants';
+import language from '../../assets/language';
 
 interface Props {
 	loginWithFacebook: (response: any) => void,
@@ -30,7 +31,7 @@ const ExternalLogin = (props: Props) => {
 		<>
 			<div className='page_auth__separator'>
 				<div/>
-				<span>External Login</span>
+				<span>{language.titleExternalLogin}</span>
 				<div/>
 			</div>
 
@@ -51,8 +52,8 @@ const ExternalLogin = (props: Props) => {
 					onFailure={loginWithGoogleFailure}
 				/>
 
-				<div onClick={onLoginWithGoogleClicked}>Continue with Google</div>
-				<div onClick={onLoginWithFacebookClicked}>Continue with Facebook</div>
+				<div onClick={onLoginWithGoogleClicked}>{language.actionLoginWithGoogle}</div>
+				<div onClick={onLoginWithFacebookClicked}>{language.actionLoginWithGoogle}</div>
 			</div>
 		</>
 	);

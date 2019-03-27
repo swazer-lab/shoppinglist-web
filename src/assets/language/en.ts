@@ -35,6 +35,12 @@ export default {
 	actionLogin: 'Login',
 	actionCreateAccount: 'Create Account',
 
+	// External Login
+
+	titleExternalLogin: 'External Login',
+	actionLoginWithGoogle: 'Continue with Google',
+	actionLoginWithFacebook: 'Continue with Facebook',
+
 	// Confirm Email
 	titleConfirmEmail: 'ConfirmEmail',
 	textConfirmEmailSubtitle: 'Your account has been activated sucessfully',

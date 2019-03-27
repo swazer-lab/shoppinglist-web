@@ -63,6 +63,11 @@
     color: $color-text;
   }
 
+  &__resend_confirm_email{
+    margin-top: 20px;
+    text-align: center;
+  }
+
   &__verify_label {
     align-self: center;
     margin-top: .8rem;
