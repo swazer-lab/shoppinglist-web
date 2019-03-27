@@ -8,6 +8,7 @@ export const register_url = accountRoot.concat('register');
 export const external_login_url = accountRoot.concat('registerExternal');
 export const login_url = accountRoot.concat('token');
 export const confirm_email_url = accountRoot.concat('confirmEmail');
+export const resend_confirm_email_url = (userId: string) => accountRoot.concat(`resendConfirmEmail?userId=${userId}`);
 export const fetch_profile_url = accountRoot.concat('profile');
 export const forgot_password_url = accountRoot.concat('ForgotPassword');
 export const reset_password_url = accountRoot.concat('ResetPassword');

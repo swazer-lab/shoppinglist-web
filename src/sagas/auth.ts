@@ -10,6 +10,7 @@ import {
 	register_api,
 	reset_password_api,
 	send_forgot_password_email_api,
+	resend_confirm_email_api
 } from '../api';
 
 import {
@@ -33,7 +34,7 @@ import {
 import { clearProfile } from '../actions/profile';
 import { clearCarts } from '../actions/carts';
 
-import { ActionTypes, ConfirmEmailAction, ExternalLoginAction } from '../types/auth';
+import { ActionTypes, ConfirmEmailAction, ExternalLoginAction, ResendConfirmEmailAction } from '../types/auth';
 import language from '../assets/language';
 
 function* registerSaga(): SagaIterator {
@@ -128,6 +129,25 @@ function* confirmEmailSaga(action: ConfirmEmailAction): SagaIterator {
 	}
 }
 
+function* resendConfirmEmailSaga(action: ResendConfirmEmailAction): SagaIterator {
+	const { userId } = action;
+
+	yield put(showProgress());
+	try {
+		yield call(resend_confirm_email_api, userId);
+		yield all([
+			put(confirmEmailResult(false)),
+		]);
+	} catch (e) {
+		yield all([
+			put(confirmEmailResult(true)),
+			put(showHttpErrorAlert(e)),
+		]);
+	} finally {
+		yield put(hideProgress());
+	}
+}
+
 function* sendForgotPasswordEmailSaga(): SagaIterator {
 	const { email } = yield select((state: AppState) => state.auth);
 
@@ -187,4 +207,5 @@ export default [
 	takeLatest(ActionTypes.reset_password, resetPasswordSaga),
 	takeLatest(ActionTypes.logout, logoutSaga),
 	takeLatest(ActionTypes.external_login, externalLoginSaga),
+	takeLatest(ActionTypes.resend_confirm_email, resendConfirmEmailSaga)
 ];

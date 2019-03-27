@@ -24,6 +24,8 @@ export const profileMapper = (toApi: boolean = false) => {
 		email: 'email',
 		phoneNumber: 'mobile',
 
+		isConfirmed: 'isConfirmed',
+
 		photoUrl: {
 			path: 'photoId',
 			fn: (value: number) => value !== null ? get_photo_url(value) : undefined,

@@ -8,7 +8,7 @@ import { Snackbar } from '../../components';
 import { NavigationBar, ProfileModal } from './';
 
 import { hideSnackbar } from '../../actions/service';
-import { logout } from '../../actions/auth';
+import { logout, resendConfirmEmail } from '../../actions/auth';
 
 import {
 	changeDraftProfileName,
@@ -19,6 +19,7 @@ import {
 
 import { changeSearchQuery, filterCarts } from '../../actions/carts';
 import './styles.scss';
+import { useLocalStorage } from '../../config/utilities';
 
 interface Props {
 	dispatch: Function,
@@ -28,6 +29,7 @@ interface Props {
 	progress: AppState['service']['progress'],
 	snackbar: AppState['service']['snackbar'],
 
+	id?: string,
 	name?: string,
 	email?: string,
 	phoneNumber?: string,
@@ -39,13 +41,17 @@ interface Props {
 }
 
 const MainLayout = (props: Props) => {
-	const { children, dispatch, progress, snackbar, name, email, phoneNumber, photoUrl, avatarUrl, draftProfile, searchQuery } = props;
+	const { children, dispatch, progress, snackbar, id, name, email, phoneNumber, photoUrl, avatarUrl, draftProfile, searchQuery } = props;
+
+	const { isEmailConfirmed } = useLocalStorage();
 
 	const [isProfileModalVisible, setIsProfileModalVisible] = useState(false);
 
 	const onChangeDraftProfileName = (name: string) => dispatch(changeDraftProfileName(name));
 	const onChangeDraftProfilePhoneNumber = (phoneNumber: string) => dispatch(changeDraftProfilePhoneNumber(phoneNumber));
 	const onUpdateProfileClicked = () => dispatch(updateProfile());
+
+	const onResendConfirmEmailConfirmClicked = (userId: string) => dispatch(resendConfirmEmail(userId));
 
 	const onUpdateProfilePhotoClicked = (photoData: string) => dispatch(updateProfilePhoto(photoData));
 	const onLogoutClicked = () => dispatch(logout());
@@ -74,9 +80,11 @@ const MainLayout = (props: Props) => {
 				isVisible={isProfileModalVisible}
 				isLoading={progress.visible}
 				onCloseProfileModalClick={() => setIsProfileModalVisible(false)}
+				id={id}
 				name={name}
 				email={email}
 				phoneNumber={phoneNumber}
+				isEmailConfirmed={isEmailConfirmed}
 				photoUrl={photoUrl}
 				avatarUrl={avatarUrl}
 				draftProfile={draftProfile}
@@ -85,6 +93,7 @@ const MainLayout = (props: Props) => {
 				onUpdateProfileClick={onUpdateProfileClicked}
 				onUpdateProfilePhotoClick={onUpdateProfilePhotoClicked}
 				onLogoutClick={onLogoutClicked}
+				onResendConfirmEmailConfirmClick={onResendConfirmEmailConfirmClicked}
 			/>
 			<Snackbar
 				visible={snackbar.visible}
@@ -101,13 +110,14 @@ const MainLayout = (props: Props) => {
 
 const mapStateToProps = (state: AppState) => {
 	const { progress, snackbar } = state.service;
-	const { name, email, phoneNumber, photoUrl, avatarUrl, draftProfile } = state.profile;
+	const { id, name, email, phoneNumber, photoUrl, avatarUrl, draftProfile } = state.profile;
 	const { searchQuery } = state.carts;
 
 	return {
 		progress,
 		snackbar,
 
+		id,
 		name,
 		email,
 		phoneNumber,

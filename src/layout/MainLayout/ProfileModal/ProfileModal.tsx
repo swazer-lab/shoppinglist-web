@@ -4,7 +4,6 @@ import Slider from 'react-slick';
 import { Profile } from '../../../types/api';
 
 import { Button, Input, Modal, ProgressBar } from '../../../components';
-import { useLocalStorage } from '../../../config/utilities';
 
 import './styles.scss';
 import language from '../../../assets/language';
@@ -14,11 +13,13 @@ interface Props {
 	isLoading: boolean,
 	onCloseProfileModalClick: () => void,
 
+	id?: string,
 	name?: string,
 	email?: string,
 	phoneNumber?: string,
 	photoUrl?: string,
 	avatarUrl?: string,
+	isEmailConfirmed: boolean,
 
 	draftProfile: Profile,
 	onDraftProfileNameChange: (name: string) => void,
@@ -26,20 +27,23 @@ interface Props {
 
 	onUpdateProfileClick: () => void,
 	onUpdateProfilePhotoClick: (photoData: string) => void,
+	onResendConfirmEmailConfirmClick: (userId: string) => void,
+
 	onLogoutClick: () => void,
 }
 
 const ProfileModal = (props: Props) => {
 	const [isUpdating, setIsUpdating] = useState(false);
 	const slider = useRef(null);
-	const { isEmailConfirmed } = useLocalStorage();
 
 	const {
 		isVisible,
 		isLoading,
 		onCloseProfileModalClick,
+		id,
 		name,
 		email,
+		isEmailConfirmed,
 		photoUrl,
 		avatarUrl,
 		draftProfile,
@@ -47,6 +51,7 @@ const ProfileModal = (props: Props) => {
 		onDraftProfilePhoneNumberChange,
 		onUpdateProfileClick,
 		onUpdateProfilePhotoClick,
+		onResendConfirmEmailConfirmClick,
 		onLogoutClick,
 	} = props;
 
@@ -72,6 +77,10 @@ const ProfileModal = (props: Props) => {
 
 			fileReader.readAsDataURL(imageFile);
 		}
+	};
+
+	const onResendConfirmEmailConfirmClicked = () => {
+		onResendConfirmEmailConfirmClick(id || '');
 	};
 
 	const onGoToUpdateProfileClicked = () => {
@@ -104,7 +113,11 @@ const ProfileModal = (props: Props) => {
 
 				<div className='profile_modal__email'>{email}</div>
 				<span className='profile_modal__verify_label'>{isEmailConfirmed ? 'Verified!' : 'Not verified!'}</span>
-
+				{
+					!isEmailConfirmed ?
+						<Button mode='text' title='Resend Confirm Email'
+						        onClick={onResendConfirmEmailConfirmClicked}/> : ''
+				}
 				<div className='profile_modal__actions_container'>
 					<Button mode='text' accentColor='text' title='Logout' onClick={onLogoutClick}/>
 				</div>

@@ -19,6 +19,8 @@ export enum ActionTypes {
 	confirm_email = 'AUTH__CONFIRM_EMAIL',
 	confirm_email_result = 'AUTH__CONFIRM_EMAIL_RESULT',
 
+	resend_confirm_email = 'AUTH__RESEND_CONFIRM_EMAIL',
+
 	send_forgot_password_email = 'AUTH__SEND_FORGOT_PASSWORD_EMAIL',
 	send_forgot_password_email_result = 'AUTH__SEND_FORGOT_PASSWORD_EMAIL_RESULT',
 
@@ -66,6 +68,11 @@ export interface ConfirmEmailAction extends AuthAction {
 	token: string,
 }
 
+export interface ResendConfirmEmailAction extends AuthAction {
+	type: ActionTypes.resend_confirm_email,
+	userId: string
+}
+
 export interface ExternalLoginAction extends AuthAction {
 	type: ActionTypes.external_login,
 	name: string,
@@ -83,6 +90,7 @@ export type Action =
 	& ChangePasswordAction
 	& ChangeResetPasswordCode
 	& ConfirmEmailAction
+	& ResendConfirmEmailAction
 	& ExternalLoginAction;
 
 export interface State {

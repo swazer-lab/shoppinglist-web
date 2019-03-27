@@ -8,7 +8,13 @@ import { fetch_profile_api, update_profile_api, update_profile_photo_api } from 
 import { profileMapper } from '../config/mapper';
 import { get_photo_url } from '../config/urls';
 
-import { hideProgress, showHttpErrorAlert, showProgress } from '../actions/service';
+import {
+	hideProgress,
+	setAccessToken,
+	setIsEmailConfirmed,
+	showHttpErrorAlert,
+	showProgress,
+} from '../actions/service';
 import { fetchProfileResult, updateProfilePhotoResult, updateProfileResult } from '../actions/profile';
 
 import language from '../assets/language';
@@ -20,6 +26,8 @@ function* fetchProfileSaga(): SagaIterator {
 	try {
 		const response = yield call(fetch_profile_api);
 		const data = yield call(morphism, profileMapper(), response.data);
+
+		put(setIsEmailConfirmed(data.isConfirmed));
 
 		yield put(fetchProfileResult(false, data));
 	} catch (e) {

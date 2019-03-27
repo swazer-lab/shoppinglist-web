@@ -8,7 +8,7 @@ import {
 	ChangePhoneAction,
 	ChangeResetPasswordCode,
 	ConfirmEmailAction,
-	ExternalLoginAction
+	ExternalLoginAction, ResendConfirmEmailAction,
 } from '../types/auth';
 
 export const changeName = (name: string): ChangeNameAction => ({
@@ -56,6 +56,11 @@ export const confirmEmail = (userId: string, token: string): ConfirmEmailAction 
 export const confirmEmailResult = (hasError: boolean): AuthActionResult => ({
 	type: ActionTypes.confirm_email_result,
 	hasError,
+});
+
+export const resendConfirmEmail = (userId: string): ResendConfirmEmailAction => ({
+	type: ActionTypes.resend_confirm_email,
+	userId
 });
 
 export const sendForgotPasswordEmail = (): AuthAction => ({
