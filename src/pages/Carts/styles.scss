@@ -201,16 +201,16 @@
   }
 
   &__remove_button {
-    position: absolute;
-    top: -1.2rem;
-    right: -1.2rem;
+     position: absolute;
+     top: -1.2rem;
+     right: -1.2rem;
 
-    color: $color-black;
+     color: $color-black;
 
-    cursor: pointer;
-    opacity: 0;
-    transition: all .2s;
-  }
+     cursor: pointer;
+     opacity: 0;
+     transition: all .2s;
+   }
 
   &__title {
     flex: 1;

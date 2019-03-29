@@ -66,6 +66,13 @@ export default (state: State = initialState, action: Action): State => {
 				photoUrl: action.photoUrl,
 			};
 
+		case ActionTypes.delete_profile_photo_result:
+			if (action.hasError) return state;
+			return {
+				...state,
+				photoUrl: undefined,
+			};
+
 		case ActionTypes.set_avatar_url:
 			return {
 				...state,

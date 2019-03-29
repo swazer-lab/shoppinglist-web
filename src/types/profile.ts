@@ -14,6 +14,9 @@ export enum ActionTypes {
 	update_profile_photo = 'PROFILE__UPDATE_PROFILE_PHOTO',
 	update_profile_photo_result = 'PROFILE__UPDATE_PROFILE_PHOTO_RESULT',
 
+	delete_profile_photo = 'PROFILE__DELETE_PROFILE_PHOTO',
+	delete_profile_photo_result = 'PROFILE__DELETE_PROFILE_PHOTO_RESULT',
+
 	set_avatar_url = 'PROFILE__SET_AVATAR_URL',
 
 	clear_profile = 'PROFILE__CLEAR_PROFILE',
@@ -50,6 +53,7 @@ export interface UpdateProfilePhotoActionResult extends ProfileActionResult {
 	type: ActionTypes.update_profile_photo_result,
 	photoUrl?: string
 }
+
 
 export interface SetProfileAvatarUrl extends ProfileAction {
 	type: ActionTypes.set_avatar_url,

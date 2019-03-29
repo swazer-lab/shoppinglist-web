@@ -14,7 +14,7 @@ import {
 import language from '../../assets/language';
 
 import './styles.scss';
-import { clearAlert } from '../../actions/service';
+import { clearAlert, navigate } from '../../actions/service';
 
 interface Props {
 	dispatch: Function,
@@ -34,6 +34,8 @@ const ForgotPassword = (props: Props) => {
 			dispatch(clearAlert());
 		};
 	});
+
+	const onLoginClicked = () => dispatch(navigate('Login'));
 
 	const handleEmailChange = (e: FormEvent<HTMLInputElement>) => dispatch(changeEmail(e.currentTarget.value));
 	const handleResetPasswordCodeChange = (e: FormEvent<HTMLInputElement>) => dispatch(changeResetPasswordCode(e.currentTarget.value));
@@ -61,11 +63,16 @@ const ForgotPassword = (props: Props) => {
 						required
 					/>
 
-					<Button
-						type='submit'
-						className='page_auth__action_auth_button'
-						title={language.actionSendResetPasswordEmail}
-					/>
+					<div className='page_auth__buttons_container'>
+						<Button
+							className='page_auth__action_button'
+							type='submit'
+							mode='text'
+							title={language.actionLogin}
+							onClick={onLoginClicked}
+						/>
+						<Button type='submit' title={language.actionSendResetPasswordEmail}/>
+					</div>
 				</form>
 			);
 		} else {

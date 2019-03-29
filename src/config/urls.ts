@@ -16,6 +16,7 @@ export const reset_password_url = accountRoot.concat('ResetPassword');
 //Profile Urls
 const profileRoot = root.concat('user/');
 export const update_profile_photo_url = profileRoot.concat('updatePhoto');
+export const delete_profile_photo_url = profileRoot.concat('deletePhoto');
 export const update_profile_url = profileRoot.concat('update');
 export const filter_contacts_url = profileRoot.concat('fetch');
 export const get_photo_url = (photoId: number) => profileRoot.concat(`getPhoto?photoId=${photoId}`);

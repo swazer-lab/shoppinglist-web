@@ -43,11 +43,22 @@ export const updateProfilePhoto = (photoData: string): UpdateProfilePhotoAction 
 	type: ActionTypes.update_profile_photo,
 	photoData,
 });
+
 export const updateProfilePhotoResult = (hasError: boolean, photoUrl?: string): UpdateProfilePhotoActionResult => ({
 	type: ActionTypes.update_profile_photo_result,
 	hasError,
 	photoUrl,
 });
+
+export const deleteProfilePhoto = (): ProfileAction => ({
+	type: ActionTypes.delete_profile_photo,
+});
+
+export const deleteProfilePhotoResult = (hasError: boolean): ProfileActionResult => ({
+	type: ActionTypes.delete_profile_photo_result,
+	hasError
+});
+
 
 export const setProfileAvatarUrl = (avatarUrl: string): SetProfileAvatarUrl => ({
 	type: ActionTypes.set_avatar_url,

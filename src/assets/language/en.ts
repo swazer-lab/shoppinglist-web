@@ -62,6 +62,7 @@ export default {
 
 	textUpdatingProfile: 'Updating Profile',
 	textUpdatingProfilePhoto: 'Updating Profile Photo',
+	textDeletingProfilePhoto: 'Deleting Profile Photo',
 	textFetchingProfile: 'Fetch Profile',
 
 	// Carts

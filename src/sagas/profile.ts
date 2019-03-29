@@ -4,7 +4,7 @@ import { all, call, put, select, takeLatest } from 'redux-saga/effects';
 
 import { AppState } from '../types/store';
 
-import { fetch_profile_api, update_profile_api, update_profile_photo_api } from '../api';
+import { fetch_profile_api, update_profile_api, update_profile_photo_api, delete_profile_photo_api } from '../api';
 import { profileMapper } from '../config/mapper';
 import { get_photo_url } from '../config/urls';
 
@@ -15,7 +15,7 @@ import {
 	showHttpErrorAlert,
 	showProgress,
 } from '../actions/service';
-import { fetchProfileResult, updateProfilePhotoResult, updateProfileResult } from '../actions/profile';
+import { fetchProfileResult, updateProfilePhotoResult, updateProfileResult, deleteProfilePhotoResult } from '../actions/profile';
 
 import language from '../assets/language';
 import { ActionTypes, UpdateProfilePhotoAction } from '../types/profile';
@@ -79,8 +79,26 @@ function* updateProfilePhotoSaga(action: UpdateProfilePhotoAction): SagaIterator
 	}
 }
 
+function* deleteProfilePhotoSaga(): SagaIterator {
+	yield put(showProgress(language.textDeletingProfilePhoto));
+
+	try {
+		const response = yield call(delete_profile_photo_api);
+
+		yield put(deleteProfilePhotoResult(false));
+	} catch (e) {
+		yield all([
+			put(deleteProfilePhotoResult(true)),
+			put(showHttpErrorAlert(e)),
+		]);
+	} finally {
+		yield put(hideProgress());
+	}
+}
+
 export default [
 	takeLatest(ActionTypes.fetch_profile, fetchProfileSaga),
 	takeLatest(ActionTypes.update_profile, updateProfileSaga),
 	takeLatest(ActionTypes.update_profile_photo, updateProfilePhotoSaga),
+	takeLatest(ActionTypes.delete_profile_photo, deleteProfilePhotoSaga)
 ];

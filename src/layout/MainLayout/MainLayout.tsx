@@ -13,6 +13,7 @@ import { logout, resendConfirmEmail } from '../../actions/auth';
 import {
 	changeDraftProfileName,
 	changeDraftProfilePhoneNumber,
+	deleteProfilePhoto,
 	fetchProfile,
 	updateProfile,
 	updateProfilePhoto,
@@ -64,6 +65,12 @@ const MainLayout = (props: Props) => {
 	const onResendConfirmEmailConfirmClicked = (userId: string) => dispatch(resendConfirmEmail(userId));
 
 	const onUpdateProfilePhotoClicked = (photoData: string) => dispatch(updateProfilePhoto(photoData));
+
+	const onDeleteProfilePhotoClicked = (e: any) => {
+		e.stopPropagation();
+		dispatch(deleteProfilePhoto());
+	};
+
 	const onLogoutClicked = () => dispatch(logout());
 
 	const onSearchQueryChanged = (queryString: string) => dispatch(changeSearchQuery(queryString));
@@ -102,6 +109,7 @@ const MainLayout = (props: Props) => {
 				onDraftProfilePhoneNumberChange={onChangeDraftProfilePhoneNumber}
 				onUpdateProfileClick={onUpdateProfileClicked}
 				onUpdateProfilePhotoClick={onUpdateProfilePhotoClicked}
+				onDeleteProfilePhotoClick={onDeleteProfilePhotoClicked}
 				onLogoutClick={onLogoutClicked}
 				onResendConfirmEmailConfirmClick={onResendConfirmEmailConfirmClicked}
 			/>

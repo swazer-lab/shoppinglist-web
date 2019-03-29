@@ -27,6 +27,7 @@ interface Props {
 
 	onUpdateProfileClick: () => void,
 	onUpdateProfilePhotoClick: (photoData: string) => void,
+	onDeleteProfilePhotoClick: (e:any) => void,
 	onResendConfirmEmailConfirmClick: (userId: string) => void,
 
 	onLogoutClick: () => void,
@@ -51,6 +52,7 @@ const ProfileModal = (props: Props) => {
 		onDraftProfilePhoneNumberChange,
 		onUpdateProfileClick,
 		onUpdateProfilePhotoClick,
+		onDeleteProfilePhotoClick,
 		onResendConfirmEmailConfirmClick,
 		onLogoutClick,
 	} = props;
@@ -96,6 +98,8 @@ const ProfileModal = (props: Props) => {
 		slider.current.slickGoTo(0, false);
 	};
 
+	const onDeleteProfilePhotoClicked = (e:any) => onDeleteProfilePhotoClick(e);
+
 	const handleDraftProfileNameChange = (e: FormEvent<HTMLFormElement>) => onDraftProfileNameChange(e.currentTarget.value);
 	const handleDraftProfilePhoneNumberChange = (e: FormEvent<HTMLFormElement>) => onDraftProfilePhoneNumberChange(e.currentTarget.value);
 
@@ -105,8 +109,10 @@ const ProfileModal = (props: Props) => {
 				<div className='profile_modal__photo'
 				     style={{ backgroundImage: `url(${photoUrl ? photoUrl : avatarUrl})` }}
 				     onClick={onSelectImageClicked}>
-
 					<i className='material-icons'>camera_alt</i>
+					<div className='profile_modal__photo__remove_button' onClick={onDeleteProfilePhotoClicked}>
+						<i className='material-icons'>cancel</i>
+					</div>
 				</div>
 				<input id='profile_photo_input' type='file' name='pic' accept='image/*' onChange={handleImageChange}/>
 				<h3 className='profile_modal__name'>{name}</h3>
