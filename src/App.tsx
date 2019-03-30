@@ -9,17 +9,14 @@ import { store } from './config/store';
 import { useLocalStorage } from './config/localstorage';
 import { updateDefaultHeaders } from './api';
 
-import './assets/scss/main.scss';
 import language from './assets/language';
+import './assets/scss/main.scss';
 
 interface Props {
 	dispatch: Function,
 }
 
 const Main = (props: Props) => {
-
-	console.log('---------------------------------------');
-
 	const { isLoggedIn, accessToken, activeLanguage } = useLocalStorage();
 
 	useEffect(() => {

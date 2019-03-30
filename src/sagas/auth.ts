@@ -40,7 +40,7 @@ import language from '../assets/language';
 function* registerSaga(): SagaIterator {
 	const { name, email, password } = yield select((state: AppState) => state.auth);
 
-	yield put(showProgress());
+	yield put(showProgress(language.textRegisteringUser));
 	try {
 		const response = yield call(register_api, name, email, password);
 		const { access_token } = response.data;
@@ -64,7 +64,7 @@ function* registerSaga(): SagaIterator {
 function* loginSaga(): SagaIterator {
 	const { email, password } = yield select((state: AppState) => state.auth);
 
-	yield put(showProgress());
+	yield put(showProgress(language.textLoggingUser));
 	try {
 		const response = yield call(login_api, email, password);
 		const { access_token } = response.data;
@@ -88,7 +88,7 @@ function* loginSaga(): SagaIterator {
 function* externalLoginSaga(action: ExternalLoginAction): SagaIterator {
 	const { name, email, tokenId, provider } = action;
 
-	yield put(showProgress());
+	yield put(showProgress(language.textLoggingUser));
 	try {
 		const response = yield call(login_external_api, name, email, tokenId, provider);
 		const { access_token } = response.data;
@@ -112,7 +112,7 @@ function* externalLoginSaga(action: ExternalLoginAction): SagaIterator {
 function* confirmEmailSaga(action: ConfirmEmailAction): SagaIterator {
 	const { userId, token } = action;
 
-	yield put(showProgress());
+	yield put(showProgress(language.textConfirmingEmail));
 	try {
 		yield call(confirm_email_api, userId, token);
 		yield all([
@@ -132,16 +132,17 @@ function* confirmEmailSaga(action: ConfirmEmailAction): SagaIterator {
 function* resendConfirmEmailSaga(action: ResendConfirmEmailAction): SagaIterator {
 	const { userId } = action;
 
-	yield put(showProgress());
+	yield put(showProgress(language.textConfirmingEmail));
 	try {
 		yield call(resend_confirm_email_api, userId);
 		yield all([
 			put(confirmEmailResult(false)),
+			put(showAlert('success', '', language.textConfirmEmailSuccessMessage)),
 		]);
 	} catch (e) {
 		yield all([
 			put(confirmEmailResult(true)),
-			put(showHttpErrorAlert(e)),
+			put(showAlert('error', '', language.textConfirmEmailErrorMessage)),
 		]);
 	} finally {
 		yield put(hideProgress());
@@ -151,7 +152,7 @@ function* resendConfirmEmailSaga(action: ResendConfirmEmailAction): SagaIterator
 function* sendForgotPasswordEmailSaga(): SagaIterator {
 	const { email } = yield select((state: AppState) => state.auth);
 
-	yield put(showProgress());
+	yield put(showProgress(language.textSendingEmailForForgotPassword));
 	try {
 		yield call(send_forgot_password_email_api, email);
 		yield all([
@@ -171,7 +172,7 @@ function* sendForgotPasswordEmailSaga(): SagaIterator {
 function* resetPasswordSaga(): SagaIterator {
 	const { email, password, resetPasswordCode } = yield select((state: AppState) => state.auth);
 
-	yield put(showProgress());
+	yield put(showProgress(language.textResettingEmail));
 	try {
 		yield call(reset_password_api, email, password, resetPasswordCode);
 

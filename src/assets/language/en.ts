@@ -24,12 +24,14 @@ export default {
 	// Register
 	titleRegister: 'Register',
 	textRegistersubtitle: 'Create New Account',
+	textRegisteringUser: 'Registration is being done',
 	actionRegister: 'Create Account',
 	actionLoginInstead: 'Login Instead',
 
 	// Login
 	titleLogin: 'Login',
 	textLoginSubtitle: 'Login to your Account',
+	textLoggingUser: 'Login is being done',
 
 	actionForgotPassword: 'Forgot Password',
 	actionLogin: 'Login',
@@ -43,12 +45,18 @@ export default {
 
 	// Confirm Email
 	titleConfirmEmail: 'ConfirmEmail',
+
 	textConfirmEmailSubtitle: 'Your account has been activated sucessfully',
+	textConfirmingEmail: 'The confirmation mail is being sent to your account',
+	textConfirmEmailSuccessMessage: 'The confirmation message has been sent successfully',
+	textConfirmEmailErrorMessage: 'The confirmation message couldnt be sent',
 
 	// Forgot Password
 	titleForgotPassword: 'ForgotPassword',
 	textForgotPasswordSubtitle: 'Please enter your email to get reset password code',
 	textWeSentResetPasswordEmail: 'We sent reset password to your mail',
+	textSendingEmailForForgotPassword: 'Your email is being sent',
+	textResettingEmail: 'Your email is being reset',
 
 	actionSendResetPasswordEmail: 'Send Email',
 	actionResetPassword: 'Reset Password',

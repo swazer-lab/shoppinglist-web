@@ -1,9 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 
-import GoogleLogin from 'react-google-login';
-import FacebookLogin from 'react-facebook-login';
-
 import { AppState } from '../../types/store';
 
 import { Button, Input } from '../../components';
@@ -107,7 +104,8 @@ const Login = (props: Props) => {
 				</div>
 			</form>
 
-			<ExternalLogin loginWithFacebook={loginWithFacebook} loginWithFacebookFailure={loginWithFacebookFailure} loginWithGoogle={loginWithGoogle} loginWithGoogleFailure={loginWithGoogleFailure} />
+			<ExternalLogin loginWithFacebook={loginWithFacebook} loginWithFacebookFailure={loginWithFacebookFailure}
+			               loginWithGoogle={loginWithGoogle} loginWithGoogleFailure={loginWithGoogleFailure}/>
 		</div>
 	);
 };

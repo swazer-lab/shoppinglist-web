@@ -4,10 +4,10 @@ import { connect } from 'react-redux';
 import { AppState } from '../../types/store';
 import { Profile } from '../../types/api';
 
-import { Snackbar } from '../../components';
+import { Alert, Snackbar } from '../../components';
 import { NavigationBar, ProfileModal } from './';
 
-import { hideSnackbar } from '../../actions/service';
+import { clearAlert, hideSnackbar } from '../../actions/service';
 import { logout, resendConfirmEmail } from '../../actions/auth';
 
 import {
@@ -22,8 +22,9 @@ import {
 import { useLocalStorage } from '../../config/localstorage';
 
 import { changeSearchQuery, filterCarts } from '../../actions/carts';
-import './styles.scss';
 import { fetchContacts } from '../../actions/contacts';
+
+import './styles.scss';
 
 interface Props {
 	dispatch: Function,
@@ -32,6 +33,7 @@ interface Props {
 	layoutOptions?: any,
 	progress: AppState['service']['progress'],
 	snackbar: AppState['service']['snackbar'],
+	alert: AppState['service']['alert'],
 
 	id?: string,
 	name?: string,
@@ -45,7 +47,7 @@ interface Props {
 }
 
 const MainLayout = (props: Props) => {
-	const { children, dispatch, progress, snackbar, id, name, email, phoneNumber, photoUrl, avatarUrl, draftProfile, searchQuery } = props;
+	const { children, dispatch, progress, snackbar, alert, id, name, email, phoneNumber, photoUrl, avatarUrl, draftProfile, searchQuery } = props;
 
 	const { isLoggedIn, accessToken, isEmailConfirmed } = useLocalStorage();
 
@@ -62,7 +64,10 @@ const MainLayout = (props: Props) => {
 	const onChangeDraftProfilePhoneNumber = (phoneNumber: string) => dispatch(changeDraftProfilePhoneNumber(phoneNumber));
 	const onUpdateProfileClicked = () => dispatch(updateProfile());
 
-	const onResendConfirmEmailConfirmClicked = (userId: string) => dispatch(resendConfirmEmail(userId));
+	const onResendConfirmEmailConfirmClicked = (userId: string) => {
+		setIsProfileModalVisible(false);
+		dispatch(resendConfirmEmail(userId));
+	};
 
 	const onUpdateProfilePhotoClicked = (photoData: string) => dispatch(updateProfilePhoto(photoData));
 
@@ -80,6 +85,10 @@ const MainLayout = (props: Props) => {
 		if (snackbar.visible) {
 			dispatch(hideSnackbar());
 		}
+	};
+
+	const handleClosedToastr = () => {
+		dispatch(clearAlert());
 	};
 
 	return (
@@ -120,6 +129,8 @@ const MainLayout = (props: Props) => {
 				duration={snackbar.duration}
 				onRequestClose={onSnackbarRequestClose}
 			/>
+			<Alert visible={alert.visible} message={alert.message} type={alert.type}
+			       handleCloseToastr={handleClosedToastr}/>
 
 			{children}
 		</div>
@@ -127,13 +138,14 @@ const MainLayout = (props: Props) => {
 };
 
 const mapStateToProps = (state: AppState) => {
-	const { progress, snackbar } = state.service;
+	const { progress, snackbar, alert } = state.service;
 	const { id, name, email, phoneNumber, photoUrl, avatarUrl, draftProfile } = state.profile;
 	const { searchQuery } = state.carts;
 
 	return {
 		progress,
 		snackbar,
+		alert,
 
 		id,
 		name,

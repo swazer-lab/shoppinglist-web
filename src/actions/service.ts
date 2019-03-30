@@ -72,6 +72,7 @@ export const showAlert = (alertType: AlertType, title?: string, message: string 
 	message,
 	duration,
 });
+
 export const clearAlert = (): ServiceAction => ({
 	type: ActionTypes.clear_alert,
 });
