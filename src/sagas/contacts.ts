@@ -1,6 +1,4 @@
 import morphism from 'morphism';
-
-import { SagaIterator } from 'redux-saga';
 import { all, call, put, takeLatest } from 'redux-saga/effects';
 
 import { fetch_contacts_api } from '../api';
@@ -12,7 +10,7 @@ import { fetchContactsResult } from '../actions/contacts';
 import { ActionTypes, FetchContactsAction } from '../types/contacts';
 import language from '../assets/language';
 
-function* fetchContactsSaga(action: FetchContactsAction): SagaIterator {
+function* fetchContactsSaga(action: FetchContactsAction) {
 	const { silent, pageNumber, append } = action;
 	const pageSize = 15;
 
@@ -22,7 +20,7 @@ function* fetchContactsSaga(action: FetchContactsAction): SagaIterator {
 		const response = yield call(fetch_contacts_api, pageNumber, pageSize);
 		const { totalCount, items } = response.data;
 
-		const contacts = yield call(morphism, profileMapper(), items);
+		const contacts = yield morphism(profileMapper(), items);
 		yield put(fetchContactsResult(false, contacts, totalCount, append));
 	} catch (e) {
 		yield all([

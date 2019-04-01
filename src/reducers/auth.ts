@@ -47,7 +47,7 @@ export default (state: State = initialState, action: Action): State => {
 			};
 
 		case ActionTypes.logout:
-			return initialState;
+			return { ...initialState };
 
 		default:
 			return state;

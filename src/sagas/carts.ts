@@ -1,6 +1,4 @@
 import morphism from 'morphism';
-
-import { SagaIterator } from 'redux-saga';
 import { all, call, put, select, takeLatest } from 'redux-saga/effects';
 
 import { AppState } from '../types/store';
@@ -39,7 +37,7 @@ import { Profile } from '../types/api';
 import { clearSelectedContacts } from '../actions/contacts';
 import { useLocalStorage } from '../config/utilities';
 
-function* filterCartsSaga(): SagaIterator {
+function* filterCartsSaga() {
 	const { searchQuery } = yield select((state: AppState) => state.carts);
 	if (searchQuery.length < 3) {
 		yield put(filterCartsResult(false, []));
@@ -49,7 +47,9 @@ function* filterCartsSaga(): SagaIterator {
 	yield put(showProgress(language.textSearchingCarts));
 	try {
 		const response = yield call(search_carts_api, searchQuery);
-		const data = yield call(morphism, cartMapper(), response.data.items);
+		const { items } = response.data;
+
+		const data = yield morphism(cartMapper(), items);
 
 		yield put(filterCartsResult(false, data));
 	} catch (e) {
@@ -62,7 +62,7 @@ function* filterCartsSaga(): SagaIterator {
 	}
 }
 
-function* fetchCartsSaga(action: FetchCartsAction): SagaIterator {
+function* fetchCartsSaga(action: FetchCartsAction) {
 	const { silent, pageNumber, append } = action;
 	const pageSize = 15;
 
@@ -72,7 +72,7 @@ function* fetchCartsSaga(action: FetchCartsAction): SagaIterator {
 		const response = yield call(fetch_carts_api, pageNumber, pageSize);
 		const { totalCount, items } = response.data;
 
-		const carts = yield call(morphism, cartMapper(), items);
+		const carts = yield morphism(cartMapper(), items);
 
 		yield put(fetchCartsResult(false, carts, totalCount, append));
 
@@ -86,15 +86,15 @@ function* fetchCartsSaga(action: FetchCartsAction): SagaIterator {
 	}
 }
 
-function* createCartSaga(): SagaIterator {
+function* createCartSaga() {
 	const { draftCart } = yield select((state: AppState) => state.carts);
 
 	yield put(showProgress(language.textCreatingCart));
 	try {
-		const cart = yield call(morphism, cartMapper(true), draftCart);
+		const cart = yield morphism(cartMapper(true), draftCart);
 
 		const response = yield call(create_cart_api, cart);
-		const data = yield call(morphism, cartMapper(), response.data);
+		const data = yield morphism(cartMapper(), response.data);
 
 		yield all([
 			put(createCartResult(false, data)),
@@ -116,10 +116,10 @@ function* updateCartSaga() {
 	yield put(showProgress(language.textUpdatingCart));
 
 	try {
-		const cart = yield call(morphism, cartMapper(true), draftCart);
+		const cart = yield morphism(cartMapper(true), draftCart);
 
 		const response = yield call(create_cart_api, cart);
-		const data = yield call(morphism, cartMapper(false), response.data);
+		const data = yield morphism(cartMapper(false), response.data);
 
 		yield all([
 			put(updateCartResult(false, { ...data, uuid: draftCart.uuid })),
@@ -135,7 +135,7 @@ function* updateCartSaga() {
 	}
 }
 
-function* removeCartSaga(action: RemoveCartAction): SagaIterator {
+function* removeCartSaga(action: RemoveCartAction) {
 	try {
 		yield call(remove_cart_api, action.cart.id);
 		yield put(removeCartResult(false, action.cart));
@@ -147,7 +147,7 @@ function* removeCartSaga(action: RemoveCartAction): SagaIterator {
 	}
 }
 
-function* shareCartWithContactsSaga(action: ShareCartWithContactsAction): SagaIterator {
+function* shareCartWithContactsSaga(action: ShareCartWithContactsAction) {
 	const { cartId } = action;
 	const { selectedContacts } = yield select((state: AppState) => state.contacts);
 
@@ -160,7 +160,7 @@ function* shareCartWithContactsSaga(action: ShareCartWithContactsAction): SagaIt
 	yield put(showProgress(language.textSharingCarts));
 	try {
 		const response = yield call(share_cart_with_contacts_api, cartId, emails);
-		const data = yield call(morphism, cartUserMapper(), response.data);
+		const data = yield morphism(cartUserMapper(), response.data);
 
 		yield put(shareCartWithContactsResult(false, cartId, data));
 
@@ -178,7 +178,7 @@ function* shareCartWithContactsSaga(action: ShareCartWithContactsAction): SagaIt
 	}
 }
 
-function* getAccessToCartSaga(action: GetAccessToCartAction): SagaIterator {
+function* getAccessToCartSaga(action: GetAccessToCartAction) {
 	const { isLoggedIn } = useLocalStorage();
 	if (!isLoggedIn) yield put(navigate('Login'));
 
@@ -186,7 +186,7 @@ function* getAccessToCartSaga(action: GetAccessToCartAction): SagaIterator {
 
 	try {
 		const response = yield call(get_access_to_cart_api, action.accessCode);
-		const data = yield call(morphism, cartMapper(), response.data);
+		const data = yield morphism(cartMapper(), response.data);
 
 		yield all([
 			put(getAccessToCartResult(false, data)),

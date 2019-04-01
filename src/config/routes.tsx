@@ -28,13 +28,13 @@ export const AppNavigator = () => {
 
 	const renderRoutes = routes.map(({ name, path, Component }: RouteType) => {
 		const routeComponent = (props: any) => (
-			<Layout layoutOptions={(Component.layoutOptions ? Component.layoutOptions : {})} {...props}>
+			<Layout key={`layout_${name}`} layoutOptions={(Component.layoutOptions ? Component.layoutOptions : {})} {...props}>
 				<Component />
 			</Layout>
 		);
 		return (
 			<Route
-				key={name}
+				key={`route_${name}`}
 				path={path}
 				component={routeComponent}
 				exact={name === 'Landing'}

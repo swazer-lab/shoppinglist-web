@@ -59,7 +59,7 @@ const MainLayout = (props: Props) => {
 			dispatch(fetchContacts());
 		}
 	}, [isLoggedIn, accessToken]);
-
+	
 	const onChangeDraftProfileName = (name: string) => dispatch(changeDraftProfileName(name));
 	const onChangeDraftProfilePhoneNumber = (phoneNumber: string) => dispatch(changeDraftProfilePhoneNumber(phoneNumber));
 	const onUpdateProfileClicked = () => dispatch(updateProfile());

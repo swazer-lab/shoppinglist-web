@@ -1,31 +1,29 @@
 import { morphism } from 'morphism';
-import { SagaIterator } from 'redux-saga';
 import { all, call, put, select, takeLatest } from 'redux-saga/effects';
 
 import { AppState } from '../types/store';
 
-import { fetch_profile_api, update_profile_api, update_profile_photo_api, delete_profile_photo_api } from '../api';
+import { delete_profile_photo_api, fetch_profile_api, update_profile_api, update_profile_photo_api } from '../api';
 import { profileMapper } from '../config/mapper';
 import { get_photo_url } from '../config/urls';
 
+import { hideProgress, setIsEmailConfirmed, showHttpErrorAlert, showProgress } from '../actions/service';
 import {
-	hideProgress,
-	setAccessToken,
-	setIsEmailConfirmed,
-	showHttpErrorAlert,
-	showProgress,
-} from '../actions/service';
-import { fetchProfileResult, updateProfilePhotoResult, updateProfileResult, deleteProfilePhotoResult } from '../actions/profile';
+	deleteProfilePhotoResult,
+	fetchProfileResult,
+	updateProfilePhotoResult,
+	updateProfileResult,
+} from '../actions/profile';
 
 import language from '../assets/language';
 import { ActionTypes, UpdateProfilePhotoAction } from '../types/profile';
 
-function* fetchProfileSaga(): SagaIterator {
+function* fetchProfileSaga() {
 	yield put(showProgress(language.textFetchingProfile));
 
 	try {
 		const response = yield call(fetch_profile_api);
-		const data = yield call(morphism, profileMapper(), response.data);
+		const data = yield morphism(profileMapper(), response.data);
 
 		put(setIsEmailConfirmed(data.isConfirmed));
 
@@ -40,13 +38,13 @@ function* fetchProfileSaga(): SagaIterator {
 	}
 }
 
-function* updateProfileSaga(): SagaIterator {
+function* updateProfileSaga() {
 	const { draftProfile } = yield select((state: AppState) => state.profile);
 
 	yield put(showProgress(language.textUpdatingProfile));
 
 	try {
-		const profile = yield call(morphism, profileMapper(true), draftProfile);
+		const profile = yield morphism(profileMapper(true), draftProfile);
 		yield call(update_profile_api, profile);
 
 		yield put(updateProfileResult(false));
@@ -60,7 +58,7 @@ function* updateProfileSaga(): SagaIterator {
 	}
 }
 
-function* updateProfilePhotoSaga(action: UpdateProfilePhotoAction): SagaIterator {
+function* updateProfilePhotoSaga(action: UpdateProfilePhotoAction) {
 	const { photoData } = action;
 	yield put(showProgress(language.textUpdatingProfilePhoto));
 
@@ -79,7 +77,7 @@ function* updateProfilePhotoSaga(action: UpdateProfilePhotoAction): SagaIterator
 	}
 }
 
-function* deleteProfilePhotoSaga(): SagaIterator {
+function* deleteProfilePhotoSaga() {
 	yield put(showProgress(language.textDeletingProfilePhoto));
 
 	try {
@@ -100,5 +98,5 @@ export default [
 	takeLatest(ActionTypes.fetch_profile, fetchProfileSaga),
 	takeLatest(ActionTypes.update_profile, updateProfileSaga),
 	takeLatest(ActionTypes.update_profile_photo, updateProfilePhotoSaga),
-	takeLatest(ActionTypes.delete_profile_photo, deleteProfilePhotoSaga)
+	takeLatest(ActionTypes.delete_profile_photo, deleteProfilePhotoSaga),
 ];

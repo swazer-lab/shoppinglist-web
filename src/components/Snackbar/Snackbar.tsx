@@ -31,7 +31,9 @@ const Snackbar = (props: Props) => {
 				onRequestClose();
 			}, duration);
 			setTimer(interval);
-		} else {
+		}
+
+		return () => {
 			clearInterval(timer);
 
 			setTimeout(() => {
@@ -51,6 +53,10 @@ const Snackbar = (props: Props) => {
 			onClick={action.onClick}
 		/>
 	)));
+
+	if(!visible){
+		return null;
+	}
 
 	return (
 		<div>

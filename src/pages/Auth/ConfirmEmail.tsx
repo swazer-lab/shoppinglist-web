@@ -2,37 +2,34 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 
 import { AppState } from '../../types/store';
-
 import { confirmEmail } from '../../actions/auth';
+
 import language from '../../assets/language';
 
 import './styles.scss';
-import { clearAlert } from '../../actions/service';
 
 interface Props {
 	dispatch: Function,
 	location: any,
 }
 
-const ConfirmEmail = (props: Props) => {
-	const { dispatch, location } = props;
+interface Props {
+	history: { push(url: string): void };
+	isConfirmed: boolean;
+}
 
-	const conf = (() => {
-		const queryParams = new URLSearchParams(location.search);
+function ConfirmEmail(props: Props) {
+	useEffect(() => {
+		const queryParams = new URLSearchParams(props.location.search);
 		const userId = queryParams.get('userId');
 		const token = queryParams.get('token');
 
-		if (userId && token) {
-			dispatch(confirmEmail(userId, token));
+		if (!userId || !token) {
+			props.history.push('/admin/login');
+			return;
 		}
-	})();
-
-	useEffect(() => {
-		dispatch(clearAlert());
-		return () => {
-			dispatch(clearAlert());
-		};
-	});
+		props.dispatch(confirmEmail(userId, token));
+	}, []);
 
 	return (
 		<div className='page_auth__content_container'>
@@ -40,15 +37,10 @@ const ConfirmEmail = (props: Props) => {
 			<p className='page_auth__subtitle'>{language.textConfirmEmailSubtitle}</p>
 		</div>
 	);
-};
+}
 
 const mapStateToProps = (state: AppState) => {
 	return {};
-};
-
-ConfirmEmail.layoutOptions = {
-	title: language.titleConfirmEmail,
-	layout: 'Auth',
 };
 
 export default connect(mapStateToProps)(ConfirmEmail);

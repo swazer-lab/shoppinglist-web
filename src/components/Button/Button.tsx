@@ -8,7 +8,7 @@ interface Props {
 	accentColor?: 'primary' | 'text' | 'white',
 	mode?: 'normal' | 'text',
 
-	type?: string,
+	type?: 'submit' | 'reset' | 'button',
 	title: string,
 	onClick?: (e?: any) => void,
 }

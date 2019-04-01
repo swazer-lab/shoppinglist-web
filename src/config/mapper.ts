@@ -1,4 +1,4 @@
-import morphism from 'morphism';
+import morphism, { Schema } from 'morphism';
 import _ from 'lodash';
 
 import { CartItem, CartUser } from '../types/api';
@@ -22,9 +22,12 @@ export const profileMapper = (toApi: boolean = false) => {
 
 		name: 'name',
 		email: 'email',
-		phoneNumber: 'mobile',
-
 		isConfirmed: 'isConfirmed',
+
+		phoneNumber: {
+			path: 'mobile',
+			fn: (value: string) => value !== null ? value : '',
+		},
 
 		photoUrl: {
 			path: 'photoId',
@@ -41,8 +44,8 @@ export const profileMapper = (toApi: boolean = false) => {
 	return toApi ? apiMapper : mapper;
 };
 
-export const cartMapper = (toApi: boolean = false) => {
-	const mapper = {
+export const cartMapper = (toApi: boolean = false): Schema => {
+	const mapper: Schema = {
 		id: 'cart.cartId',
 		uuid: (): string => require('uuid/v4')(),
 
@@ -63,7 +66,7 @@ export const cartMapper = (toApi: boolean = false) => {
 			fn: (value: Array<any>) => value !== null ? morphism(cartUserMapper(), value) : undefined,
 		},
 	};
-	const apiMapper = {
+	const apiMapper: Schema = {
 		cartId: 'id',
 
 		title: 'title',

@@ -57,6 +57,8 @@ const ProfileModal = (props: Props) => {
 		onLogoutClick,
 	} = props;
 
+	console.log('!!!!!!!!!!!!!!!!!!!!!'+draftProfile.phoneNumber);
+
 	useEffect(() => {
 		if (isUpdating && !isLoading) {
 			onBackToOverviewClicked();
@@ -114,7 +116,7 @@ const ProfileModal = (props: Props) => {
 						<i className='material-icons'>cancel</i>
 					</div>
 				</div>
-				<input id='profile_photo_input' type='file' name='pic' accept='image/*' onChange={handleImageChange}/>
+
 				<h3 className='profile_modal__name'>{name}</h3>
 
 				<div className='profile_modal__email'>{email}</div>
