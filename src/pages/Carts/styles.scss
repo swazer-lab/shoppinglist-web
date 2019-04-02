@@ -212,6 +212,44 @@
      transition: all .2s;
    }
 
+  &__status_active {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+
+    color:$color-accent;
+    font-size: 1.4rem;
+    font-weight: 500;
+
+    &__dot_active{
+      height: 0.8rem;
+      width: 0.8rem;
+      background-color: $color-accent;
+      border-radius: 50%;
+      display: inline-block;
+      margin-left: 0.3rem;
+    }
+  }
+
+  &__status_completed {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+
+    color: $color-primary;
+    font-size: 1.4rem;
+    font-weight: 500;
+
+    &__dot_completed{
+      height: 0.8rem;
+      width: 0.8rem;
+      background-color: $color-primary;
+      border-radius: 50%;
+      display: inline-block;
+      margin-left: 0.3rem;
+    }
+  }
+
   &__title {
     flex: 1;
     font-size: 1.6rem;

@@ -5,6 +5,7 @@ import { Cart } from '../../types/api';
 
 import { Modal, ProgressBar } from '../../components';
 import ShareCart from './ShareCart';
+import { getCartStatus } from '../../config/utilities';
 
 import avatar from '../../assets/images/avatar.jpeg';
 import language from '../../assets/language';
@@ -61,6 +62,8 @@ const CartObject = (props: Props) => {
 		setIsShareModalVisible(false);
 	};
 
+	const status = getCartStatus(cart.items);
+
 	const renderItems = (status: string) => cart.items.filter(item => item.status === status).map(item => (
 		<div key={item.uuid} className='cart_object__items__item'>
 			<i
@@ -80,7 +83,19 @@ const CartObject = (props: Props) => {
 			}
 
 			<h4 className='cart_object__title'>{cart.title}</h4>
+			{
+				status === 'Active' ?
+					<div className='cart_object__status_active'>
+						{status}
+						<div className='cart_object__status_active__dot_active'></div>
+					</div>
+					:
+					<div className='cart_object__status_completed'>
+						{status}
+						<div className='cart_object__status_completed__dot_completed'></div>
+					</div>
 
+			}
 			<div className='cart_object__items'>
 				{renderItems('active')}
 				{
