@@ -18,6 +18,8 @@ import {
 	RemoveCartAction,
 	RemoveCartActionResult,
 	RemoveDraftCartItemAction,
+	ReorderCartAction,
+	ReorderCartResultAction,
 	SetDraftCartAction,
 	ShareCartWithContactsAction,
 	ShareCartWithContactsActionResult,
@@ -127,7 +129,6 @@ export const removeCart = (cart: Cart): RemoveCartAction => ({
 	type: ActionTypes.remove_cart,
 	cart,
 });
-
 export const removeCartResult = (hasError: boolean, cart?: Cart): RemoveCartActionResult => ({
 	type: ActionTypes.remove_cart_result,
 	hasError,
@@ -142,7 +143,6 @@ export const shareCartWithContacts = (cartId: string): ShareCartWithContactsActi
 	type: ActionTypes.share_cart_with_contacts,
 	cartId,
 });
-
 export const shareCartWithContactsResult = (hasError: boolean, cartId?: string, cartUsers?: Array<CartUser>): ShareCartWithContactsActionResult => ({
 	type: ActionTypes.share_cart_with_contacts_result,
 	hasError,
@@ -154,9 +154,21 @@ export const getAccessToCart = (accessCode: string): GetAccessToCartAction => ({
 	type: ActionTypes.get_access_to_cart,
 	accessCode,
 });
-
 export const getAccessToCartResult = (hasError: boolean, cart?: Cart): GetAccessToCartActionResult => ({
 	type: ActionTypes.get_access_to_cart_result,
 	hasError,
 	cart,
+});
+
+export const reorderCart = (cartId: string, source: number, destination: number): ReorderCartAction => ({
+	type: ActionTypes.reorder_cart,
+	cartId,
+	source,
+	destination,
+});
+export const reorderCartResult = (hasError: boolean, source?: number, destination?: number): ReorderCartResultAction => ({
+	type: ActionTypes.reorder_cart_result,
+	hasError,
+	source,
+	destination,
 });

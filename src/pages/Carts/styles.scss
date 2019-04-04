@@ -180,6 +180,10 @@
   }
 }
 
+.cart_object_container {
+  margin-bottom: 1rem;
+}
+
 .cart_object {
   display: flex;
   position: relative;
@@ -187,7 +191,6 @@
   flex: 1;
   flex-direction: column;
 
-  margin-bottom: 1rem;
   padding: 1rem 0;
 
   background-color: $color-white;
@@ -201,27 +204,27 @@
   }
 
   &__remove_button {
-     position: absolute;
-     top: -1.2rem;
-     right: -1.2rem;
+    position: absolute;
+    top: -1.2rem;
+    right: -1.2rem;
 
-     color: $color-black;
+    color: $color-black;
 
-     cursor: pointer;
-     opacity: 0;
-     transition: all .2s;
-   }
+    cursor: pointer;
+    opacity: 0;
+    transition: all .2s;
+  }
 
   &__status_active {
     position: absolute;
     top: 1rem;
     right: 1rem;
 
-    color:$color-accent;
+    color: $color-accent;
     font-size: 1.4rem;
     font-weight: 500;
 
-    &__dot_active{
+    &__dot_active {
       height: 0.8rem;
       width: 0.8rem;
       background-color: $color-accent;
@@ -240,7 +243,7 @@
     font-size: 1.4rem;
     font-weight: 500;
 
-    &__dot_completed{
+    &__dot_completed {
       height: 0.8rem;
       width: 0.8rem;
       background-color: $color-primary;

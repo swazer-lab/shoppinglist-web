@@ -10,6 +10,7 @@ import {
 	remove_cart_api,
 	search_carts_api,
 	share_cart_with_contacts_api,
+	update_carts_order_api,
 } from '../api';
 import { cartMapper, cartUserMapper } from '../config/mapper';
 
@@ -21,6 +22,7 @@ import {
 	filterCartsResult,
 	getAccessToCartResult,
 	removeCartResult,
+	reorderCartResult,
 	shareCartWithContactsResult,
 	updateCartResult,
 } from '../actions/carts';
@@ -31,6 +33,7 @@ import {
 	FetchCartsAction,
 	GetAccessToCartAction,
 	RemoveCartAction,
+	ReorderCartAction,
 	ShareCartWithContactsAction,
 } from '../types/carts';
 import { Profile } from '../types/api';
@@ -203,6 +206,22 @@ function* getAccessToCartSaga(action: GetAccessToCartAction) {
 	}
 }
 
+function* reorderCartSaga(action: ReorderCartAction) {
+	yield put(showProgress('Reordering Carts'));
+
+	try {
+		yield call(update_carts_order_api, action.cartId, action.destination);
+		yield put(reorderCartResult(false));
+	} catch (e) {
+		yield all([
+			put(reorderCartResult(true, action.source, action.destination)),
+			put(showHttpErrorAlert(e)),
+		]);
+	} finally {
+		yield put(hideProgress());
+	}
+}
+
 export default [
 	takeLatest(ActionTypes.filter_carts, filterCartsSaga),
 	takeLatest(ActionTypes.fetch_carts, fetchCartsSaga),
@@ -211,4 +230,5 @@ export default [
 	takeLatest(ActionTypes.remove_cart, removeCartSaga),
 	takeLatest(ActionTypes.share_cart_with_contacts, shareCartWithContactsSaga),
 	takeLatest(ActionTypes.get_access_to_cart, getAccessToCartSaga),
+	takeLatest(ActionTypes.reorder_cart, reorderCartSaga),
 ];

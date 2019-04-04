@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd';
 
 import { AppState } from '../../types/store';
 import { Cart, CartItemStatusType } from '../../types/api';
@@ -22,6 +23,7 @@ import {
 	pushCart,
 	removeCart,
 	removeDraftCartItem,
+	reorderCart,
 	setDraftCart,
 	updateCart,
 } from '../../actions/carts';
@@ -43,10 +45,6 @@ interface Props {
 	isLoading: boolean,
 	totalCount: number,
 	pageNumber: number,
-}
-
-interface State {
-	isCartUpdating: boolean,
 }
 
 const Carts = (props: Props) => {
@@ -124,9 +122,6 @@ const Carts = (props: Props) => {
 		}, 3000);
 	};
 
-	const onSetDraftCartClicked = (cart: Cart) => dispatch(setDraftCart(cart));
-	const onClearDraftCartClicked = () => dispatch(clearDraftCart());
-
 	const handleDraftCartTitleChange = (title: string) => dispatch(changeDraftCartTitle(title));
 	const handleDraftCartNotesChange = (notes: string) => dispatch(changeDraftCartNotes(notes));
 
@@ -135,15 +130,39 @@ const Carts = (props: Props) => {
 	const handleDraftCartItemTitleChange = (uuid: string, title: string) => dispatch(changeDraftCartItemTitle(uuid, title));
 	const handleDraftCartItemStatusChange = (uuid: string, status: CartItemStatusType) => dispatch(changeDraftCartItemStatus(uuid, status));
 
-	const renderCarts = () => carts.map((cart) => (
-		<CartObject
-			key={cart.uuid}
-			progress={progress}
-			cart={cart}
-			onOpenUpdateCartModalClick={onOpenUpdateCartModalClicked}
-			onRemoveCartClick={onRemoveCartClicked}
-			currentUserEmail={email}
-		/>
+	const onDragEnd = (result: DropResult) => {
+		const { source, destination } = result;
+		if (!destination) {
+			return;
+		}
+		if (destination.index === source.index) {
+			return;
+		}
+
+		const { dispatch, carts } = props;
+		const cartId = carts[source.index].id;
+		dispatch(reorderCart(cartId, source.index, destination.index));
+	};
+
+	const renderCarts = () => carts.map((cart, index) => (
+		<Draggable key={cart.id} draggableId={cart.id} index={index}>
+			{provided => (
+				<div className='cart_object_container'
+				     ref={provided.innerRef}
+				     {...provided.draggableProps}
+				     {...provided.dragHandleProps}
+				>
+					<CartObject
+						key={cart.uuid}
+						progress={progress}
+						cart={cart}
+						onOpenUpdateCartModalClick={onOpenUpdateCartModalClicked}
+						onRemoveCartClick={onRemoveCartClicked}
+						currentUserEmail={email}
+					/>
+				</div>
+			)}
+		</Draggable>
 	));
 
 	const createCartDraftCart = isCartUpdating ? {
@@ -182,7 +201,17 @@ const Carts = (props: Props) => {
 				onCloseUpdateCartModalClick={onCloseUpdateCartModalClicked}
 				onUpdateCartClick={onUpdateCartClicked}
 			/>
-			{renderCarts()}
+
+			<DragDropContext onDragEnd={onDragEnd}>
+				<Droppable droppableId="list">
+					{provided => (
+						<div ref={provided.innerRef} {...provided.droppableProps}>
+							{renderCarts()}
+							{provided.placeholder}
+						</div>
+					)}
+				</Droppable>
+			</DragDropContext>
 		</div>
 	);
 };

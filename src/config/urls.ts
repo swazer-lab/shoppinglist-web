@@ -1,5 +1,5 @@
-//const root = 'http://localhost:63493/api/';
- const root = 'http://shopping.swazerlab.com/api/';
+const root = 'http://localhost:63493/api/';
+//  const root = 'http://shopping.swazerlab.com/api/';
 const rootWeb = process.env.NODE_ENV === 'development' ? 'http://localhost:3000/' : 'http://shoppingweb.swazerlab.com/';
 
 // Account Urls
@@ -25,7 +25,7 @@ export const get_photo_url = (photoId: number) => profileRoot.concat(`getPhoto?p
 const cartRoot = root.concat('cart/');
 const cartRootWeb = rootWeb.concat('cart/');
 
-export const fetch_carts_url = cartRoot.concat('fetch');
+export const fetch_carts_url = cartRoot.concat('newFetch');
 export const search_carts_url = cartRoot.concat('getCarts');
 export const create_cart_url = cartRoot.concat('create');
 export const remove_cart_url = cartRoot.concat('remove');
@@ -34,6 +34,8 @@ export const get_access_to_cart_url = cartRoot.concat('getAccess');
 export const get_access_to_cart_url_web = cartRootWeb.concat('getAccess');
 
 export const share_cart_with_contacts_url = cartRoot.concat('shareCart');
+
+export const update_order_url = cartRoot.concat('updateOrder');
 
 // Items Urls
 const itemRoot = root.concat('item/');

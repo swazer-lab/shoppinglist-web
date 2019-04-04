@@ -57,3 +57,12 @@ export const get_access_to_cart_api = (getAccessCode: string) => {
 
 	return axios.post(urls.get_access_to_cart_url, body);
 };
+
+export const update_carts_order_api = (cartId: string, destination: number) => {
+	const body = {
+		cartId,
+		destination,
+	};
+
+	return axios.post(urls.update_order_url, body);
+};

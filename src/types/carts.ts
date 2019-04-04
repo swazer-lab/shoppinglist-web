@@ -44,9 +44,9 @@ export enum ActionTypes {
 	share_cart_with_contacts = 'CARTS_SHARE_CART_WITH_CONTACTS',
 	share_cart_with_contacts_result = 'CARTS_SHARE_CART_WITH_CONTACTS_RESULT',
 
-	set_cart_reminder = 'CARTS_SET_CART_REMINDER',
+	reorder_cart = 'CARTS_REORDER_CART',
+	reorder_cart_result = 'CARTS_REORDER_CART_RESULT',
 
-	cancel_update_cart = 'CARTS__CANCEL_UPDATE_CART',
 	clear_carts = 'CARTS__CLEAR_CARTS',
 }
 
@@ -171,6 +171,19 @@ export interface GetAccessToCartActionResult extends CartsActionResult {
 	cart?: Cart,
 }
 
+export interface ReorderCartAction extends CartsAction {
+	type: ActionTypes.reorder_cart,
+	cartId: string,
+	source: number,
+	destination: number
+}
+
+export interface ReorderCartResultAction extends CartsActionResult {
+	type: ActionTypes.reorder_cart_result,
+	source?: number,
+	destination?: number
+}
+
 export type Action =
 	& CartsAction
 	& CartsActionResult
@@ -194,7 +207,9 @@ export type Action =
 	& ShareCartWithContactsAction
 	& ShareCartWithContactsActionResult
 	& GetAccessToCartAction
-	& GetAccessToCartActionResult;
+	& GetAccessToCartActionResult
+	& ReorderCartAction
+	& ReorderCartResultAction;
 
 export type State = {
 	draftCart: Cart,

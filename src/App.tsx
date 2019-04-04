@@ -30,7 +30,7 @@ const Main = (props: Props) => {
 	}, [activeLanguage]);
 
 	return (
-		<AppNavigator />
+		<AppNavigator/>
 	);
 };
 
@@ -43,7 +43,7 @@ export default () => {
 
 	return (
 		<Provider store={store}>
-			<AppWithNavigation />
+			<AppWithNavigation/>
 		</Provider>
 	);
 }

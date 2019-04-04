@@ -1,5 +1,6 @@
 import { Action, ActionTypes, State } from '../types/carts';
 import { Cart, CartItem } from '../types/api';
+import { array } from 'redux-immutable-helper';
 
 const initialState: State = {
 	draftCart: {
@@ -91,6 +92,8 @@ export default (state: State = initialState, action: Action): State => {
 		case ActionTypes.update_cart_result:
 		case ActionTypes.pull_cart:
 		case ActionTypes.push_cart:
+		case ActionTypes.reorder_cart:
+		case ActionTypes.reorder_cart_result:
 		case ActionTypes.share_cart_with_contacts_result:
 		case ActionTypes.get_access_to_cart_result:
 			return {
@@ -144,6 +147,16 @@ export const carts = (state: Array<Cart> = initialState.carts, action: Action): 
 				{ ...state[0], users: action.cartUsers ? action.cartUsers : state[0].users },
 				...state.slice(shared_cart_index + 1),
 			];
+
+		case ActionTypes.reorder_cart: {
+			const movedCart = state[action.source];
+			return array(array(state).remove(action.source)).insertBefore(action.destination, movedCart);
+		}
+		case ActionTypes.reorder_cart_result: {
+			if (!action.hasError) return state;
+			const movedCart = state[action.destination];
+			return array(array(state).remove(action.destination)).insertBefore(action.source, movedCart);
+		}
 
 		default:
 			return state;
