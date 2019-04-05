@@ -57,7 +57,6 @@ const ProfileModal = (props: Props) => {
 		onLogoutClick,
 	} = props;
 
-	console.log('!!!!!!!!!!!!!!!!!!!!!'+draftProfile.phoneNumber);
 
 	useEffect(() => {
 		if (isUpdating && !isLoading) {
@@ -66,11 +65,13 @@ const ProfileModal = (props: Props) => {
 	}, [isLoading]);
 
 	const onSelectImageClicked = () => {
+		console.log('----------------------------');
 		const input = document.getElementById('profile_photo_input');
 		if (input) {
 			input.click();
 		}
 	};
+
 	const handleImageChange = (e: any) => {
 		const imageFile = e.currentTarget.files[0];
 		if (imageFile) {
@@ -117,6 +118,7 @@ const ProfileModal = (props: Props) => {
 					</div>
 				</div>
 
+				<input id='profile_photo_input' type='file' name='pic' accept='image/*' onChange={handleImageChange}/>
 				<h3 className='profile_modal__name'>{name}</h3>
 
 				<div className='profile_modal__email'>{email}</div>
