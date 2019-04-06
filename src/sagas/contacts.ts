@@ -14,7 +14,7 @@ function* fetchContactsSaga(action: FetchContactsAction) {
 	const { silent, pageNumber, append } = action;
 	const pageSize = 15;
 
-	if (!silent) yield put(showProgress(language.textFetchingContacts));
+	if (!silent) yield put(showProgress(language.textFetchingCarts));
 
 	try {
 		const response = yield call(fetch_contacts_api, pageNumber, pageSize);
