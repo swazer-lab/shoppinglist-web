@@ -58,8 +58,8 @@ const MainLayout = (props: Props) => {
 			dispatch(fetchProfile());
 			dispatch(fetchContacts());
 		}
-	}, [isLoggedIn, accessToken, isEmailConfirmed]);
-	
+	}, [isLoggedIn, accessToken]);
+
 	const onChangeDraftProfileName = (name: string) => dispatch(changeDraftProfileName(name));
 	const onChangeDraftProfilePhoneNumber = (phoneNumber: string) => dispatch(changeDraftProfilePhoneNumber(phoneNumber));
 	const onUpdateProfileClicked = () => dispatch(updateProfile());
@@ -129,8 +129,12 @@ const MainLayout = (props: Props) => {
 				duration={snackbar.duration}
 				onRequestClose={onSnackbarRequestClose}
 			/>
-			<Alert visible={alert.visible} message={alert.message} type={alert.type}
-			       handleCloseToastr={handleClosedToastr}/>
+			<Alert
+				visible={alert.visible}
+				type={alert.type}
+				message={alert.message}
+				handleCloseToastr={handleClosedToastr}
+			/>
 
 			{children}
 		</div>

@@ -6,7 +6,7 @@ import { AppState } from '../../types/store';
 
 import { Button, Input } from '../../components';
 
-import { clearAlert, navigate } from '../../actions/service';
+import { navigate } from '../../actions/service';
 import { changeEmail, changePassword, login } from '../../actions/auth';
 
 import language from '../../assets/language';
@@ -219,7 +219,7 @@ const Landing = (props: Props) => {
 
 Landing.layoutOptions = {
 	title: '',
-	layout: ''
+	layout: '',
 };
 
 const mapStateToProps = (state: AppState) => {
@@ -229,7 +229,7 @@ const mapStateToProps = (state: AppState) => {
 	return {
 		email,
 		password,
-		alert
+		alert,
 	};
 };
 

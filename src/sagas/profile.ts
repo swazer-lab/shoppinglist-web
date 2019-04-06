@@ -25,9 +25,10 @@ function* fetchProfileSaga() {
 		const response = yield call(fetch_profile_api);
 		const data = yield morphism(profileMapper(), response.data);
 
-		put(setIsEmailConfirmed(data.isConfirmed));
-
-		yield put(fetchProfileResult(false, data));
+		yield all([
+			put(setIsEmailConfirmed(data.isConfirmed)),
+			put(fetchProfileResult(false, data)),
+		]);
 	} catch (e) {
 		yield all([
 			put(fetchProfileResult(true)),

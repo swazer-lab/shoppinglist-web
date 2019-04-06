@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { toast, Slide, ToastContainer } from 'react-toastify';
+import { Slide, toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import { AlertType } from '../../types/service';
@@ -15,19 +15,15 @@ const Alert = (props: Props) => {
 	const { visible, type, message, handleCloseToastr } = props;
 
 	const getToastrType = (type: AlertType) => {
-		switch(type) {
+		switch (type) {
 			case 'info':
 				return toast.TYPE.INFO;
-				break;
 			case 'warn':
 				return toast.TYPE.WARNING;
-				break;
 			case 'error':
 				return toast.TYPE.ERROR;
-				break;
 			case 'success':
 				return toast.TYPE.SUCCESS;
-				break;
 		}
 	};
 
@@ -35,7 +31,7 @@ const Alert = (props: Props) => {
 		const options = {
 			autoClose: 2000,
 			type: getToastrType(type),
-			transition: Slide
+			transition: Slide,
 		};
 
 		if (visible) {
@@ -48,7 +44,7 @@ const Alert = (props: Props) => {
 	}, [visible]);
 
 	return (
-		<ToastContainer />
+		<ToastContainer/>
 	);
 };
 

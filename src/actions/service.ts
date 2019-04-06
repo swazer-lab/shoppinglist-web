@@ -135,7 +135,7 @@ export const setActiveLanguage = (activeLanguage: string): SetActiveLanguageActi
 	});
 };
 export const setIsEmailConfirmed = (isEmailConfirmed: boolean): SetIsEmailConfirmed => {
-	localstorage.setItem('isEmailConfirmed', isEmailConfirmed.toString());
+	// localstorage.setItem('isEmailConfirmed', isEmailConfirmed.toString());
 
 	return ({
 		type: ActionTypes.setIsEmailConfirmed,
