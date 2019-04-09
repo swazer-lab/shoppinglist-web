@@ -37,6 +37,12 @@ export default {
 	actionLogin: 'Login',
 	actionCreateAccount: 'Create Account',
 
+	// Change Password
+	actionChangePassword: 'Change Password',
+	titleChangePassword: 'Change Password',
+	textChangePasswordsubtitle: 'Change Your Password',
+	textUpdatingPassword: 'Password is being updated',
+
 	// External Login
 
 	titleExternalLogin: 'External Login',

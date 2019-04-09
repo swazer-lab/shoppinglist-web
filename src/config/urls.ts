@@ -1,5 +1,5 @@
-// const root = 'http://localhost:63493/api/';
-const root = 'http://shopping.swazerlab.com/api/';
+const root = 'http://localhost:63493/api/';
+// const root = 'http://shopping.swazerlab.com/api/';
 const rootWeb = process.env.NODE_ENV === 'development' ? 'http://localhost:3000/' : 'http://shoppingweb.swazerlab.com/';
 
 // Account Urls
@@ -8,6 +8,7 @@ export const register_url = accountRoot.concat('register');
 export const external_login_url = accountRoot.concat('registerExternal');
 export const login_url = accountRoot.concat('token');
 export const confirm_email_url = accountRoot.concat('confirmEmail');
+export const update_password_url = accountRoot.concat('changePassword');
 export const resend_confirm_email_url = (userId: string) => accountRoot.concat(`resendConfirmEmail?userId=${userId}`);
 export const fetch_profile_url = accountRoot.concat('profile');
 export const forgot_password_url = accountRoot.concat('ForgotPassword');

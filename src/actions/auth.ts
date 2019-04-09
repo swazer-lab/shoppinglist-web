@@ -3,7 +3,7 @@ import {
 	AuthAction,
 	AuthActionResult,
 	ChangeEmailAction,
-	ChangeNameAction,
+	ChangeNameAction, ChangeOldPasswordAction,
 	ChangePasswordAction,
 	ChangePhoneAction,
 	ChangeResetPasswordCode,
@@ -27,6 +27,21 @@ export const changePassword = (password: string): ChangePasswordAction => ({
 	type: ActionTypes.change_password,
 	password,
 });
+
+export const changeOldPassword = (oldPassword: string): ChangeOldPasswordAction => ({
+	type: ActionTypes.change_old_password,
+	oldPassword,
+});
+
+export const updatePassword = () : AuthAction => ({
+	type: ActionTypes.update_password
+});
+
+export const updatePasswordResult = (hasError: boolean) : AuthActionResult => ({
+	type: ActionTypes.update_password_result,
+	hasError
+});
+
 export const changeResetPasswordCode = (code: string): ChangeResetPasswordCode => ({
 	type: ActionTypes.change_reset_password_code,
 	code,

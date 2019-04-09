@@ -47,6 +47,8 @@ export enum ActionTypes {
 	reorder_cart = 'CARTS_REORDER_CART',
 	reorder_cart_result = 'CARTS_REORDER_CART_RESULT',
 
+	change_visibility_filter = 'CHANGE_VISIBILITY_FILTER',
+
 	clear_carts = 'CARTS__CLEAR_CARTS',
 }
 
@@ -166,6 +168,11 @@ export interface GetAccessToCartAction extends CartsAction {
 	accessCode: string,
 }
 
+export interface ChangeVisibilityFilter extends CartsAction {
+	type: ActionTypes.change_visibility_filter,
+	visibilityFilter: VisibilityFilter,
+}
+
 export interface GetAccessToCartActionResult extends CartsActionResult {
 	type: ActionTypes.get_access_to_cart_result,
 	cart?: Cart,
@@ -209,7 +216,8 @@ export type Action =
 	& GetAccessToCartAction
 	& GetAccessToCartActionResult
 	& ReorderCartAction
-	& ReorderCartResultAction;
+	& ReorderCartResultAction
+	& ChangeVisibilityFilter;
 
 export type State = {
 	draftCart: Cart,
@@ -218,7 +226,15 @@ export type State = {
 	filteredCarts?: Array<Cart>,
 	searchQuery?: string,
 
+	visibilityFilter: VisibilityFilter,
+
 	isLoading: boolean,
 	pageNumber: number,
 	totalCount: number,
+}
+
+export enum VisibilityFilter {
+	all = 'All',
+	completed = 'Completed',
+	active = 'Active'
 }

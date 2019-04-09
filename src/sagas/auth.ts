@@ -10,6 +10,7 @@ import {
 	resend_confirm_email_api,
 	reset_password_api,
 	send_forgot_password_email_api,
+	update_password_api
 } from '../api';
 
 import {
@@ -27,7 +28,7 @@ import {
 	loginResult,
 	registerResult,
 	resetPasswordResult,
-	sendForgotPasswordEmailResult,
+	sendForgotPasswordEmailResult, updatePasswordResult,
 } from '../actions/auth';
 
 import { clearProfile } from '../actions/profile';
@@ -128,6 +129,26 @@ function* confirmEmailSaga(action: ConfirmEmailAction) {
 	}
 }
 
+function* updatePasswordSaga() {
+	const { oldPassword, password } = yield select((state: AppState) => state.auth);
+
+	yield put(showProgress('Updating password'));
+	try {
+		yield call(update_password_api, oldPassword, password);
+		yield all([
+			put(updatePasswordResult(false)),
+			put(navigate('Login')),
+		]);
+	} catch (e) {
+		yield all([
+			put(updatePasswordResult(true)),
+			put(showHttpErrorAlert(e)),
+		]);
+	} finally {
+		yield put(hideProgress());
+	}
+}
+
 function* resendConfirmEmailSaga(action: ResendConfirmEmailAction) {
 	const { userId } = action;
 
@@ -208,4 +229,5 @@ export default [
 	takeLatest(ActionTypes.logout, logoutSaga),
 	takeLatest(ActionTypes.external_login, externalLoginSaga),
 	takeLatest(ActionTypes.resend_confirm_email, resendConfirmEmailSaga),
+	takeLatest(ActionTypes.update_password, updatePasswordSaga)
 ];

@@ -27,8 +27,9 @@ interface Props {
 
 	onUpdateProfileClick: () => void,
 	onUpdateProfilePhotoClick: (photoData: string) => void,
-	onDeleteProfilePhotoClick: (e:any) => void,
+	onDeleteProfilePhotoClick: (e: any) => void,
 	onResendConfirmEmailConfirmClick: (userId: string) => void,
+	onRedirectingToChangePasswordClick: () => void,
 
 	onLogoutClick: () => void,
 }
@@ -54,6 +55,7 @@ const ProfileModal = (props: Props) => {
 		onUpdateProfilePhotoClick,
 		onDeleteProfilePhotoClick,
 		onResendConfirmEmailConfirmClick,
+		onRedirectingToChangePasswordClick,
 		onLogoutClick,
 	} = props;
 
@@ -65,7 +67,6 @@ const ProfileModal = (props: Props) => {
 	}, [isLoading]);
 
 	const onSelectImageClicked = () => {
-		console.log('----------------------------');
 		const input = document.getElementById('profile_photo_input');
 		if (input) {
 			input.click();
@@ -101,7 +102,7 @@ const ProfileModal = (props: Props) => {
 		slider.current.slickGoTo(0, false);
 	};
 
-	const onDeleteProfilePhotoClicked = (e:any) => onDeleteProfilePhotoClick(e);
+	const onDeleteProfilePhotoClicked = (e: any) => onDeleteProfilePhotoClick(e);
 
 	const handleDraftProfileNameChange = (e: FormEvent<HTMLFormElement>) => onDraftProfileNameChange(e.currentTarget.value);
 	const handleDraftProfilePhoneNumberChange = (e: FormEvent<HTMLFormElement>) => onDraftProfilePhoneNumberChange(e.currentTarget.value);
@@ -155,6 +156,8 @@ const ProfileModal = (props: Props) => {
 				/>
 
 				<div className='update_profile_modal__actions_container'>
+					<Button mode='text' accentColor='text' title={language.titleChangePassword}
+					        onClick={onRedirectingToChangePasswordClick}/>
 					<Button title='Update' onClick={onUpdateProfileClick}/>
 				</div>
 			</div>
@@ -162,6 +165,7 @@ const ProfileModal = (props: Props) => {
 	);
 
 	const buttons = isUpdating ? [{ iconName: 'arrow_forward', onClick: onBackToOverviewClicked }] : [
+		{ iconName: 'lock', onClick: onRedirectingToChangePasswordClick },
 		{ iconName: 'edit', onClick: onGoToUpdateProfileClicked },
 		{ iconName: 'close', onClick: onCloseProfileModalClick },
 	];

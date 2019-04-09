@@ -6,7 +6,7 @@ import {
 	ChangeDraftCartNotesAction,
 	ChangeDraftCartReminderDateAction,
 	ChangeDraftCartTitleAction,
-	ChangeSearchQueryAction,
+	ChangeSearchQueryAction, ChangeVisibilityFilter,
 	CreateCartActionResult,
 	FetchCartsAction,
 	FetchCartsActionResult,
@@ -24,6 +24,7 @@ import {
 	ShareCartWithContactsAction,
 	ShareCartWithContactsActionResult,
 	UpdateCartResultAction,
+	VisibilityFilter
 } from '../types/carts';
 import { Cart, CartItemStatusType, CartUser } from '../types/api';
 
@@ -172,3 +173,9 @@ export const reorderCartResult = (hasError: boolean, source?: number, destinatio
 	source,
 	destination,
 });
+
+export const changeVisibilityFilter = (visibilityFilter: VisibilityFilter): ChangeVisibilityFilter => ({
+	type: ActionTypes.change_visibility_filter,
+	visibilityFilter
+});
+

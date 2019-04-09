@@ -1,4 +1,4 @@
-import { Action, ActionTypes, State } from '../types/carts';
+import { Action, ActionTypes, State, VisibilityFilter } from '../types/carts';
 import { Cart, CartItem } from '../types/api';
 import { array } from 'redux-immutable-helper';
 
@@ -15,6 +15,8 @@ const initialState: State = {
 		users: [],
 	},
 	carts: [],
+
+	visibilityFilter: VisibilityFilter.all,
 
 	searchQuery: '',
 	filteredCarts: [],
@@ -99,6 +101,12 @@ export default (state: State = initialState, action: Action): State => {
 			return {
 				...state,
 				carts: carts(state.carts, action),
+			};
+
+		case ActionTypes.change_visibility_filter:
+			return {
+				...state,
+				visibilityFilter: action.visibilityFilter,
 			};
 
 		case ActionTypes.clear_carts:

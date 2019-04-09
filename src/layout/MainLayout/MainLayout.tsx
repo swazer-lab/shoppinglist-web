@@ -7,7 +7,7 @@ import { Profile } from '../../types/api';
 import { Alert, Snackbar } from '../../components';
 import { NavigationBar, ProfileModal } from './';
 
-import { clearAlert, hideSnackbar } from '../../actions/service';
+import { clearAlert, hideSnackbar, navigate } from '../../actions/service';
 import { logout, resendConfirmEmail } from '../../actions/auth';
 
 import {
@@ -69,6 +69,8 @@ const MainLayout = (props: Props) => {
 		dispatch(resendConfirmEmail(userId));
 	};
 
+	const onRedirectingToChangePasswordClicked = () => dispatch(navigate('ChangePassword'));
+
 	const onUpdateProfilePhotoClicked = (photoData: string) => dispatch(updateProfilePhoto(photoData));
 
 	const onDeleteProfilePhotoClicked = (e: any) => {
@@ -121,6 +123,7 @@ const MainLayout = (props: Props) => {
 				onDeleteProfilePhotoClick={onDeleteProfilePhotoClicked}
 				onLogoutClick={onLogoutClicked}
 				onResendConfirmEmailConfirmClick={onResendConfirmEmailConfirmClicked}
+				onRedirectingToChangePasswordClick={onRedirectingToChangePasswordClicked}
 			/>
 			<Snackbar
 				visible={snackbar.visible}

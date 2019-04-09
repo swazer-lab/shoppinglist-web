@@ -5,6 +5,7 @@ export enum ActionTypes {
 	change_email = 'AUTH__CHANGE_EMAIL',
 	change_phone = 'AUTH__CHANGE_PHONE',
 	change_password = 'AUTH__CHANGE_PASSWORD',
+	change_old_password = 'AUTH__CHANGE_OLD_PASSWORD',
 
 	change_reset_password_code = 'AUTH__CHANGE_RESET_PASSWORD_CODE',
 
@@ -18,6 +19,9 @@ export enum ActionTypes {
 
 	confirm_email = 'AUTH__CONFIRM_EMAIL',
 	confirm_email_result = 'AUTH__CONFIRM_EMAIL_RESULT',
+
+	update_password = 'AUTH__UPDATE_PASSWORD',
+	update_password_result = 'AUTH__UPDATE_PASSWORD_RESULT',
 
 	resend_confirm_email = 'AUTH__RESEND_CONFIRM_EMAIL',
 
@@ -57,6 +61,11 @@ export interface ChangePasswordAction extends AuthAction {
 	password: string,
 }
 
+export interface ChangeOldPasswordAction extends AuthAction {
+	type: ActionTypes.change_old_password,
+	oldPassword: string,
+}
+
 export interface ChangeResetPasswordCode extends AuthAction {
 	type: ActionTypes.change_reset_password_code,
 	code: string,
@@ -91,13 +100,15 @@ export type Action =
 	& ChangeResetPasswordCode
 	& ConfirmEmailAction
 	& ResendConfirmEmailAction
-	& ExternalLoginAction;
+	& ExternalLoginAction
+	& ChangeOldPasswordAction;
 
 export interface State {
 	name: string,
 	email: string,
 	phone: string,
 	password: string,
+	oldPassword: string,
 
 	isResettingPassword: boolean,
 	resetPasswordCode: string,

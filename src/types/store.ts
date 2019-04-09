@@ -29,6 +29,7 @@ export type RouteName =
 	| 'Register'
 	| 'Login'
 	| 'ConfirmEmail'
+	| 'ChangePassword'
 	| 'ForgotPassword'
 	| 'Carts'
 	| 'GetAccess'
