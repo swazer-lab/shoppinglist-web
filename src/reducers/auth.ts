@@ -5,7 +5,7 @@ const initialState: State = {
 	email: '',
 	phone: '',
 	password: '',
-	oldPassword: '',
+	newPassword: '',
 
 	isResettingPassword: false,
 	resetPasswordCode: '',
@@ -33,10 +33,10 @@ export default (state: State = initialState, action: Action): State => {
 				...state,
 				password: action.password,
 			};
-		case ActionTypes.change_old_password:
+		case ActionTypes.change_new_password:
 			return {
 				...state,
-				oldPassword: action.oldPassword,
+				newPassword: action.newPassword,
 			};
 
 		case ActionTypes.send_forgot_password_email_result:
@@ -56,8 +56,8 @@ export default (state: State = initialState, action: Action): State => {
 			if (action.hasError) return state;
 			return {
 				...state,
-				oldPassword: initialState.oldPassword,
-				password: initialState.password
+				password: initialState.password,
+				newPassword: initialState.newPassword,
 			};
 
 		case ActionTypes.logout:

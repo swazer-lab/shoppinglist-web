@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import { AppState } from '../../types/store';
 import language from '../../assets/language';
-import { changePassword, changeOldPassword, updatePassword } from '../../actions/auth';
+import { changePassword, updatePassword, changeNewPassword } from '../../actions/auth';
 import { Input } from '../../components/Input';
 import { Button } from '../../components/Button';
 import { navigate } from '../../actions/service';
@@ -12,16 +12,16 @@ interface Props {
 	dispatch: Function,
 
 	password: string,
-	oldPassword: string
+	newPassword: string
 }
 
 const ChangePassword = (props: Props) => {
-	const { dispatch, password, oldPassword } = props;
+	const { dispatch, password, newPassword } = props;
 
 	const onForgotPasswordClicked = () => dispatch(navigate('ForgotPassword'));
 
 	const handlePasswordChange = (e: FormEvent<HTMLInputElement>) => dispatch(changePassword(e.currentTarget.value));
-	const handleOldPasswordChange = (e: FormEvent<HTMLInputElement>) => dispatch(changeOldPassword(e.currentTarget.value));
+	const handleNewPasswordChange = (e: FormEvent<HTMLInputElement>) => dispatch(changeNewPassword(e.currentTarget.value));
 
 	const onChangePasswordClicked = (event: any) => {
 		dispatch(updatePassword());
@@ -36,16 +36,16 @@ const ChangePassword = (props: Props) => {
 		    <form onSubmit={onChangePasswordClicked}>
 			    <Input
 				    className='page_auth__input'
-				    value={oldPassword}
-				    onChange={handleOldPasswordChange}
+				    value={password}
+				    onChange={handlePasswordChange}
 				    type='password'
 				    placeholder={language.textEnterPassword}
 				    required
 			    />
 			    <Input
 				    className='page_auth__input'
-				    value={password}
-				    onChange={handlePasswordChange}
+				    value={newPassword}
+				    onChange={handleNewPasswordChange}
 				    type='password'
 				    placeholder={language.textEnterNewPassword}
 				    required
@@ -67,11 +67,11 @@ const ChangePassword = (props: Props) => {
 };
 
 const mapStateToProps = (state: AppState) => {
-	const { password, oldPassword} = state.auth;
+	const { password, newPassword} = state.auth;
 
 	return {
 		password,
-		oldPassword
+		newPassword
 	};
 };
 

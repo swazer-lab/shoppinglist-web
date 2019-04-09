@@ -130,11 +130,11 @@ function* confirmEmailSaga(action: ConfirmEmailAction) {
 }
 
 function* updatePasswordSaga() {
-	const { oldPassword, password } = yield select((state: AppState) => state.auth);
+	const { password, newPassword  } = yield select((state: AppState) => state.auth);
 
 	yield put(showProgress('Updating password'));
 	try {
-		yield call(update_password_api, oldPassword, password);
+		yield call(update_password_api, password, newPassword);
 		yield all([
 			put(updatePasswordResult(false)),
 			put(navigate('Login')),

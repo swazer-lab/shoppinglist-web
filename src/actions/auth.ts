@@ -3,7 +3,7 @@ import {
 	AuthAction,
 	AuthActionResult,
 	ChangeEmailAction,
-	ChangeNameAction, ChangeOldPasswordAction,
+	ChangeNameAction, ChangeNewPasswordAction,
 	ChangePasswordAction,
 	ChangePhoneAction,
 	ChangeResetPasswordCode,
@@ -28,9 +28,9 @@ export const changePassword = (password: string): ChangePasswordAction => ({
 	password,
 });
 
-export const changeOldPassword = (oldPassword: string): ChangeOldPasswordAction => ({
-	type: ActionTypes.change_old_password,
-	oldPassword,
+export const changeNewPassword = (newPassword: string): ChangeNewPasswordAction => ({
+	type: ActionTypes.change_new_password,
+	newPassword,
 });
 
 export const updatePassword = () : AuthAction => ({
