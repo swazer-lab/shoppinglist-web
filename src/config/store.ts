@@ -6,6 +6,7 @@ import reducers from '../reducers';
 import rootSaga from '../sagas';
 import { createStorage } from 'indexa';
 import { State } from '../types/storage';
+import { updateDefaultHeaders } from '../api';
 
 const sagaMiddleware = createSagaMiddleware();
 const middlewareList: any = [sagaMiddleware];
@@ -23,4 +24,5 @@ store.subscribe(() => {
 	storage.setStorage({ storage: store.getState().storage }, true);
 });
 
-//updateDefaultHeaders(storage.getStorage().storage.accessToken);
+if (storage.getStorage().storage)
+	updateDefaultHeaders(storage.getStorage().storage.accessToken);
