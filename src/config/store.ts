@@ -4,24 +4,36 @@ import createSagaMiddleware from 'redux-saga';
 
 import reducers from '../reducers';
 import rootSaga from '../sagas';
-import { createStorage } from 'indexa';
 import { updateDefaultHeaders } from '../api';
-import { State } from '../types/storage';
 
 const sagaMiddleware = createSagaMiddleware();
 const middlewareList: any = [sagaMiddleware];
 
 if (process.env.NODE_ENV === 'development') middlewareList.push(createLogger());
 
-const storage = createStorage<{ storage: State }>('root');
+const write = (storage: any) => {
+	localStorage.setItem('root', JSON.stringify(storage));
+};
+const read = (): any => {
+	let storage = {
+		isLoggedIn: false,
+		accessToken: '',
+		isEmailConfirmed: false,
+		activeLanguage: 'en',
+	};
+	const data = localStorage.getItem('root');
 
-const str = createStore(reducers, storage.getStorage(), compose(applyMiddleware(...middlewareList)));
+	if (data) {
+		storage = JSON.parse(data);
+	}
+	return storage;
+};
+
+const str = createStore(reducers, read(), compose(applyMiddleware(...middlewareList)));
 sagaMiddleware.run(rootSaga);
 
 export const store = str;
 
 store.subscribe(() => {
-	storage.setStorage({ storage: store.getState().storage }, true);
+	write({ storage: store.getState().storage });
 });
-
-updateDefaultHeaders(storage.getStorage().storage.accessToken);
