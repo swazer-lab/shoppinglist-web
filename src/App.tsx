@@ -2,11 +2,11 @@ import React, { useEffect } from 'react';
 import { connect, Provider } from 'react-redux';
 
 import { AppState } from './types/store';
+import { AvailableLanguages } from './types/storage';
 
 import { AppNavigator } from './config/routes';
 import { store } from './config/store';
 
-import { useLocalStorage } from './config/localstorage';
 import { updateDefaultHeaders } from './api';
 
 import language from './assets/language';
@@ -14,16 +14,17 @@ import './assets/scss/main.scss';
 
 interface Props {
 	dispatch: Function,
+	isLoggedIn: boolean,
+	accessToken: string,
+	activeLanguage: AvailableLanguages
 }
 
 const Main = (props: Props) => {
-	const { isLoggedIn, accessToken, activeLanguage } = useLocalStorage();
+	const { isLoggedIn, accessToken, activeLanguage } = props;
 
 	useEffect(() => {
-		if (isLoggedIn && accessToken) {
-			updateDefaultHeaders(accessToken);
-		}
-	}, [isLoggedIn, accessToken]);
+		updateDefaultHeaders(accessToken);
+	}, [accessToken]);
 
 	useEffect(() => {
 		language.setLanguage(activeLanguage);
@@ -35,7 +36,9 @@ const Main = (props: Props) => {
 };
 
 const mapStateToProps = (state: AppState) => {
-	return {};
+	const { isLoggedIn, accessToken, activeLanguage } = state.storage;
+
+	return { isLoggedIn, accessToken, activeLanguage };
 };
 
 export default () => {

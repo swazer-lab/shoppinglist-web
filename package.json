@@ -15,6 +15,7 @@
 		"connected-react-router": "^4.5.0",
 		"hashids": "^1.2.2",
 		"history": "^4.9.0",
+		"indexa": "^0.0.4",
 		"lodash": "^4.17.11",
 		"morphism": "^1.10.0",
 		"node-sass": "^4.11.0",

@@ -30,8 +30,6 @@ import {
 	updateCart,
 } from '../../actions/carts';
 
-import { useLocalStorage } from '../../config/localstorage';
-
 import language from '../../assets/language';
 import { getCartStatus } from '../../config/utilities';
 import { Button } from '../../components/Button';
@@ -51,11 +49,13 @@ interface Props {
 	isLoading: boolean,
 	totalCount: number,
 	pageNumber: number,
+
+	isLoggedIn: boolean,
+	accessToken: string
 }
 
 const Carts = (props: Props) => {
-		const { dispatch, progress, snackbar, carts, draftCart, email, visibilityFilter } = props;
-		const { isLoggedIn, accessToken } = useLocalStorage();
+		const { dispatch, progress, snackbar, carts, draftCart, email, visibilityFilter, isLoggedIn, accessToken } = props;
 
 		const [isCartUpdating, setIsCartUpdating] = useState(false);
 
@@ -223,7 +223,7 @@ const Carts = (props: Props) => {
 					onUpdateCartClick={onUpdateCartClicked}
 				/>
 
-				{ carts.length !== 0 ?
+				{carts.length !== 0 ?
 					<div className='visible_filtering_button_container'>
 						<Button type='button' accentColor={visibilityFilter === 'All' ? 'primary' : 'white'} title='All'
 						        onClick={onGetAllCarts}
@@ -261,6 +261,7 @@ Carts.layoutOptions = {
 const mapStateToProps = (state: AppState) => {
 	const { progress, snackbar } = state.service;
 	const { email } = state.profile;
+	const { isLoggedIn, accessToken } = state.storage;
 
 	const { carts, draftCart, isLoading, totalCount, pageNumber, visibilityFilter } = state.carts;
 
@@ -277,6 +278,9 @@ const mapStateToProps = (state: AppState) => {
 		isLoading,
 		totalCount,
 		pageNumber,
+
+		isLoggedIn,
+		accessToken,
 	};
 };
 

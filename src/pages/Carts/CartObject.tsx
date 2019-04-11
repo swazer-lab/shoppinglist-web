@@ -11,6 +11,7 @@ import avatar from '../../assets/images/avatar.jpeg';
 import language from '../../assets/language';
 
 import './styles.scss';
+import SharedUserInformation from './SharedUserInformation';
 
 interface Props {
 	progress: AppState['service']['progress'],
@@ -24,6 +25,7 @@ interface Props {
 
 const CartObject = (props: Props) => {
 	const [isShareModalVisible, setIsShareModalVisible] = useState(false);
+	const [isSharedUserModalVisible, setisSharedUserModalVisible] = useState(false);
 	const [accessLevel, setAccessLevel] = useState('');
 
 	const { progress, cart, onOpenUpdateCartModalClick, onRemoveCartClick, currentUserEmail } = props;
@@ -38,6 +40,9 @@ const CartObject = (props: Props) => {
 		if (!currentUserEmail) return;
 
 		const currentUser = cart.users.filter(user => user.email === currentUserEmail)[0];
+
+		console.log(currentUser);
+
 		if (currentUser) {
 			setAccessLevel(currentUser.accessLevel);
 		}
@@ -60,6 +65,16 @@ const CartObject = (props: Props) => {
 	const onCloseShareModalClick = (e: any) => {
 		e.stopPropagation();
 		setIsShareModalVisible(false);
+	};
+
+	const onOpenSharedUserInformation = (e: any) => {
+		e.stopPropagation();
+		setisSharedUserModalVisible(true);
+	};
+
+	const onCloseSharedUserInformation = (e: any) => {
+		e.stopPropagation();
+		setisSharedUserModalVisible(false);
 	};
 
 	const status = getCartStatus(cart.items);
@@ -112,7 +127,8 @@ const CartObject = (props: Props) => {
 
 				<div className='cart_object__users_container__user_list'>
 					{cart.users.map((user) => (
-						<img key={user.uuid} src={user.photoUrl || avatar} width={30} height={30} alt='User Photo'/>
+						<img key={user.uuid} src={user.photoUrl || avatar} width={30} height={30} alt='User Photo'
+						     onClick={onOpenSharedUserInformation}/>
 					))}
 				</div>
 			</div>
@@ -128,6 +144,14 @@ const CartObject = (props: Props) => {
                 <ShareCart cart={cart}/>
             </Modal>
 			}
+
+			<Modal
+				isVisible={isSharedUserModalVisible}
+				onCloseModalClick={onCloseSharedUserInformation}
+				title='Shared User Information'
+				buttons={[{ iconName: 'close', onClick: onCloseSharedUserInformation }]}>
+				<SharedUserInformation cartUsers = {cart.users}/>
+			</Modal>
 		</div>
 	);
 };

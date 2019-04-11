@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 
-import { AppState } from '../../types/store';
+import { AppState, RouteName } from '../../types/store';
 
 import { Button, Input } from '../../components';
 
@@ -15,13 +15,15 @@ import ExternalLogin from './ExternalLogin';
 
 interface Props {
 	dispatch: Function,
+	redirectTo: RouteName,
 
 	email: string,
 	password: string,
+	location: any
 }
 
 const Login = (props: Props) => {
-	const { dispatch, email, password } = props;
+	const { dispatch, redirectTo, email, password } = props;
 
 	useEffect(() => {
 		dispatch(clearAlert());
@@ -37,7 +39,7 @@ const Login = (props: Props) => {
 	const onRegisterClicked = () => dispatch(navigate('Register'));
 
 	const onLoginClicked = (event: any) => {
-		dispatch(login());
+		dispatch(login(redirectTo));
 		event.preventDefault();
 	};
 
@@ -115,12 +117,16 @@ Login.layoutOptions = {
 	layout: 'Auth',
 };
 
-const mapStateToProps = (state: AppState) => {
+const mapStateToProps = (state: AppState, props: Props) => {
 	const { email, password } = state.auth;
+
+	const redirectTo = props.location.state ? props.location.state.routeName : 'Carts';
+
 
 	return {
 		email,
 		password,
+		redirectTo,
 	};
 };
 

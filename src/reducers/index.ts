@@ -6,6 +6,7 @@ import auth from './auth';
 import carts from './carts';
 import profile from './profile';
 import contacts from './contacts';
+import storage from './storage';
 
 export default combineReducers<AppState>({
 	service,
@@ -13,4 +14,5 @@ export default combineReducers<AppState>({
 	carts,
 	profile,
 	contacts,
+	storage,
 });

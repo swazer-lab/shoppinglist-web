@@ -1,4 +1,5 @@
 import { Action as ReduxAction } from 'redux';
+import { RouteName } from './store';
 
 export enum ActionTypes {
 	change_name = 'AUTH__CHANGE_NAME',
@@ -35,6 +36,7 @@ export enum ActionTypes {
 }
 
 export interface AuthAction extends ReduxAction<ActionTypes> {
+	redirectTo?: RouteName
 }
 
 export interface AuthActionResult extends AuthAction {

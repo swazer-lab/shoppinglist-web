@@ -38,7 +38,6 @@ import {
 } from '../types/carts';
 import { Profile } from '../types/api';
 import { clearSelectedContacts } from '../actions/contacts';
-import { useLocalStorage } from '../config/utilities';
 
 function* filterCartsSaga() {
 	const { searchQuery } = yield select((state: AppState) => state.carts);
@@ -182,7 +181,7 @@ function* shareCartWithContactsSaga(action: ShareCartWithContactsAction) {
 }
 
 function* getAccessToCartSaga(action: GetAccessToCartAction) {
-	const { isLoggedIn } = useLocalStorage();
+	const { isLoggedIn } = yield select((state: AppState) => state.storage);
 	if (!isLoggedIn) yield put(navigate('Login'));
 
 	yield put(showProgress(language.textAccessingCart));

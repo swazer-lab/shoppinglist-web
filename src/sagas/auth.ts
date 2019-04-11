@@ -1,6 +1,6 @@
 import { all, call, put, select, takeLatest, takeLeading } from 'redux-saga/effects';
 
-import { AppState } from '../types/store';
+import { AppState, RouteName } from '../types/store';
 
 import {
 	confirm_email_api,
@@ -10,31 +10,32 @@ import {
 	resend_confirm_email_api,
 	reset_password_api,
 	send_forgot_password_email_api,
-	update_password_api
+	update_password_api,
 } from '../api';
 
-import {
-	hideProgress,
-	navigate,
-	setAccessToken,
-	setIsEmailConfirmed,
-	setIsLoggedIn,
-	showAlert,
-	showHttpErrorAlert,
-	showProgress,
-} from '../actions/service';
+import { hideProgress, navigate, showAlert, showHttpErrorAlert, showProgress } from '../actions/service';
+
+import { changeAccessToken, changeIsEmailConfirmed, changeIsLoggedIn } from '../actions/storage';
+
 import {
 	confirmEmailResult,
 	loginResult,
 	registerResult,
 	resetPasswordResult,
-	sendForgotPasswordEmailResult, updatePasswordResult,
+	sendForgotPasswordEmailResult,
+	updatePasswordResult,
 } from '../actions/auth';
 
 import { clearProfile } from '../actions/profile';
 import { clearCarts } from '../actions/carts';
 
-import { ActionTypes, ConfirmEmailAction, ExternalLoginAction, ResendConfirmEmailAction } from '../types/auth';
+import {
+	ActionTypes,
+	AuthAction,
+	ConfirmEmailAction,
+	ExternalLoginAction,
+	ResendConfirmEmailAction,
+} from '../types/auth';
 import language from '../assets/language';
 
 function* registerSaga() {
@@ -47,8 +48,8 @@ function* registerSaga() {
 
 		yield all([
 			put(registerResult(false)),
-			put(setAccessToken(access_token)),
-			put(setIsLoggedIn(true)),
+			put(changeAccessToken(access_token)),
+			put(changeIsLoggedIn(true)),
 		]);
 		yield put(navigate('Carts'));
 	} catch (e) {
@@ -61,8 +62,11 @@ function* registerSaga() {
 	}
 }
 
-function* loginSaga() {
+function* loginSaga(action: AuthAction) {
 	const { email, password } = yield select((state: AppState) => state.auth);
+	const { redirectTo } = action;
+
+	console.log(redirectTo);
 
 	yield put(showProgress(language.textLoggingUser));
 	try {
@@ -71,10 +75,16 @@ function* loginSaga() {
 
 		yield all([
 			put(loginResult(false)),
-			put(setAccessToken(access_token)),
-			put(setIsLoggedIn(true)),
+			put(changeAccessToken(access_token)),
+			put(changeIsLoggedIn(true)),
 		]);
-		yield put(navigate('Carts'));
+
+		if (redirectTo) {
+			const routeOptions = redirectTo.split('/') as [RouteName, string];
+			yield put(navigate(routeOptions[0], { id: routeOptions[1] }));
+		} else {
+			yield put(navigate('Carts'));
+		}
 	} catch (e) {
 		yield all([
 			put(loginResult(true)),
@@ -95,8 +105,8 @@ function* externalLoginSaga(action: ExternalLoginAction) {
 
 		yield all([
 			put(loginResult(false)),
-			put(setAccessToken(access_token)),
-			put(setIsLoggedIn(true)),
+			put(changeAccessToken(access_token)),
+			put(changeIsLoggedIn(true)),
 		]);
 		yield put(navigate('Carts'));
 	} catch (e) {
@@ -117,7 +127,7 @@ function* confirmEmailSaga(action: ConfirmEmailAction) {
 		yield call(confirm_email_api, userId, token);
 		yield all([
 			put(confirmEmailResult(false)),
-			put(setIsEmailConfirmed(true)),
+			put(changeIsEmailConfirmed(true)),
 		]);
 	} catch (e) {
 		yield all([
@@ -130,7 +140,7 @@ function* confirmEmailSaga(action: ConfirmEmailAction) {
 }
 
 function* updatePasswordSaga() {
-	const { password, newPassword  } = yield select((state: AppState) => state.auth);
+	const { password, newPassword } = yield select((state: AppState) => state.auth);
 
 	yield put(showProgress('Updating password'));
 	try {
@@ -214,9 +224,9 @@ function* logoutSaga() {
 	yield all([
 		put(clearProfile()),
 		put(clearCarts()),
-		put(setIsLoggedIn(false)),
-		put(setIsEmailConfirmed(false)),
-		put(setAccessToken('')),
+		put(changeIsLoggedIn(false)),
+		put(changeIsEmailConfirmed(false)),
+		put(changeAccessToken('')),
 	]);
 }
 
@@ -229,5 +239,5 @@ export default [
 	takeLatest(ActionTypes.logout, logoutSaga),
 	takeLatest(ActionTypes.external_login, externalLoginSaga),
 	takeLatest(ActionTypes.resend_confirm_email, resendConfirmEmailSaga),
-	takeLatest(ActionTypes.update_password, updatePasswordSaga)
+	takeLatest(ActionTypes.update_password, updatePasswordSaga),
 ];

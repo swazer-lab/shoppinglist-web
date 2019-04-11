@@ -3,6 +3,7 @@ import { State as AuthState } from './auth';
 import { State as ProfileState } from './profile';
 import { State as CartsState } from './carts';
 import { State as ContactsState } from './contacts';
+import { State as StorageState } from './storage';
 
 // App State
 export interface AppState {
@@ -10,7 +11,8 @@ export interface AppState {
 	auth: AuthState,
 	profile: ProfileState,
 	carts: CartsState,
-	contacts: ContactsState
+	contacts: ContactsState,
+	storage: StorageState
 }
 
 // Local Storage

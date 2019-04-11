@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 
 import { AppState } from '../types/store';
 
 import { AuthLayout, MainLayout } from './';
 import { useDocumentTitle } from '../config/utilities';
-import { useLocalStorageSubscription } from '../config/localstorage';
 import { navigate } from '../actions/service';
+import { getAccessToCart } from '../actions/carts';
 
 interface Props {
 	children?: any,
@@ -17,18 +17,20 @@ interface Props {
 
 	dispatch: Function,
 	layoutOptions?: any,
+
+	isLoggedIn: boolean
 }
 
 const Layout = (props: Props) => {
-	const { children, match, location, history, dispatch, layoutOptions } = props;
+	const { children, match, location, history, dispatch, layoutOptions, isLoggedIn } = props;
 
 	useDocumentTitle(layoutOptions.title);
 
-	useLocalStorageSubscription((storage) => {
-		if (layoutOptions.authorized && !storage.isLoggedIn) {
+	useEffect(() => {
+		if (layoutOptions.authorized && !isLoggedIn) {
 			dispatch(navigate('Login'));
 		}
-	});
+	}, []);
 
 	const LayoutComponent = layoutOptions.layout && layoutOptions.layout === 'Main' ? MainLayout : layoutOptions.layout === 'Auth' ? AuthLayout : React.Fragment;
 	const layoutProps = LayoutComponent === React.Fragment ? {} : {
@@ -46,7 +48,9 @@ const Layout = (props: Props) => {
 };
 
 const mapStateToProps = (state: AppState) => {
-	return {};
+	const { isLoggedIn} = state.storage;
+
+	return {isLoggedIn};
 };
 
 export default connect(mapStateToProps)(Layout);

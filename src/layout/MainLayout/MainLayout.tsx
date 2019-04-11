@@ -19,8 +19,6 @@ import {
 	updateProfilePhoto,
 } from '../../actions/profile';
 
-import { useLocalStorage } from '../../config/localstorage';
-
 import { changeSearchQuery, filterCarts } from '../../actions/carts';
 import { fetchContacts } from '../../actions/contacts';
 
@@ -44,12 +42,14 @@ interface Props {
 	draftProfile: Profile,
 
 	searchQuery?: string,
+
+	isLoggedIn: boolean,
+	accessToken: string,
+	isEmailConfirmed: boolean
 }
 
 const MainLayout = (props: Props) => {
-	const { children, dispatch, progress, snackbar, alert, id, name, email, phoneNumber, photoUrl, avatarUrl, draftProfile, searchQuery } = props;
-
-	const { isLoggedIn, accessToken, isEmailConfirmed } = useLocalStorage();
+	const { children, dispatch, progress, snackbar, alert, id, name, email, phoneNumber, photoUrl, avatarUrl, draftProfile, searchQuery, isLoggedIn, accessToken, isEmailConfirmed } = props;
 
 	const [isProfileModalVisible, setIsProfileModalVisible] = useState(false);
 
@@ -148,6 +148,7 @@ const mapStateToProps = (state: AppState) => {
 	const { progress, snackbar, alert } = state.service;
 	const { id, name, email, phoneNumber, photoUrl, avatarUrl, draftProfile } = state.profile;
 	const { searchQuery } = state.carts;
+	const { isLoggedIn, accessToken, isEmailConfirmed } = state.storage;
 
 	return {
 		progress,
@@ -163,6 +164,10 @@ const mapStateToProps = (state: AppState) => {
 		draftProfile,
 
 		searchQuery,
+
+		isLoggedIn,
+		accessToken,
+		isEmailConfirmed,
 	};
 };
 

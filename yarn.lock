@@ -4346,6 +4346,11 @@ indent-string@^2.1.0:
   dependencies:
     repeating "^2.0.0"
 
+indexa@^0.0.4:
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/indexa/-/indexa-0.0.4.tgz#4c7759f4bc2ffcf3fafadaece486fe8a273729ac"
+  integrity sha512-cGHBEhrDJNZxJNV6PW7UvB8KJL3c30w2qFsoIL9xv/jDly6rmQ5SUvPwrALgAUGs2Dcy1qff4RU8lkX0AkDu+Q==
+
 indexes-of@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/indexes-of/-/indexes-of-1.0.1.tgz#f30f716c8e2bd346c7b67d3df3915566a7c05607"
