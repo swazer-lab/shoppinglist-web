@@ -1,6 +1,6 @@
 {
 	"name": "shoppinglist-web",
-	"version": "1.4.3",
+	"version": "1.4.4",
 	"private": true,
 	"scripts": {
 		"start": "react-scripts start",
