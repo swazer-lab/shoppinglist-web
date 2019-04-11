@@ -192,7 +192,7 @@ function* getAccessToCartSaga(action: GetAccessToCartAction) {
 
 		yield all([
 			put(getAccessToCartResult(false, data)),
-			put(showAlert('success', language.textPersonAddingCart)),
+			put(showAlert('success', '',language.textPersonAddingCart)),
 			put(navigate('Carts')),
 		]);
 	} catch (e) {

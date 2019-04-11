@@ -6,7 +6,7 @@ import { AppState } from '../../types/store';
 
 import { Button, Input } from '../../components';
 
-import { navigate } from '../../actions/service';
+import { clearAlert, navigate } from '../../actions/service';
 import { changeEmail, changePassword, login } from '../../actions/auth';
 
 import language from '../../assets/language';
@@ -43,8 +43,15 @@ const Landing = (props: Props) => {
 		};
 	}, []);
 
-	const handleEmailChange = (e: FormEvent<HTMLInputElement>) => dispatch(changeEmail(e.currentTarget.value));
-	const handlePasswordChange = (e: FormEvent<HTMLInputElement>) => dispatch(changePassword(e.currentTarget.value));
+	const handleEmailChange = (e: FormEvent<HTMLInputElement>) => {
+		dispatch(changeEmail(e.currentTarget.value));
+		dispatch(clearAlert());
+	};
+
+	const handlePasswordChange = (e: FormEvent<HTMLInputElement>) => {
+		dispatch(changePassword(e.currentTarget.value));
+		dispatch(clearAlert());
+	};
 
 	const onLoginClicked = (e: any) => {
 		dispatch(login());

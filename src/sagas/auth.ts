@@ -66,8 +66,6 @@ function* loginSaga(action: AuthAction) {
 	const { email, password } = yield select((state: AppState) => state.auth);
 	const { redirectTo } = action;
 
-	console.log(redirectTo);
-
 	yield put(showProgress(language.textLoggingUser));
 	try {
 		const response = yield call(login_api, email, password);

@@ -20,7 +20,7 @@ interface Props {
 }
 
 const Main = (props: Props) => {
-	const { isLoggedIn, accessToken, activeLanguage } = props;
+	const { accessToken, activeLanguage } = props;
 
 	useEffect(() => {
 		updateDefaultHeaders(accessToken);
