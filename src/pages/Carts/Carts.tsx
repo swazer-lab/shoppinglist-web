@@ -55,203 +55,210 @@ interface Props {
 }
 
 const Carts = (props: Props) => {
-		const { dispatch, progress, snackbar, carts, draftCart, email, visibilityFilter, isLoggedIn, accessToken } = props;
+	const { dispatch, progress, snackbar, carts, draftCart, email, visibilityFilter, isLoggedIn, accessToken } = props;
 
-		const [isCartUpdating, setIsCartUpdating] = useState(false);
+	const [isCartUpdating, setIsCartUpdating] = useState(false);
 
-		useEffect(() => {
-			if (isLoggedIn && accessToken) {
-				dispatch(fetchCarts(false, 'replace', 1));
+	useEffect(() => {
+		if (isLoggedIn && accessToken) {
+			dispatch(fetchCarts(false, 'replace', 1));
+		}
+	}, [isLoggedIn, accessToken]);
+
+	useEffect(() => {
+		const handleScroll = () => {
+			const { dispatch, carts, isLoading, totalCount, pageNumber } = props;
+			const reachedEnd = window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight;
+			const shouldFetchCarts = !isLoading && carts.length < totalCount;
+
+			if (reachedEnd && shouldFetchCarts) {
+				dispatch(fetchCarts(false, 'merge', pageNumber + 1));
 			}
-		}, [isLoggedIn, accessToken]);
-
-		useEffect(() => {
-			const handleScroll = () => {
-				const { dispatch, carts, isLoading, totalCount, pageNumber } = props;
-				const reachedEnd = window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight;
-				const shouldFetchCarts = !isLoading && carts.length < totalCount;
-
-				if (reachedEnd && shouldFetchCarts) {
-					dispatch(fetchCarts(false, 'merge', pageNumber + 1));
-				}
-			};
-
-			window.addEventListener('scroll', handleScroll);
-			return () => {
-				window.removeEventListener('scroll', handleScroll);
-			};
-		});
-
-		const onOpenUpdateCartModalClicked = (cart: Cart) => {
-			dispatch(setDraftCart(cart));
-			setIsCartUpdating(true);
-		};
-		const onCloseUpdateCartModalClicked = () => {
-			dispatch(clearDraftCart());
-			setIsCartUpdating(false);
 		};
 
-		const onCreateCartClicked = () => {
-			dispatch(createCart());
+		window.addEventListener('scroll', handleScroll);
+		return () => {
+			window.removeEventListener('scroll', handleScroll);
+		};
+	});
+
+	const onOpenUpdateCartModalClicked = (cart: Cart) => {
+		dispatch(setDraftCart(cart));
+		setIsCartUpdating(true);
+	};
+	const onCloseUpdateCartModalClicked = () => {
+		dispatch(clearDraftCart());
+		setIsCartUpdating(false);
+	};
+
+	const onCreateCartClicked = () => {
+		dispatch(createCart());
+	};
+
+	const onUpdateCartClicked = () => {
+		dispatch(updateCart());
+		setIsCartUpdating(false);
+	};
+
+	const onRemoveCartClicked = (cart: Cart) => {
+		if (snackbar.visible) {
+			dispatch(hideSnackbar());
+		}
+
+		const cartIndex = carts.indexOf(cart);
+		dispatch(pullCart(cartIndex));
+
+		let isUndoClicked = false;
+
+		const onUndoClicked = () => {
+			isUndoClicked = true;
+
+			dispatch(pushCart(cartIndex, cart));
+			dispatch(hideSnackbar());
 		};
 
-		const onUpdateCartClicked = () => {
-			dispatch(updateCart());
-			setIsCartUpdating(false);
-		};
+		dispatch(showSnackbar(language.textRemovingCart, [{
+			title: language.actionUndo,
+			onClick: onUndoClicked,
+		}]));
 
-		const onRemoveCartClicked = (cart: Cart) => {
-			if (snackbar.visible) {
-				dispatch(hideSnackbar());
+		setTimeout(() => {
+			if (!isUndoClicked) {
+				dispatch(removeCart(cart));
 			}
+		}, 3000);
+	};
 
-			const cartIndex = carts.indexOf(cart);
-			dispatch(pullCart(cartIndex));
+	const handleDraftCartTitleChange = (title: string) => dispatch(changeDraftCartTitle(title));
+	const handleDraftCartNotesChange = (notes: string) => dispatch(changeDraftCartNotes(notes));
 
-			let isUndoClicked = false;
+	const onAddDraftCartItemClicked = () => dispatch(addDraftCartItem());
+	const onRemoveDraftCartItemClicked = (uuid: string) => dispatch(removeDraftCartItem(uuid));
+	const handleDraftCartItemTitleChange = (uuid: string, title: string) => dispatch(changeDraftCartItemTitle(uuid, title));
+	const handleDraftCartItemStatusChange = (uuid: string, status: CartItemStatusType) => dispatch(changeDraftCartItemStatus(uuid, status));
 
-			const onUndoClicked = () => {
-				isUndoClicked = true;
+	const onDragEnd = (result: DropResult) => {
+		const { source, destination } = result;
+		if (!destination) {
+			return;
+		}
+		if (destination.index === source.index) {
+			return;
+		}
 
-				dispatch(pushCart(cartIndex, cart));
-				dispatch(hideSnackbar());
-			};
+		const { dispatch, carts } = props;
+		const cartId = carts[source.index].id;
+		dispatch(reorderCart(cartId, source.index, destination.index));
+	};
 
-			dispatch(showSnackbar(language.textRemovingCart, [{
-				title: language.actionUndo,
-				onClick: onUndoClicked,
-			}]));
+	const onGetAllCarts = () => {
+		dispatch(changeVisibilityFilter(VisibilityFilter.all));
+	};
 
-			setTimeout(() => {
-				if (!isUndoClicked) {
-					dispatch(removeCart(cart));
-				}
-			}, 3000);
-		};
+	const onGetActiveCarts = () => {
+		dispatch(changeVisibilityFilter(VisibilityFilter.active));
+	};
 
-		const handleDraftCartTitleChange = (title: string) => dispatch(changeDraftCartTitle(title));
-		const handleDraftCartNotesChange = (notes: string) => dispatch(changeDraftCartNotes(notes));
+	const onGetCompletedCarts = () => {
+		dispatch(changeVisibilityFilter(VisibilityFilter.completed));
+	};
 
-		const onAddDraftCartItemClicked = () => dispatch(addDraftCartItem());
-		const onRemoveDraftCartItemClicked = (uuid: string) => dispatch(removeDraftCartItem(uuid));
-		const handleDraftCartItemTitleChange = (uuid: string, title: string) => dispatch(changeDraftCartItemTitle(uuid, title));
-		const handleDraftCartItemStatusChange = (uuid: string, status: CartItemStatusType) => dispatch(changeDraftCartItemStatus(uuid, status));
+	const renderCarts = () => carts.map((cart, index) => (
+		<Draggable key={cart.id} draggableId={cart.id} index={index}>
+			{provided => (
+				<div className='cart_object_container'
+				     ref={provided.innerRef}
+				     {...provided.draggableProps}
+				     {...provided.dragHandleProps}
+				>
+					{visibilityFilter === 'All' || getCartStatus(cart.items) === visibilityFilter ?
+						<CartObject
+							key={cart.uuid}
+							progress={progress}
+							cart={cart}
+							onOpenUpdateCartModalClick={onOpenUpdateCartModalClicked}
+							onRemoveCartClick={onRemoveCartClicked}
+							currentUserEmail={email}
+						/> : null
+					}
+				</div>
+			)}
+		</Draggable>
+	));
 
-		const onDragEnd = (result: DropResult) => {
-			const { source, destination } = result;
-			if (!destination) {
-				return;
-			}
-			if (destination.index === source.index) {
-				return;
-			}
+	const createCartDraftCart = isCartUpdating ? {
+		id: '',
+		title: '',
+		notes: '',
+		uuid: '',
+		reminderDate: '',
+		items: [],
+		users: [],
+	} : draftCart;
+	return (
+		<div className='carts_container'>
+			<CreateCart
+				draftCart={createCartDraftCart}
+				onDraftCartTitleChange={handleDraftCartTitleChange}
+				onAddDraftCartItemClick={onAddDraftCartItemClicked}
+				onRemoveDraftCartItemClick={onRemoveDraftCartItemClicked}
+				onDraftCartItemTitleChange={handleDraftCartItemTitleChange}
+				onDraftCartItemStatusChange={handleDraftCartItemStatusChange}
+				onCreateCartClick={onCreateCartClicked}
+			/>
 
-			const { dispatch, carts } = props;
-			const cartId = carts[source.index].id;
-			dispatch(reorderCart(cartId, source.index, destination.index));
-		};
+			<UpdateCart
+				draftCart={draftCart}
 
-		const onGetAllCarts = () => {
-			dispatch(changeVisibilityFilter(VisibilityFilter.all));
-		};
+				onDraftCartTitleChange={handleDraftCartTitleChange}
+				onDraftCartNotesChange={handleDraftCartNotesChange}
 
-		const onGetActiveCarts = () => {
-			dispatch(changeVisibilityFilter(VisibilityFilter.active));
-		};
+				onAddDraftCartItemClick={onAddDraftCartItemClicked}
+				onRemoveDraftCartItemClick={onRemoveDraftCartItemClicked}
+				onDraftCartItemTitleChange={handleDraftCartItemTitleChange}
+				onDraftCartItemStatusChange={handleDraftCartItemStatusChange}
 
-		const onGetCompletedCarts = () => {
-			dispatch(changeVisibilityFilter(VisibilityFilter.completed));
-		};
+				isVisible={isCartUpdating}
 
-		const renderCarts = () => carts.map((cart, index) => (
-			<Draggable key={cart.id} draggableId={cart.id} index={index}>
-				{provided => (
-					<div className='cart_object_container'
-					     ref={provided.innerRef}
-					     {...provided.draggableProps}
-					     {...provided.dragHandleProps}
-					>
-						{visibilityFilter === 'All' || getCartStatus(cart.items) === visibilityFilter ?
-							<CartObject
-								key={cart.uuid}
-								progress={progress}
-								cart={cart}
-								onOpenUpdateCartModalClick={onOpenUpdateCartModalClicked}
-								onRemoveCartClick={onRemoveCartClicked}
-								currentUserEmail={email}
-							/> : null
-						}
-					</div>
-				)}
-			</Draggable>
-		));
+				onCloseUpdateCartModalClick={onCloseUpdateCartModalClicked}
+				onUpdateCartClick={onUpdateCartClicked}
+			/>
 
-		const createCartDraftCart = isCartUpdating ? {
-			id: '',
-			title: '',
-			notes: '',
-			uuid: '',
-			reminderDate: '',
-			items: [],
-			users: [],
-		} : draftCart;
-		return (
-			<div>
-				<CreateCart
-					draftCart={createCartDraftCart}
-					onDraftCartTitleChange={handleDraftCartTitleChange}
-					onAddDraftCartItemClick={onAddDraftCartItemClicked}
-					onRemoveDraftCartItemClick={onRemoveDraftCartItemClicked}
-					onDraftCartItemTitleChange={handleDraftCartItemTitleChange}
-					onDraftCartItemStatusChange={handleDraftCartItemStatusChange}
-					onCreateCartClick={onCreateCartClicked}
+			<div className='filter_cart'>
+				<Button
+					type='button'
+					accentColor={visibilityFilter === 'All' ? 'primary' : 'white'}
+					title='All'
+					onClick={onGetAllCarts}
+					className='filter_cart__filter_button'
 				/>
-				<UpdateCart
-					draftCart={draftCart}
-
-					onDraftCartTitleChange={handleDraftCartTitleChange}
-					onDraftCartNotesChange={handleDraftCartNotesChange}
-
-					onAddDraftCartItemClick={onAddDraftCartItemClicked}
-					onRemoveDraftCartItemClick={onRemoveDraftCartItemClicked}
-					onDraftCartItemTitleChange={handleDraftCartItemTitleChange}
-					onDraftCartItemStatusChange={handleDraftCartItemStatusChange}
-
-					isVisible={isCartUpdating}
-
-					onCloseUpdateCartModalClick={onCloseUpdateCartModalClicked}
-					onUpdateCartClick={onUpdateCartClicked}
+				<Button
+					type='button'
+					accentColor={visibilityFilter === 'Active' ? 'primary' : 'white'}
+					title='Active' onClick={onGetActiveCarts}
+					className='filter_cart__filter_button'
 				/>
-
-				{carts.length !== 0 ?
-					<div className='visible_filtering_button_container'>
-						<Button type='button' accentColor={visibilityFilter === 'All' ? 'primary' : 'white'}
-						        title='All'
-						        onClick={onGetAllCarts}
-						        className='visible_filtering_button'/>
-						<Button type='button' accentColor={visibilityFilter === 'Active' ? 'primary' : 'white'}
-						        title='Active' onClick={onGetActiveCarts}
-						        className='visible_filtering_button'/>
-						<Button type='button' accentColor={visibilityFilter === 'Completed' ? 'primary' : 'white'}
-						        title='Completed' onClick={onGetCompletedCarts}
-						        className='visible_filtering_button'/>
-					</div> : null
-				}
-
-				<DragDropContext onDragEnd={onDragEnd}>
-					<Droppable droppableId="list">
-						{provided => (
-							<div ref={provided.innerRef} {...provided.droppableProps}>
-								{renderCarts()}
-								{provided.placeholder}
-							</div>
-						)}
-					</Droppable>
-				</DragDropContext>
+				<Button
+					type='button'
+					accentColor={visibilityFilter === 'Completed' ? 'primary' : 'white'}
+					title='Completed' onClick={onGetCompletedCarts}
+					className='filter_cart__filter_button'
+				/>
 			</div>
-		);
-	}
-;
+
+			<DragDropContext onDragEnd={onDragEnd}>
+				<Droppable droppableId="list">
+					{provided => (
+						<div ref={provided.innerRef} {...provided.droppableProps}>
+							{renderCarts()}
+							{provided.placeholder}
+						</div>
+					)}
+				</Droppable>
+			</DragDropContext>
+		</div>
+	);
+};
 
 Carts.layoutOptions = {
 	title: 'Carts',

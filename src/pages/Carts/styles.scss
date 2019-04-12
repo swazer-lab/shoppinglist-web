@@ -1,5 +1,10 @@
 @import "../../assets/scss/main";
 
+.carts_container {
+  display: flex;
+  flex-direction: column;
+}
+
 .create_cart {
   display: flex;
 
@@ -180,14 +185,14 @@
   }
 }
 
-.visible_filtering_button_container{
-  float: right;
-}
-
-.visible_filtering_button{
-  padding: 0.5rem;
+.filter_cart {
+  align-self: flex-end;
   margin-bottom: 1rem;
-  margin-right: 0.5rem;
+
+  &__filter_button {
+    padding: 0.6rem;
+    margin-left: 0.6rem;
+  }
 }
 
 .cart_object_container {
@@ -588,11 +593,11 @@
   flex-direction: row;
   justify-content: space-between;
 
-  &__photo_container{
+  &__photo_container {
     display: flex;
     flex-direction: row;
 
-    &__photo{
+    &__photo {
       width: 7rem;
       height: 7rem;
 
@@ -602,7 +607,7 @@
       border-radius: 50%;
     }
 
-    &__info_container{
+    &__info_container {
       flex-direction: column;
       align-self: center;
 

@@ -41,8 +41,6 @@ const CartObject = (props: Props) => {
 
 		const currentUser = cart.users.filter(user => user.email === currentUserEmail)[0];
 
-		console.log(currentUser);
-
 		if (currentUser) {
 			setAccessLevel(currentUser.accessLevel);
 		}
