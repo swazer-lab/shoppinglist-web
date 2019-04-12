@@ -23,6 +23,3 @@ export const store = str;
 store.subscribe(() => {
 	storage.setStorage({ storage: store.getState().storage }, true);
 });
-
-if (storage.getStorage().storage)
-	updateDefaultHeaders(storage.getStorage().storage.accessToken);

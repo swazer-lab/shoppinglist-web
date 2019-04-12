@@ -225,7 +225,8 @@ const Carts = (props: Props) => {
 
 				{carts.length !== 0 ?
 					<div className='visible_filtering_button_container'>
-						<Button type='button' accentColor={visibilityFilter === 'All' ? 'primary' : 'white'} title='All'
+						<Button type='button' accentColor={visibilityFilter === 'All' ? 'primary' : 'white'}
+						        title='All'
 						        onClick={onGetAllCarts}
 						        className='visible_filtering_button'/>
 						<Button type='button' accentColor={visibilityFilter === 'Active' ? 'primary' : 'white'}
