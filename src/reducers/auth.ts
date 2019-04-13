@@ -5,6 +5,7 @@ const initialState: State = {
 	email: '',
 	phone: '',
 	password: '',
+	newPassword: '',
 
 	isResettingPassword: false,
 	resetPasswordCode: '',
@@ -32,6 +33,11 @@ export default (state: State = initialState, action: Action): State => {
 				...state,
 				password: action.password,
 			};
+		case ActionTypes.change_new_password:
+			return {
+				...state,
+				newPassword: action.newPassword,
+			};
 
 		case ActionTypes.send_forgot_password_email_result:
 			if (action.hasError) return state;
@@ -44,6 +50,14 @@ export default (state: State = initialState, action: Action): State => {
 			return {
 				...state,
 				resetPasswordCode: action.code,
+			};
+
+		case ActionTypes.update_password_result:
+			if (action.hasError) return state;
+			return {
+				...state,
+				password: initialState.password,
+				newPassword: initialState.newPassword,
 			};
 
 		case ActionTypes.logout:

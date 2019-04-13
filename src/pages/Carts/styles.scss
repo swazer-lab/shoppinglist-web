@@ -1,5 +1,10 @@
 @import "../../assets/scss/main";
 
+.carts_container {
+  display: flex;
+  flex-direction: column;
+}
+
 .create_cart {
   display: flex;
 
@@ -180,6 +185,16 @@
   }
 }
 
+.filter_cart {
+  align-self: flex-end;
+  margin-bottom: 1rem;
+
+  &__filter_button {
+    padding: 0.6rem;
+    margin-left: 0.6rem;
+  }
+}
+
 .cart_object_container {
   margin-bottom: 1rem;
 }
@@ -322,6 +337,7 @@
         margin: -0.5rem;
         border: 0.3rem solid white;
         border-radius: 50%;
+        cursor: pointer;
       }
     }
   }
@@ -562,6 +578,44 @@
   }
 }
 
-.cart_object__users_container__share_button{
+.shared_user_container {
+  margin: 1.5rem;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.shared_user {
+  margin: 1.5rem;
+
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  justify-content: space-between;
+
+  &__photo_container {
+    display: flex;
+    flex-direction: row;
+
+    &__photo {
+      width: 7rem;
+      height: 7rem;
+
+      background-size: cover;
+      background-position: center;
+
+      border-radius: 50%;
+    }
+
+    &__info_container {
+      flex-direction: column;
+      align-self: center;
+
+      margin-left: 1.5rem;
+    }
+  }
+}
+
+.cart_object__users_container__share_button {
   margin-left: 10px;
 }

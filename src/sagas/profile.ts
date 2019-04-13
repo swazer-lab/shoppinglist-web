@@ -7,7 +7,7 @@ import { delete_profile_photo_api, fetch_profile_api, update_profile_api, update
 import { profileMapper } from '../config/mapper';
 import { get_photo_url } from '../config/urls';
 
-import { hideProgress, setIsEmailConfirmed, showHttpErrorAlert, showProgress } from '../actions/service';
+import { hideProgress, showHttpErrorAlert, showProgress } from '../actions/service';
 import {
 	deleteProfilePhotoResult,
 	fetchProfileResult,
@@ -17,6 +17,7 @@ import {
 
 import language from '../assets/language';
 import { ActionTypes, UpdateProfilePhotoAction } from '../types/profile';
+import { changeIsEmailConfirmed } from '../actions/storage';
 
 function* fetchProfileSaga() {
 	yield put(showProgress(language.textFetchingProfile));
@@ -26,7 +27,7 @@ function* fetchProfileSaga() {
 		const data = yield morphism(profileMapper(), response.data);
 
 		yield all([
-			put(setIsEmailConfirmed(data.isConfirmed)),
+			put(changeIsEmailConfirmed(data.isConfirmed)),
 			put(fetchProfileResult(false, data)),
 		]);
 	} catch (e) {

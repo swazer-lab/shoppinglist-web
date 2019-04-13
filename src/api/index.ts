@@ -15,10 +15,19 @@ export const updateDefaultHeaders = (accessToken?: string) => {
 	axios.defaults.headers.common.Authorization = 'bearer ' + auth;
 };
 
-export { register_api, login_api, confirm_email_api, send_forgot_password_email_api, reset_password_api, login_external_api, resend_confirm_email_api } from './auth';
+export {
+	register_api,
+	login_api,
+	confirm_email_api,
+	send_forgot_password_email_api,
+	reset_password_api,
+	login_external_api,
+	resend_confirm_email_api,
+	update_password_api,
+} from './auth';
 export { fetch_profile_api, update_profile_api, update_profile_photo_api, delete_profile_photo_api } from './profile';
 export {
 	fetch_carts_api, create_cart_api, remove_cart_api, share_cart_with_contacts_api, get_access_to_cart_api,
-	search_carts_api,update_carts_order_api
+	search_carts_api, update_carts_order_api,
 }from './carts';
 export { fetch_contacts_api } from './contacts';

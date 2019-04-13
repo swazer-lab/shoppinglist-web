@@ -4,31 +4,26 @@ import {
 	NavigateAction,
 	ReplaceAction,
 	ServiceAction,
-	SetAccessTokenAction,
-	SetActiveLanguageAction,
-	SetIsEmailConfirmed,
-	SetIsLoggedInAction,
 	ShowAlertAction,
 	ShowProgressAction,
 	ShowSnackbarAction,
 	State,
 } from '../types/service';
 import { RouteName } from '../types/store';
-
-import { updateDefaultHeaders } from '../api';
 import { history, routes } from '../config/routes';
-import { localstorage } from '../config/localstorage';
 
 import language from '../assets/language';
 
 // Navigation
-export const navigate = (routeName: RouteName): NavigateAction => {
+export const navigate = (routeName: RouteName, options?: {}): NavigateAction => {
 	const route = routes[routes.findIndex((route) => route.name === routeName)];
-	history.push(route.path);
+
+	history.push(route.path, options);
 
 	return {
 		type: ActionTypes.navigate,
 		routeName,
+		location,
 	};
 };
 export const replace = (routeName: string): ReplaceAction => {
@@ -107,38 +102,3 @@ export const showSnackbar = (message: string, actions?: State['snackbar']['actio
 export const hideSnackbar = (): ServiceAction => ({
 	type: ActionTypes.hide_snackbar,
 });
-
-// LocalStorage
-export const setAccessToken = (accessToken: string): SetAccessTokenAction => {
-	localstorage.setItem('accessToken', accessToken);
-	updateDefaultHeaders(accessToken);
-
-	return ({
-		type: ActionTypes.setAccessToken,
-		accessToken,
-	});
-};
-export const setIsLoggedIn = (isLoggedIn: boolean): SetIsLoggedInAction => {
-	localstorage.setItem('isLoggedIn', isLoggedIn.toString());
-
-	return ({
-		type: ActionTypes.setIsLoggedIn,
-		isLoggedIn,
-	});
-};
-export const setActiveLanguage = (activeLanguage: string): SetActiveLanguageAction => {
-	localstorage.setItem('activeLanguage', activeLanguage);
-
-	return ({
-		type: ActionTypes.setActiveLanguage,
-		activeLanguage,
-	});
-};
-export const setIsEmailConfirmed = (isEmailConfirmed: boolean): SetIsEmailConfirmed => {
-	// localstorage.setItem('isEmailConfirmed', isEmailConfirmed.toString());
-
-	return ({
-		type: ActionTypes.setIsEmailConfirmed,
-		isEmailConfirmed,
-	});
-};

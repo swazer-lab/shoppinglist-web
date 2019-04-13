@@ -56,7 +56,7 @@ export const deleteProfilePhoto = (): ProfileAction => ({
 
 export const deleteProfilePhotoResult = (hasError: boolean): ProfileActionResult => ({
 	type: ActionTypes.delete_profile_photo_result,
-	hasError
+	hasError,
 });
 
 

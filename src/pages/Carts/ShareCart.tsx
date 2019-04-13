@@ -85,7 +85,7 @@ const ShareCart = (props: Props) => {
 
 		return (
 			<>
-				<div className='share_cart__separator'/>
+				<div className='share_cart__separator' />
 
 				<div className='share_cart__subtitle'>
 					{language.textShareCartWithContactSubtitle}
@@ -111,10 +111,10 @@ const ShareCart = (props: Props) => {
 			</div>
 			<div className='share_cart__create_share_cart_link'>
 				<select onChange={handleShareLinkChange}>
-					<option value='1' label={language.textAccessLevelWrite}/>
-					<option value='2' label={language.textAccessLevelRead}/>
+					<option value='1' label={language.textAccessLevelWrite} />
+					<option value='2' label={language.textAccessLevelRead} />
 				</select>
-				<input type="button" value="Copy Link" onClick={onCopyLinkButtonClicked}/>
+				<input type="button" value="Copy Link" onClick={onCopyLinkButtonClicked} />
 				<input
 					ref={shareLinkRef}
 					type='text'

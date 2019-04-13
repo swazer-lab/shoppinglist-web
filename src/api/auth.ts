@@ -47,6 +47,15 @@ export const confirm_email_api = (userId: string, token: string): Promise<any> =
 	return axios.post(urls.confirm_email_url, body);
 };
 
+export const update_password_api = (oldPassword: string, newPassword: string): Promise<any> => {
+	const body = {
+		oldPassword,
+		newPassword,
+	};
+
+	return axios.post(urls.update_password_url, body);
+};
+
 export const resend_confirm_email_api = (userId: string): Promise<any> => {
 
 	return axios.post(urls.resend_confirm_email_url(userId));

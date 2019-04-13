@@ -1,41 +1,51 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { connect, Provider } from 'react-redux';
 
 import { AppState } from './types/store';
+import { AvailableLanguages } from './types/storage';
 
 import { AppNavigator } from './config/routes';
 import { store } from './config/store';
-
-import { useLocalStorage } from './config/localstorage';
-import { updateDefaultHeaders } from './api';
-
-import language from './assets/language';
 import './assets/scss/main.scss';
+import { updateDefaultHeaders } from './api';
+import language from './assets/language';
 
 interface Props {
 	dispatch: Function,
+	isLoggedIn: boolean,
+	accessToken: string,
+	activeLanguage: AvailableLanguages
 }
 
-const Main = (props: Props) => {
-	const { isLoggedIn, accessToken, activeLanguage } = useLocalStorage();
+class Main extends React.Component<Props> {
+	componentDidMount() {
+		const { accessToken, activeLanguage } = this.props;
 
-	useEffect(() => {
-		if (isLoggedIn && accessToken) {
-			updateDefaultHeaders(accessToken);
-		}
-	}, [isLoggedIn, accessToken]);
-
-	useEffect(() => {
+		updateDefaultHeaders(accessToken);
 		language.setLanguage(activeLanguage);
-	}, [activeLanguage]);
+	}
 
-	return (
-		<AppNavigator/>
-	);
-};
+	componentDidUpdate(prevProps: Props) {
+		if (prevProps.accessToken !== this.props.accessToken) {
+			updateDefaultHeaders(this.props.accessToken);
+		}
+	}
+
+	render() {
+		return (
+			<AppNavigator />
+		);
+	}
+}
 
 const mapStateToProps = (state: AppState) => {
-	return {};
+	const { isLoggedIn, accessToken, activeLanguage } = state.storage;
+
+	return {
+		isLoggedIn,
+		accessToken,
+		activeLanguage,
+	};
 };
 
 export default () => {
@@ -43,7 +53,7 @@ export default () => {
 
 	return (
 		<Provider store={store}>
-			<AppWithNavigation/>
+			<AppWithNavigation />
 		</Provider>
 	);
 }

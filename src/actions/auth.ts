@@ -4,12 +4,15 @@ import {
 	AuthActionResult,
 	ChangeEmailAction,
 	ChangeNameAction,
+	ChangeNewPasswordAction,
 	ChangePasswordAction,
 	ChangePhoneAction,
 	ChangeResetPasswordCode,
 	ConfirmEmailAction,
-	ExternalLoginAction, ResendConfirmEmailAction,
+	ExternalLoginAction,
+	ResendConfirmEmailAction,
 } from '../types/auth';
+import { RouteName } from '../types/store';
 
 export const changeName = (name: string): ChangeNameAction => ({
 	type: ActionTypes.change_name,
@@ -27,6 +30,21 @@ export const changePassword = (password: string): ChangePasswordAction => ({
 	type: ActionTypes.change_password,
 	password,
 });
+
+export const changeNewPassword = (newPassword: string): ChangeNewPasswordAction => ({
+	type: ActionTypes.change_new_password,
+	newPassword,
+});
+
+export const updatePassword = (): AuthAction => ({
+	type: ActionTypes.update_password,
+});
+
+export const updatePasswordResult = (hasError: boolean): AuthActionResult => ({
+	type: ActionTypes.update_password_result,
+	hasError,
+});
+
 export const changeResetPasswordCode = (code: string): ChangeResetPasswordCode => ({
 	type: ActionTypes.change_reset_password_code,
 	code,
@@ -40,8 +58,9 @@ export const registerResult = (hasError: boolean): AuthActionResult => ({
 	hasError,
 });
 
-export const login = (): AuthAction => ({
+export const login = (redirectTo?: RouteName): AuthAction => ({
 	type: ActionTypes.login,
+	redirectTo,
 });
 export const loginResult = (hasError: boolean): AuthActionResult => ({
 	type: ActionTypes.login_result,
@@ -60,7 +79,7 @@ export const confirmEmailResult = (hasError: boolean): AuthActionResult => ({
 
 export const resendConfirmEmail = (userId: string): ResendConfirmEmailAction => ({
 	type: ActionTypes.resend_confirm_email,
-	userId
+	userId,
 });
 
 export const sendForgotPasswordEmail = (): AuthAction => ({
@@ -84,7 +103,7 @@ export const externalLogin = (name: string, email: string, tokenId: string, prov
 	name,
 	email,
 	tokenId,
-	provider
+	provider,
 });
 
 export const logout = (): AuthAction => ({

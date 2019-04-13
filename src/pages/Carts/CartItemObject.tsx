@@ -22,7 +22,6 @@ const CartItemObject = (props: Props) => {
 		}
 	}, []);
 
-
 	const handleDraftCartItemTitleChange = (e: FormEvent<HTMLInputElement>) => onDraftCartItemTitleChange(uuid, e.currentTarget.value);
 	const handleDraftCartItemStatusChange = () => onDraftCartItemStatusChange(uuid, status === 'completed' ? 'active' : 'completed');
 	const onRemoveDraftCartItemClicked = () => onRemoveDraftCartItemClick(uuid);

@@ -44,7 +44,7 @@ const Alert = (props: Props) => {
 	}, [visible]);
 
 	return (
-		<ToastContainer/>
+		<ToastContainer />
 	);
 };
 

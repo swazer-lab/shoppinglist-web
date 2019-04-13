@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 
-import { AppState } from '../../types/store';
+import { AppState, RouteName } from '../../types/store';
 
 import { Button, Input } from '../../components';
 
-import { clearAlert, navigate, showAlert } from '../../actions/service';
+import { clearAlert, navigate } from '../../actions/service';
 import { changeEmail, changePassword, externalLogin, login } from '../../actions/auth';
 import { setProfileAvatarUrl } from '../../actions/profile';
 import language from '../../assets/language';
@@ -15,13 +15,15 @@ import ExternalLogin from './ExternalLogin';
 
 interface Props {
 	dispatch: Function,
+	redirectTo: RouteName,
 
 	email: string,
 	password: string,
+	location: any
 }
 
 const Login = (props: Props) => {
-	const { dispatch, email, password } = props;
+	const { dispatch, redirectTo, email, password } = props;
 
 	useEffect(() => {
 		dispatch(clearAlert());
@@ -37,7 +39,7 @@ const Login = (props: Props) => {
 	const onRegisterClicked = () => dispatch(navigate('Register'));
 
 	const onLoginClicked = (event: any) => {
-		dispatch(login());
+		dispatch(login(redirectTo));
 		event.preventDefault();
 	};
 
@@ -51,16 +53,12 @@ const Login = (props: Props) => {
 		dispatch(externalLogin(name, email, accessToken, 'Google'));
 	};
 
-	const loginWithGoogleFailure = () => dispatch(showAlert('error', '', language.textUnexpectedError));
-
 	const loginWithFacebook = (response: any) => {
 		const { accessToken, name, email, picture } = response;
 
 		dispatch(setProfileAvatarUrl(picture.data.url));
 		dispatch(externalLogin(name, email, accessToken, 'Facebook'));
 	};
-
-	const loginWithFacebookFailure = () => dispatch(showAlert('error', '', language.textUnexpectedError));
 
 	return (
 		<div className='page_auth__content_container'>
@@ -74,6 +72,7 @@ const Login = (props: Props) => {
 					onChange={handleChangeEmail}
 					type='email'
 					placeholder={language.textEnterEmail}
+					autoFoucus={true}
 					required
 				/>
 				<Input
@@ -100,12 +99,11 @@ const Login = (props: Props) => {
 						title={language.actionRegister}
 						onClick={onRegisterClicked}
 					/>
-					<Button type='submit' title={language.actionLogin}/>
+					<Button type='submit' title={language.actionLogin} />
 				</div>
 			</form>
 
-			<ExternalLogin loginWithFacebook={loginWithFacebook} loginWithFacebookFailure={loginWithFacebookFailure}
-			               loginWithGoogle={loginWithGoogle} loginWithGoogleFailure={loginWithGoogleFailure}/>
+			<ExternalLogin loginWithFacebook={loginWithFacebook} loginWithGoogle={loginWithGoogle} />
 		</div>
 	);
 };
@@ -115,12 +113,16 @@ Login.layoutOptions = {
 	layout: 'Auth',
 };
 
-const mapStateToProps = (state: AppState) => {
+const mapStateToProps = (state: AppState, props: Props) => {
 	const { email, password } = state.auth;
+
+	const redirectTo = props.location.state ? props.location.state.routeName : 'Carts';
+
 
 	return {
 		email,
 		password,
+		redirectTo,
 	};
 };
 

@@ -27,8 +27,9 @@ interface Props {
 
 	onUpdateProfileClick: () => void,
 	onUpdateProfilePhotoClick: (photoData: string) => void,
-	onDeleteProfilePhotoClick: (e:any) => void,
+	onDeleteProfilePhotoClick: (e: any) => void,
 	onResendConfirmEmailConfirmClick: (userId: string) => void,
+	onRedirectingToChangePasswordClick: () => void,
 
 	onLogoutClick: () => void,
 }
@@ -54,6 +55,7 @@ const ProfileModal = (props: Props) => {
 		onUpdateProfilePhotoClick,
 		onDeleteProfilePhotoClick,
 		onResendConfirmEmailConfirmClick,
+		onRedirectingToChangePasswordClick,
 		onLogoutClick,
 	} = props;
 
@@ -65,7 +67,6 @@ const ProfileModal = (props: Props) => {
 	}, [isLoading]);
 
 	const onSelectImageClicked = () => {
-		console.log('----------------------------');
 		const input = document.getElementById('profile_photo_input');
 		if (input) {
 			input.click();
@@ -101,7 +102,7 @@ const ProfileModal = (props: Props) => {
 		slider.current.slickGoTo(0, false);
 	};
 
-	const onDeleteProfilePhotoClicked = (e:any) => onDeleteProfilePhotoClick(e);
+	const onDeleteProfilePhotoClicked = (e: any) => onDeleteProfilePhotoClick(e);
 
 	const handleDraftProfileNameChange = (e: FormEvent<HTMLFormElement>) => onDraftProfileNameChange(e.currentTarget.value);
 	const handleDraftProfilePhoneNumberChange = (e: FormEvent<HTMLFormElement>) => onDraftProfilePhoneNumberChange(e.currentTarget.value);
@@ -118,7 +119,7 @@ const ProfileModal = (props: Props) => {
 					</div>
 				</div>
 
-				<input id='profile_photo_input' type='file' name='pic' accept='image/*' onChange={handleImageChange}/>
+				<input id='profile_photo_input' type='file' name='pic' accept='image/*' onChange={handleImageChange} />
 				<h3 className='profile_modal__name'>{name}</h3>
 
 				<div className='profile_modal__email'>{email}</div>
@@ -128,12 +129,12 @@ const ProfileModal = (props: Props) => {
 					{
 						!isEmailConfirmed ?
 							<Button mode='normal' title='Resend Confirm Email'
-							        onClick={onResendConfirmEmailConfirmClicked}/> : ''
+							        onClick={onResendConfirmEmailConfirmClicked} /> : ''
 					}
 				</div>
 
 				<div className='profile_modal__actions_container'>
-					<Button mode='text' accentColor='text' title='Logout' onClick={onLogoutClick}/>
+					<Button mode='text' accentColor='text' title='Logout' onClick={onLogoutClick} />
 				</div>
 			</div>
 		</div>
@@ -155,20 +156,23 @@ const ProfileModal = (props: Props) => {
 				/>
 
 				<div className='update_profile_modal__actions_container'>
-					<Button title='Update' onClick={onUpdateProfileClick}/>
+					<Button mode='text' accentColor='text' title={language.titleChangePassword}
+					        onClick={onRedirectingToChangePasswordClick} />
+					<Button title='Update' onClick={onUpdateProfileClick} />
 				</div>
 			</div>
 		</div>
 	);
 
 	const buttons = isUpdating ? [{ iconName: 'arrow_forward', onClick: onBackToOverviewClicked }] : [
+		{ iconName: 'lock', onClick: onRedirectingToChangePasswordClick },
 		{ iconName: 'edit', onClick: onGoToUpdateProfileClicked },
 		{ iconName: 'close', onClick: onCloseProfileModalClick },
 	];
 
 	return (
 		<Modal isVisible={isVisible} onCloseModalClick={onCloseProfileModalClick} title='Profile' buttons={buttons}>
-			<ProgressBar isLoading={isLoading}/>
+			<ProgressBar isLoading={isLoading} />
 			<Slider ref={slider} swipe={false} arrows={false} speed={300}>
 				{overviewContent}
 				{updateContent}

@@ -3,7 +3,6 @@ import language from '../../assets/language';
 
 import './styles.scss';
 import { useDocumentTitle } from '../../config/utilities';
-import PrivacyPolicy from './PrivacyPolicy';
 
 const ServiceTerms = () => {
 	useDocumentTitle(language.titleServiceTerms);
@@ -75,11 +74,11 @@ const ServiceTerms = () => {
 				irrevocably submit to the exclusive jurisdiction of the courts in that State or location.</p>
 		</div>
 	);
-}
+};
 
 ServiceTerms.layoutOptions = {
 	title: 'Service Terms',
-	layout: ''
+	layout: '',
 };
 
 export default ServiceTerms;

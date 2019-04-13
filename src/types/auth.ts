@@ -1,10 +1,12 @@
 import { Action as ReduxAction } from 'redux';
+import { RouteName } from './store';
 
 export enum ActionTypes {
 	change_name = 'AUTH__CHANGE_NAME',
 	change_email = 'AUTH__CHANGE_EMAIL',
 	change_phone = 'AUTH__CHANGE_PHONE',
 	change_password = 'AUTH__CHANGE_PASSWORD',
+	change_new_password = 'AUTH__CHANGE_NEW_PASSWORD',
 
 	change_reset_password_code = 'AUTH__CHANGE_RESET_PASSWORD_CODE',
 
@@ -19,6 +21,9 @@ export enum ActionTypes {
 	confirm_email = 'AUTH__CONFIRM_EMAIL',
 	confirm_email_result = 'AUTH__CONFIRM_EMAIL_RESULT',
 
+	update_password = 'AUTH__UPDATE_PASSWORD',
+	update_password_result = 'AUTH__UPDATE_PASSWORD_RESULT',
+
 	resend_confirm_email = 'AUTH__RESEND_CONFIRM_EMAIL',
 
 	send_forgot_password_email = 'AUTH__SEND_FORGOT_PASSWORD_EMAIL',
@@ -31,6 +36,7 @@ export enum ActionTypes {
 }
 
 export interface AuthAction extends ReduxAction<ActionTypes> {
+	redirectTo?: RouteName
 }
 
 export interface AuthActionResult extends AuthAction {
@@ -55,6 +61,11 @@ export interface ChangePhoneAction extends AuthAction {
 export interface ChangePasswordAction extends AuthAction {
 	type: ActionTypes.change_password,
 	password: string,
+}
+
+export interface ChangeNewPasswordAction extends AuthAction {
+	type: ActionTypes.change_new_password,
+	newPassword: string,
 }
 
 export interface ChangeResetPasswordCode extends AuthAction {
@@ -91,13 +102,15 @@ export type Action =
 	& ChangeResetPasswordCode
 	& ConfirmEmailAction
 	& ResendConfirmEmailAction
-	& ExternalLoginAction;
+	& ExternalLoginAction
+	& ChangeNewPasswordAction;
 
 export interface State {
 	name: string,
 	email: string,
 	phone: string,
 	password: string,
+	newPassword: string,
 
 	isResettingPassword: boolean,
 	resetPasswordCode: string,

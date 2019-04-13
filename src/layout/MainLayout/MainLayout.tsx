@@ -7,7 +7,7 @@ import { Profile } from '../../types/api';
 import { Alert, Snackbar } from '../../components';
 import { NavigationBar, ProfileModal } from './';
 
-import { clearAlert, hideSnackbar } from '../../actions/service';
+import { clearAlert, hideSnackbar, navigate } from '../../actions/service';
 import { logout, resendConfirmEmail } from '../../actions/auth';
 
 import {
@@ -18,8 +18,6 @@ import {
 	updateProfile,
 	updateProfilePhoto,
 } from '../../actions/profile';
-
-import { useLocalStorage } from '../../config/localstorage';
 
 import { changeSearchQuery, filterCarts } from '../../actions/carts';
 import { fetchContacts } from '../../actions/contacts';
@@ -44,12 +42,14 @@ interface Props {
 	draftProfile: Profile,
 
 	searchQuery?: string,
+
+	isLoggedIn: boolean,
+	accessToken: string,
+	isEmailConfirmed: boolean
 }
 
 const MainLayout = (props: Props) => {
-	const { children, dispatch, progress, snackbar, alert, id, name, email, phoneNumber, photoUrl, avatarUrl, draftProfile, searchQuery } = props;
-
-	const { isLoggedIn, accessToken, isEmailConfirmed } = useLocalStorage();
+	const { children, dispatch, progress, snackbar, alert, id, name, email, phoneNumber, photoUrl, avatarUrl, draftProfile, searchQuery, isLoggedIn, accessToken, isEmailConfirmed } = props;
 
 	const [isProfileModalVisible, setIsProfileModalVisible] = useState(false);
 
@@ -68,6 +68,8 @@ const MainLayout = (props: Props) => {
 		setIsProfileModalVisible(false);
 		dispatch(resendConfirmEmail(userId));
 	};
+
+	const onRedirectingToChangePasswordClicked = () => dispatch(navigate('ChangePassword'));
 
 	const onUpdateProfilePhotoClicked = (photoData: string) => dispatch(updateProfilePhoto(photoData));
 
@@ -121,6 +123,7 @@ const MainLayout = (props: Props) => {
 				onDeleteProfilePhotoClick={onDeleteProfilePhotoClicked}
 				onLogoutClick={onLogoutClicked}
 				onResendConfirmEmailConfirmClick={onResendConfirmEmailConfirmClicked}
+				onRedirectingToChangePasswordClick={onRedirectingToChangePasswordClicked}
 			/>
 			<Snackbar
 				visible={snackbar.visible}
@@ -135,8 +138,8 @@ const MainLayout = (props: Props) => {
 				message={alert.message}
 				handleCloseToastr={handleClosedToastr}
 			/>
-
 			{children}
+
 		</div>
 	);
 };
@@ -145,6 +148,7 @@ const mapStateToProps = (state: AppState) => {
 	const { progress, snackbar, alert } = state.service;
 	const { id, name, email, phoneNumber, photoUrl, avatarUrl, draftProfile } = state.profile;
 	const { searchQuery } = state.carts;
+	const { isLoggedIn, accessToken, isEmailConfirmed } = state.storage;
 
 	return {
 		progress,
@@ -160,6 +164,10 @@ const mapStateToProps = (state: AppState) => {
 		draftProfile,
 
 		searchQuery,
+
+		isLoggedIn,
+		accessToken,
+		isEmailConfirmed,
 	};
 };
 

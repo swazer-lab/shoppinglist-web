@@ -1,14 +1,11 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 
-import GoogleLogin from 'react-google-login';
-import FacebookLogin from 'react-facebook-login';
-
 import { AppState } from '../../types/store';
 
 import { Button, Input } from '../../components';
 
-import { clearAlert, navigate, showAlert } from '../../actions/service';
+import { clearAlert, navigate } from '../../actions/service';
 import { changeEmail, changeName, changePassword, externalLogin, register } from '../../actions/auth';
 import language from '../../assets/language';
 
@@ -54,16 +51,12 @@ const Register = (props: Props) => {
 		dispatch(externalLogin(name, email, accessToken, 'Google'));
 	};
 
-	const loginWithGoogleFailure = () => dispatch(showAlert('error', '', language.textUnexpectedError));
-
 	const loginWithFacebook = (response: any) => {
 		const { accessToken, name, email, picture } = response;
 
 		dispatch(setProfileAvatarUrl(picture.data.url));
 		dispatch(externalLogin(name, email, accessToken, 'Facebook'));
 	};
-
-	const loginWithFacebookFailure = () => dispatch(showAlert('error', '', language.textUnexpectedError));
 
 	return (
 		<div className='page_auth__content_container'>
@@ -77,8 +70,10 @@ const Register = (props: Props) => {
 					onChange={handleNameChange}
 					placeholder={language.textEnterName}
 					type='text'
+					autoFoucus={true}
 					required
 				/>
+
 				<Input
 					className='page_auth__input'
 					value={email}
@@ -105,11 +100,11 @@ const Register = (props: Props) => {
 						title={language.actionLoginInstead}
 						onClick={onLoginClicked}
 					/>
-					<Button type='submit' title={language.actionRegister}/>
+					<Button type='submit' title={language.actionRegister} />
 				</div>
 			</form>
 
-			<ExternalLogin loginWithFacebook={loginWithFacebook} loginWithFacebookFailure={loginWithFacebookFailure} loginWithGoogle={loginWithGoogle} loginWithGoogleFailure={loginWithGoogleFailure} />
+			<ExternalLogin loginWithFacebook={loginWithFacebook} loginWithGoogle={loginWithGoogle} />
 		</div>
 	);
 };
