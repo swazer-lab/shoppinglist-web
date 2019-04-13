@@ -1,8 +1,5 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
-
-import GoogleLogin from 'react-google-login';
-import FacebookLogin from 'react-facebook-login';
 
 import { AppState } from '../../types/store';
 
@@ -77,8 +74,10 @@ const Register = (props: Props) => {
 					onChange={handleNameChange}
 					placeholder={language.textEnterName}
 					type='text'
+					autoFoucus={true}
 					required
 				/>
+
 				<Input
 					className='page_auth__input'
 					value={email}

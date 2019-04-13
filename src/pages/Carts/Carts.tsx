@@ -112,9 +112,8 @@ const Carts = (props: Props) => {
 
 		const onUndoClicked = () => {
 			isUndoClicked = true;
-
-			dispatch(pushCart(cartIndex, cart));
 			dispatch(hideSnackbar());
+			dispatch(pushCart(cartIndex, cart));
 		};
 
 		dispatch(showSnackbar(language.textRemovingCart, [{
@@ -124,6 +123,7 @@ const Carts = (props: Props) => {
 
 		setTimeout(() => {
 			if (!isUndoClicked) {
+				dispatch(hideSnackbar());
 				dispatch(removeCart(cart));
 			}
 		}, 3000);

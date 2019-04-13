@@ -138,8 +138,8 @@ const MainLayout = (props: Props) => {
 				message={alert.message}
 				handleCloseToastr={handleClosedToastr}
 			/>
-
 			{children}
+
 		</div>
 	);
 };

@@ -6,7 +6,6 @@ import reducers from '../reducers';
 import rootSaga from '../sagas';
 import { createStorage } from 'indexa';
 import { State } from '../types/storage';
-import { updateDefaultHeaders } from '../api';
 
 const sagaMiddleware = createSagaMiddleware();
 const middlewareList: any = [sagaMiddleware];

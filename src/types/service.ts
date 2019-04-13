@@ -105,7 +105,7 @@ export interface State {
 	},
 	snackbar: {
 		visible: boolean,
-		message: string,
+		message?: string,
 		actions?: { title: string, onClick: (e: any) => void }[],
 		duration?: number
 	}

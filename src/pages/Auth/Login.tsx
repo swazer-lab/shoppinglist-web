@@ -76,6 +76,7 @@ const Login = (props: Props) => {
 					onChange={handleChangeEmail}
 					type='email'
 					placeholder={language.textEnterEmail}
+					autoFoucus={true}
 					required
 				/>
 				<Input

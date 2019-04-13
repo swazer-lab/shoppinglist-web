@@ -68,13 +68,14 @@ const ForgotPassword = (props: Props) => {
 						onChange={handleEmailChange}
 						type='email'
 						placeholder={language.textEnterEmail}
+						autoFoucus={true}
 						required
 					/>
 
 					<div className='page_auth__buttons_container'>
 						<Button
 							className='page_auth__action_button'
-							type='submit'
+							type='button'
 							mode='text'
 							title={language.actionLogin}
 							onClick={onLoginClicked}
@@ -92,6 +93,7 @@ const ForgotPassword = (props: Props) => {
 						onChange={handleResetPasswordCodeChange}
 						type='text'
 						placeholder={language.textEnterResetPasswordCode}
+						autoFoucus={true}
 						required
 					/>
 					<Input

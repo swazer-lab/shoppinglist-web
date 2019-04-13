@@ -40,6 +40,7 @@ const ChangePassword = (props: Props) => {
 				    onChange={handlePasswordChange}
 				    type='password'
 				    placeholder={language.textEnterPassword}
+				    autoFoucus={true}
 				    required
 			    />
 			    <Input
