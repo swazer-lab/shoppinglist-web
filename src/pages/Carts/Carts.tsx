@@ -10,7 +10,6 @@ import CreateCart from './CreateCart';
 import UpdateCart from './UpdateCart';
 import CartObject from './CartObject';
 import CopyCartModal from './CopyCartModal';
-
 import { hideSnackbar, showSnackbar } from '../../actions/service';
 import {
 	addDraftCartItem,
@@ -18,9 +17,7 @@ import {
 	changeDraftCartItemTitle,
 	changeDraftCartNotes,
 	changeDraftCartTitle,
-	changeVisibilityFilter,
-	clearDraftCart,
-	copyCart,
+	changeVisibilityFilter,clearDraftCart,
 	createCart,
 	fetchCarts,
 	pullCart,
@@ -30,6 +27,7 @@ import {
 	reorderCart,
 	setDraftCart,
 	updateCart,
+	copyCart,
 } from '../../actions/carts';
 
 import language from '../../assets/language';
@@ -114,10 +112,12 @@ const Carts = (props: Props) => {
 		setIsCartUpdating(false);
 	};
 
+
 	const onCopyCartClicked = () => {
 		dispatch(copyCart());
 		setIsCartCopying(false);
 	};
+
 
 	const onRemoveCartClicked = (cart: Cart) => {
 		if (snackbar.visible) {
@@ -180,9 +180,7 @@ const Carts = (props: Props) => {
 
 	const onGetCompletedCarts = () => {
 		dispatch(changeVisibilityFilter(VisibilityFilter.completed));
-	};
-
-	const renderCarts = () => carts.map((cart, index) => (
+	};const renderCarts = () => carts.map((cart, index) => (
 		<Draggable key={cart.id} draggableId={cart.id} index={index}>
 			{provided => (
 				<div className='cart_object_container'
@@ -190,16 +188,14 @@ const Carts = (props: Props) => {
 				     {...provided.draggableProps}
 				     {...provided.dragHandleProps}
 				>
-					{visibilityFilter === 'All' || getCartStatus(cart.items) === visibilityFilter ?
-						<CartObject
-							key={cart.uuid}
-							progress={progress}
-							cart={cart}
-							onOpenUpdateCartModalClick={onOpenUpdateCartModalClicked}
-							onRemoveCartClick={onRemoveCartClicked}
-							currentUserEmail={email}
-							onOpenCopyCartModalClick={onOpenCopyCartModalClicked}
-						/> : null
+					{visibilityFilter === 'All' || getCartStatus(cart.items) === visibilityFilter ?<CartObject
+						key={cart.uuid}
+						progress={progress}
+						cart={cart}
+						onOpenUpdateCartModalClick={onOpenUpdateCartModalClicked}
+						onRemoveCartClick={onRemoveCartClicked}
+						currentUserEmail={email}
+						onOpenCopyCartModalClick={onOpenCopyCartModalClicked}/> : null
 					}
 				</div>
 			)}
@@ -243,13 +239,13 @@ const Carts = (props: Props) => {
 				onUpdateCartClick={onUpdateCartClicked}
 			/>
 
-			<CopyCartModal
-				isVisible={isCartCopying}
+      <CopyCartModal
+        isVisible={isCartCopying}
 				draftCart={draftCart}
 				onDraftCartTitleChange={handleDraftCartTitleChange}
 				onCopyCartClick={onCopyCartClicked}
 				onCloseCopyCartModalClick={onCloseCopyCartModalClicked}
-			/>
+				/>
 
 			<div className='filter_cart'>
 				<Button
@@ -318,5 +314,6 @@ const mapStateToProps = (state: AppState) => {
 		accessToken,
 	};
 };
+
 
 export default connect(mapStateToProps)(Carts);
