@@ -24,7 +24,7 @@ import {
 	removeCartResult,
 	reorderCartResult,
 	shareCartWithContactsResult,
-	updateCartResult,
+	updateCartResult
 } from '../actions/carts';
 
 import language from '../assets/language';
@@ -111,6 +111,36 @@ function* createCartSaga() {
 	} finally {
 		yield put(hideProgress());
 	}
+}
+
+function* copyCartSaga() {
+    const { draftCart, carts } = yield select((state: AppState) => state.carts);
+    draftCart['id'] = null;
+
+    console.log(carts);
+    console.log(draftCart);
+
+    yield put(showProgress(language.textCreatingCart));
+    try {
+        const cart = yield morphism(cartMapper(true), draftCart);
+
+        const response = yield call(create_cart_api, cart);
+        const data = yield morphism(cartMapper(), response.data);
+
+        console.log(data);
+
+        yield all([
+            put(createCartResult(false, data)),
+            put(clearDraftCart()),
+        ]);
+    } catch (e) {
+        yield all([
+            put(createCartResult(true)),
+            put(showHttpErrorAlert(e)),
+        ]);
+    } finally {
+        yield put(hideProgress());
+    }
 }
 
 function* updateCartSaga() {
@@ -231,4 +261,5 @@ export default [
 	takeLatest(ActionTypes.share_cart_with_contacts, shareCartWithContactsSaga),
 	takeLatest(ActionTypes.get_access_to_cart, getAccessToCartSaga),
 	takeLatest(ActionTypes.reorder_cart, reorderCartSaga),
+    takeLatest(ActionTypes.copy_Cart, copyCartSaga),
 ];

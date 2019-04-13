@@ -9,28 +9,35 @@ import CreateCart from './CreateCart';
 import UpdateCart from './UpdateCart';
 import CartObject from './CartObject';
 
+
+
+
 import { hideSnackbar, showSnackbar } from '../../actions/service';
 import {
-	addDraftCartItem,
-	changeDraftCartItemStatus,
-	changeDraftCartItemTitle,
-	changeDraftCartNotes,
-	changeDraftCartTitle,
-	clearDraftCart,
-	createCart,
-	fetchCarts,
-	pullCart,
-	pushCart,
-	removeCart,
-	removeDraftCartItem,
-	reorderCart,
-	setDraftCart,
-	updateCart,
+    addDraftCartItem,
+    changeDraftCartItemStatus,
+    changeDraftCartItemTitle,
+    changeDraftCartNotes,
+    changeDraftCartTitle,
+    clearDraftCart,
+    createCart,
+    fetchCarts,
+    pullCart,
+    pushCart,
+    removeCart,
+    removeDraftCartItem,
+    reorderCart,
+    setDraftCart,
+    updateCart,
+    copyCart
+
 } from '../../actions/carts';
 
 import { useLocalStorage } from '../../config/localstorage';
 
 import language from '../../assets/language';
+
+import CopyCart from './CopyCart';
 
 interface Props {
 	dispatch: Function,
@@ -52,6 +59,7 @@ const Carts = (props: Props) => {
 	const { isLoggedIn, accessToken } = useLocalStorage();
 
 	const [isCartUpdating, setIsCartUpdating] = useState(false);
+    const [isCartCopying, setIsCartCopying] = useState(false);
 
 	useEffect(() => {
 		if (isLoggedIn && accessToken) {
@@ -80,10 +88,21 @@ const Carts = (props: Props) => {
 		dispatch(setDraftCart(cart));
 		setIsCartUpdating(true);
 	};
+
 	const onCloseUpdateCartModalClicked = () => {
 		dispatch(clearDraftCart());
 		setIsCartUpdating(false);
 	};
+
+    const onOpenCopyCartModalClicked = (cart: Cart) => {
+        dispatch(setDraftCart(cart));
+        setIsCartCopying(true);
+    };
+
+    const onCloseCopyCartModalClicked = () => {
+        dispatch(clearDraftCart());
+        setIsCartCopying(false);
+    };
 
 	const onCreateCartClicked = () => {
 		dispatch(createCart());
@@ -93,7 +112,15 @@ const Carts = (props: Props) => {
 		dispatch(updateCart());
 		setIsCartUpdating(false);
 	};
-	const onRemoveCartClicked = (cart: Cart) => {
+
+
+    const onCopyCartClicked = () => {
+        dispatch(copyCart());
+        setIsCartCopying(false);
+    };
+
+
+    const onRemoveCartClicked = (cart: Cart) => {
 		if (snackbar.visible) {
 			dispatch(hideSnackbar());
 		}
@@ -159,13 +186,14 @@ const Carts = (props: Props) => {
 						onOpenUpdateCartModalClick={onOpenUpdateCartModalClicked}
 						onRemoveCartClick={onRemoveCartClicked}
 						currentUserEmail={email}
+                        onOpenCopyCartModalClick={onOpenCopyCartModalClicked}
 					/>
 				</div>
 			)}
 		</Draggable>
 	));
 
-	const createCartDraftCart = isCartUpdating ? {
+	const createCartDraftCart = isCartUpdating || isCartCopying ? {
 		id: '',
 		title: '',
 		notes: '',
@@ -187,7 +215,6 @@ const Carts = (props: Props) => {
 			/>
 			<UpdateCart
 				draftCart={draftCart}
-
 				onDraftCartTitleChange={handleDraftCartTitleChange}
 				onDraftCartNotesChange={handleDraftCartNotesChange}
 
@@ -201,6 +228,15 @@ const Carts = (props: Props) => {
 				onCloseUpdateCartModalClick={onCloseUpdateCartModalClicked}
 				onUpdateCartClick={onUpdateCartClicked}
 			/>
+
+			<CopyCart
+                draftCart={draftCart}
+                onDraftCartTitleChange={handleDraftCartTitleChange}
+                isVisible={isCartCopying}
+                onCloseCopyCartModalClick={onCloseCopyCartModalClicked}
+                onCopyCartClick={onCopyCartClicked}
+			/>
+
 
 			<DragDropContext onDragEnd={onDragEnd}>
 				<Droppable droppableId="list">

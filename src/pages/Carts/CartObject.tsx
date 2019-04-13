@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { FormEvent, useEffect, useState } from 'react';
 
 import { AppState } from '../../types/store';
 import { Cart } from '../../types/api';
@@ -11,6 +11,7 @@ import avatar from '../../assets/images/avatar.jpeg';
 import language from '../../assets/language';
 
 import './styles.scss';
+import CopyCart from './CopyCart';
 
 interface Props {
 	progress: AppState['service']['progress'],
@@ -19,14 +20,17 @@ interface Props {
 	currentUserEmail?: string,
 
 	onOpenUpdateCartModalClick: (cart: Cart) => void,
-	onRemoveCartClick: (cart: Cart) => void
+	onRemoveCartClick: (cart: Cart) => void,
+    onOpenCopyCartModalClick: (cart: Cart) => void,
+
 }
 
 const CartObject = (props: Props) => {
-	const [isShareModalVisible, setIsShareModalVisible] = useState(false);
+	const [isShareModalVisible, setIsShareModalVisible ] = useState(false);
+
 	const [accessLevel, setAccessLevel] = useState('');
 
-	const { progress, cart, onOpenUpdateCartModalClick, onRemoveCartClick, currentUserEmail } = props;
+	const { progress, cart, onOpenUpdateCartModalClick, onRemoveCartClick, currentUserEmail, onOpenCopyCartModalClick } = props;
 
 	useEffect(() => {
 		if (!progress.visible && isShareModalVisible) {
@@ -62,6 +66,12 @@ const CartObject = (props: Props) => {
 		setIsShareModalVisible(false);
 	};
 
+
+   const  onOpenCopyCartModalClicked = (e:any) => {
+       onOpenCopyCartModalClick(cart);
+       e.stopPropagation();
+   }
+
 	const status = getCartStatus(cart.items);
 
 	const renderItems = (status: string) => cart.items.filter(item => item.status === status).map(item => (
@@ -73,6 +83,8 @@ const CartObject = (props: Props) => {
 			<span className='cart_object__items__item__title'>{item.title}</span>
 		</div>
 	));
+
+
 
 	return (
 		<div className='cart_object' onClick={onOpenUpdateCartModalClicked}>
@@ -110,6 +122,12 @@ const CartObject = (props: Props) => {
 					<i className='material-icons'>person_add</i>
 				</div>
 
+                <div className='cart_object__users_container__share_button' onClick={onOpenCopyCartModalClicked}>
+					{/* onCopyCardClicked*/}
+                    <i className='material-icons'>file_copy</i>
+
+                </div>
+
 				<div className='cart_object__users_container__user_list'>
 					{cart.users.map((user) => (
 						<img key={user.uuid} src={user.photoUrl || avatar} width={30} height={30} alt='User Photo'/>
@@ -128,6 +146,8 @@ const CartObject = (props: Props) => {
                 <ShareCart cart={cart}/>
             </Modal>
 			}
+
+
 		</div>
 	);
 };

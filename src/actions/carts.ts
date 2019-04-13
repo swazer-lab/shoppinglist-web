@@ -135,6 +135,9 @@ export const removeCartResult = (hasError: boolean, cart?: Cart): RemoveCartActi
 	cart,
 });
 
+export const copyCart = (): CartsAction => ({
+    type: ActionTypes.copy_Cart,
+});
 export const clearCarts = (): CartsAction => ({
 	type: ActionTypes.clear_carts,
 });

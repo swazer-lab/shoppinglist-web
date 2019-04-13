@@ -104,6 +104,7 @@ export default (state: State = initialState, action: Action): State => {
 		case ActionTypes.clear_carts:
 			return initialState;
 
+
 		default:
 			return state;
 	}

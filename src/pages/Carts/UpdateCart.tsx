@@ -28,16 +28,12 @@ interface Props {
 const UpdateCart = (props: Props) => {
 	const {
 		draftCart,
-
 		onDraftCartTitleChange,
-
 		onCloseUpdateCartModalClick,
-
 		onAddDraftCartItemClick,
 		onRemoveDraftCartItemClick,
 		onDraftCartItemTitleChange,
 		onDraftCartItemStatusChange,
-
 		isVisible,
 		onUpdateCartClick,
 	} = props;
@@ -55,7 +51,7 @@ const UpdateCart = (props: Props) => {
 		onUpdateCartClick();
 	};
 
-	const { title, items } = draftCart;
+	const {title, items } = draftCart;
 	return (
 		<Modal isVisible={isVisible} onCloseModalClick={onCloseUpdateCartModalClicked} title='Update Cart'>
 			<div className='update_cart'>
