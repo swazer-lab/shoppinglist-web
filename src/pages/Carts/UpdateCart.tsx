@@ -51,7 +51,7 @@ const UpdateCart = (props: Props) => {
 		onUpdateCartClick();
 	};
 
-	const {title, items } = draftCart;
+	const { title, items } = draftCart;
 	return (
 		<Modal isVisible={isVisible} onCloseModalClick={onCloseUpdateCartModalClicked} title='Update Cart'>
 			<div className='update_cart'>
@@ -103,5 +103,6 @@ const UpdateCart = (props: Props) => {
 		</Modal>
 	);
 };
+
 
 export default UpdateCart;
