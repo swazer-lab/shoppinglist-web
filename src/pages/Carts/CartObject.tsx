@@ -129,6 +129,10 @@ const CartObject = (props: Props) => {
 					<i className='material-icons'>person_add</i>
 				</div>
 
+				<div className='cart_object__users_container__share_button' onClick={onOpenCopyCartModalClicked}>
+					<i className='material-icons'>file_copy</i>
+				</div>
+
 				<div className='cart_object__users_container__user_list'>
 					{cart.users.map((user) => (
 						<img key={user.uuid} src={user.photoUrl || avatar} width={30} height={30} alt='User Photo'
