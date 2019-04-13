@@ -2,226 +2,227 @@ import { Action as ReduxAction } from 'redux';
 import { Cart, CartItemStatusType, CartUser } from './api';
 
 export enum ActionTypes {
-	change_draft_cart_title = 'CARTS__CHANGE_DRAFT_CART_TITLE',
-	change_draft_cart_notes = 'CARTS__CHANGE_DRAFT_CART_NOTES',
-	change_draft_cart_reminder_date = 'CARTS__CHANGE_DRAFT_CART_DATE',
+  change_draft_cart_title = 'CARTS__CHANGE_DRAFT_CART_TITLE',
+  change_draft_cart_notes = 'CARTS__CHANGE_DRAFT_CART_NOTES',
+  change_draft_cart_reminder_date = 'CARTS__CHANGE_DRAFT_CART_DATE',
 
-	add_draft_cart_item = 'CARTS__ADD_DRAFT_CART_ITEM',
-	change_draft_cart_item_title = 'CARTS__CHANGE_DRAFT_CART_ITEM_TITLE',
-	change_draft_cart_item_status = 'CARTS__CHANGE_DRAFT_CART_ITEM_STATUS',
-	remove_draft_cart_item = 'CARTS__REMOVE_DRAFT_CART_ITEM',
+  add_draft_cart_item = 'CARTS__ADD_DRAFT_CART_ITEM',
+  change_draft_cart_item_title = 'CARTS__CHANGE_DRAFT_CART_ITEM_TITLE',
+  change_draft_cart_item_status = 'CARTS__CHANGE_DRAFT_CART_ITEM_STATUS',
+  remove_draft_cart_item = 'CARTS__REMOVE_DRAFT_CART_ITEM',
 
-	pull_cart = 'CARTS__PULL_CART',
-	push_cart = 'CARTS__PUSH_CART',
+  pull_cart = 'CARTS__PULL_CART',
+  push_cart = 'CARTS__PUSH_CART',
 
-	set_draft_cart = 'CARTS__SET_DRAFT_CART',
-	clear_draft_cart = 'CARTS__CLEAR_DRAFT_CART',
+  set_draft_cart = 'CARTS__SET_DRAFT_CART',
+  clear_draft_cart = 'CARTS__CLEAR_DRAFT_CART',
 
-	change_search_query = 'CARTS__CHANGE_SEARCH_QUERY',
+  change_search_query = 'CARTS__CHANGE_SEARCH_QUERY',
 
-	filter_carts = 'CARTS__FILTER_CARTS',
-	filter_carts_result = 'CARTS__FILTER_CARTS_RESULT',
+  filter_carts = 'CARTS__FILTER_CARTS',
+  filter_carts_result = 'CARTS__FILTER_CARTS_RESULT',
 
-	fetch_carts = 'CARTS__FETCH_CARTS',
-	fetch_carts_result = 'CARTS__FETCH_CARTS_RESULT',
+  fetch_carts = 'CARTS__FETCH_CARTS',
+  fetch_carts_result = 'CARTS__FETCH_CARTS_RESULT',
 
-	create_cart = 'CARTS__CREATE_CART',
-	create_cart_result = 'CARTS__CREATE_CART_RESULT',
+  create_cart = 'CARTS__CREATE_CART',
+  create_cart_result = 'CARTS__CREATE_CART_RESULT',
 
-	update_cart = 'CARTS__UPDATE_CART',
-	update_cart_result = 'CARTS__UPDATE_CART_RESULT',
+  update_cart = 'CARTS__UPDATE_CART',
+  update_cart_result = 'CARTS__UPDATE_CART_RESULT',
 
-	remove_cart = 'CARTS__REMOVE_CART',
-	remove_cart_result = 'CARTS__REMOVE_CART_RESULT',
+  remove_cart = 'CARTS__REMOVE_CART',
+  remove_cart_result = 'CARTS__REMOVE_CART_RESULT',
 
-    copy_Cart = 'CARTS_COPY_CARTS',
-    copy_Cart_result = 'CARTS__COPY_CARTS_RESULT',
+  copy_cart = 'CARTS__COPY_CART',
+  copy_cart_result = 'CARTS__COPY_CART_RESULT',
 
+  get_access_to_cart = 'CARTS__GET_ACCESS_TO_CART',
+  get_access_to_cart_result = 'CARTS__GET_ACCESS_TO_CART_RESULT',
 
-    // UNCHECKED
-	share_share_link = 'CARTS__SHARE_SHARE_LINK',
-	copy_share_link = 'CARTS__COPY_SHARE_LINK',
+  share_cart_with_contacts = 'CARTS_SHARE_CART_WITH_CONTACTS',
+  share_cart_with_contacts_result = 'CARTS_SHARE_CART_WITH_CONTACTS_RESULT',
 
-	get_access_to_cart = 'CARTS__GET_ACCESS_TO_CART',
-	get_access_to_cart_result = 'CARTS__GET_ACCESS_TO_CART_RESULT',
+  reorder_cart = 'CARTS_REORDER_CART',
+  reorder_cart_result = 'CARTS_REORDER_CART_RESULT',
 
-	share_cart_with_contacts = 'CARTS_SHARE_CART_WITH_CONTACTS',
-	share_cart_with_contacts_result = 'CARTS_SHARE_CART_WITH_CONTACTS_RESULT',
-
-	reorder_cart = 'CARTS_REORDER_CART',
-	reorder_cart_result = 'CARTS_REORDER_CART_RESULT',
-
-	clear_carts = 'CARTS__CLEAR_CARTS',
+  clear_carts = 'CARTS__CLEAR_CARTS',
 }
 
 export interface CartsAction extends ReduxAction<ActionTypes> {
 }
 
 export interface CartsActionResult extends CartsAction {
-	hasError: boolean,
+  hasError: boolean,
 }
 
 export interface ChangeDraftCartTitleAction extends CartsAction {
-	type: ActionTypes.change_draft_cart_title,
-	title: string,
+  type: ActionTypes.change_draft_cart_title,
+  title: string,
 }
 
 export interface ChangeDraftCartNotesAction extends CartsAction {
-	type: ActionTypes.change_draft_cart_notes,
-	notes: string,
+  type: ActionTypes.change_draft_cart_notes,
+  notes: string,
 }
 
 export interface ChangeDraftCartReminderDateAction extends CartsAction {
-	type: ActionTypes.change_draft_cart_reminder_date,
-	reminderDate: string,
+  type: ActionTypes.change_draft_cart_reminder_date,
+  reminderDate: string,
 }
 
 export interface ChangeDraftCartItemTitleAction extends CartsAction {
-	type: ActionTypes.change_draft_cart_item_title,
-	uuid: string,
-	title: string,
+  type: ActionTypes.change_draft_cart_item_title,
+  uuid: string,
+  title: string,
 }
 
 export interface ChangeDraftCartItemStatusAction extends CartsAction {
-	type: ActionTypes.change_draft_cart_item_status,
-	uuid: string,
-	status: CartItemStatusType,
+  type: ActionTypes.change_draft_cart_item_status,
+  uuid: string,
+  status: CartItemStatusType,
 }
 
 export interface RemoveDraftCartItemAction extends CartsAction {
-	type: ActionTypes.remove_draft_cart_item,
-	uuid: string,
+  type: ActionTypes.remove_draft_cart_item,
+  uuid: string,
 }
 
 export interface PullCartAction extends CartsAction {
-	type: ActionTypes.pull_cart,
-	index: number,
+  type: ActionTypes.pull_cart,
+  index: number,
 }
 
 export interface PushCartAction extends CartsAction {
-	type: ActionTypes.push_cart,
-	index: number,
-	cart: Cart
+  type: ActionTypes.push_cart,
+  index: number,
+  cart: Cart
 }
 
 export interface SetDraftCartAction extends CartsAction {
-	type: ActionTypes.set_draft_cart,
-	cart: Cart,
+  type: ActionTypes.set_draft_cart,
+  cart: Cart,
 }
 
 export interface ChangeSearchQueryAction extends CartsAction {
-	type: ActionTypes.change_search_query,
-	searchQuery: string
+  type: ActionTypes.change_search_query,
+  searchQuery: string
 }
 
 export interface FilterCartsActionResult extends CartsActionResult {
-	type: ActionTypes.filter_carts_result,
-	carts?: Array<Cart>
+  type: ActionTypes.filter_carts_result,
+  carts?: Array<Cart>
 }
 
 export interface UpdateCartResultAction extends CartsActionResult {
-	type: ActionTypes.update_cart_result,
-	cart?: Cart,
+  type: ActionTypes.update_cart_result,
+  cart?: Cart,
 }
 
 export interface FetchCartsAction extends CartsAction {
-	type: ActionTypes.fetch_carts,
-	silent?: boolean,
-	append?: 'replace' | 'merge',
-	pageNumber?: number
+  type: ActionTypes.fetch_carts,
+  silent?: boolean,
+  append?: 'replace' | 'merge',
+  pageNumber?: number
 }
 
 export interface FetchCartsActionResult extends CartsActionResult {
-	type: ActionTypes.fetch_carts_result,
-	carts?: Array<Cart>,
-	totalCount?: number,
-	append?: 'replace' | 'merge',
+  type: ActionTypes.fetch_carts_result,
+  carts?: Array<Cart>,
+  totalCount?: number,
+  append?: 'replace' | 'merge',
 }
 
 export interface CreateCartActionResult extends CartsActionResult {
-	type: ActionTypes.create_cart_result,
-	cart?: Cart,
+  type: ActionTypes.create_cart_result,
+  cart?: Cart,
+}
+
+export interface CopyCartActionResult extends CartsActionResult {
+  type: ActionTypes.copy_cart_result,
+  cart?: Cart,
 }
 
 export interface RemoveCartAction extends CartsAction {
-	type: ActionTypes.remove_cart,
-	cart: Cart,
+  type: ActionTypes.remove_cart,
+  cart: Cart,
 }
 
 export interface RemoveCartActionResult extends CartsActionResult {
-	type: ActionTypes.remove_cart_result,
-	cart?: Cart,
+  type: ActionTypes.remove_cart_result,
+  cart?: Cart,
 }
 
 export interface ShareCartWithContactsAction extends CartsAction {
-	type: ActionTypes.share_cart_with_contacts,
-	cartId: string
+  type: ActionTypes.share_cart_with_contacts,
+  cartId: string
 }
 
 export interface ShareCartWithContactsActionResult extends CartsActionResult {
-	type: ActionTypes.share_cart_with_contacts_result,
-	cartId?: string,
-	cartUsers?: Array<CartUser>
+  type: ActionTypes.share_cart_with_contacts_result,
+  cartId?: string,
+  cartUsers?: Array<CartUser>
 }
 
 export interface GetAccessToCartAction extends CartsAction {
-	type: ActionTypes.get_access_to_cart,
-	accessCode: string,
+  type: ActionTypes.get_access_to_cart,
+  accessCode: string,
 }
 
 export interface GetAccessToCartActionResult extends CartsActionResult {
-	type: ActionTypes.get_access_to_cart_result,
-	cart?: Cart,
+  type: ActionTypes.get_access_to_cart_result,
+  cart?: Cart,
 }
 
 export interface ReorderCartAction extends CartsAction {
-	type: ActionTypes.reorder_cart,
-	cartId: string,
-	source: number,
-	destination: number
+  type: ActionTypes.reorder_cart,
+  cartId: string,
+  source: number,
+  destination: number
 }
 
 export interface ReorderCartResultAction extends CartsActionResult {
-	type: ActionTypes.reorder_cart_result,
-	source?: number,
-	destination?: number
+  type: ActionTypes.reorder_cart_result,
+  source?: number,
+  destination?: number
 }
 
 export type Action =
-	& CartsAction
-	& CartsActionResult
-	& ChangeDraftCartTitleAction
-	& ChangeDraftCartNotesAction
-	& ChangeDraftCartReminderDateAction
-	& ChangeDraftCartItemTitleAction
-	& ChangeDraftCartItemStatusAction
-	& RemoveDraftCartItemAction
-	& ChangeSearchQueryAction
-	& FilterCartsActionResult
-	& FetchCartsAction
-	& FetchCartsActionResult
-	& CreateCartActionResult
-	& RemoveCartAction
-	& RemoveCartActionResult
-	& PullCartAction
-	& PushCartAction
-	& UpdateCartResultAction
-	& SetDraftCartAction
-	& ShareCartWithContactsAction
-	& ShareCartWithContactsActionResult
-	& GetAccessToCartAction
-	& GetAccessToCartActionResult
-	& ReorderCartAction
-	& ReorderCartResultAction;
+  & CartsAction
+  & CartsActionResult
+  & ChangeDraftCartTitleAction
+  & ChangeDraftCartNotesAction
+  & ChangeDraftCartReminderDateAction
+  & ChangeDraftCartItemTitleAction
+  & ChangeDraftCartItemStatusAction
+  & RemoveDraftCartItemAction
+  & ChangeSearchQueryAction
+  & FilterCartsActionResult
+  & FetchCartsAction
+  & FetchCartsActionResult
+  & CreateCartActionResult
+  & CopyCartActionResult
+  & RemoveCartAction
+  & RemoveCartActionResult
+  & PullCartAction
+  & PushCartAction
+  & UpdateCartResultAction
+  & SetDraftCartAction
+  & ShareCartWithContactsAction
+  & ShareCartWithContactsActionResult
+  & GetAccessToCartAction
+  & GetAccessToCartActionResult
+  & ReorderCartAction
+  & ReorderCartResultAction;
 
 export type State = {
-	draftCart: Cart,
-	carts: Array<Cart>,
+  draftCart: Cart,
+  carts: Array<Cart>,
 
-	filteredCarts?: Array<Cart>,
-	searchQuery?: string,
+  filteredCarts?: Array<Cart>,
+  searchQuery?: string,
 
-	isLoading: boolean,
-	pageNumber: number,
-	totalCount: number,
+  isLoading: boolean,
+  pageNumber: number,
+  totalCount: number,
 }
