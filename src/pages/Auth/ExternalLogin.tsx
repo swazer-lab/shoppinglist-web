@@ -35,9 +35,9 @@ const ExternalLogin = (props: Props) => {
 	return (
 		<>
 			<div className='page_auth__separator'>
-				<div/>
+				<div />
 				<span>{language.titleExternalLogin}</span>
-				<div/>
+				<div />
 			</div>
 
 			<div className='page_auth__external_login_container'>

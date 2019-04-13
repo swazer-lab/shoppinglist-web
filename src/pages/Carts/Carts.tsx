@@ -9,6 +9,7 @@ import { VisibilityFilter } from '../../types/carts';
 import CreateCart from './CreateCart';
 import UpdateCart from './UpdateCart';
 import CartObject from './CartObject';
+import CopyCartModal from './CopyCartModal';
 
 import { hideSnackbar, showSnackbar } from '../../actions/service';
 import {
@@ -19,6 +20,7 @@ import {
 	changeDraftCartTitle,
 	changeVisibilityFilter,
 	clearDraftCart,
+	copyCart,
 	createCart,
 	fetchCarts,
 	pullCart,
@@ -58,6 +60,7 @@ const Carts = (props: Props) => {
 	const { dispatch, progress, snackbar, carts, draftCart, email, visibilityFilter, isLoggedIn, accessToken } = props;
 
 	const [isCartUpdating, setIsCartUpdating] = useState(false);
+	const [isCartCopying, setIsCartCopying] = useState(false);
 
 	useEffect(() => {
 		if (isLoggedIn && accessToken) {
@@ -86,9 +89,20 @@ const Carts = (props: Props) => {
 		dispatch(setDraftCart(cart));
 		setIsCartUpdating(true);
 	};
+
 	const onCloseUpdateCartModalClicked = () => {
 		dispatch(clearDraftCart());
 		setIsCartUpdating(false);
+	};
+
+	const onOpenCopyCartModalClicked = (cart: Cart) => {
+		dispatch(setDraftCart(cart));
+		setIsCartCopying(true);
+	};
+
+	const onCloseCopyCartModalClicked = () => {
+		dispatch(clearDraftCart());
+		setIsCartCopying(false);
 	};
 
 	const onCreateCartClicked = () => {
@@ -98,6 +112,11 @@ const Carts = (props: Props) => {
 	const onUpdateCartClicked = () => {
 		dispatch(updateCart());
 		setIsCartUpdating(false);
+	};
+
+	const onCopyCartClicked = () => {
+		dispatch(copyCart());
+		setIsCartCopying(false);
 	};
 
 	const onRemoveCartClicked = (cart: Cart) => {
@@ -179,6 +198,7 @@ const Carts = (props: Props) => {
 							onOpenUpdateCartModalClick={onOpenUpdateCartModalClicked}
 							onRemoveCartClick={onRemoveCartClicked}
 							currentUserEmail={email}
+							onOpenCopyCartModalClick={onOpenCopyCartModalClicked}
 						/> : null
 					}
 				</div>
@@ -186,7 +206,7 @@ const Carts = (props: Props) => {
 		</Draggable>
 	));
 
-	const createCartDraftCart = isCartUpdating ? {
+	const createCartDraftCart = isCartUpdating || isCartCopying ? {
 		id: '',
 		title: '',
 		notes: '',
@@ -209,7 +229,6 @@ const Carts = (props: Props) => {
 
 			<UpdateCart
 				draftCart={draftCart}
-
 				onDraftCartTitleChange={handleDraftCartTitleChange}
 				onDraftCartNotesChange={handleDraftCartNotesChange}
 
@@ -222,6 +241,14 @@ const Carts = (props: Props) => {
 
 				onCloseUpdateCartModalClick={onCloseUpdateCartModalClicked}
 				onUpdateCartClick={onUpdateCartClicked}
+			/>
+
+			<CopyCartModal
+				isVisible={isCartCopying}
+				draftCart={draftCart}
+				onDraftCartTitleChange={handleDraftCartTitleChange}
+				onCopyCartClick={onCopyCartClicked}
+				onCloseCopyCartModalClick={onCloseCopyCartModalClicked}
 			/>
 
 			<div className='filter_cart'>

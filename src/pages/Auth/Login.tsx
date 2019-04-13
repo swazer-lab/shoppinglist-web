@@ -5,7 +5,7 @@ import { AppState, RouteName } from '../../types/store';
 
 import { Button, Input } from '../../components';
 
-import { clearAlert, navigate, showAlert } from '../../actions/service';
+import { clearAlert, navigate } from '../../actions/service';
 import { changeEmail, changePassword, externalLogin, login } from '../../actions/auth';
 import { setProfileAvatarUrl } from '../../actions/profile';
 import language from '../../assets/language';
@@ -99,7 +99,7 @@ const Login = (props: Props) => {
 						title={language.actionRegister}
 						onClick={onRegisterClicked}
 					/>
-					<Button type='submit' title={language.actionLogin}/>
+					<Button type='submit' title={language.actionLogin} />
 				</div>
 			</form>
 

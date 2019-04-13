@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 
 import { AppState } from '../../types/store';
@@ -100,11 +100,11 @@ const Register = (props: Props) => {
 						title={language.actionLoginInstead}
 						onClick={onLoginClicked}
 					/>
-					<Button type='submit' title={language.actionRegister}/>
+					<Button type='submit' title={language.actionRegister} />
 				</div>
 			</form>
 
-			<ExternalLogin loginWithFacebook={loginWithFacebook} loginWithGoogle={loginWithGoogle}/>
+			<ExternalLogin loginWithFacebook={loginWithFacebook} loginWithGoogle={loginWithGoogle} />
 		</div>
 	);
 };

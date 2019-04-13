@@ -5,11 +5,11 @@ import { Cart } from '../../types/api';
 
 import { Modal, ProgressBar } from '../../components';
 import ShareCart from './ShareCart';
-import { getCartStatus } from '../../config/utilities';
 
-import avatar from '../../assets/images/avatar.jpeg';
+import { getCartStatus } from '../../config/utilities';
 import language from '../../assets/language';
 
+import avatar from '../../assets/images/avatar.jpeg';
 import './styles.scss';
 import SharedUserInformation from './SharedUserInformation';
 
@@ -20,7 +20,8 @@ interface Props {
 	currentUserEmail?: string,
 
 	onOpenUpdateCartModalClick: (cart: Cart) => void,
-	onRemoveCartClick: (cart: Cart) => void
+	onRemoveCartClick: (cart: Cart) => void,
+	onOpenCopyCartModalClick: (cart: Cart) => void,
 }
 
 const CartObject = (props: Props) => {
@@ -28,7 +29,7 @@ const CartObject = (props: Props) => {
 	const [isSharedUserModalVisible, setisSharedUserModalVisible] = useState(false);
 	const [accessLevel, setAccessLevel] = useState('');
 
-	const { progress, cart, onOpenUpdateCartModalClick, onRemoveCartClick, currentUserEmail } = props;
+	const { progress, cart, onOpenUpdateCartModalClick, onRemoveCartClick, onOpenCopyCartModalClick, currentUserEmail } = props;
 
 	useEffect(() => {
 		if (!progress.visible && isShareModalVisible) {
@@ -75,6 +76,11 @@ const CartObject = (props: Props) => {
 		setisSharedUserModalVisible(false);
 	};
 
+	const onOpenCopyCartModalClicked = (e: any) => {
+		e.stopPropagation();
+		onOpenCopyCartModalClick(cart);
+	};
+
 	const status = getCartStatus(cart.items);
 
 	const renderItems = (status: string) => cart.items.filter(item => item.status === status).map(item => (
@@ -90,9 +96,9 @@ const CartObject = (props: Props) => {
 	return (
 		<div className='cart_object' onClick={onOpenUpdateCartModalClicked}>
 			{accessLevel === 'owner' &&
-            <div className='cart_object__remove_button' onClick={onRemoveCartClicked}>
-                <i className='material-icons'>cancel</i>
-            </div>
+			<div className='cart_object__remove_button' onClick={onRemoveCartClicked}>
+				<i className='material-icons'>cancel</i>
+			</div>
 			}
 
 			<h4 className='cart_object__title'>{cart.title}</h4>
@@ -113,7 +119,7 @@ const CartObject = (props: Props) => {
 				{renderItems('active')}
 				{
 					cart.items.filter(item => item.status == 'completed').length !== 0 &&
-                    <div className='cart_object__items__separator'/>
+					<div className='cart_object__items__separator' />
 				}
 				{renderItems('completed')}
 			</div>
@@ -126,21 +132,21 @@ const CartObject = (props: Props) => {
 				<div className='cart_object__users_container__user_list'>
 					{cart.users.map((user) => (
 						<img key={user.uuid} src={user.photoUrl || avatar} width={30} height={30} alt='User Photo'
-						     onClick={onOpenSharedUserInformation}/>
+						     onClick={onOpenSharedUserInformation} />
 					))}
 				</div>
 			</div>
 
 			{accessLevel !== 'read' &&
-            <Modal
-                isVisible={isShareModalVisible}
-                onCloseModalClick={onCloseShareModalClick}
-                title={language.textShareCartTitle}
-                buttons={[{ iconName: 'close', onClick: onCloseShareModalClick }]}>
+			<Modal
+				isVisible={isShareModalVisible}
+				onCloseModalClick={onCloseShareModalClick}
+				title={language.textShareCartTitle}
+				buttons={[{ iconName: 'close', onClick: onCloseShareModalClick }]}>
 
-                <ProgressBar isLoading={progress.visible}/>
-                <ShareCart cart={cart}/>
-            </Modal>
+				<ProgressBar isLoading={progress.visible} />
+				<ShareCart cart={cart} />
+			</Modal>
 			}
 
 			<Modal
@@ -148,7 +154,7 @@ const CartObject = (props: Props) => {
 				onCloseModalClick={onCloseSharedUserInformation}
 				title='Shared User Information'
 				buttons={[{ iconName: 'close', onClick: onCloseSharedUserInformation }]}>
-				<SharedUserInformation cartUsers = {cart.users}/>
+				<SharedUserInformation cartUsers={cart.users} />
 			</Modal>
 		</div>
 	);

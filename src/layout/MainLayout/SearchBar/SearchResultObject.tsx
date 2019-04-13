@@ -31,7 +31,7 @@ const SearchResultObject = (props: Props) => {
 				{renderItems('active')}
 				{
 					cart.items.filter(item => item.status == 'completed').length !== 0 &&
-                    <div className='search_result_object__items__separator'/>
+					<div className='search_result_object__items__separator' />
 				}
 				{renderItems('completed')}
 			</div>

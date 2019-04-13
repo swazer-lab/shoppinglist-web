@@ -33,7 +33,7 @@ class Main extends React.Component<Props> {
 
 	render() {
 		return (
-			<AppNavigator/>
+			<AppNavigator />
 		);
 	}
 }
@@ -53,7 +53,7 @@ export default () => {
 
 	return (
 		<Provider store={store}>
-			<AppWithNavigation/>
+			<AppWithNavigation />
 		</Provider>
 	);
 }

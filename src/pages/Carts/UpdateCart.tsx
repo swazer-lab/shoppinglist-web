@@ -28,16 +28,12 @@ interface Props {
 const UpdateCart = (props: Props) => {
 	const {
 		draftCart,
-
 		onDraftCartTitleChange,
-
 		onCloseUpdateCartModalClick,
-
 		onAddDraftCartItemClick,
 		onRemoveDraftCartItemClick,
 		onDraftCartItemTitleChange,
 		onDraftCartItemStatusChange,
-
 		isVisible,
 		onUpdateCartClick,
 	} = props;
@@ -77,7 +73,7 @@ const UpdateCart = (props: Props) => {
 						{items.map(item => <CartItemObject key={item.uuid} cartItem={item}
 						                                   onRemoveDraftCartItemClick={onRemoveDraftCartItemClick}
 						                                   onDraftCartItemTitleChange={onDraftCartItemTitleChange}
-						                                   onDraftCartItemStatusChange={onDraftCartItemStatusChange}/>)}
+						                                   onDraftCartItemStatusChange={onDraftCartItemStatusChange} />)}
 					</div>
 
 					<div className='update_cart__form__add_item_button' onClick={onAddDraftCartItemClicked}>

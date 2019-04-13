@@ -119,7 +119,7 @@ const ProfileModal = (props: Props) => {
 					</div>
 				</div>
 
-				<input id='profile_photo_input' type='file' name='pic' accept='image/*' onChange={handleImageChange}/>
+				<input id='profile_photo_input' type='file' name='pic' accept='image/*' onChange={handleImageChange} />
 				<h3 className='profile_modal__name'>{name}</h3>
 
 				<div className='profile_modal__email'>{email}</div>
@@ -129,12 +129,12 @@ const ProfileModal = (props: Props) => {
 					{
 						!isEmailConfirmed ?
 							<Button mode='normal' title='Resend Confirm Email'
-							        onClick={onResendConfirmEmailConfirmClicked}/> : ''
+							        onClick={onResendConfirmEmailConfirmClicked} /> : ''
 					}
 				</div>
 
 				<div className='profile_modal__actions_container'>
-					<Button mode='text' accentColor='text' title='Logout' onClick={onLogoutClick}/>
+					<Button mode='text' accentColor='text' title='Logout' onClick={onLogoutClick} />
 				</div>
 			</div>
 		</div>
@@ -157,8 +157,8 @@ const ProfileModal = (props: Props) => {
 
 				<div className='update_profile_modal__actions_container'>
 					<Button mode='text' accentColor='text' title={language.titleChangePassword}
-					        onClick={onRedirectingToChangePasswordClick}/>
-					<Button title='Update' onClick={onUpdateProfileClick}/>
+					        onClick={onRedirectingToChangePasswordClick} />
+					<Button title='Update' onClick={onUpdateProfileClick} />
 				</div>
 			</div>
 		</div>
@@ -172,7 +172,7 @@ const ProfileModal = (props: Props) => {
 
 	return (
 		<Modal isVisible={isVisible} onCloseModalClick={onCloseProfileModalClick} title='Profile' buttons={buttons}>
-			<ProgressBar isLoading={isLoading}/>
+			<ProgressBar isLoading={isLoading} />
 			<Slider ref={slider} swipe={false} arrows={false} speed={300}>
 				{overviewContent}
 				{updateContent}

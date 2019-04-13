@@ -91,6 +91,7 @@ export default (state: State = initialState, action: Action): State => {
 			}
 
 		case ActionTypes.create_cart_result:
+		case ActionTypes.copy_cart_result:
 		case ActionTypes.update_cart_result:
 		case ActionTypes.pull_cart:
 		case ActionTypes.push_cart:
@@ -112,6 +113,7 @@ export default (state: State = initialState, action: Action): State => {
 		case ActionTypes.clear_carts:
 			return initialState;
 
+
 		default:
 			return state;
 	}
@@ -120,6 +122,11 @@ export default (state: State = initialState, action: Action): State => {
 export const carts = (state: Array<Cart> = initialState.carts, action: Action): Array<Cart> => {
 	switch (action.type) {
 		case ActionTypes.create_cart_result:
+			return [
+				action.cart,
+				...state,
+			];
+		case ActionTypes.copy_cart_result:
 			return [
 				action.cart,
 				...state,

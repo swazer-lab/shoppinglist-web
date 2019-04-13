@@ -25,7 +25,7 @@ const Input = (props: Props) => {
 	const itemNameRef: React.RefObject<HTMLInputElement> = useRef<any>();
 
 	useEffect(() => {
-		if(autoFoucus) {
+		if (autoFoucus) {
 			if (itemNameRef.current) {
 				itemNameRef.current.focus();
 			}

@@ -116,7 +116,7 @@ const Landing = (props: Props) => {
 							pattern='.{6,}'
 						/>
 
-						<Button title={language.actionLogin} onClick={onLoginClicked}/>
+						<Button title={language.actionLogin} onClick={onLoginClicked} />
 					</form>
 
 					<div className='landing_page__header__keep_signed_in'>

@@ -1,6 +1,6 @@
 @import "../../../assets/scss/main";
 
-.search_bar_container{
+.search_bar_container {
   display: flex;
 
   flex: 1;
@@ -87,7 +87,7 @@
         font-size: 1.4rem;
       }
 
-      &__checkbox{
+      &__checkbox {
         font-size: 1.8rem;
         color: $color-text;
       }

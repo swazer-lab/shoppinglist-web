@@ -6,7 +6,7 @@ import { Route as RouteType } from '../types/store';
 import { Layout } from '../layout';
 
 import { Landing } from '../pages/Landing';
-import { ConfirmEmail, ForgotPassword, Login, Register, ChangePassword } from '../pages/Auth';
+import { ChangePassword, ConfirmEmail, ForgotPassword, Login, Register } from '../pages/Auth';
 import { Carts, GetAccess } from '../pages/Carts';
 import { NotFound, PrivacyPolicy, ServiceTerms } from '../pages/Other';
 
@@ -29,7 +29,8 @@ export const AppNavigator = () => {
 
 	const renderRoutes = routes.map(({ name, path, Component }: RouteType) => {
 		const routeComponent = (props: any) => (
-			<Layout key={`layout_${name}`} layoutOptions={(Component.layoutOptions ? Component.layoutOptions : {})} {...props}>
+			<Layout key={`layout_${name}`}
+			        layoutOptions={(Component.layoutOptions ? Component.layoutOptions : {})} {...props}>
 				<Component />
 			</Layout>
 		);

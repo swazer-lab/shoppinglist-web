@@ -80,7 +80,7 @@ const ForgotPassword = (props: Props) => {
 							title={language.actionLogin}
 							onClick={onLoginClicked}
 						/>
-						<Button type='submit' title={language.actionSendResetPasswordEmail}/>
+						<Button type='submit' title={language.actionSendResetPasswordEmail} />
 					</div>
 				</form>
 			);

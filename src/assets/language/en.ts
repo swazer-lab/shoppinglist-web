@@ -102,6 +102,8 @@ export default {
 	textSharingCarts: 'Sharing Carts to users you choosed',
 	textAccessingCart: 'Accessing is being ensured',
 	textPersonAddingCart: 'You have been added to Cart',
+	titleCopyCart: 'Copy Cart',
+	textCopyingCart: 'Copying Cart',
 
 	textAccessLevelRead: 'Anyone with the link can read on the cart',
 	textAccessLevelWrite: 'Anyone with the link can write on the cart',

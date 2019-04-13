@@ -6,7 +6,6 @@ import { AppState } from '../types/store';
 import { AuthLayout, MainLayout } from './';
 import { useDocumentTitle } from '../config/utilities';
 import { navigate } from '../actions/service';
-import { getAccessToCart } from '../actions/carts';
 
 interface Props {
 	children?: any,
@@ -48,9 +47,9 @@ const Layout = (props: Props) => {
 };
 
 const mapStateToProps = (state: AppState) => {
-	const { isLoggedIn} = state.storage;
+	const { isLoggedIn } = state.storage;
 
-	return {isLoggedIn};
+	return { isLoggedIn };
 };
 
 export default connect(mapStateToProps)(Layout);

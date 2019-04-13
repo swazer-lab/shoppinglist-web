@@ -1,5 +1,5 @@
 import { Action as ReduxAction } from 'redux';
-import { History, LocationState } from 'history';
+import { LocationState } from 'history';
 
 export enum ActionTypes {
 	navigate = 'SERVICE_NAVIGATION__NAVIGATE',
@@ -29,7 +29,7 @@ export interface ServiceAction extends ReduxAction<ActionTypes> {
 export interface NavigateAction extends ServiceAction {
 	type: ActionTypes.navigate,
 	routeName: string,
-	location?:  LocationState
+	location?: LocationState
 }
 
 export interface ReplaceAction extends ServiceAction {

@@ -23,12 +23,12 @@ const GetAccess = (props: Props) => {
 		if (Id && isLoggedIn) {
 			dispatch(getAccessToCart(Id));
 		} else {
-			dispatch(navigate('Login', {routeName: `GetAccess/${match.params.id}`}));
+			dispatch(navigate('Login', { routeName: `GetAccess/${match.params.id}` }));
 		}
 	}, []);
 
 	return (
-		<div/>
+		<div />
 	);
 };
 

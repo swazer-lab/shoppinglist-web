@@ -17,6 +17,7 @@ import { cartMapper, cartUserMapper } from '../config/mapper';
 import { hideProgress, navigate, showAlert, showHttpErrorAlert, showProgress } from '../actions/service';
 import {
 	clearDraftCart,
+	copyCartResult,
 	createCartResult,
 	fetchCartsResult,
 	filterCartsResult,
@@ -112,6 +113,31 @@ function* createCartSaga() {
 	}
 }
 
+function* copyCartSaga() {
+	const { title, notes, items } = yield select((state: AppState) => state.carts.draftCart);
+
+	yield put(showProgress(language.textCopyingCart));
+
+	try {
+		const copiedCart = yield morphism(cartMapper(true), { title, notes, items });
+
+		const response = yield call(create_cart_api, copiedCart);
+		const data = yield morphism(cartMapper(), response.data);
+
+		yield all([
+			put(copyCartResult(false, data)),
+			put(clearDraftCart()),
+		]);
+	} catch (e) {
+		yield all([
+			put(copyCartResult(true)),
+			put(showHttpErrorAlert(e)),
+		]);
+	} finally {
+		yield put(hideProgress());
+	}
+}
+
 function* updateCartSaga() {
 	const { draftCart } = yield select((state: AppState) => state.carts);
 
@@ -192,7 +218,7 @@ function* getAccessToCartSaga(action: GetAccessToCartAction) {
 
 		yield all([
 			put(getAccessToCartResult(false, data)),
-			put(showAlert('success', '',language.textPersonAddingCart)),
+			put(showAlert('success', '', language.textPersonAddingCart)),
 			put(navigate('Carts')),
 		]);
 	} catch (e) {
@@ -230,4 +256,5 @@ export default [
 	takeLatest(ActionTypes.share_cart_with_contacts, shareCartWithContactsSaga),
 	takeLatest(ActionTypes.get_access_to_cart, getAccessToCartSaga),
 	takeLatest(ActionTypes.reorder_cart, reorderCartSaga),
+	takeLatest(ActionTypes.copy_cart, copyCartSaga),
 ];

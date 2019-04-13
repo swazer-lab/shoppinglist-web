@@ -34,9 +34,8 @@ export enum ActionTypes {
 	remove_cart = 'CARTS__REMOVE_CART',
 	remove_cart_result = 'CARTS__REMOVE_CART_RESULT',
 
-	// UNCHECKED
-	share_share_link = 'CARTS__SHARE_SHARE_LINK',
-	copy_share_link = 'CARTS__COPY_SHARE_LINK',
+	copy_cart = 'CARTS__COPY_CART',
+	copy_cart_result = 'CARTS__COPY_CART_RESULT',
 
 	get_access_to_cart = 'CARTS__GET_ACCESS_TO_CART',
 	get_access_to_cart_result = 'CARTS__GET_ACCESS_TO_CART_RESULT',
@@ -141,6 +140,11 @@ export interface CreateCartActionResult extends CartsActionResult {
 	cart?: Cart,
 }
 
+export interface CopyCartActionResult extends CartsActionResult {
+	type: ActionTypes.copy_cart_result,
+	cart?: Cart,
+}
+
 export interface RemoveCartAction extends CartsAction {
 	type: ActionTypes.remove_cart,
 	cart: Cart,
@@ -150,7 +154,6 @@ export interface RemoveCartActionResult extends CartsActionResult {
 	type: ActionTypes.remove_cart_result,
 	cart?: Cart,
 }
-
 
 export interface ShareCartWithContactsAction extends CartsAction {
 	type: ActionTypes.share_cart_with_contacts,
@@ -205,6 +208,7 @@ export type Action =
 	& FetchCartsAction
 	& FetchCartsActionResult
 	& CreateCartActionResult
+	& CopyCartActionResult
 	& RemoveCartAction
 	& RemoveCartActionResult
 	& PullCartAction
