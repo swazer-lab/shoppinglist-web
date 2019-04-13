@@ -5,7 +5,7 @@ import { AppState } from '../../types/store';
 
 import { Button, Input } from '../../components';
 
-import { clearAlert, navigate, showAlert } from '../../actions/service';
+import { clearAlert, navigate } from '../../actions/service';
 import { changeEmail, changeName, changePassword, externalLogin, register } from '../../actions/auth';
 import language from '../../assets/language';
 
@@ -51,16 +51,12 @@ const Register = (props: Props) => {
 		dispatch(externalLogin(name, email, accessToken, 'Google'));
 	};
 
-	const loginWithGoogleFailure = () => dispatch(showAlert('error', '', language.textUnexpectedError));
-
 	const loginWithFacebook = (response: any) => {
 		const { accessToken, name, email, picture } = response;
 
 		dispatch(setProfileAvatarUrl(picture.data.url));
 		dispatch(externalLogin(name, email, accessToken, 'Facebook'));
 	};
-
-	const loginWithFacebookFailure = () => dispatch(showAlert('error', '', language.textUnexpectedError));
 
 	return (
 		<div className='page_auth__content_container'>
@@ -108,7 +104,7 @@ const Register = (props: Props) => {
 				</div>
 			</form>
 
-			<ExternalLogin loginWithFacebook={loginWithFacebook} loginWithFacebookFailure={loginWithFacebookFailure} loginWithGoogle={loginWithGoogle} loginWithGoogleFailure={loginWithGoogleFailure} />
+			<ExternalLogin loginWithFacebook={loginWithFacebook} loginWithGoogle={loginWithGoogle}/>
 		</div>
 	);
 };

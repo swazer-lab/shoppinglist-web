@@ -6,14 +6,11 @@ import language from '../../assets/language';
 
 interface Props {
 	loginWithFacebook: (response: any) => void,
-	loginWithFacebookFailure: () => void
-
 	loginWithGoogle: (response: any) => void
-	loginWithGoogleFailure: () => void
 }
 
 const ExternalLogin = (props: Props) => {
-	const { loginWithFacebook, loginWithFacebookFailure, loginWithGoogle, loginWithGoogleFailure } = props;
+	const { loginWithFacebook, loginWithGoogle } = props;
 
 	const onLoginWithGoogleClicked = () => {
 		const google_button = document.getElementsByClassName('login_with_google_badge')[0];
@@ -25,6 +22,14 @@ const ExternalLogin = (props: Props) => {
 		const facebook_button = document.getElementsByClassName('login_with_facebook_badge')[0];
 		// @ts-ignore
 		facebook_button.click();
+	};
+
+	const loginWithGoogleFailureExecuted = (error: any) => {
+		return;
+	};
+
+	const loginWithFacebookFailureExecuted = (error: any) => {
+		return;
 	};
 
 	return (
@@ -41,7 +46,7 @@ const ExternalLogin = (props: Props) => {
 					appId={FACEBOOK_APP_ID}
 					fields="name, email, picture"
 					callback={loginWithFacebook}
-					onFailure={loginWithFacebookFailure}
+					onFailure={loginWithFacebookFailureExecuted}
 				/>
 
 				<GoogleLogin
@@ -49,7 +54,7 @@ const ExternalLogin = (props: Props) => {
 					clientId={GOOGLE_CLIENT_ID}
 					buttonText="REGISTER WITH GOOGLE"
 					onSuccess={loginWithGoogle}
-					onFailure={loginWithGoogleFailure}
+					onFailure={loginWithGoogleFailureExecuted}
 				/>
 
 				<div onClick={onLoginWithGoogleClicked}>{language.actionLoginWithGoogle}</div>
