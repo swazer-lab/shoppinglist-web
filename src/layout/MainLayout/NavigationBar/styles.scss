@@ -33,6 +33,10 @@
 
     overflow: hidden;
 
+    @include respond-portal{
+      display: none;
+    }
+
     &__icon {
       margin-top: 0.5rem;
       margin-left: 1.5rem;
@@ -127,29 +131,5 @@
   }
   100% {
     transform: rotate(360deg);
-  }
-}
-
-
-@media (max-width: 37.5em) {
-  .navigation_bar__search_bar {
-    width: 30rem;
-  }
-
-  .navigation_bar__progress {
-    display: none;
-  }
-
-  .navigation_bar__progress_show {
-    display: flex;
-    width: 5rem;
-  }
-
-  .navigation_bar__progress__message {
-    display: none;
-  }
-
-  .navigation_bar__auth {
-    display: none;
   }
 }

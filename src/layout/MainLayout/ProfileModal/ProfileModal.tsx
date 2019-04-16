@@ -21,6 +21,9 @@ interface Props {
 	avatarUrl?: string,
 	isEmailConfirmed: boolean,
 
+	password: string,
+	newPassword: string,
+
 	draftProfile: Profile,
 	onDraftProfileNameChange: (name: string) => void,
 	onDraftProfilePhoneNumberChange: (phoneNumber: string) => void,
@@ -29,13 +32,18 @@ interface Props {
 	onUpdateProfilePhotoClick: (photoData: string) => void,
 	onDeleteProfilePhotoClick: (e: any) => void,
 	onResendConfirmEmailConfirmClick: (userId: string) => void,
-	onRedirectingToChangePasswordClick: () => void,
 
 	onLogoutClick: () => void,
+
+	onChangePassword: (e: any) => void,
+	onChangeNewPassword: (e: any) => void,
+	onUpdatePasswordClick: () => void,
 }
 
 const ProfileModal = (props: Props) => {
 	const [isUpdating, setIsUpdating] = useState(false);
+	const [isChangingPassword, setIsChangingPassword] = useState(false);
+
 	const slider = useRef(null);
 
 	const {
@@ -49,22 +57,23 @@ const ProfileModal = (props: Props) => {
 		photoUrl,
 		avatarUrl,
 		draftProfile,
+		password,
+		newPassword,
 		onDraftProfileNameChange,
 		onDraftProfilePhoneNumberChange,
 		onUpdateProfileClick,
 		onUpdateProfilePhotoClick,
 		onDeleteProfilePhotoClick,
 		onResendConfirmEmailConfirmClick,
-		onRedirectingToChangePasswordClick,
 		onLogoutClick,
+		onChangePassword,
+		onChangeNewPassword,
+		onUpdatePasswordClick,
 	} = props;
 
-
 	useEffect(() => {
-		if (isUpdating && !isLoading) {
-			onBackToOverviewClicked();
-		}
-	}, [isLoading]);
+		onBackToOverviewClicked();
+	}, [isVisible]);
 
 	const onSelectImageClicked = () => {
 		const input = document.getElementById('profile_photo_input');
@@ -89,6 +98,12 @@ const ProfileModal = (props: Props) => {
 		onResendConfirmEmailConfirmClick(id || '');
 	};
 
+	const onGoToChangePasswordClicked = () => {
+		setIsChangingPassword(true);
+		// @ts-ignore
+		slider.current.slickGoTo(2, false);
+	};
+
 	const onGoToUpdateProfileClicked = () => {
 		setIsUpdating(true);
 
@@ -97,6 +112,7 @@ const ProfileModal = (props: Props) => {
 	};
 	const onBackToOverviewClicked = () => {
 		setIsUpdating(false);
+		setIsChangingPassword(false);
 
 		// @ts-ignore
 		slider.current.slickGoTo(0, false);
@@ -106,6 +122,9 @@ const ProfileModal = (props: Props) => {
 
 	const handleDraftProfileNameChange = (e: FormEvent<HTMLFormElement>) => onDraftProfileNameChange(e.currentTarget.value);
 	const handleDraftProfilePhoneNumberChange = (e: FormEvent<HTMLFormElement>) => onDraftProfilePhoneNumberChange(e.currentTarget.value);
+
+	const handlePasswordChange = (e: FormEvent<HTMLFormElement>) => onChangePassword(e.currentTarget.value);
+	const handleNewPasswordChange = (e: FormEvent<HTMLFormElement>) => onChangeNewPassword(e.currentTarget.value);
 
 	const overviewContent = (
 		<div>
@@ -156,26 +175,50 @@ const ProfileModal = (props: Props) => {
 				/>
 
 				<div className='update_profile_modal__actions_container'>
-					<Button mode='text' accentColor='text' title={language.titleChangePassword}
-					        onClick={onRedirectingToChangePasswordClick} />
 					<Button title='Update' onClick={onUpdateProfileClick} />
 				</div>
 			</div>
 		</div>
 	);
 
-	const buttons = isUpdating ? [{ iconName: 'arrow_forward', onClick: onBackToOverviewClicked }] : [
-		{ iconName: 'lock', onClick: onRedirectingToChangePasswordClick },
-		{ iconName: 'edit', onClick: onGoToUpdateProfileClicked },
-		{ iconName: 'close', onClick: onCloseProfileModalClick },
-	];
+	const changePasswordContent = (
+		<div>
+			<div className='update_profile_modal'>
+				<Input
+					value={password}
+					onChange={handlePasswordChange}
+					placeholder={language.textEnterPassword}
+					required
+				/>
+				<Input
+					value={newPassword}
+					onChange={handleNewPasswordChange}
+					placeholder={language.textEnterNewPassword}
+					required
+				/>
+
+				<div className='update_profile_modal__actions_container'>
+					<Button title='Change Password' onClick={onUpdatePasswordClick} />
+				</div>
+			</div>
+		</div>
+	);
+
+	const buttons = isUpdating ?
+		[{ iconName: 'arrow_forward', onClick: onBackToOverviewClicked },
+			{ iconName: 'lock', onClick: onGoToChangePasswordClicked }] :
+		[{ iconName: 'edit', onClick: onGoToUpdateProfileClicked },
+			{ iconName: 'close', onClick: onCloseProfileModalClick },
+		];
 
 	return (
-		<Modal isVisible={isVisible} onCloseModalClick={onCloseProfileModalClick} title='Profile' buttons={buttons}>
+		<Modal isVisible={isVisible} onCloseModalClick={onCloseProfileModalClick}
+		       title={isChangingPassword ? 'Change Password' : 'Profile'} buttons={buttons}>
 			<ProgressBar isLoading={isLoading} />
 			<Slider ref={slider} swipe={false} arrows={false} speed={300}>
 				{overviewContent}
 				{updateContent}
+				{changePasswordContent}
 			</Slider>
 		</Modal>
 	);

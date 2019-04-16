@@ -7,8 +7,8 @@ import { Profile } from '../../types/api';
 import { Alert, Snackbar } from '../../components';
 import { NavigationBar, ProfileModal } from './';
 
-import { clearAlert, hideSnackbar, navigate } from '../../actions/service';
-import { logout, resendConfirmEmail } from '../../actions/auth';
+import { clearAlert, hideSnackbar } from '../../actions/service';
+import { changeNewPassword, changePassword, logout, resendConfirmEmail, updatePassword } from '../../actions/auth';
 
 import {
 	changeDraftProfileName,
@@ -43,13 +43,16 @@ interface Props {
 
 	searchQuery?: string,
 
+	password: string,
+	newPassword: string,
+
 	isLoggedIn: boolean,
 	accessToken: string,
 	isEmailConfirmed: boolean
 }
 
 const MainLayout = (props: Props) => {
-	const { children, dispatch, progress, snackbar, alert, id, name, email, phoneNumber, photoUrl, avatarUrl, draftProfile, searchQuery, isLoggedIn, accessToken, isEmailConfirmed } = props;
+	const { children, dispatch, progress, snackbar, alert, id, name, email, phoneNumber, password, newPassword, photoUrl, avatarUrl, draftProfile, searchQuery, isLoggedIn, accessToken, isEmailConfirmed } = props;
 
 	const [isProfileModalVisible, setIsProfileModalVisible] = useState(false);
 
@@ -64,12 +67,14 @@ const MainLayout = (props: Props) => {
 	const onChangeDraftProfilePhoneNumber = (phoneNumber: string) => dispatch(changeDraftProfilePhoneNumber(phoneNumber));
 	const onUpdateProfileClicked = () => dispatch(updateProfile());
 
+	const onChangePassword = (password: string) => dispatch(changePassword(password));
+	const onChangeNewPassword = (newPassword: string) => dispatch(changeNewPassword(newPassword));
+	const onUpdatePasswordClicked = () => dispatch(updatePassword());
+
 	const onResendConfirmEmailConfirmClicked = (userId: string) => {
 		setIsProfileModalVisible(false);
 		dispatch(resendConfirmEmail(userId));
 	};
-
-	const onRedirectingToChangePasswordClicked = () => dispatch(navigate('ChangePassword'));
 
 	const onUpdateProfilePhotoClicked = (photoData: string) => dispatch(updateProfilePhoto(photoData));
 
@@ -113,6 +118,8 @@ const MainLayout = (props: Props) => {
 				email={email}
 				phoneNumber={phoneNumber}
 				isEmailConfirmed={isEmailConfirmed}
+				password={password}
+				newPassword={newPassword}
 				photoUrl={photoUrl}
 				avatarUrl={avatarUrl}
 				draftProfile={draftProfile}
@@ -123,7 +130,9 @@ const MainLayout = (props: Props) => {
 				onDeleteProfilePhotoClick={onDeleteProfilePhotoClicked}
 				onLogoutClick={onLogoutClicked}
 				onResendConfirmEmailConfirmClick={onResendConfirmEmailConfirmClicked}
-				onRedirectingToChangePasswordClick={onRedirectingToChangePasswordClicked}
+				onChangePassword={onChangePassword}
+				onChangeNewPassword={onChangeNewPassword}
+				onUpdatePasswordClick={onUpdatePasswordClicked}
 			/>
 			<Snackbar
 				visible={snackbar.visible}
@@ -148,6 +157,7 @@ const mapStateToProps = (state: AppState) => {
 	const { progress, snackbar, alert } = state.service;
 	const { id, name, email, phoneNumber, photoUrl, avatarUrl, draftProfile } = state.profile;
 	const { searchQuery } = state.carts;
+	const { password, newPassword } = state.auth;
 	const { isLoggedIn, accessToken, isEmailConfirmed } = state.storage;
 
 	return {
@@ -162,6 +172,9 @@ const mapStateToProps = (state: AppState) => {
 		photoUrl,
 		avatarUrl,
 		draftProfile,
+
+		password,
+		newPassword,
 
 		searchQuery,
 

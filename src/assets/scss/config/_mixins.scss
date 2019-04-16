@@ -23,6 +23,10 @@
   }
 }
 
+//@include respond-big-desktop(){
+//
+//}
+
 @mixin respond-value($property, $values...) {
   #{$property}: nth($values, 1);
 
@@ -40,19 +44,10 @@
   }
 }
 
-
 @mixin respond-width {
   width: 50rem;
 
-  @include respond-landing {
-    width: 70rem;
-  }
-
-  @include respond-portal {
-    width: 55rem;
-  }
-
   @include respond-phone {
-    width: 30rem;
+    width: 92vw;
   }
 }
