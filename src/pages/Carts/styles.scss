@@ -399,6 +399,16 @@
     overflow-x: scroll;
   }
 
+  &__with_friend{
+    font-weight: 500;
+    font-size: 1.4rem;
+    color: $color-text;
+    margin-left: 2.4rem;
+    margin-top:-23px;
+
+  }
+
+
   &__sharing_button {
     margin: 1rem;
   }
@@ -618,4 +628,7 @@
 
 .cart_object__users_container__share_button {
   margin-left: 10px;
+}
+.copyCart_with_friend{
+  margin-top:15px;
 }

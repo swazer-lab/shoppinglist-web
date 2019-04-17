@@ -42,11 +42,11 @@ const CopyCartModal = (props: Props) => {
 							onChange={handleDraftCartTitleChange}
 							required
 						/>
-						<i className='material-icons cart_item_object__close_button'
+						<i className='material-icons cart_item_object__close_button copyCart_with_friend'
 						   onClick={() => setHasToShare((prevState => !prevState))}
 						   children={hasToShare ? 'check_box' : 'check_box_outline_blank'}
 						/>
-						Share with friend
+						<p className='share_cart__with_friend'>{language.textShareWithFriend} </p>
 					</div>
 					<Button
 						className='update_cart__form__buttons_container__submit_button'
