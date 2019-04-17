@@ -153,7 +153,16 @@ const Carts = (props: Props) => {
 	const onAddDraftCartItemClicked = () => dispatch(addDraftCartItem());
 	const onRemoveDraftCartItemClicked = (uuid: string) => dispatch(removeDraftCartItem(uuid));
 	const handleDraftCartItemTitleChange = (uuid: string, title: string) => dispatch(changeDraftCartItemTitle(uuid, title));
-	const handleDraftCartItemStatusChange = (uuid: string, status: CartItemStatusType) => dispatch(changeDraftCartItemStatus(uuid, status));
+
+	const handleDraftCartItemStatusChange = (uuid: string, status: CartItemStatusType) => {
+		dispatch(changeDraftCartItemStatus(uuid, status))
+	};
+
+	const handleDraftCartObjectItemStatusChange = (uuid: string, status: CartItemStatusType, cart?: Cart) => {
+		dispatch(setDraftCart(cart!));
+		dispatch(changeDraftCartItemStatus(uuid, status))
+		dispatch(updateCart());
+	};
 
 	const onDragEnd = (result: DropResult) => {
 		const { source, destination } = result;
@@ -198,6 +207,7 @@ const Carts = (props: Props) => {
 							onRemoveCartClick={onRemoveCartClicked}
 							currentUserEmail={email}
 							onOpenCopyCartModalClick={onOpenCopyCartModalClicked}
+							onDraftCartItemStatusChange={handleDraftCartObjectItemStatusChange}
 						/> : null
 					}
 				</div>

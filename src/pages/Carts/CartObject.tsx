@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { AppState } from '../../types/store';
-import { Cart } from '../../types/api';
+import { Cart, CartItemStatusType } from '../../types/api';
 
 import { Modal, ProgressBar } from '../../components';
 import ShareCart from './ShareCart';
@@ -22,6 +22,7 @@ interface Props {
 	onOpenUpdateCartModalClick: (cart: Cart) => void,
 	onRemoveCartClick: (cart: Cart) => void,
 	onOpenCopyCartModalClick: (cart: Cart) => void,
+	onDraftCartItemStatusChange: (uuid: string, status: CartItemStatusType, cart: Cart) => void,
 }
 
 const CartObject = (props: Props) => {
@@ -29,7 +30,7 @@ const CartObject = (props: Props) => {
 	const [isSharedUserModalVisible, setisSharedUserModalVisible] = useState(false);
 	const [accessLevel, setAccessLevel] = useState('');
 
-	const { progress, cart, onOpenUpdateCartModalClick, onRemoveCartClick, onOpenCopyCartModalClick, currentUserEmail } = props;
+	const { progress, cart, onOpenUpdateCartModalClick, onRemoveCartClick, onOpenCopyCartModalClick, currentUserEmail, onDraftCartItemStatusChange } = props;
 
 	useEffect(() => {
 		if (!progress.visible && isShareModalVisible) {
@@ -83,25 +84,33 @@ const CartObject = (props: Props) => {
 
 	const status = getCartStatus(cart.items);
 
-	const renderItems = (status: string) => cart.items.filter(item => item.status === status).map(item => (
-		<div key={item.uuid} className='cart_object__items__item'>
-			<i
-				className='material-icons create_cart__cart_item__close_button'
-				children={item.status === 'active' ? 'check_box_outline_blank' : 'check_box'}
-			/>
-			<span className='cart_object__items__item__title'>{item.title}</span>
-		</div>
-	));
+
+	const renderItems = (status: string) => cart.items.filter(item => item.status === status).map(item => {
+
+		const handleDraftCartItemStatusChange = () => onDraftCartItemStatusChange(item.uuid, item.status === 'completed' ? 'active' : 'completed', cart);
+
+		return (
+			<div key={item.uuid} className='cart_object__items__item'>
+				<i
+					onClick={handleDraftCartItemStatusChange}
+					className='material-icons create_cart__cart_item__close_button'
+					children={item.status === 'active' ? 'check_box_outline_blank' : 'check_box'}
+				/>
+				<span className='cart_object__items__item__title'>{item.title}</span>
+			</div>
+		);
+	});
+
 
 	return (
-		<div className='cart_object' onClick={onOpenUpdateCartModalClicked}>
+		<div className='cart_object'>
 			{accessLevel === 'owner' &&
 			<div className='cart_object__remove_button' onClick={onRemoveCartClicked}>
 				<i className='material-icons'>cancel</i>
 			</div>
 			}
 
-			<h4 className='cart_object__title'>{cart.title}</h4>
+			<h4 className='cart_object__title' onClick={onOpenUpdateCartModalClicked}>{cart.title}</h4>
 			{
 				status === 'Active' ?
 					<div className='cart_object__status_active'>
