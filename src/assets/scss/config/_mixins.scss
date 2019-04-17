@@ -1,7 +1,7 @@
 // media query manager
 @mixin respond-phone {
-  @media (max-width: 37.5em) {
-    @content //0 - 600px
+  @media (max-width: 33.96875em) {
+    @content //0 - 543px
   }
 }
 
@@ -22,10 +22,6 @@
     @content //1800px -> +
   }
 }
-
-//@include respond-big-desktop(){
-//
-//}
 
 @mixin respond-value($property, $values...) {
   #{$property}: nth($values, 1);
