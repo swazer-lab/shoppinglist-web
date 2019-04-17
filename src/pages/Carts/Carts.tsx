@@ -17,7 +17,9 @@ import {
 	changeDraftCartItemTitle,
 	changeDraftCartNotes,
 	changeDraftCartTitle,
-	changeVisibilityFilter,clearDraftCart,
+	changeVisibilityFilter,
+	clearDraftCart,
+	copyCart,
 	createCart,
 	fetchCarts,
 	pullCart,
@@ -27,12 +29,11 @@ import {
 	reorderCart,
 	setDraftCart,
 	updateCart,
-	copyCart,
 } from '../../actions/carts';
 
 import language from '../../assets/language';
 import { getCartStatus } from '../../config/utilities';
-import { Button } from '../../components/Button';
+import VisibilityFilterComponent from './VisibilityFilterComponent';
 
 interface Props {
 	dispatch: Function,
@@ -112,12 +113,10 @@ const Carts = (props: Props) => {
 		setIsCartUpdating(false);
 	};
 
-
-	const onCopyCartClicked = () => {
-		dispatch(copyCart());
+	const onCopyCartClicked = (hasToShare: boolean) => {
+		dispatch(copyCart(hasToShare));
 		setIsCartCopying(false);
 	};
-
 
 	const onRemoveCartClicked = (cart: Cart) => {
 		if (snackbar.visible) {
@@ -180,7 +179,9 @@ const Carts = (props: Props) => {
 
 	const onGetCompletedCarts = () => {
 		dispatch(changeVisibilityFilter(VisibilityFilter.completed));
-	};const renderCarts = () => carts.map((cart, index) => (
+	};
+
+	const renderCarts = () => carts.map((cart, index) => (
 		<Draggable key={cart.id} draggableId={cart.id} index={index}>
 			{provided => (
 				<div className='cart_object_container'
@@ -188,14 +189,16 @@ const Carts = (props: Props) => {
 				     {...provided.draggableProps}
 				     {...provided.dragHandleProps}
 				>
-					{visibilityFilter === 'All' || getCartStatus(cart.items) === visibilityFilter ?<CartObject
-						key={cart.uuid}
-						progress={progress}
-						cart={cart}
-						onOpenUpdateCartModalClick={onOpenUpdateCartModalClicked}
-						onRemoveCartClick={onRemoveCartClicked}
-						currentUserEmail={email}
-						onOpenCopyCartModalClick={onOpenCopyCartModalClicked}/> : null
+					{visibilityFilter === 'All' || getCartStatus(cart.items) === visibilityFilter ?
+						<CartObject
+							key={cart.uuid}
+							progress={progress}
+							cart={cart}
+							onOpenUpdateCartModalClick={onOpenUpdateCartModalClicked}
+							onRemoveCartClick={onRemoveCartClicked}
+							currentUserEmail={email}
+							onOpenCopyCartModalClick={onOpenCopyCartModalClicked}
+						/> : null
 					}
 				</div>
 			)}
@@ -227,47 +230,33 @@ const Carts = (props: Props) => {
 				draftCart={draftCart}
 				onDraftCartTitleChange={handleDraftCartTitleChange}
 				onDraftCartNotesChange={handleDraftCartNotesChange}
-
 				onAddDraftCartItemClick={onAddDraftCartItemClicked}
 				onRemoveDraftCartItemClick={onRemoveDraftCartItemClicked}
 				onDraftCartItemTitleChange={handleDraftCartItemTitleChange}
 				onDraftCartItemStatusChange={handleDraftCartItemStatusChange}
-
 				isVisible={isCartUpdating}
-
 				onCloseUpdateCartModalClick={onCloseUpdateCartModalClicked}
 				onUpdateCartClick={onUpdateCartClicked}
 			/>
 
-      <CopyCartModal
-        isVisible={isCartCopying}
+			<CopyCartModal
+				isVisible={isCartCopying}
 				draftCart={draftCart}
 				onDraftCartTitleChange={handleDraftCartTitleChange}
 				onCopyCartClick={onCopyCartClicked}
 				onCloseCopyCartModalClick={onCloseCopyCartModalClicked}
-				/>
+			/>
 
-			<div className='filter_cart'>
-				<Button
-					type='button'
-					accentColor={visibilityFilter === 'All' ? 'primary' : 'white'}
-					title='All'
-					onClick={onGetAllCarts}
-					className='filter_cart__filter_button'
-				/>
-				<Button
-					type='button'
-					accentColor={visibilityFilter === 'Active' ? 'primary' : 'white'}
-					title='Active' onClick={onGetActiveCarts}
-					className='filter_cart__filter_button'
-				/>
-				<Button
-					type='button'
-					accentColor={visibilityFilter === 'Completed' ? 'primary' : 'white'}
-					title='Completed' onClick={onGetCompletedCarts}
-					className='filter_cart__filter_button'
-				/>
-			</div>
+			{
+				carts.length > 0 ?
+					<VisibilityFilterComponent
+						visibilityFilter={visibilityFilter}
+						onGetAllCarts={onGetAllCarts}
+						onGetActiveCarts={onGetActiveCarts}
+						onGetCompletedCarts={onGetCompletedCarts} />
+
+					: ''}
+
 
 			<DragDropContext onDragEnd={onDragEnd}>
 				<Droppable droppableId="list">
@@ -314,6 +303,5 @@ const mapStateToProps = (state: AppState) => {
 		accessToken,
 	};
 };
-
 
 export default connect(mapStateToProps)(Carts);

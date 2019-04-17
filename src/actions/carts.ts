@@ -7,7 +7,7 @@ import {
 	ChangeDraftCartReminderDateAction,
 	ChangeDraftCartTitleAction,
 	ChangeSearchQueryAction,
-	ChangeVisibilityFilter,
+	ChangeVisibilityFilter, CopyCartAction,
 	CopyCartActionResult,
 	CreateCartActionResult,
 	FetchCartsAction,
@@ -56,6 +56,7 @@ export const changeDraftCartItemStatus = (uuid: string, status: CartItemStatusTy
 	uuid,
 	status,
 });
+
 export const removeDraftCartItem = (uuid: string): RemoveDraftCartItemAction => ({
 	type: ActionTypes.remove_draft_cart_item,
 	uuid,
@@ -138,8 +139,9 @@ export const removeCartResult = (hasError: boolean, cart?: Cart): RemoveCartActi
 	cart,
 });
 
-export const copyCart = (): CartsAction => ({
+export const copyCart = (hasToShare: boolean): CopyCartAction => ({
 	type: ActionTypes.copy_cart,
+	hasToShare,
 });
 export const copyCartResult = (hasError: boolean, cart?: Cart): CopyCartActionResult => ({
 	type: ActionTypes.copy_cart_result,

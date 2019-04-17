@@ -36,6 +36,7 @@ import {
 	RemoveCartAction,
 	ReorderCartAction,
 	ShareCartWithContactsAction,
+	CopyCartAction,
 } from '../types/carts';
 import { Profile } from '../types/api';
 import { clearSelectedContacts } from '../actions/contacts';
@@ -113,28 +114,58 @@ function* createCartSaga() {
 	}
 }
 
-function* copyCartSaga() {
+function* copyCartSaga(action: CopyCartAction) {
+
 	const { title, notes, items } = yield select((state: AppState) => state.carts.draftCart);
 
 	yield put(showProgress(language.textCopyingCart));
 
-	try {
-		const copiedCart = yield morphism(cartMapper(true), { title, notes, items });
+	if (!action.hasToShare) {
+		try {
+			const copiedCart = yield morphism(cartMapper(true), { title, notes, items });
 
-		const response = yield call(create_cart_api, copiedCart);
-		const data = yield morphism(cartMapper(), response.data);
+			const response = yield call(create_cart_api, copiedCart);
+			const data = yield morphism(cartMapper(), response.data);
 
-		yield all([
-			put(copyCartResult(false, data)),
-			put(clearDraftCart()),
-		]);
-	} catch (e) {
-		yield all([
-			put(copyCartResult(true)),
-			put(showHttpErrorAlert(e)),
-		]);
-	} finally {
-		yield put(hideProgress());
+			yield all([
+				put(copyCartResult(false, data)),
+				put(clearDraftCart()),
+			]);
+		} catch (e) {
+			yield all([
+				put(copyCartResult(true)),
+				put(showHttpErrorAlert(e)),
+			]);
+		} finally {
+			yield put(hideProgress());
+		}
+	}
+	else {
+		try {
+			const { draftCart } = yield select((state: AppState) => state.carts);
+
+			const cart = yield morphism(cartMapper(true), draftCart);
+
+			cart.cartId = null;
+
+			yield put(showProgress(language.textCopyingCart));
+			const response = yield call(create_cart_api, cart);
+
+			const responseData = yield morphism(cartMapper(),response.data);
+
+			yield all([
+				put(createCartResult(false,responseData)),
+				put(clearDraftCart()),
+			]);
+
+		} catch (e) {
+			yield all([
+				put(updateCartResult(true)),
+				put(showHttpErrorAlert(e)),
+			]);
+		} finally {
+			yield put(hideProgress());
+		}
 	}
 }
 
@@ -189,7 +220,6 @@ function* shareCartWithContactsSaga(action: ShareCartWithContactsAction) {
 	try {
 		const response = yield call(share_cart_with_contacts_api, cartId, emails);
 		const data = yield morphism(cartUserMapper(), response.data);
-
 		yield put(shareCartWithContactsResult(false, cartId, data));
 
 	} catch (e) {

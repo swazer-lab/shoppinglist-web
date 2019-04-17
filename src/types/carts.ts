@@ -140,6 +140,11 @@ export interface CreateCartActionResult extends CartsActionResult {
 	cart?: Cart,
 }
 
+export interface CopyCartAction extends CartsAction {
+	type: ActionTypes.copy_cart,
+	hasToShare: boolean,
+}
+
 export interface CopyCartActionResult extends CartsActionResult {
 	type: ActionTypes.copy_cart_result,
 	cart?: Cart,
@@ -221,7 +226,8 @@ export type Action =
 	& GetAccessToCartActionResult
 	& ReorderCartAction
 	& ReorderCartResultAction
-	& ChangeVisibilityFilter;
+	& ChangeVisibilityFilter
+	& CopyCartAction;
 
 export type State = {
 	draftCart: Cart,

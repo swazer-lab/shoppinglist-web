@@ -72,7 +72,6 @@ export const cartMapper = (toApi: boolean = false): Schema => {
 		title: 'title',
 		notes: 'notes',
 		date: 'date',
-
 		items: {
 			path: 'items',
 			fn: (value: Array<CartItem>): any => value !== null ? morphism(cartItemMapper(true), value) : undefined,

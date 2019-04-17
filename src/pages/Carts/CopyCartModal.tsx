@@ -1,4 +1,6 @@
-import React, { FormEvent } from 'react';
+import React, {
+	FormEvent, useState,
+} from 'react';
 
 import { Cart } from '../../types/api';
 import { Button, Modal } from '../../components';
@@ -8,23 +10,25 @@ import language from '../../assets/language';
 interface Props {
 	isVisible: boolean,
 	draftCart: Cart,
-
 	onDraftCartTitleChange: (title: string) => void,
-	onCopyCartClick: () => void,
-	onCloseCopyCartModalClick: () => void
+	onCopyCartClick: (hasToShare: boolean) => void,
+	onCloseCopyCartModalClick: () => void,
 }
 
 const CopyCartModal = (props: Props) => {
-	const { isVisible, draftCart, onDraftCartTitleChange, onCopyCartClick, onCloseCopyCartModalClick } = props;
+	const [hasToShare, setHasToShare] = useState(false);
 
+	const { isVisible, draftCart, onDraftCartTitleChange, onCopyCartClick, onCloseCopyCartModalClick } = props;
 	const handleDraftCartTitleChange = (e: FormEvent<HTMLInputElement>) => onDraftCartTitleChange(e.currentTarget.value);
 	const onCopyCartClicked = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		onCopyCartClick();
+		onCopyCartClick(hasToShare);
 	};
 
 	return (
-		<Modal isVisible={isVisible} onCloseModalClick={onCloseCopyCartModalClick} title={language.titleCopyCart}>
+		<Modal isVisible={isVisible} onCloseModalClick={onCloseCopyCartModalClick} title={language.titleCopyCart}
+		       buttons={[{ iconName: 'close', onClick: onCloseCopyCartModalClick }]}>
+
 			<form onSubmit={onCopyCartClicked} onClick={(e: any) => e.stopPropagation()}>
 				<div className='share_cart'>
 					<div className='share_cart__subtitle'>
@@ -38,6 +42,11 @@ const CopyCartModal = (props: Props) => {
 							onChange={handleDraftCartTitleChange}
 							required
 						/>
+						<i className='material-icons cart_item_object__close_button'
+						   onClick={() => setHasToShare((prevState => !prevState))}
+						   children={hasToShare ? 'check_box' : 'check_box_outline_blank'}
+						/>
+						Share with friend
 					</div>
 					<Button
 						className='update_cart__form__buttons_container__submit_button'

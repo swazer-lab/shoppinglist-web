@@ -12,6 +12,7 @@ export interface Profile {
 export type CartItemStatusType = 'active' | 'completed' | 'canceled';
 export type CartUserAccessLevelType = 'owner' | 'write' | 'read';
 
+
 export interface Cart {
 	id: string,
 	uuid: string,
