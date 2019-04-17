@@ -26,6 +26,53 @@
   }
 }
 
+.search_bar {
+  display: flex;
+  flex: 1;
+  align-items: center;
+
+  max-width: 50rem;
+  height: 4.1rem;
+
+  background-color: $color-highlight;
+  border: .1rem solid $color-gray;
+  border-radius: .8rem;
+
+  z-index: 600;
+
+  overflow: hidden;
+
+  @include respond-portal{
+    display: none;
+  }
+
+  &__icon {
+    margin-top: 0.5rem;
+    margin-left: 1.5rem;
+
+    font-size: 2.2rem;
+    color: $color-text;
+  }
+
+  &__input {
+    flex: 1;
+    margin-right: 1rem;
+    margin-left: 1rem;
+
+    font-family: inherit;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: $color-text;
+
+    background-color: transparent;
+    border: none;
+
+    &:focus {
+      outline: none;
+    }
+  }
+}
+
 .search_result_object {
   display: flex;
   position: relative;

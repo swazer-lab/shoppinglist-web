@@ -16,11 +16,12 @@ interface Props {
 	placeholder: string,
 	required?: boolean,
 	pattern?: string,
+	autocomplete?: string
 }
 
 const Input = (props: Props) => {
 
-	const { className, value, onChange, type, placeholder, required, pattern, autoFoucus } = props;
+	const { className, value, onChange, type, placeholder, required, pattern, autoFoucus, autocomplete } = props;
 
 	const itemNameRef: React.RefObject<HTMLInputElement> = useRef<any>();
 
@@ -43,6 +44,7 @@ const Input = (props: Props) => {
 				placeholder={placeholder}
 				required={required}
 				pattern={pattern}
+				autoComplete={autocomplete}
 			/>
 		</div>
 	);

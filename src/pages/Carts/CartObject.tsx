@@ -157,7 +157,7 @@ const CartObject = (props: Props) => {
 				isVisible={isShareModalVisible}
 				onCloseModalClick={onCloseShareModalClick}
 				title={language.textShareCartTitle}
-				buttons={[{ iconName: 'close', onClick: onCloseShareModalClick }]}>
+				rightButtons={[{ iconName: 'close', onClick: onCloseShareModalClick }]}>
 
 				<ProgressBar isLoading={progress.visible} />
 				<ShareCart cart={cart} />
@@ -168,7 +168,7 @@ const CartObject = (props: Props) => {
 				isVisible={isSharedUserModalVisible}
 				onCloseModalClick={onCloseSharedUserInformation}
 				title='Shared User Information'
-				buttons={[{ iconName: 'close', onClick: onCloseSharedUserInformation }]}>
+				rightButtons={[{ iconName: 'close', onClick: onCloseSharedUserInformation }]}>
 				<SharedUserInformation cartUsers={cart.users} />
 			</Modal>
 		</div>
