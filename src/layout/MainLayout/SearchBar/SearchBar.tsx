@@ -5,8 +5,8 @@ import { AppState } from '../../../types/store';
 import { connect } from 'react-redux';
 import { Cart } from '../../../types/api';
 
-import './styles.scss';
 import SearchResultObject from './SearchResultObject';
+import './styles.scss';
 
 interface Props {
 	searchQuery?: string,

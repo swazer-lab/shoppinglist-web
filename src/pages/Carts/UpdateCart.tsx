@@ -53,7 +53,7 @@ const UpdateCart = (props: Props) => {
 
 	const { title, items } = draftCart;
 	return (
-		<Modal isVisible={isVisible} onCloseModalClick={onCloseUpdateCartModalClicked} title='Update Cart'>
+		<Modal isVisible={isVisible} onCloseModalClick={onCloseUpdateCartModalClicked} title='Update Cart' buttons={[{ iconName: 'close', onClick: onCloseUpdateCartModalClicked }]}>
 			<div className='update_cart'>
 				<form
 					className='update_cart__form'
