@@ -58,7 +58,7 @@ export default {
 	textConfirmEmailErrorMessage: 'The confirmation message couldnt be sent',
 
 	// Forgot Password
-	titleForgotPassword: 'ForgotPassword',
+	titleForgotPassword: 'Forgot Password',
 	textForgotPasswordSubtitleStep1: 'Please enter your email to get reset password code',
 	textForgotPasswordSubtitleStep2: 'Please enter your reset password code which is sent yo your email',
 	textWeSentResetPasswordEmail: 'We sent reset password to your mail',
