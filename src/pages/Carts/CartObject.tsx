@@ -87,10 +87,13 @@ const CartObject = (props: Props) => {
 
 	const renderItems = (status: string) => cart.items.filter(item => item.status === status).map(item => {
 
-		const handleDraftCartItemStatusChange = () => onDraftCartItemStatusChange(item.uuid, item.status === 'completed' ? 'active' : 'completed', cart);
+		const handleDraftCartItemStatusChange = (e: any) => {
+			e.stopPropagation();
+			onDraftCartItemStatusChange(item.uuid, item.status === 'completed' ? 'active' : 'completed', cart);
+		}
 
 		return (
-			<div key={item.uuid} className='cart_object__items__item'>
+			<div key={item.uuid} className='cart_object__items__item' >
 				<i
 					onClick={handleDraftCartItemStatusChange}
 					className='material-icons create_cart__cart_item__close_button'
@@ -103,14 +106,14 @@ const CartObject = (props: Props) => {
 
 
 	return (
-		<div className='cart_object'>
+		<div className='cart_object' onClick={onOpenUpdateCartModalClicked}>
 			{accessLevel === 'owner' &&
 			<div className='cart_object__remove_button' onClick={onRemoveCartClicked}>
 				<i className='material-icons'>cancel</i>
 			</div>
 			}
 
-			<h4 className='cart_object__title' onClick={onOpenUpdateCartModalClicked}>{cart.title}</h4>
+			<h4 className='cart_object__title' >{cart.title}</h4>
 			{
 				status === 'Active' ?
 					<div className='cart_object__status_active'>
