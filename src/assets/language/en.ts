@@ -87,6 +87,7 @@ export default {
 	textShareCartWithContactSubtitle: 'Share with Contact',
 	textShareCartWithLinkSubtitle: 'Share with Link',
 	textShareCartTitle: 'Share',
+	textShareWithFriend:'Share with friend',
 
 	actionAddCartItem: 'Add Item',
 	actionCreateCart: 'Create Cart',
