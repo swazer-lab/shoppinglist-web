@@ -1,0 +1,28 @@
+@import "../../../assets/scss/main";
+
+.progress {
+  display: flex;
+  align-items: center;
+
+  width: 20rem;
+
+  &__spinner {
+    width: 2.5rem;
+    height: 2.5rem;
+
+    border-radius: 50%;
+    border: .25rem solid $color-gray;
+    border-top-color: $color-primary;
+
+    -webkit-animation: spin 1s infinite;
+    animation: spin 1s infinite;
+  }
+
+  &__message {
+    margin-left: 1.5rem;
+
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: $color-text;
+  }
+}

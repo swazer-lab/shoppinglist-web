@@ -49,12 +49,12 @@ const SearchBar = (props: Props) => {
 					{renderCarts()}
 				</div>
 			</div>
-			<div className='navigation_bar__search_bar'>
+			<div className='search_bar'>
 				<div onClick={onFilterClicked}>
-					<i className='material-icons navigation_bar__search_bar__icon'>search</i>
+					<i className='material-icons search_bar__icon'>search</i>
 				</div>
 				<input
-					className='navigation_bar__search_bar__input'
+					className='search_bar__input'
 					type='text'
 					placeholder={language.textEnterSearchQuery}
 					onChange={handleSearchQueryChange}
