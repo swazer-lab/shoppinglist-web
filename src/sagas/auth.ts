@@ -145,7 +145,6 @@ function* updatePasswordSaga() {
 		yield call(update_password_api, password, newPassword);
 		yield all([
 			put(updatePasswordResult(false)),
-			put(navigate('Login')),
 		]);
 	} catch (e) {
 		yield all([

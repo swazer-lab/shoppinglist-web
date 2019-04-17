@@ -103,9 +103,9 @@ const ForgotPassword = (props: Props) => {
 						type='password'
 						placeholder={language.textEnterNewPassword}
 						pattern='.{6,}'
+						autocomplete='new-password'
 						required
 					/>
-
 					<Button
 						type='submit'
 						className='page_auth__action_auth_button'
@@ -127,6 +127,8 @@ const ForgotPassword = (props: Props) => {
 
 const mapStateToProps = (state: AppState) => {
 	const { email, password, resetPasswordCode, isResettingPassword } = state.auth;
+
+	console.log(resetPasswordCode);
 
 	return {
 		email,

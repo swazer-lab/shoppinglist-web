@@ -55,6 +55,7 @@
     color: $color-text;
 
     & span {
+      flex: 1;
       font-size: 1.7rem;
       font-weight: bold;
     }
@@ -62,6 +63,19 @@
     & i {
       cursor: pointer;
     }
+  }
+
+  &__actions_container_left {
+    display: flex;
+    align-items: center;
+
+    & > * {
+      margin-right: 1.5rem;
+    }
+  }
+
+  &__actions_container_left_hide {
+    display: none;
   }
 
   &__actions_container {

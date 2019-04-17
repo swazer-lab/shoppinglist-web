@@ -27,7 +27,7 @@ const CopyCartModal = (props: Props) => {
 
 	return (
 		<Modal isVisible={isVisible} onCloseModalClick={onCloseCopyCartModalClick} title={language.titleCopyCart}
-		       buttons={[{ iconName: 'close', onClick: onCloseCopyCartModalClick }]}>
+		       rightButtons={[{ iconName: 'close', onClick: onCloseCopyCartModalClick }]}>
 
 			<form onSubmit={onCopyCartClicked} onClick={(e: any) => e.stopPropagation()}>
 				<div className='share_cart'>

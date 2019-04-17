@@ -94,18 +94,29 @@ const ProfileModal = (props: Props) => {
 		}
 	};
 
+	const onUpdatePasswordClicked = () => {
+		// @ts-ignore
+		slider.current.slickGoTo(1, false);
+
+		setIsUpdating(true);
+		setIsChangingPassword( false);
+		onUpdatePasswordClick();
+	};
+
 	const onResendConfirmEmailConfirmClicked = () => {
 		onResendConfirmEmailConfirmClick(id || '');
 	};
 
 	const onGoToChangePasswordClicked = () => {
 		setIsChangingPassword(true);
+		setIsUpdating(false);
 		// @ts-ignore
 		slider.current.slickGoTo(2, false);
 	};
 
 	const onGoToUpdateProfileClicked = () => {
 		setIsUpdating(true);
+		setIsChangingPassword(false);
 
 		// @ts-ignore
 		slider.current.slickGoTo(1, false);
@@ -188,32 +199,60 @@ const ProfileModal = (props: Props) => {
 					value={password}
 					onChange={handlePasswordChange}
 					placeholder={language.textEnterPassword}
+					type='password'
+					autocomplete='new-password'
 					required
 				/>
 				<Input
 					value={newPassword}
 					onChange={handleNewPasswordChange}
 					placeholder={language.textEnterNewPassword}
+					type='password'
+					autocomplete='new-password'
 					required
 				/>
 
 				<div className='update_profile_modal__actions_container'>
-					<Button title='Change Password' onClick={onUpdatePasswordClick} />
+					<Button title='Change Password' onClick={onUpdatePasswordClicked} />
 				</div>
 			</div>
 		</div>
 	);
 
-	const buttons = isUpdating ?
-		[{ iconName: 'arrow_forward', onClick: onBackToOverviewClicked },
-			{ iconName: 'lock', onClick: onGoToChangePasswordClicked }] :
-		[{ iconName: 'edit', onClick: onGoToUpdateProfileClicked },
-			{ iconName: 'close', onClick: onCloseProfileModalClick },
-		];
+	const getRightButtons = () => {
+		if (isUpdating) {
+			return [{ iconName: 'lock', onClick: onGoToChangePasswordClicked }];
+		}
+		if (isChangingPassword) {
+			return;
+		}
+		return [{ iconName: 'edit', onClick: onGoToUpdateProfileClicked }];
+	};
+
+	const getLeftButtons = () => {
+		if (isUpdating) {
+			return [{ iconName: 'arrow_back', onClick: onBackToOverviewClicked }];
+		}
+		if (isChangingPassword) {
+			return [{ iconName: 'arrow_back', onClick: onGoToUpdateProfileClicked }];
+		}
+		return [{ iconName: 'close', onClick: onCloseProfileModalClick }];
+	};
+
+	const getTitle = () => {
+		if (isUpdating) {
+			return 'Update Profile';
+		}
+		if (isChangingPassword) {
+			return 'Change Password';
+		}
+		return 'Profile';
+	};
 
 	return (
 		<Modal isVisible={isVisible} onCloseModalClick={onCloseProfileModalClick}
-		       title={isChangingPassword ? 'Change Password' : 'Profile'} buttons={buttons}>
+		       title={getTitle()} rightButtons={getRightButtons()}
+		       leftButtons={getLeftButtons()}>
 			<ProgressBar isLoading={isLoading} />
 			<Slider ref={slider} swipe={false} arrows={false} speed={300}>
 				{overviewContent}
