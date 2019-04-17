@@ -113,7 +113,6 @@ const CartObject = (props: Props) => {
 						{status}
 						<div className='cart_object__status_completed__dot_completed'></div>
 					</div>
-
 			}
 			<div className='cart_object__items'>
 				{renderItems('active')}
