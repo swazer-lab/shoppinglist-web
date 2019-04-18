@@ -187,16 +187,17 @@
 
 .filter_cart {
   align-self: flex-end;
-  margin-bottom: 1rem;
+  margin-bottom: 0.2rem;
 
   &__filter_button {
     padding: 0.6rem;
     margin-left: 0.6rem;
+
   }
 }
 
 .cart_object_container {
-  margin-bottom: 1rem;
+  margin-top: 1rem;
 }
 
 .cart_object {
