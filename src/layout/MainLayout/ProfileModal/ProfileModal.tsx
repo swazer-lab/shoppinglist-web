@@ -106,6 +106,8 @@ const ProfileModal = (props: Props) => {
 	const onUpdateProfileClicked = () => {
 		// @ts-ignore
 		slider.current.slickGoTo(0, false);
+		setIsUpdating(false);
+		setIsChangingPassword( false);
 
 		onUpdateProfileClick();
 	};
