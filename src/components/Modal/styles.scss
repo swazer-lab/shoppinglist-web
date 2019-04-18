@@ -40,6 +40,22 @@
     &_visible {
       transform: translate(-50%, -50%);
     }
+
+    @include respond-phone() {
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+
+      width: 100%;
+
+      border-radius: 0;
+      transform: translate(0, 0) scale(.7);
+
+      &_visible {
+        transform: translate(0, 0);
+      }
+    }
   }
 
   &__header {
@@ -85,24 +101,5 @@
     & > * {
       margin-left: 1.5rem;
     }
-  }
-}
-
-@media (max-width: 37.5em) {
-  .modal_component__content_container {
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-
-    width: 100%;
-    border-radius: 0rem;
-
-    transform: translate(0, 0);
-    transition: all .2s;
-  }
-
-  &_visible {
-    transform: translate(0, 0);
   }
 }
