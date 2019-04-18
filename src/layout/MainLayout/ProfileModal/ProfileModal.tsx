@@ -103,6 +103,13 @@ const ProfileModal = (props: Props) => {
 		onUpdatePasswordClick();
 	};
 
+	const onUpdateProfileClicked = () => {
+		// @ts-ignore
+		slider.current.slickGoTo(0, false);
+
+		onUpdateProfileClick();
+	};
+
 	const onResendConfirmEmailConfirmClicked = () => {
 		onResendConfirmEmailConfirmClick(id || '');
 	};
@@ -186,7 +193,7 @@ const ProfileModal = (props: Props) => {
 				/>
 
 				<div className='update_profile_modal__actions_container'>
-					<Button title='Update' onClick={onUpdateProfileClick} />
+					<Button title='Update' onClick={onUpdateProfileClicked} />
 				</div>
 			</div>
 		</div>

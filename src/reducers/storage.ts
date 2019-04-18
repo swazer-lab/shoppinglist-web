@@ -5,6 +5,7 @@ const initialState: State = {
 	accessToken: '',
 	isEmailConfirmed: false,
 	activeLanguage: AvailableLanguages.en,
+	userName: ''
 };
 
 export default (state: State = initialState, action: Action) => {
@@ -17,6 +18,8 @@ export default (state: State = initialState, action: Action) => {
 			return { ...state, isEmailConfirmed: action.isEmailConfirmed };
 		case ActionTypes.change_active_language:
 			return { ...state, activeLanguage: action.activeLanguage };
+		case ActionTypes.set_user_name:
+			return { ...state, userName: action.userName };
 
 		default:
 			return state;

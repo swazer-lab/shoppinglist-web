@@ -15,7 +15,7 @@ import {
 
 import { hideProgress, navigate, showAlert, showHttpErrorAlert, showProgress } from '../actions/service';
 
-import { changeAccessToken, changeIsEmailConfirmed, changeIsLoggedIn } from '../actions/storage';
+import { changeAccessToken, changeIsEmailConfirmed, changeIsLoggedIn, setUserName } from '../actions/storage';
 
 import {
 	confirmEmailResult,
@@ -224,6 +224,7 @@ function* logoutSaga() {
 		put(changeIsLoggedIn(false)),
 		put(changeIsEmailConfirmed(false)),
 		put(changeAccessToken('')),
+		put(setUserName(''))
 	]);
 }
 
