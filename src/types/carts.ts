@@ -143,6 +143,7 @@ export interface CreateCartActionResult extends CartsActionResult {
 export interface CopyCartAction extends CartsAction {
 	type: ActionTypes.copy_cart,
 	hasToShare: boolean,
+	oldTitle?: string
 }
 
 export interface CopyCartActionResult extends CartsActionResult {

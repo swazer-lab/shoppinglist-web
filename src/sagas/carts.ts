@@ -1,7 +1,8 @@
 import morphism from 'morphism';
 import { all, call, put, select, takeLatest } from 'redux-saga/effects';
 
-import { AppState } from '../types/store';
+
+import { AppState, Localstorage } from '../types/store';
 
 import {
 	create_cart_api,
@@ -38,7 +39,7 @@ import {
 	ShareCartWithContactsAction,
 	CopyCartAction,
 } from '../types/carts';
-import { Profile } from '../types/api';
+import { Cart, Profile } from '../types/api';
 import { clearSelectedContacts } from '../actions/contacts';
 
 function* filterCartsSaga() {
@@ -120,6 +121,8 @@ function* copyCartSaga(action: CopyCartAction) {
 
 	yield put(showProgress(language.textCopyingCart));
 
+	console.log(action.oldTitle);
+
 	if (!action.hasToShare) {
 		try {
 			const copiedCart = yield morphism(cartMapper(true), { title, notes, items });
@@ -143,16 +146,11 @@ function* copyCartSaga(action: CopyCartAction) {
 	else {
 		try {
 			const { draftCart } = yield select((state: AppState) => state.carts);
-
 			const cart = yield morphism(cartMapper(true), draftCart);
-
 			cart.cartId = null;
-
 			yield put(showProgress(language.textCopyingCart));
 			const response = yield call(create_cart_api, cart);
-
 			const responseData = yield morphism(cartMapper(),response.data);
-
 			yield all([
 				put(createCartResult(false,responseData)),
 				put(clearDraftCart()),
@@ -171,7 +169,6 @@ function* copyCartSaga(action: CopyCartAction) {
 
 function* updateCartSaga() {
 	const { draftCart } = yield select((state: AppState) => state.carts);
-
 	yield put(showProgress(language.textUpdatingCart));
 
 	try {
