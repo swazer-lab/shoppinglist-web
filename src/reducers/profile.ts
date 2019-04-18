@@ -1,4 +1,5 @@
 import { Action, ActionTypes, State } from '../types/profile';
+import { act } from 'react-dom/test-utils';
 
 const initialState: State = {
 	id: '',
@@ -39,6 +40,14 @@ export default (state: State = initialState, action: Action): State => {
 				},
 			};
 
+		case ActionTypes.update_profile_result:
+			if (action.hasError) return state;
+
+			return {
+				...state,
+				...action.profile,
+				avatarUrl: (require('../assets/images/avatar.jpeg'))
+			};
 
 		case ActionTypes.fetch_profile_result:
 			if (action.hasError) return state;

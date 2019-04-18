@@ -54,6 +54,11 @@ export interface UpdateProfilePhotoActionResult extends ProfileActionResult {
 	photoUrl?: string
 }
 
+export interface UpdateProfileActionResult extends ProfileActionResult {
+	type: ActionTypes.update_profile_result,
+	profile?: Profile
+}
+
 
 export interface SetProfileAvatarUrl extends ProfileAction {
 	type: ActionTypes.set_avatar_url,
@@ -66,6 +71,7 @@ export type Action =
 	& FetchProfileActionResult
 	& UpdateProfilePhotoAction
 	& UpdateProfilePhotoActionResult
+	& UpdateProfileActionResult
 	& ChangeDraftProfileNameAction
 	& ChangeDraftProfilePhoneNumberAction
 	& SetProfileAvatarUrl;

@@ -48,9 +48,11 @@ function* updateProfileSaga() {
 
 	try {
 		const profile = yield morphism(profileMapper(true), draftProfile);
-		yield call(update_profile_api, profile);
+		const response = yield call(update_profile_api, profile);
 
-		yield put(updateProfileResult(false));
+		const data = yield morphism(profileMapper(), response.data);
+
+		yield put(updateProfileResult(false, data));
 	} catch (e) {
 		yield all([
 			put(updateProfileResult(true)),

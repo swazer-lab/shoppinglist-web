@@ -10,6 +10,7 @@ import {
 	SetProfileAvatarUrl,
 	UpdateProfilePhotoAction,
 	UpdateProfilePhotoActionResult,
+	UpdateProfileActionResult
 } from '../types/profile';
 
 export const changeDraftProfileName = (name: string): ChangeDraftProfileNameAction => ({
@@ -34,9 +35,11 @@ export const fetchProfileResult = (hasError: boolean, profile?: Profile): FetchP
 export const updateProfile = (): ProfileAction => ({
 	type: ActionTypes.update_profile,
 });
-export const updateProfileResult = (hasError: boolean): ProfileActionResult => ({
+
+export const updateProfileResult = (hasError: boolean, profile?: Profile): UpdateProfileActionResult => ({
 	type: ActionTypes.update_profile_result,
 	hasError,
+	profile
 });
 
 export const updateProfilePhoto = (photoData: string): UpdateProfilePhotoAction => ({
