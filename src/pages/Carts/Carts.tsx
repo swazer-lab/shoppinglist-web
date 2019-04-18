@@ -61,6 +61,7 @@ const Carts = (props: Props) => {
 	const [isCartUpdating, setIsCartUpdating] = useState(false);
 	const [isCartCopying, setIsCartCopying] = useState(false);
 
+
 	useEffect(() => {
 		if (isLoggedIn && accessToken) {
 			dispatch(fetchCarts(false, 'replace', 1));
@@ -96,6 +97,7 @@ const Carts = (props: Props) => {
 
 	const onOpenCopyCartModalClicked = (cart: Cart) => {
 		dispatch(setDraftCart(cart));
+		dispatch(changeDraftCartTitle(cart.title + ' (Copy)'))
 		setIsCartCopying(true);
 	};
 

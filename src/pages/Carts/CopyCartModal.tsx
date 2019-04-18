@@ -25,6 +25,8 @@ const CopyCartModal = (props: Props) => {
 		onCopyCartClick(hasToShare);
 	};
 
+
+
 	return (
 		<Modal isVisible={isVisible} onCloseModalClick={onCloseCopyCartModalClick} title={language.titleCopyCart}
 		       rightButtons={[{ iconName: 'close', onClick: onCloseCopyCartModalClick }]}>

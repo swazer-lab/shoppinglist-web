@@ -139,7 +139,7 @@ export const removeCartResult = (hasError: boolean, cart?: Cart): RemoveCartActi
 	cart,
 });
 
-export const copyCart = (hasToShare: boolean): CopyCartAction => ({
+export const copyCart = (hasToShare: boolean, oldTitle?: string): CopyCartAction => ({
 	type: ActionTypes.copy_cart,
 	hasToShare,
 });
