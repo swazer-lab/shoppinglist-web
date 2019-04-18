@@ -4,26 +4,27 @@ import classNames from 'classnames';
 
 import { AppState } from '../../types/store';
 
-import { Button, Input } from '../../components';
+import { AuthorizedLogin, Button, Input } from '../../components';
 
 import { clearAlert, navigate } from '../../actions/service';
-import { changeEmail, changePassword, login } from '../../actions/auth';
+import { changeEmail, changePassword, login, logout } from '../../actions/auth';
 
 import language from '../../assets/language';
 import './styles.scss';
 
 interface Props {
 	dispatch: Function,
-
 	email: string,
+	userName: string,
 	password: string,
+	isLoggedIn: boolean,
 
 	alert: AppState['service']['alert'],
 }
 
 const Landing = (props: Props) => {
 
-	const { dispatch, email, password, alert } = props;
+	const { dispatch, email, password, userName, isLoggedIn, alert } = props;
 
 	const [isScrolled, setIsScrolled] = useState(false);
 	const [isKeepSignedInActive, setIsKeepSignedInActive] = useState(false);
@@ -54,9 +55,15 @@ const Landing = (props: Props) => {
 	};
 
 	const onLoginClicked = (e: any) => {
+		if (isLoggedIn && userName) {
+			dispatch(navigate('Carts'));
+			return;
+		}
+
 		dispatch(login());
 		e.preventDefault();
 	};
+
 	const onKeepSignedInClicked = () => setIsKeepSignedInActive((prevState) => !prevState);
 
 	const onAppStoreBadgeClicked = () => window.open('https://play.google.com/store/apps/details?id=com.classdojo.android', '_blank');
@@ -67,6 +74,8 @@ const Landing = (props: Props) => {
 	const navigateForgotPassword = () => dispatch(navigate('ForgotPassword'));
 	const navigatePrivacyPolicy = () => dispatch(navigate('PrivacyPolicy'));
 	const navigateServiceTerms = () => dispatch(navigate('ServiceTerms'));
+
+	const onSwitchAccountClicked = () => dispatch(logout());
 
 	return (
 		<div className='landing_page'>
@@ -99,37 +108,41 @@ const Landing = (props: Props) => {
 					<div className='landing_page__column landing_page__header__auth_container__error_message'>
 						{alert.message}
 					</div>
-					<form onSubmit={onLoginClicked}>
-						<Input
-							value={email}
-							onChange={handleEmailChange}
-							type='email'
-							placeholder={language.textEnterEmail}
-							required
-						/>
-						<Input
-							value={password}
-							onChange={handlePasswordChange}
-							type='password'
-							placeholder={language.textEnterPassword}
-							required
-							pattern='.{6,}'
-						/>
+					{isLoggedIn && userName ?
+						<AuthorizedLogin onLoginClick={onLoginClicked} onSwitchAccountClick={onSwitchAccountClicked}
+						                 userName={userName} /> :
+						<>
+							<form onSubmit={onLoginClicked}>
+								<Input
+									value={email}
+									onChange={handleEmailChange}
+									type='email'
+									placeholder={language.textEnterEmail}
+									required
+								/>
+								<Input
+									value={password}
+									onChange={handlePasswordChange}
+									type='password'
+									placeholder={language.textEnterPassword}
+									required
+									pattern='.{6,}'
+								/>
+								<Button type='submit' title={language.actionLogin} />
+							</form>
 
-						<Button title={language.actionLogin} onClick={onLoginClicked} />
-					</form>
+							<div className='landing_page__header__keep_signed_in'>
+								<i className='material-icons'
+								   children={isKeepSignedInActive ? 'check_box' : 'check_box_outline_blank'}
+								   onClick={onKeepSignedInClicked}
+								/>
+								<label onClick={onKeepSignedInClicked}>{language.actionKeepSignedMe}</label>
+							</div>
 
-					<div className='landing_page__header__keep_signed_in'>
-						<i className='material-icons'
-						   children={isKeepSignedInActive ? 'check_box' : 'check_box_outline_blank'}
-						   onClick={onKeepSignedInClicked}
-						/>
-						<label onClick={onKeepSignedInClicked}>{language.actionKeepSignedMe}</label>
-					</div>
-
-					<span onClick={navigateForgotPassword}
-					      className='landing_page__header__forgot_password'>{language.actionLandingForgotPassword}</span>
-
+							<span onClick={navigateForgotPassword}
+							      className='landing_page__header__forgot_password'>{language.actionLandingForgotPassword}</span>
+						</>
+					}
 					<div className='landing_page__header__store_buttons'>
 						<img
 							src={require('../../assets/images/app_store_badge.svg')}
@@ -232,11 +245,14 @@ Landing.layoutOptions = {
 const mapStateToProps = (state: AppState) => {
 	const { email, password } = state.auth;
 	const { alert } = state.service;
+	const { isLoggedIn, userName } = state.storage;
 
 	return {
 		email,
 		password,
 		alert,
+		isLoggedIn,
+		userName
 	};
 };
 

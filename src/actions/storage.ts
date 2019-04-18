@@ -5,6 +5,7 @@ import {
 	ChangeActiveLanguageAction,
 	ChangeIsEmailConfirmedAction,
 	ChangeIsLoggedInAction,
+	SetUserNameAction
 } from '../types/storage';
 
 export const changeIsLoggedIn = (isLoggedIn: boolean): ChangeIsLoggedInAction => ({
@@ -18,6 +19,10 @@ export const changeAccessToken = (accessToken: string): ChangeAccessTokenAction 
 export const changeIsEmailConfirmed = (isEmailConfirmed: boolean): ChangeIsEmailConfirmedAction => ({
 	type: ActionTypes.change_is_email_confirmed,
 	isEmailConfirmed,
+});
+export const setUserName = (userName: string): SetUserNameAction => ({
+	type: ActionTypes.set_user_name,
+	userName,
 });
 export const changeActiveLanguage = (activeLanguage: AvailableLanguages): ChangeActiveLanguageAction => ({
 	type: ActionTypes.change_active_language,

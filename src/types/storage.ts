@@ -4,7 +4,8 @@ export enum ActionTypes {
 	change_is_logged_in = 'STORAGE__CHANGE_IS_LOGGED_IN',
 	change_access_token = 'STORAGE__CHANGE_ACCESS_TOKEN',
 	change_is_email_confirmed = 'STORAGE__CHANGE_IS_EMAIL_CONFIRMED',
-	change_active_language = 'STORAGE__CHANGE_ACTIVE_LANGUAGE'
+	change_active_language = 'STORAGE__CHANGE_ACTIVE_LANGUAGE',
+  set_user_name = 'STORAGE__SET_USER_NAME'
 }
 
 export interface StorageAction extends ReduxAction<ActionTypes> {
@@ -30,18 +31,25 @@ export interface ChangeActiveLanguageAction extends StorageAction {
 	activeLanguage: AvailableLanguages
 }
 
+export interface SetUserNameAction extends StorageAction {
+	type: ActionTypes.set_user_name,
+	userName: string
+}
+
 export type Action =
 	& StorageAction
 	& ChangeIsLoggedInAction
 	& ChangeAccessTokenAction
 	& ChangeIsEmailConfirmedAction
-	& ChangeActiveLanguageAction;
+	& ChangeActiveLanguageAction
+	& SetUserNameAction;
 
 export interface State {
 	isLoggedIn: boolean
 	accessToken: string,
 	isEmailConfirmed: boolean,
 	activeLanguage: AvailableLanguages,
+	userName: string
 }
 
 export enum AvailableLanguages {

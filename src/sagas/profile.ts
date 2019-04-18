@@ -17,7 +17,7 @@ import {
 
 import language from '../assets/language';
 import { ActionTypes, UpdateProfilePhotoAction } from '../types/profile';
-import { changeIsEmailConfirmed } from '../actions/storage';
+import { changeIsEmailConfirmed, setUserName } from '../actions/storage';
 
 function* fetchProfileSaga() {
 	yield put(showProgress(language.textFetchingProfile));
@@ -29,6 +29,7 @@ function* fetchProfileSaga() {
 		yield all([
 			put(changeIsEmailConfirmed(data.isConfirmed)),
 			put(fetchProfileResult(false, data)),
+			put(setUserName(data.name)),
 		]);
 	} catch (e) {
 		yield all([
