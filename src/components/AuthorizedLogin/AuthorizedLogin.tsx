@@ -17,6 +17,8 @@ const AuthorizedLogin = (props: Props) => {
 				className='continue_as_user'
 				title={`Continue as ${userName}`}
 				onClick={onLoginClick}
+
+
 			/>
 			<Button
 				className='switch_user'
