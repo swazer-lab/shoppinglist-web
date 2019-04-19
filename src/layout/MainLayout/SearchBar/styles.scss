@@ -39,19 +39,49 @@
   border-radius: .8rem;
 
   z-index: 600;
+  cursor: pointer;
 
   overflow: hidden;
 
-  @include respond-portal{
-    display: none;
+  @include respond-portal {
+    background-color: $color-white;
+    border: none;
+
+    &_visible {
+      background-color: $color-highlight;
+      border: .1rem solid $color-gray;
+    }
   }
 
   &__icon {
+    margin-left: 0.5rem;
+    margin-top: 0.4rem;
+
+    font-size: 2.2rem;
+    color: $color-text;
+
+    @include respond-portal {
+      &_visible {
+        display: none;
+      }
+    }
+  }
+
+  &__close {
+    display: none;
+
     margin-top: 0.5rem;
     margin-left: 1.5rem;
 
     font-size: 2.2rem;
     color: $color-text;
+
+    @include respond-portal {
+      &_visible {
+        margin-top: 0;
+        display: flex;
+      }
+    }
   }
 
   &__input {
@@ -69,6 +99,14 @@
 
     &:focus {
       outline: none;
+    }
+
+    @include respond-portal {
+      display: none;
+
+      &_visible {
+        display: flex;
+      }
     }
   }
 }

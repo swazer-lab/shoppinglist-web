@@ -17,7 +17,7 @@ const initialState: State = {
 		message: '',
 		actions: [],
 		duration: 3000,
-	},
+	}
 };
 
 export default (state: State = initialState, action: Action): State => {

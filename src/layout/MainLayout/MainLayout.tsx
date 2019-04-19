@@ -55,6 +55,7 @@ const MainLayout = (props: Props) => {
 	const { children, dispatch, progress, snackbar, alert, id, name, email, phoneNumber, password, newPassword, photoUrl, avatarUrl, draftProfile, searchQuery, isLoggedIn, accessToken, isEmailConfirmed } = props;
 
 	const [isProfileModalVisible, setIsProfileModalVisible] = useState(false);
+	const [isOpenedSearchBar, setIsOpenedSearchBar] = useState(false);
 
 	useEffect(() => {
 		if (isLoggedIn && accessToken) {
@@ -86,7 +87,11 @@ const MainLayout = (props: Props) => {
 	const onLogoutClicked = () => dispatch(logout());
 
 	const onSearchQueryChanged = (queryString: string) => dispatch(changeSearchQuery(queryString));
-	const onFilterClicked = () => dispatch(filterCarts());
+
+	const onFilterClicked = () => {
+		setIsOpenedSearchBar(true);
+		dispatch(filterCarts());
+	};
 
 	const onSnackbarRequestClose = () => {
 		if (snackbar.visible) {
@@ -98,6 +103,10 @@ const MainLayout = (props: Props) => {
 		dispatch(clearAlert());
 	};
 
+	const onCloseSearchBar = () => {
+		setIsOpenedSearchBar(false);
+	}
+
 	return (
 		<div className='main_layout'>
 			<NavigationBar
@@ -108,6 +117,8 @@ const MainLayout = (props: Props) => {
 				onOpenProfileModalClick={() => setIsProfileModalVisible(true)}
 				onSearchQueryChange={onSearchQueryChanged}
 				onFilterClick={onFilterClicked}
+				isOpenSearchBar={isOpenedSearchBar}
+				onCloseSearchBar={onCloseSearchBar}
 			/>
 			<ProfileModal
 				isVisible={isProfileModalVisible}

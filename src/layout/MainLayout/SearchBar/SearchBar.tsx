@@ -10,22 +10,26 @@ import './styles.scss';
 
 interface Props {
 	searchQuery?: string,
+	isOpen: boolean,
 	onSearchQueryChange: (searchQuery: string) => void,
 	onFilterClick: () => void,
+	onCloseSearchBar: () => void,
 	filteredCarts?: Array<Cart>,
 }
 
 const SearchBar = (props: Props) => {
 	const [isSearchingStatus, setIsSearchingStatus] = useState(false);
 
-	const { onSearchQueryChange, onFilterClick, filteredCarts, searchQuery } = props;
+	const { onSearchQueryChange, onFilterClick, filteredCarts, searchQuery, isOpen, onCloseSearchBar } = props;
 
 	const handleSearchQueryChange = (e: FormEvent<HTMLInputElement>) => {
 		onSearchQueryChange(e.currentTarget.value);
 		onFilterClicked();
 	};
 
-	const onFilterClicked = () => onFilterClick();
+	const onFilterClicked = () => {
+		onFilterClick();
+	};
 
 	const handleFocus = () => setIsSearchingStatus(true);
 	const onSearchContainerClicked = () => {
@@ -34,6 +38,11 @@ const SearchBar = (props: Props) => {
 	};
 
 	const containerClassNames = classNames('search_bar_container', { search_bar_container_visible: isSearchingStatus });
+	const searchBarClassName = classNames('search_bar', { search_bar_visible: isOpen });
+	const inputClassName = classNames('search_bar__input', { search_bar__input_visible: isOpen });
+
+	const searchBarIconClassName = classNames('search_bar__icon', { search_bar__icon_visible: isOpen });
+	const searchBarCloseIconClassName = classNames('search_bar__close', { search_bar__close_visible: isOpen });
 
 	const renderCarts = () => filteredCarts!.map((cart) => (
 		<SearchResultObject
@@ -49,12 +58,15 @@ const SearchBar = (props: Props) => {
 					{renderCarts()}
 				</div>
 			</div>
-			<div className='search_bar'>
-				<div onClick={onFilterClicked}>
+			<div className={searchBarClassName}>
+				<div onClick={onFilterClicked} className={searchBarIconClassName}>
 					<i className='material-icons search_bar__icon'>search</i>
 				</div>
+				<div onClick={onCloseSearchBar} className={searchBarCloseIconClassName}>
+					<i className='material-icons'>arrow_left</i>
+				</div>
 				<input
-					className='search_bar__input'
+					className={inputClassName}
 					type='text'
 					placeholder={language.textEnterSearchQuery}
 					onChange={handleSearchQueryChange}

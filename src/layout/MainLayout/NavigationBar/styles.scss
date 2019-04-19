@@ -16,6 +16,7 @@
   border-bottom: .1rem solid $color-gray;
 
   z-index: 50;
+
   &__auth {
     display: flex;
     align-items: center;
@@ -23,6 +24,16 @@
 
     width: 20rem;
     cursor: pointer;
+
+    @include respond-portal {
+      width: 5rem;
+    }
+
+    @include respond-phone {
+      &_hidden {
+        display: none;
+      }
+    }
 
     &__photo {
       width: 4.1rem;

@@ -6,6 +6,19 @@
 
   width: 20rem;
 
+  @include respond-portal {
+    width: 5rem;
+  }
+
+  @include respond-phone {
+    display: none;
+
+    &_show {
+      display: flex;
+      width: 3rem;
+    }
+  }
+
   &__spinner {
     width: 2.5rem;
     height: 2.5rem;
@@ -24,5 +37,9 @@
     font-size: 1.4rem;
     font-weight: 700;
     color: $color-text;
+
+    @include respond-portal {
+      display: none;
+    }
   }
 }
