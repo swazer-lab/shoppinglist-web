@@ -49,6 +49,9 @@ export enum ActionTypes {
 	change_visibility_filter = 'CHANGE_VISIBILITY_FILTER',
 
 	clear_carts = 'CARTS__CLEAR_CARTS',
+
+	set_cart_updating = 'CARTS__SET_CART_UPDATING',
+  set_cart_copying = 'CARTS__SET_CART_COPYING'
 }
 
 export interface CartsAction extends ReduxAction<ActionTypes> {
@@ -200,6 +203,16 @@ export interface ReorderCartResultAction extends CartsActionResult {
 	destination?: number
 }
 
+export interface SetCartUpdatingAction extends CartsAction {
+	type: ActionTypes.set_cart_updating,
+	isCartUpdating: boolean
+}
+
+export interface SetCartCopyingAction extends CartsAction {
+	type: ActionTypes.set_cart_copying,
+	isCartCopying: boolean
+}
+
 export type Action =
 	& CartsAction
 	& CartsActionResult
@@ -228,7 +241,9 @@ export type Action =
 	& ReorderCartAction
 	& ReorderCartResultAction
 	& ChangeVisibilityFilter
-	& CopyCartAction;
+	& CopyCartAction
+	& SetCartUpdatingAction
+	& SetCartCopyingAction;
 
 export type State = {
 	draftCart: Cart,
@@ -238,6 +253,8 @@ export type State = {
 	searchQuery?: string,
 
 	visibilityFilter: VisibilityFilter,
+	isCartUpdating: boolean,
+	isCartCopying: boolean,
 
 	isLoading: boolean,
 	pageNumber: number,

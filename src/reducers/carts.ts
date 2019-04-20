@@ -17,6 +17,8 @@ const initialState: State = {
 	carts: [],
 
 	visibilityFilter: VisibilityFilter.all,
+	isCartUpdating: false,
+	isCartCopying: false,
 
 	searchQuery: '',
 	filteredCarts: [],
@@ -110,9 +112,20 @@ export default (state: State = initialState, action: Action): State => {
 				visibilityFilter: action.visibilityFilter,
 			};
 
+		case ActionTypes.set_cart_updating:
+			return {
+				...state,
+				isCartUpdating: action.isCartUpdating
+			};
+
+		case ActionTypes.set_cart_copying:
+			return {
+				...state,
+				isCartCopying: action.isCartCopying
+			};
+
 		case ActionTypes.clear_carts:
 			return initialState;
-
 
 		default:
 			return state;

@@ -28,6 +28,8 @@ import {
 	removeDraftCartItem,
 	reorderCart,
 	setDraftCart,
+	setIsCartUpdating,
+	setIsCartCopying,
 	updateCart,
 } from '../../actions/carts';
 
@@ -44,6 +46,8 @@ interface Props {
 	draftCart: Cart,
 
 	visibilityFilter: VisibilityFilter,
+	isCartUpdating: boolean,
+	isCartCopying: boolean,
 
 	email?: string,
 
@@ -56,11 +60,7 @@ interface Props {
 }
 
 const Carts = (props: Props) => {
-	const { dispatch, progress, snackbar, carts, draftCart, email, visibilityFilter, isLoggedIn, accessToken } = props;
-
-	const [isCartUpdating, setIsCartUpdating] = useState(false);
-	const [isCartCopying, setIsCartCopying] = useState(false);
-
+	const { dispatch, progress, snackbar, carts, draftCart, email, visibilityFilter, isCartUpdating, isCartCopying, isLoggedIn, accessToken } = props;
 
 	useEffect(() => {
 		if (isLoggedIn && accessToken) {
@@ -87,23 +87,23 @@ const Carts = (props: Props) => {
 
 	const onOpenUpdateCartModalClicked = (cart: Cart) => {
 		dispatch(setDraftCart(cart));
-		setIsCartUpdating(true);
+		dispatch(setIsCartUpdating(true));
 	};
 
 	const onCloseUpdateCartModalClicked = () => {
 		dispatch(clearDraftCart());
-		setIsCartUpdating(false);
+		dispatch(setIsCartUpdating(false));
 	};
 
 	const onOpenCopyCartModalClicked = (cart: Cart) => {
 		dispatch(setDraftCart(cart));
-		dispatch(changeDraftCartTitle(cart.title + ' (Copy)'))
-		setIsCartCopying(true);
+		dispatch(changeDraftCartTitle(cart.title + ' (Copy)'));
+		dispatch(setIsCartCopying(true));
 	};
 
 	const onCloseCopyCartModalClicked = () => {
 		dispatch(clearDraftCart());
-		setIsCartCopying(false);
+		dispatch(setIsCartCopying(false));
 	};
 
 	const onCreateCartClicked = () => {
@@ -112,12 +112,10 @@ const Carts = (props: Props) => {
 
 	const onUpdateCartClicked = () => {
 		dispatch(updateCart());
-		setIsCartUpdating(false);
 	};
 
 	const onCopyCartClicked = (hasToShare: boolean) => {
 		dispatch(copyCart(hasToShare));
-		setIsCartCopying(false);
 	};
 
 	const onRemoveCartClicked = (cart: Cart) => {
@@ -157,12 +155,12 @@ const Carts = (props: Props) => {
 	const handleDraftCartItemTitleChange = (uuid: string, title: string) => dispatch(changeDraftCartItemTitle(uuid, title));
 
 	const handleDraftCartItemStatusChange = (uuid: string, status: CartItemStatusType) => {
-		dispatch(changeDraftCartItemStatus(uuid, status))
+		dispatch(changeDraftCartItemStatus(uuid, status));
 	};
 
 	const handleDraftCartObjectItemStatusChange = (uuid: string, status: CartItemStatusType, cart?: Cart) => {
 		dispatch(setDraftCart(cart!));
-		dispatch(changeDraftCartItemStatus(uuid, status))
+		dispatch(changeDraftCartItemStatus(uuid, status));
 		dispatch(updateCart());
 	};
 
@@ -295,7 +293,7 @@ const mapStateToProps = (state: AppState) => {
 	const { email } = state.profile;
 	const { isLoggedIn, accessToken } = state.storage;
 
-	const { carts, draftCart, isLoading, totalCount, pageNumber, visibilityFilter } = state.carts;
+	const { carts, draftCart, isLoading, totalCount, pageNumber, visibilityFilter, isCartUpdating, isCartCopying } = state.carts;
 
 	return {
 		progress,
@@ -306,6 +304,8 @@ const mapStateToProps = (state: AppState) => {
 
 		draftCart,
 		visibilityFilter,
+		isCartUpdating,
+		isCartCopying,
 
 		isLoading,
 		totalCount,

@@ -27,6 +27,7 @@ import {
 	reorderCartResult,
 	shareCartWithContactsResult,
 	updateCartResult,
+	setIsCartUpdating, setIsCartCopying,
 } from '../actions/carts';
 
 import language from '../assets/language';
@@ -140,6 +141,7 @@ function* copyCartSaga(action: CopyCartAction) {
 				put(showHttpErrorAlert(e)),
 			]);
 		} finally {
+			yield put(setIsCartCopying(false)),
 			yield put(hideProgress());
 		}
 	}
@@ -155,13 +157,13 @@ function* copyCartSaga(action: CopyCartAction) {
 				put(createCartResult(false,responseData)),
 				put(clearDraftCart()),
 			]);
-
 		} catch (e) {
 			yield all([
 				put(updateCartResult(true)),
 				put(showHttpErrorAlert(e)),
 			]);
 		} finally {
+			yield put(setIsCartCopying(false)),
 			yield put(hideProgress());
 		}
 	}
@@ -187,6 +189,7 @@ function* updateCartSaga() {
 			put(showHttpErrorAlert(e)),
 		]);
 	} finally {
+		yield put(setIsCartUpdating(false)),
 		yield put(hideProgress());
 	}
 }

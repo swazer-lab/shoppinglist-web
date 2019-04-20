@@ -4,10 +4,10 @@ import {
 	ChangeDraftCartItemStatusAction,
 	ChangeDraftCartItemTitleAction,
 	ChangeDraftCartNotesAction,
-	ChangeDraftCartReminderDateAction,
 	ChangeDraftCartTitleAction,
 	ChangeSearchQueryAction,
-	ChangeVisibilityFilter, CopyCartAction,
+	ChangeVisibilityFilter,
+	CopyCartAction,
 	CopyCartActionResult,
 	CreateCartActionResult,
 	FetchCartsAction,
@@ -21,7 +21,8 @@ import {
 	RemoveCartActionResult,
 	RemoveDraftCartItemAction,
 	ReorderCartAction,
-	ReorderCartResultAction,
+	ReorderCartResultAction, SetCartCopyingAction,
+	SetCartUpdatingAction,
 	SetDraftCartAction,
 	ShareCartWithContactsAction,
 	ShareCartWithContactsActionResult,
@@ -37,10 +38,6 @@ export const changeDraftCartTitle = (title: string): ChangeDraftCartTitleAction 
 export const changeDraftCartNotes = (notes: string): ChangeDraftCartNotesAction => ({
 	type: ActionTypes.change_draft_cart_notes,
 	notes,
-});
-export const changeDraftCartReminderDate = (reminderDate: string): ChangeDraftCartReminderDateAction => ({
-	type: ActionTypes.change_draft_cart_reminder_date,
-	reminderDate,
 });
 
 export const addDraftCartItem = (): CartsAction => ({
@@ -190,5 +187,15 @@ export const reorderCartResult = (hasError: boolean, source?: number, destinatio
 export const changeVisibilityFilter = (visibilityFilter: VisibilityFilter): ChangeVisibilityFilter => ({
 	type: ActionTypes.change_visibility_filter,
 	visibilityFilter,
+});
+
+export const setIsCartUpdating = (isCartUpdating: boolean): SetCartUpdatingAction => ({
+	type: ActionTypes.set_cart_updating,
+	isCartUpdating
+});
+
+export const setIsCartCopying = (isCartCopying: boolean): SetCartCopyingAction => ({
+	type: ActionTypes.set_cart_copying,
+	isCartCopying
 });
 
