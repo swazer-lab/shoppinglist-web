@@ -1,0 +1,25 @@
+
+.Toastify__toast {
+    font-size: 14px;
+    border-radius: .4rem;
+
+    &.Toastify__toast--success {
+        background-color: #01bc8c
+    }
+    
+    .__alert-container {
+        display: flex;
+        flex-direction: row;
+
+        .__message {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            position: relative;
+            overflow: hidden;
+            padding: 0 10px;
+        }
+    }
+}
