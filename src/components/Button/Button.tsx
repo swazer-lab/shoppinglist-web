@@ -19,7 +19,6 @@ const Button = (props: Props) => {
 		<button
 			className={classNames(`button_component button_component-${mode}-${accentColor}`, className)}
 			onClick={onClick}
-
 			type={type}>
 			{title}
 		</button>
