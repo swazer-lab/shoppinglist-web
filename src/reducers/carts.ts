@@ -146,12 +146,11 @@ export const carts = (state: Array<Cart> = initialState.carts, action: Action): 
 			];
 		case ActionTypes.update_cart_result:
 			if (action.hasError) return state;
-			const updated_cart_index = state.findIndex(cart => cart.uuid === action.cart.uuid);
-			return [
-				...state.slice(0, updated_cart_index),
-				action.cart,
-				...state.slice(updated_cart_index + 1),
-			];
+			
+			return array(state).replace(cart => cart.id === action.cart.id, (prevCart: Cart) => ({
+				...action.cart,
+				uuid: prevCart.uuid,
+			}));
 
 		case ActionTypes.pull_cart:
 			return [

@@ -2,12 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd';
 
+import _ from 'lodash';
+
 import { AppState } from '../../types/store';
 import { Cart, CartItemStatusType } from '../../types/api';
 import { VisibilityFilter } from '../../types/carts';
 
 import CreateCart from './CreateCart';
 import UpdateCart from './UpdateCart';
+import DiscardDialog from './DiscardDialog'
 import CartObject from './CartObject';
 import CopyCartModal from './CopyCartModal';
 import { hideSnackbar, showSnackbar } from '../../actions/service';
@@ -60,6 +63,8 @@ interface Props {
 }
 
 const Carts = (props: Props) => {
+	const [isShowDiscardDialog, setShowDiscardDialog] = useState(false)
+
 	const { dispatch, progress, snackbar, carts, draftCart, email, visibilityFilter, isCartUpdating, isCartCopying, isLoggedIn, accessToken } = props;
 
 	useEffect(() => {
@@ -91,9 +96,38 @@ const Carts = (props: Props) => {
 	};
 
 	const onCloseUpdateCartModalClicked = () => {
-		dispatch(clearDraftCart());
-		dispatch(setIsCartUpdating(false));
+		const currentCart: any = carts.find(cart => cart.id === draftCart.id)
+
+		const pickElement = (object: Cart) => {
+			if ( !object ) return;
+
+			const filterObject = _.pick(object, ['title', 'items']);
+			
+			return Object.assign({}, filterObject, {
+				items: filterObject.items.map(elem => _.pick(elem, ['id', 'title', 'status']))
+			});
+		}
+
+		if ( _.isEqual(pickElement(currentCart), pickElement(draftCart)) ) {
+			dispatch(clearDraftCart());
+			dispatch(setIsCartUpdating(false));
+		} else {
+			setShowDiscardDialog(true)
+		}
 	};
+
+	const onClickChangesDiscard = async () => {
+		onClickCancelDiscard()
+
+		setTimeout(() => {
+			dispatch(clearDraftCart());
+			dispatch(setIsCartUpdating(false));
+		}, 300)
+	}
+
+	const onClickCancelDiscard = () => {
+		setShowDiscardDialog(false)
+	}
 
 	const onOpenCopyCartModalClicked = (cart: Cart) => {
 		dispatch(setDraftCart(cart));
@@ -278,6 +312,12 @@ const Carts = (props: Props) => {
 					)}
 				</Droppable>
 			</DragDropContext>
+
+			<DiscardDialog 
+				isShow={isShowDiscardDialog}
+				onCancel={onClickCancelDiscard}
+				onDiscard={onClickChangesDiscard}
+			/>
 		</div>
 	);
 };
