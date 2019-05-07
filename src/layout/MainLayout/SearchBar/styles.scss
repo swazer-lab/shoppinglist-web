@@ -125,6 +125,8 @@
   border: .1rem solid $color-gray;
   border-radius: .6rem;
 
+  cursor: pointer;
+
   @include respond-width();
 
   &__title {
