@@ -7910,10 +7910,10 @@ redux-devtools-extension@^2.13.8:
   version "2.13.8"
   resolved "https://registry.yarnpkg.com/redux-devtools-extension/-/redux-devtools-extension-2.13.8.tgz#37b982688626e5e4993ff87220c9bbb7cd2d96e1"
 
-redux-immutable-helper@^0.1.2:
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/redux-immutable-helper/-/redux-immutable-helper-0.1.2.tgz#71bbb9c74fc74598126dca9a5ad58051b1baa79b"
-  integrity sha512-1PVRruxLQaV/gbQYo+9sSzymya1LwkLSjaKi7/Lg/6YzdBeAKnrAST8kpjxt0D1A5CJy7B7R40wQlc6e6cyEiw==
+redux-immutable-helper@^0.1.4:
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/redux-immutable-helper/-/redux-immutable-helper-0.1.4.tgz#aabc3be2806bb61b06c837bb11f4eed503de8c06"
+  integrity sha512-iMKm7mAfRBGZwkGO6vTX6ItW9kFNcAmEWw8xjjE+4mSnm5IAb70tu287g3HOSkNXPHnn//0q+JWjgK/B+8Vufg==
 
 redux-logger@^3.0.6:
   version "3.0.6"
