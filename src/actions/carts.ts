@@ -1,33 +1,33 @@
 import {
-	ActionTypes,
-	CartsAction,
-	ChangeDraftCartItemStatusAction,
-	ChangeDraftCartItemTitleAction,
-	ChangeDraftCartNotesAction,
-	ChangeDraftCartTitleAction,
-	ChangeSearchQueryAction,
-	ChangeVisibilityFilter,
-	CopyCartAction,
-	CopyCartActionResult,
-	CreateCartActionResult,
-	FetchCartsAction,
-	FetchCartsActionResult,
-	FilterCartsActionResult,
-	GetAccessToCartAction,
-	GetAccessToCartActionResult,
-	PullCartAction,
-	PushCartAction,
-	RemoveCartAction,
-	RemoveCartActionResult,
-	RemoveDraftCartItemAction,
-	ReorderCartAction,
-	ReorderCartResultAction, SetCartCopyingAction,
-	SetCartUpdatingAction,
-	SetDraftCartAction,
-	ShareCartWithContactsAction,
-	ShareCartWithContactsActionResult,
-	UpdateCartResultAction,
-	VisibilityFilter,
+		ActionTypes,
+		CartsAction,
+		ChangeDraftCartItemStatusAction,
+		ChangeDraftCartItemTitleAction,
+		ChangeDraftCartNotesAction,
+		ChangeDraftCartTitleAction,
+		ChangeSearchQueryAction,
+		ChangeVisibilityFilter,
+		CopyCartAction,
+		CopyCartActionResult,
+		CreateCartActionResult,
+		FetchCartsAction,
+		FetchCartsActionResult,
+		FilterCartsActionResult,
+		GetAccessToCartAction,
+		GetAccessToCartActionResult,
+		PullCartAction,
+		PushCartAction,
+		RemoveCartAction,
+		RemoveCartActionResult,
+		RemoveDraftCartItemAction,
+		ReorderCartAction,
+		ReorderCartResultAction, SetCartCopyingAction, SetCartStatusChangingAction,
+		SetCartUpdatingAction,
+		SetDraftCartAction,
+		ShareCartWithContactsAction,
+		ShareCartWithContactsActionResult,
+		UpdateCartResultAction,
+		VisibilityFilter,
 } from '../types/carts';
 import { Cart, CartItemStatusType, CartUser } from '../types/api';
 
@@ -197,5 +197,10 @@ export const setIsCartUpdating = (isCartUpdating: boolean): SetCartUpdatingActio
 export const setIsCartCopying = (isCartCopying: boolean): SetCartCopyingAction => ({
 	type: ActionTypes.set_cart_copying,
 	isCartCopying
+});
+
+export const setIsCartStatusChanging = (isCartStatusChanging: boolean): SetCartStatusChangingAction => ({
+		type: ActionTypes.set_cart_status_changing,
+		isCartStatusChanging
 });
 
