@@ -262,7 +262,7 @@ const Carts = (props: Props) => {
 		} : draftCart;
 
 		return (
-				<div className='carts_container'>
+				<div>
 						<CreateCart
 								draftCart={createCartDraftCart}
 								onDraftCartTitleChange={handleDraftCartTitleChange}
@@ -293,34 +293,42 @@ const Carts = (props: Props) => {
 								onCopyCartClick={onCopyCartClicked}
 								onCloseCopyCartModalClick={onCloseCopyCartModalClicked}
 						/>
+						{carts.length > 0 ?
+								<div className='carts_container'>
+										{
+												carts.length > 0 ?
+														<VisibilityFilterComponent
+																visibilityFilter={visibilityFilter}
+																onGetAllCarts={onGetAllCarts}
+																onGetActiveCarts={onGetActiveCarts}
+																onGetCompletedCarts={onGetCompletedCarts} />
+														: ''}
 
-						{
-								carts.length > 0 ?
-										<VisibilityFilterComponent
-												visibilityFilter={visibilityFilter}
-												onGetAllCarts={onGetAllCarts}
-												onGetActiveCarts={onGetActiveCarts}
-												onGetCompletedCarts={onGetCompletedCarts} />
-										: ''}
+										<DragDropContext onDragEnd={onDragEnd}>
+												<Droppable droppableId="list">
+														{provided => (
+																<div ref={provided.innerRef} {...provided.droppableProps}>
+																		{renderCarts()}
+																		{provided.placeholder}
+																</div>
+														)}
+												</Droppable>
+										</DragDropContext>
 
-						<DragDropContext onDragEnd={onDragEnd}>
-								<Droppable droppableId="list">
-										{provided => (
-												<div ref={provided.innerRef} {...provided.droppableProps}>
-														{renderCarts()}
-														{provided.placeholder}
-												</div>
-										)}
-								</Droppable>
-						</DragDropContext>
+										<DiscardDialog
+												isShow={isShowDiscardDialog}
+												onCancel={onClickCancelDiscard}
+												onDiscard={onClickChangesDiscard}
+										/>
+								</div>
+								:
+								<div className='carts_container create_cart not_cart_here'>
+										There is no carts here.
+								</div>
 
-						<DiscardDialog
-								isShow={isShowDiscardDialog}
-								onCancel={onClickCancelDiscard}
-								onDiscard={onClickChangesDiscard}
-						/>
-				</div>
-		);
+						}</div>
+		)
+				;
 };
 
 Carts.layoutOptions = {
