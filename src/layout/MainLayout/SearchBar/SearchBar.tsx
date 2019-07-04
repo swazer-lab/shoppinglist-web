@@ -24,17 +24,21 @@ const SearchBar = (props: Props) => {
 
 	const handleSearchQueryChange = (e: FormEvent<HTMLInputElement>) => {
 		onSearchQueryChange(e.currentTarget.value);
-		onFilterClicked();
+			onFilterClicked();
+
 	};
 
-	const onFilterClicked = () => {
-		onFilterClick();
-	};
+		const onFilterClicked = () => {
+				onFilterClick();
+		};
+
 
 	const handleFocus = () => setIsSearchingStatus(true);
 	const onSearchContainerClicked = () => {
 		setIsSearchingStatus(false);
 		onSearchQueryChange('');
+		onFilterClick();
+
 	};
 
 	const containerClassNames = classNames('search_bar_container', { search_bar_container_visible: isSearchingStatus });
