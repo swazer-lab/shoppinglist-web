@@ -5,194 +5,213 @@ import { AppState } from '../../types/store';
 import { Profile } from '../../types/api';
 
 import { Alert, Snackbar } from '../../components';
+import ConfirmLogout  from './ConfirmLogoutModal';
 import { NavigationBar, ProfileModal } from './';
 
 import { clearAlert, hideSnackbar } from '../../actions/service';
 import { changeNewPassword, changePassword, logout, resendConfirmEmail, updatePassword } from '../../actions/auth';
 
+
 import {
-	changeDraftProfileName,
-	changeDraftProfilePhoneNumber,
-	deleteProfilePhoto,
-	fetchProfile,
-	updateProfile,
-	updateProfilePhoto,
+		changeDraftProfileName,
+		changeDraftProfilePhoneNumber,
+		deleteProfilePhoto,
+		fetchProfile,
+		updateProfile,
+		updateProfilePhoto,
 } from '../../actions/profile';
 
-import { changeSearchQuery, filterCarts } from '../../actions/carts';
+import { changeSearchQuery, clearDraftCart, filterCarts, setIsCartUpdating } from '../../actions/carts';
 import { fetchContacts } from '../../actions/contacts';
 
 import './styles.scss';
 
 interface Props {
-	dispatch: Function,
-	children: any,
+		dispatch: Function,
+		children: any,
 
-	layoutOptions?: any,
-	progress: AppState['service']['progress'],
-	snackbar: AppState['service']['snackbar'],
-	alert: AppState['service']['alert'],
+		layoutOptions?: any,
+		progress: AppState['service']['progress'],
+		snackbar: AppState['service']['snackbar'],
+		alert: AppState['service']['alert'],
 
-	id?: string,
-	name?: string,
-	email?: string,
-	phoneNumber?: string,
-	photoUrl?: string,
-	avatarUrl?: string,
-	draftProfile: Profile,
+		id?: string,
+		name?: string,
+		email?: string,
+		phoneNumber?: string,
+		photoUrl?: string,
+		avatarUrl?: string,
+		draftProfile: Profile,
 
-	searchQuery?: string,
+		searchQuery?: string,
 
-	password: string,
-	newPassword: string,
+		password: string,
+		newPassword: string,
 
-	isLoggedIn: boolean,
-	accessToken: string,
-	isEmailConfirmed: boolean
+		isLoggedIn: boolean,
+		accessToken: string,
+		isEmailConfirmed: boolean
 }
 
 const MainLayout = (props: Props) => {
-	const { children, dispatch, progress, snackbar, alert, id, name, email, phoneNumber, password, newPassword, photoUrl, avatarUrl, draftProfile, searchQuery, isLoggedIn, accessToken, isEmailConfirmed } = props;
+		const { children, dispatch, progress, snackbar, alert, id, name, email, phoneNumber, password, newPassword, photoUrl, avatarUrl, draftProfile, searchQuery, isLoggedIn, accessToken, isEmailConfirmed } = props;
 
-	const [isProfileModalVisible, setIsProfileModalVisible] = useState(false);
-	const [isOpenedSearchBar, setIsOpenedSearchBar] = useState(false);
+		const [isProfileModalVisible, setIsProfileModalVisible] = useState(false);
+		const [isOpenedSearchBar, setIsOpenedSearchBar] = useState(false);
+		const [isShowDiscardDialog, setShowDiscardDialog] = useState(false);
 
-	useEffect(() => {
-		if (isLoggedIn && accessToken) {
-			dispatch(fetchProfile());
-			dispatch(fetchContacts());
-		}
-	}, [isLoggedIn, accessToken]);
 
-	const onChangeDraftProfileName = (name: string) => dispatch(changeDraftProfileName(name));
-	const onChangeDraftProfilePhoneNumber = (phoneNumber: string) => dispatch(changeDraftProfilePhoneNumber(phoneNumber));
-	const onUpdateProfileClicked = () => dispatch(updateProfile());
+		useEffect(() => {
+				if (isLoggedIn && accessToken) {
+						dispatch(fetchProfile());
+						dispatch(fetchContacts());
+				}
+		}, [isLoggedIn, accessToken]);
 
-	const onChangePassword = (password: string) => dispatch(changePassword(password));
-	const onChangeNewPassword = (newPassword: string) => dispatch(changeNewPassword(newPassword));
-	const onUpdatePasswordClicked = () => dispatch(updatePassword());
+		const onChangeDraftProfileName = (name: string) => dispatch(changeDraftProfileName(name));
+		const onChangeDraftProfilePhoneNumber = (phoneNumber: string) => dispatch(changeDraftProfilePhoneNumber(phoneNumber));
+		const onUpdateProfileClicked = () => dispatch(updateProfile());
 
-	const onResendConfirmEmailConfirmClicked = (userId: string) => {
-		setIsProfileModalVisible(false);
-		dispatch(resendConfirmEmail(userId));
-	};
+		const onChangePassword = (password: string) => dispatch(changePassword(password));
+		const onChangeNewPassword = (newPassword: string) => dispatch(changeNewPassword(newPassword));
+		const onUpdatePasswordClicked = () => dispatch(updatePassword());
 
-	const onUpdateProfilePhotoClicked = (photoData: string) => dispatch(updateProfilePhoto(photoData));
+		const onResendConfirmEmailConfirmClicked = (userId: string) => {
+				setIsProfileModalVisible(false);
+				dispatch(resendConfirmEmail(userId));
+		};
 
-	const onDeleteProfilePhotoClicked = (e: any) => {
-		e.stopPropagation();
-		dispatch(deleteProfilePhoto());
-	};
+		const onUpdateProfilePhotoClicked = (photoData: string) => dispatch(updateProfilePhoto(photoData));
 
-	const onLogoutClicked = () => dispatch(logout());
+		const onDeleteProfilePhotoClicked = (e: any) => {
+				e.stopPropagation();
+				dispatch(deleteProfilePhoto());
+		};
 
-	const onSearchQueryChanged = (queryString: string) => dispatch(changeSearchQuery(queryString));
+		const onLogoutClicked = () => {
+				setShowDiscardDialog(true);
+		};
 
-	const onFilterClicked = () => {
-		setIsOpenedSearchBar(true);
-		dispatch(filterCarts());
-	};
+		const onClickChangesDiscard = () => {
+				dispatch(logout());
+		};
 
-	const onSnackbarRequestClose = () => {
-		if (snackbar.visible) {
-			dispatch(hideSnackbar());
-		}
-	};
+		const onClickCancelLogout = () => {
+				setShowDiscardDialog(false);
+		};
 
-	const handleClosedToastr = () => {
-		dispatch(clearAlert());
-	};
+		const onSearchQueryChanged = (queryString: string) => dispatch(changeSearchQuery(queryString));
 
-	const onCloseSearchBar = () => {
-		setIsOpenedSearchBar(false);
-	}
+		const onFilterClicked = () => {
+				setIsOpenedSearchBar(true);
+				dispatch(filterCarts());
+		};
 
-	return (
-		<div className='main_layout'>
-			<NavigationBar
-				progress={progress}
-				profilePhotoUrl={photoUrl}
-				profileAvatarUrl={avatarUrl}
-				searchQuery={searchQuery}
-				onOpenProfileModalClick={() => setIsProfileModalVisible(true)}
-				onSearchQueryChange={onSearchQueryChanged}
-				onFilterClick={onFilterClicked}
-				isOpenSearchBar={isOpenedSearchBar}
-				onCloseSearchBar={onCloseSearchBar}
-			/>
-			<ProfileModal
-				isVisible={isProfileModalVisible}
-				isLoading={progress.visible}
-				onCloseProfileModalClick={() => setIsProfileModalVisible(false)}
-				id={id}
-				name={name}
-				email={email}
-				phoneNumber={phoneNumber}
-				isEmailConfirmed={isEmailConfirmed}
-				password={password}
-				newPassword={newPassword}
-				photoUrl={photoUrl}
-				avatarUrl={avatarUrl}
-				draftProfile={draftProfile}
-				onDraftProfileNameChange={onChangeDraftProfileName}
-				onDraftProfilePhoneNumberChange={onChangeDraftProfilePhoneNumber}
-				onUpdateProfileClick={onUpdateProfileClicked}
-				onUpdateProfilePhotoClick={onUpdateProfilePhotoClicked}
-				onDeleteProfilePhotoClick={onDeleteProfilePhotoClicked}
-				onLogoutClick={onLogoutClicked}
-				onResendConfirmEmailConfirmClick={onResendConfirmEmailConfirmClicked}
-				onChangePassword={onChangePassword}
-				onChangeNewPassword={onChangeNewPassword}
-				onUpdatePasswordClick={onUpdatePasswordClicked}
-			/>
-			<Snackbar
-				visible={snackbar.visible}
-				message={snackbar.message}
-				actions={snackbar.actions}
-				duration={snackbar.duration}
-				onRequestClose={onSnackbarRequestClose}
-			/>
-			<Alert
-				visible={alert.visible}
-				type={alert.type}
-				message={alert.message}
-				handleCloseToastr={handleClosedToastr}
-			/>
-			{children}
+		const onSnackbarRequestClose = () => {
+				if (snackbar.visible) {
+						dispatch(hideSnackbar());
+				}
+		};
 
-		</div>
-	);
+		const handleClosedToastr = () => {
+				dispatch(clearAlert());
+		};
+
+		const onCloseSearchBar = () => {
+				setIsOpenedSearchBar(false);
+		};
+
+		return (
+				<div className='main_layout'>
+						<NavigationBar
+								progress={progress}
+								profilePhotoUrl={photoUrl}
+								profileAvatarUrl={avatarUrl}
+								searchQuery={searchQuery}
+								onOpenProfileModalClick={() => setIsProfileModalVisible(true)}
+								onSearchQueryChange={onSearchQueryChanged}
+								onFilterClick={onFilterClicked}
+								isOpenSearchBar={isOpenedSearchBar}
+								onCloseSearchBar={onCloseSearchBar}
+						/>
+						<ProfileModal
+								isVisible={isProfileModalVisible}
+								isLoading={progress.visible}
+								onCloseProfileModalClick={() => setIsProfileModalVisible(false)}
+								id={id}
+								name={name}
+								email={email}
+								phoneNumber={phoneNumber}
+								isEmailConfirmed={isEmailConfirmed}
+								password={password}
+								newPassword={newPassword}
+								photoUrl={photoUrl}
+								avatarUrl={avatarUrl}
+								draftProfile={draftProfile}
+								onDraftProfileNameChange={onChangeDraftProfileName}
+								onDraftProfilePhoneNumberChange={onChangeDraftProfilePhoneNumber}
+								onUpdateProfileClick={onUpdateProfileClicked}
+								onUpdateProfilePhotoClick={onUpdateProfilePhotoClicked}
+								onDeleteProfilePhotoClick={onDeleteProfilePhotoClicked}
+								onLogoutClick={onLogoutClicked}
+								onResendConfirmEmailConfirmClick={onResendConfirmEmailConfirmClicked}
+								onChangePassword={onChangePassword}
+								onChangeNewPassword={onChangeNewPassword}
+								onUpdatePasswordClick={onUpdatePasswordClicked}
+						/>
+						<Snackbar
+								visible={snackbar.visible}
+								message={snackbar.message}
+								actions={snackbar.actions}
+								duration={snackbar.duration}
+								onRequestClose={onSnackbarRequestClose}
+						/>
+						<Alert
+								visible={alert.visible}
+								type={alert.type}
+								message={alert.message}
+								handleCloseToastr={handleClosedToastr}
+						/>
+						<ConfirmLogout
+								isShow={isShowDiscardDialog}
+								onCancel={onClickCancelLogout}
+								onLogout={onClickChangesDiscard}
+						/>
+						{children}
+
+				</div>
+		);
 };
 
 const mapStateToProps = (state: AppState) => {
-	const { progress, snackbar, alert } = state.service;
-	const { id, name, email, phoneNumber, photoUrl, avatarUrl, draftProfile } = state.profile;
-	const { searchQuery } = state.carts;
-	const { password, newPassword } = state.auth;
-	const { isLoggedIn, accessToken, isEmailConfirmed } = state.storage;
+		const { progress, snackbar, alert } = state.service;
+		const { id, name, email, phoneNumber, photoUrl, avatarUrl, draftProfile } = state.profile;
+		const { searchQuery } = state.carts;
+		const { password, newPassword } = state.auth;
+		const { isLoggedIn, accessToken, isEmailConfirmed } = state.storage;
 
-	return {
-		progress,
-		snackbar,
-		alert,
+		return {
+				progress,
+				snackbar,
+				alert,
 
-		id,
-		name,
-		email,
-		phoneNumber,
-		photoUrl,
-		avatarUrl,
-		draftProfile,
+				id,
+				name,
+				email,
+				phoneNumber,
+				photoUrl,
+				avatarUrl,
+				draftProfile,
 
-		password,
-		newPassword,
+				password,
+				newPassword,
 
-		searchQuery,
+				searchQuery,
 
-		isLoggedIn,
-		accessToken,
-		isEmailConfirmed,
-	};
+				isLoggedIn,
+				accessToken,
+				isEmailConfirmed,
+		};
 };
 
 export default connect(mapStateToProps)(MainLayout);
