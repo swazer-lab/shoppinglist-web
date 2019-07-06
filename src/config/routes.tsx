@@ -8,6 +8,7 @@ import { Layout } from '../layout';
 import { Landing } from '../pages/Landing';
 import { ChangePassword, ConfirmEmail, ForgotPassword, Login, Register } from '../pages/Auth';
 import { Carts, GetAccess } from '../pages/Carts';
+import { ArchivedCarts } from '../pages/Archive';
 import { NotFound, PrivacyPolicy, ServiceTerms } from '../pages/Other';
 
 export const routes: RouteType[] = [
@@ -18,6 +19,7 @@ export const routes: RouteType[] = [
 	{ name: 'ChangePassword', path: '/account/changePassword', Component: ChangePassword },
 	{ name: 'ForgotPassword', path: '/account/forgotPassword', Component: ForgotPassword },
 	{ name: 'Carts', path: '/carts', Component: Carts },
+	{ name: 'ArchivedCarts', path: '/archivedCarts', Component: ArchivedCarts },
 	{ name: 'GetAccess', path: '/cart/getAccess/:id', Component: GetAccess },
 	{ name: 'PrivacyPolicy', path: '/privacyPolicy', Component: PrivacyPolicy },
 	{ name: 'ServiceTerms', path: '/serviceTerms', Component: ServiceTerms },
