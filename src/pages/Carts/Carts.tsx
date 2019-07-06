@@ -8,6 +8,9 @@ import { AppState } from '../../types/store';
 import { Cart, CartItemStatusType } from '../../types/api';
 import { VisibilityFilter } from '../../types/carts';
 
+import { Modal, ProgressBar } from '../../components';
+import ShareCart from './ShareCart';
+
 import CreateCart from './CreateCart';
 import UpdateCart from './UpdateCart';
 import DiscardDialog from './DiscardDialog';
@@ -31,7 +34,8 @@ import {
 		removeDraftCartItem,
 		reorderCart,
 		setDraftCart,
-		setIsCartCopying, setIsCartStatusChanging,
+		setIsCartCopying,
+		setIsCartStatusChanging,
 		setIsCartUpdating,
 		updateCart,
 } from '../../actions/carts';
@@ -39,6 +43,8 @@ import {
 import language from '../../assets/language';
 import { getCartStatus } from '../../config/utilities';
 import VisibilityFilterComponent from './VisibilityFilterComponent';
+
+import SharedUserInformation from './SharedUserInformation';
 
 interface Props {
 		dispatch: Function,
@@ -65,6 +71,8 @@ interface Props {
 
 const Carts = (props: Props) => {
 		const [isShowDiscardDialog, setShowDiscardDialog] = useState(false);
+		const [isShareModalVisible, setIsShareModalVisible] = useState(false);
+		const [isSharedUserModalVisible, setisSharedUserModalVisible] = useState(false);
 
 		const { dispatch, progress, snackbar, carts, draftCart, email, visibilityFilter, isCartUpdating, isCartCopying, isCartStatusChanging, isLoggedIn, accessToken } = props;
 
@@ -226,29 +234,70 @@ const Carts = (props: Props) => {
 				dispatch(changeVisibilityFilter(VisibilityFilter.completed));
 		};
 
+		const onOpenShareModalClicked = (e: any) => {
+				e.stopPropagation();
+				setIsShareModalVisible(true);
+		};
+
+		const onCloseShareModalClick = (e: any) => {
+				e.stopPropagation();
+				setIsShareModalVisible(false);
+		};
+
+		const onOpenSharedUserInformationClicked = (e: any) => {
+				e.stopPropagation();
+				setisSharedUserModalVisible(true);
+		};
+
+		const onCloseSharedUserInformation = (e: any) => {
+				e.stopPropagation();
+				setisSharedUserModalVisible(false);
+		};
+
 		const renderCarts = () => carts.map((cart, index) => (
-				<Draggable key={cart.id} draggableId={cart.id} index={index}>
-						{provided => (
-								<div className='cart_object_container'
-								     ref={provided.innerRef}
-								     {...provided.draggableProps}
-								     {...provided.dragHandleProps}
-								>
-										{visibilityFilter === 'All' || getCartStatus(cart.items) === visibilityFilter ?
-												<CartObject
-														key={cart.uuid}
-														progress={progress}
-														cart={cart}
-														onOpenUpdateCartModalClick={onOpenUpdateCartModalClicked}
-														onRemoveCartClick={onRemoveCartClicked}
-														currentUserEmail={email}
-														onOpenCopyCartModalClick={onOpenCopyCartModalClicked}
-														onDraftCartItemStatusChange={handleDraftCartObjectItemStatusChange}
-												/> : null
-										}
-								</div>
-						)}
-				</Draggable>
+				<div>
+						<Draggable key={cart.id} draggableId={cart.id} index={index}>
+								{provided => (
+										<div className='cart_object_container'
+										     ref={provided.innerRef}
+										     {...provided.draggableProps}
+										     {...provided.dragHandleProps}
+										>
+												{visibilityFilter === 'All' || getCartStatus(cart.items) === visibilityFilter ?
+														<CartObject
+																key={cart.uuid}
+																progress={progress}
+																cart={cart}
+																onOpenUpdateCartModalClick={onOpenUpdateCartModalClicked}
+																onRemoveCartClick={onRemoveCartClicked}
+																currentUserEmail={email}
+																onOpenCopyCartModalClick={onOpenCopyCartModalClicked}
+																onDraftCartItemStatusChange={handleDraftCartObjectItemStatusChange}
+																onOpenShareModalClick={onOpenShareModalClicked}
+																onOpenSharedUserInformationClick={onOpenSharedUserInformationClicked}
+														/> : null
+												}
+										</div>
+								)}
+						</Draggable>
+						<Modal
+								isVisible={isShareModalVisible}
+								onCloseModalClick={onCloseShareModalClick}
+								title={language.textShareCartTitle}
+								rightButtons={[{ iconName: 'close', onClick: onCloseShareModalClick }]}>
+
+								<ProgressBar isLoading={progress.visible} />
+								<ShareCart cart={cart} />
+						</Modal>
+
+						<Modal
+								isVisible={isSharedUserModalVisible}
+								onCloseModalClick={onCloseSharedUserInformation}
+								title='Shared User Information'
+								rightButtons={[{ iconName: 'close', onClick: onCloseSharedUserInformation }]}>
+								<SharedUserInformation cartUsers={cart.users} />
+						</Modal>
+				</div>
 		));
 
 		const createCartDraftCart = isCartUpdating || isCartCopying || isCartStatusChanging ? {
@@ -262,7 +311,7 @@ const Carts = (props: Props) => {
 		} : draftCart;
 
 		return (
-				<div className='carts_container'>
+				<div>
 						<CreateCart
 								draftCart={createCartDraftCart}
 								onDraftCartTitleChange={handleDraftCartTitleChange}
@@ -293,32 +342,39 @@ const Carts = (props: Props) => {
 								onCopyCartClick={onCopyCartClicked}
 								onCloseCopyCartModalClick={onCloseCopyCartModalClicked}
 						/>
+						{carts.length > 0 ?
+								<div className='carts_container'>
+										{
+												carts.length > 0 ?
+														<VisibilityFilterComponent
+																visibilityFilter={visibilityFilter}
+																onGetAllCarts={onGetAllCarts}
+																onGetActiveCarts={onGetActiveCarts}
+																onGetCompletedCarts={onGetCompletedCarts} />
+														: ''}
 
-						{
-								carts.length > 0 ?
-										<VisibilityFilterComponent
-												visibilityFilter={visibilityFilter}
-												onGetAllCarts={onGetAllCarts}
-												onGetActiveCarts={onGetActiveCarts}
-												onGetCompletedCarts={onGetCompletedCarts} />
-										: ''}
+										<DragDropContext onDragEnd={onDragEnd}>
+												<Droppable droppableId="list">
+														{provided => (
+																<div ref={provided.innerRef} {...provided.droppableProps}>
+																		{renderCarts()}
+																		{provided.placeholder}
+																</div>
+														)}
+												</Droppable>
+										</DragDropContext>
 
-						<DragDropContext onDragEnd={onDragEnd}>
-								<Droppable droppableId="list">
-										{provided => (
-												<div ref={provided.innerRef} {...provided.droppableProps}>
-														{renderCarts()}
-														{provided.placeholder}
-												</div>
-										)}
-								</Droppable>
-						</DragDropContext>
-
-						<DiscardDialog
-								isShow={isShowDiscardDialog}
-								onCancel={onClickCancelDiscard}
-								onDiscard={onClickChangesDiscard}
-						/>
+										<DiscardDialog
+												isShow={isShowDiscardDialog}
+												onCancel={onClickCancelDiscard}
+												onDiscard={onClickChangesDiscard}
+										/>
+								</div>
+								:
+								<div className='carts_container create_cart not_cart_here'>
+										There is no carts here.
+								</div>
+						}
 				</div>
 		);
 };

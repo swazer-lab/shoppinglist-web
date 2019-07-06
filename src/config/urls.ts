@@ -47,4 +47,3 @@ const contactRoot = root.concat('friend/');
 export const fetch_contacts_url = contactRoot.concat('fetch');
 export const add_contact_url = contactRoot.concat('add');
 export const block_contact_url = contactRoot.concat('block');
-
