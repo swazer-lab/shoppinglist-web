@@ -33,6 +33,7 @@ import {
 		removeCart,
 		removeDraftCartItem,
 		reorderCart,
+		setDestinationCart,
 		setDraftCart,
 		setIsCartCopying,
 		setIsCartStatusChanging,
@@ -52,6 +53,7 @@ interface Props {
 		snackbar: AppState['service']['snackbar'],
 
 		carts: Array<Cart>,
+		destinationCarts: Array<Cart>,
 		draftCart: Cart,
 
 		visibilityFilter: VisibilityFilter,
@@ -72,9 +74,10 @@ interface Props {
 const Carts = (props: Props) => {
 		const [isShowDiscardDialog, setShowDiscardDialog] = useState(false);
 		const [isShareModalVisible, setIsShareModalVisible] = useState(false);
+		const [modalCart, setIsModalCart] = useState();
 		const [isSharedUserModalVisible, setisSharedUserModalVisible] = useState(false);
 
-		const { dispatch, progress, snackbar, carts, draftCart, email, visibilityFilter, isCartUpdating, isCartCopying, isCartStatusChanging, isLoggedIn, accessToken } = props;
+		const { dispatch, progress, snackbar, carts, destinationCarts, draftCart, email, visibilityFilter, isCartUpdating, isCartCopying, isCartStatusChanging, isLoggedIn, accessToken } = props;
 
 		useEffect(() => {
 				if (isLoggedIn && accessToken) {
@@ -210,16 +213,31 @@ const Carts = (props: Props) => {
 
 		const onDragEnd = (result: DropResult) => {
 				const { source, destination } = result;
+
 				if (!destination) {
 						return;
 				}
-				if (destination.index === source.index) {
-						return;
-				}
 
-				const { dispatch, carts } = props;
-				const cartId = carts[source.index].id;
-				dispatch(reorderCart(cartId, source.index, destination.index));
+				if (source.droppableId === destination.droppableId) {
+						if (destination.index === source.index) {
+								return;
+						}
+						const { dispatch, carts } = props;
+						const cartId = carts[source.index].id;
+						dispatch(reorderCart(cartId, source.index, destination.index));
+
+				} else if (source.droppableId === 'list1') {
+						const current = carts;
+						const target = current[source.index] as Cart;
+						current.splice(source.index, 1);
+						dispatch(setDestinationCart(target, true));
+
+				} else if (source.droppableId === 'list2') {
+						const current = destinationCarts;
+						const target = current[source.index] as Cart;
+						current.splice(source.index, 1);
+						dispatch(setDestinationCart(target, false));
+				}
 		};
 
 		const onGetAllCarts = () => {
@@ -234,19 +252,19 @@ const Carts = (props: Props) => {
 				dispatch(changeVisibilityFilter(VisibilityFilter.completed));
 		};
 
-		const onOpenShareModalClicked = (e: any) => {
-				e.stopPropagation();
+		const onOpenShareModalClicked = (cart: Cart) => {
+				setIsModalCart(cart);
 				setIsShareModalVisible(true);
+		};
+
+		const onOpenSharedUserInformationClicked = (cart: Cart) => {
+				setIsModalCart(cart);
+				setisSharedUserModalVisible(true);
 		};
 
 		const onCloseShareModalClick = (e: any) => {
 				e.stopPropagation();
 				setIsShareModalVisible(false);
-		};
-
-		const onOpenSharedUserInformationClicked = (e: any) => {
-				e.stopPropagation();
-				setisSharedUserModalVisible(true);
 		};
 
 		const onCloseSharedUserInformation = (e: any) => {
@@ -255,8 +273,8 @@ const Carts = (props: Props) => {
 		};
 
 		const renderCarts = () => carts.map((cart, index) => (
-				<div>
-						<Draggable key={cart.id} draggableId={cart.id} index={index}>
+				<div key={cart.uuid}>
+						<Draggable draggableId={cart.id} index={index}>
 								{provided => (
 										<div className='cart_object_container'
 										     ref={provided.innerRef}
@@ -265,7 +283,6 @@ const Carts = (props: Props) => {
 										>
 												{visibilityFilter === 'All' || getCartStatus(cart.items) === visibilityFilter ?
 														<CartObject
-																key={cart.uuid}
 																progress={progress}
 																cart={cart}
 																onOpenUpdateCartModalClick={onOpenUpdateCartModalClicked}
@@ -280,23 +297,34 @@ const Carts = (props: Props) => {
 										</div>
 								)}
 						</Draggable>
-						<Modal
-								isVisible={isShareModalVisible}
-								onCloseModalClick={onCloseShareModalClick}
-								title={language.textShareCartTitle}
-								rightButtons={[{ iconName: 'close', onClick: onCloseShareModalClick }]}>
+				</div>
+		));
 
-								<ProgressBar isLoading={progress.visible} />
-								<ShareCart cart={cart} />
-						</Modal>
-
-						<Modal
-								isVisible={isSharedUserModalVisible}
-								onCloseModalClick={onCloseSharedUserInformation}
-								title='Shared User Information'
-								rightButtons={[{ iconName: 'close', onClick: onCloseSharedUserInformation }]}>
-								<SharedUserInformation cartUsers={cart.users} />
-						</Modal>
+		const renderDestinationCarts = () => destinationCarts.map((cart, index) => (
+				<div key={cart.uuid}>
+						<Draggable draggableId={cart.id} index={index}>
+								{provided => (
+										<div className='cart_object_container'
+										     ref={provided.innerRef}
+										     {...provided.draggableProps}
+										     {...provided.dragHandleProps}
+										>
+												{visibilityFilter === 'All' || getCartStatus(cart.items) === visibilityFilter ?
+														<CartObject
+																progress={progress}
+																cart={cart}
+																onOpenUpdateCartModalClick={onOpenUpdateCartModalClicked}
+																onRemoveCartClick={onRemoveCartClicked}
+																currentUserEmail={email}
+																onOpenCopyCartModalClick={onOpenCopyCartModalClicked}
+																onDraftCartItemStatusChange={handleDraftCartObjectItemStatusChange}
+																onOpenShareModalClick={onOpenShareModalClicked}
+																onOpenSharedUserInformationClick={onOpenSharedUserInformationClicked}
+														/> : null
+												}
+										</div>
+								)}
+						</Draggable>
 				</div>
 		));
 
@@ -335,6 +363,7 @@ const Carts = (props: Props) => {
 								onUpdateCartClick={onUpdateCartClicked}
 						/>
 
+
 						<CopyCartModal
 								isVisible={isCartCopying}
 								draftCart={draftCart}
@@ -352,9 +381,8 @@ const Carts = (props: Props) => {
 																onGetActiveCarts={onGetActiveCarts}
 																onGetCompletedCarts={onGetCompletedCarts} />
 														: ''}
-
 										<DragDropContext onDragEnd={onDragEnd}>
-												<Droppable droppableId="list">
+												<Droppable droppableId="list1" direction={'vertical'} key="list1">
 														{provided => (
 																<div ref={provided.innerRef} {...provided.droppableProps}>
 																		{renderCarts()}
@@ -362,8 +390,37 @@ const Carts = (props: Props) => {
 																</div>
 														)}
 												</Droppable>
+												<br /><br /><br /><br /><br /><br />
+												<Droppable droppableId="list2" direction={'vertical'} key="list2">
+														{provided => (
+																<div ref={provided.innerRef} {...provided.droppableProps}>
+																		PUT HERE
+																		{renderDestinationCarts()}
+																		{provided.placeholder}
+																</div>
+														)}
+												</Droppable>
 										</DragDropContext>
+										{modalCart &&
+										<Modal
+												isVisible={isShareModalVisible}
+												onCloseModalClick={onCloseShareModalClick}
+												title={language.textShareCartTitle}
+												rightButtons={[{ iconName: 'close', onClick: onCloseShareModalClick }]}>
 
+												<ProgressBar isLoading={progress.visible} />
+												<ShareCart cart={modalCart} />
+										</Modal>
+										}
+										{modalCart &&
+										<Modal
+												isVisible={isSharedUserModalVisible}
+												onCloseModalClick={onCloseSharedUserInformation}
+												title='Shared User Information'
+												rightButtons={[{ iconName: 'close', onClick: onCloseSharedUserInformation }]}>
+												<SharedUserInformation cartUsers={modalCart.users} />
+										</Modal>
+										}
 										<DiscardDialog
 												isShow={isShowDiscardDialog}
 												onCancel={onClickCancelDiscard}
@@ -390,7 +447,7 @@ const mapStateToProps = (state: AppState) => {
 		const { email } = state.profile;
 		const { isLoggedIn, accessToken } = state.storage;
 
-		const { carts, draftCart, isLoading, totalCount, pageNumber, visibilityFilter, isCartUpdating, isCartCopying, isCartStatusChanging } = state.carts;
+		const { carts, draftCart, isLoading, totalCount, pageNumber, visibilityFilter, isCartUpdating, isCartCopying, isCartStatusChanging, destinationCarts } = state.carts;
 
 		return {
 				progress,
@@ -398,6 +455,7 @@ const mapStateToProps = (state: AppState) => {
 				email,
 
 				carts,
+				destinationCarts,
 
 				draftCart,
 				visibilityFilter,

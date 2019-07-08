@@ -52,7 +52,9 @@ export enum ActionTypes {
 
 	set_cart_updating = 'CARTS__SET_CART_UPDATING',
   set_cart_copying = 'CARTS__SET_CART_COPYING',
-	set_cart_status_changing = 'CARTS__SET_STATUS_CHANGING'
+	set_cart_status_changing = 'CARTS__SET_STATUS_CHANGING',
+
+	set_destination_carts = 'CARTS__SET_DESTINATION_CARTS',
 }
 
 export interface CartsAction extends ReduxAction<ActionTypes> {
@@ -214,6 +216,12 @@ export interface SetCartCopyingAction extends CartsAction {
 	isCartCopying: boolean
 }
 
+export interface SetDestinationCartAction extends CartsAction {
+		type: ActionTypes.set_destination_carts,
+		cart: Cart,
+		isDestinationCart: boolean
+}
+
 export interface SetCartStatusChangingAction extends CartsAction {
 		type: ActionTypes.set_cart_status_changing,
 		isCartStatusChanging: boolean
@@ -250,11 +258,13 @@ export type Action =
 	& CopyCartAction
 	& SetCartUpdatingAction
 	& SetCartCopyingAction
-	& SetCartStatusChangingAction;
+	& SetCartStatusChangingAction
+	& SetDestinationCartAction;
 
 export type State = {
 	draftCart: Cart,
-	carts: Array<Cart>,
+	carts:  Array<Cart>,
+	destinationCarts: Array<Cart>,
 
 	filteredCarts?: Array<Cart>,
 	searchQuery?: string,

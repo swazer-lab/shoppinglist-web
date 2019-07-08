@@ -22,7 +22,7 @@ import {
 		RemoveDraftCartItemAction,
 		ReorderCartAction,
 		ReorderCartResultAction, SetCartCopyingAction, SetCartStatusChangingAction,
-		SetCartUpdatingAction,
+		SetCartUpdatingAction, SetDestinationCartAction,
 		SetDraftCartAction,
 		ShareCartWithContactsAction,
 		ShareCartWithContactsActionResult,
@@ -202,5 +202,11 @@ export const setIsCartCopying = (isCartCopying: boolean): SetCartCopyingAction =
 export const setIsCartStatusChanging = (isCartStatusChanging: boolean): SetCartStatusChangingAction => ({
 		type: ActionTypes.set_cart_status_changing,
 		isCartStatusChanging
+});
+
+export const setDestinationCart = (cart: Cart, isDestinationCart: boolean): SetDestinationCartAction => ({
+		type: ActionTypes.set_destination_carts,
+		cart,
+		isDestinationCart
 });
 

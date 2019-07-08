@@ -18,22 +18,14 @@ interface Props {
 		onRemoveCartClick: (cart: Cart) => void,
 		onOpenCopyCartModalClick: (cart: Cart) => void,
 		onDraftCartItemStatusChange: (uuid: string, status: CartItemStatusType, cart: Cart) => void,
-		onOpenShareModalClick: (e: any) => void,
-		onOpenSharedUserInformationClick: (e: any) => void
+		onOpenShareModalClick: (cart: Cart) => void,
+		onOpenSharedUserInformationClick: (cart: Cart) => void
 }
 
 const CartObject = (props: Props) => {
-		const [isShareModalVisible, setIsShareModalVisible] = useState(false);
-		const [isSharedUserModalVisible, setisSharedUserModalVisible] = useState(false);
 		const [accessLevel, setAccessLevel] = useState('');
 
 		const { progress, cart, onOpenUpdateCartModalClick, onRemoveCartClick, onOpenCopyCartModalClick, currentUserEmail, onDraftCartItemStatusChange, onOpenShareModalClick, onOpenSharedUserInformationClick } = props;
-
-		useEffect(() => {
-				if (!progress.visible && isShareModalVisible) {
-						setIsShareModalVisible(false);
-				}
-		}, [progress.visible]);
 
 		useEffect(() => {
 				if (!currentUserEmail) return;
@@ -55,11 +47,13 @@ const CartObject = (props: Props) => {
 		};
 
 		const onOpenShareModalClicked = (e: any) => {
-				onOpenShareModalClick(e);
+				e.stopPropagation();
+				onOpenShareModalClick(cart);
 		};
 
 		const onOpenSharedUserInformationClicked = (e: any) => {
-				onOpenSharedUserInformationClick(e);
+				e.stopPropagation();
+				onOpenSharedUserInformationClick(cart);
 		};
 
 		const onOpenCopyCartModalClicked = (e: any) => {
@@ -71,7 +65,6 @@ const CartObject = (props: Props) => {
 
 
 		const renderItems = (status: string) => cart.items.filter(item => item.status === status).map(item => {
-
 				const handleDraftCartItemStatusChange = (e: any) => {
 						e.stopPropagation();
 						onDraftCartItemStatusChange(item.uuid, item.status === 'completed' ? 'active' : 'completed', cart);
@@ -88,7 +81,6 @@ const CartObject = (props: Props) => {
 						</div>
 				);
 		});
-
 
 		return (
 				<div className='cart_object' onClick={onOpenUpdateCartModalClicked}>
@@ -134,26 +126,6 @@ const CartObject = (props: Props) => {
 										))}
 								</div>
 						</div>
-
-						{/*{accessLevel !== 'read' &&*/}
-						{/*<Modal*/}
-						{/*isVisible={isShareModalVisible}*/}
-						{/*onCloseModalClick={onCloseShareModalClick}*/}
-						{/*title={language.textShareCartTitle}*/}
-						{/*rightButtons={[{ iconName: 'close', onClick: onCloseShareModalClick }]}>*/}
-
-						{/*<ProgressBar isLoading={progress.visible} />*/}
-						{/*<ShareCart cart={cart} />*/}
-						{/*</Modal>*/}
-						{/*}*/}
-
-						{/*<Modal*/}
-						{/*isVisible={isSharedUserModalVisible}*/}
-						{/*onCloseModalClick={onCloseSharedUserInformation}*/}
-						{/*title='Shared User Information'*/}
-						{/*rightButtons={[{ iconName: 'close', onClick: onCloseSharedUserInformation }]}>*/}
-						{/*<SharedUserInformation cartUsers={cart.users} />*/}
-						{/*</Modal>*/}
 				</div>
 		);
 };

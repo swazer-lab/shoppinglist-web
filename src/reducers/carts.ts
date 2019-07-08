@@ -14,7 +14,9 @@ const initialState: State = {
 				items: [],
 				users: [],
 		},
+
 		carts: [],
+		destinationCarts: [],
 
 		visibilityFilter: VisibilityFilter.all,
 		isCartUpdating: false,
@@ -131,6 +133,19 @@ export default (state: State = initialState, action: Action): State => {
 								...state,
 								isCartCopying: action.isCartCopying,
 						};
+
+				case ActionTypes.set_destination_carts:
+						if (action.isDestinationCart) {
+								return {
+										...state,
+										destinationCarts: array(state.destinationCarts).push(action.cart!),
+								};
+						} else {
+								return {
+										...state,
+										carts: array(state.carts).push(action.cart!),
+								};
+						}
 
 				case ActionTypes.clear_carts:
 						return initialState;
