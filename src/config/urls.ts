@@ -29,6 +29,7 @@ export const fetch_carts_url = cartRoot.concat('newfetch');
 export const search_carts_url = cartRoot.concat('getCarts');
 export const create_cart_url = cartRoot.concat('create');
 export const remove_cart_url = cartRoot.concat('remove');
+export const fetch_archive_cart_url = cartRoot.concat('getArchivedCarts');
 
 export const get_access_to_cart_url = cartRoot.concat('getAccess');
 export const get_access_to_cart_url_web = cartRootWeb.concat('getAccess');
