@@ -32,8 +32,11 @@ import {
 		ShareCartWithContactsActionResult,
 		UpdateCartResultAction,
 		VisibilityFilter,
+		FetchArchieveCardsAction,
+		FetchArchieveCardsActionResult,
 } from '../types/carts';
 import { Cart, CartItemStatusType, CartUser } from '../types/api';
+
 
 export const changeDraftCartTitle = (title: string): ChangeDraftCartTitleAction => ({
 		type: ActionTypes.change_draft_cart_title,
@@ -227,8 +230,21 @@ export const setDestinationCartResult = (hasError: boolean, carts: Cart): SetDes
 		type: ActionTypes.set_destination_carts_result,
 		hasError,
 		carts,
+});
 
+export const fetchArchieveCards = (silent?: boolean, append?: 'merge' | 'replace', pageNumber?: number): FetchArchieveCardsAction => ({
+		type: ActionTypes.fetch_archieve_cards,
+		silent,
+		append,
+		pageNumber,
+});
 
+export const fetchArchieveCardsResult = (hasError: boolean, carts?: Cart[],totalCount?: number, append?: 'replace' | 'merge'): FetchArchieveCardsActionResult => ({
+		type: ActionTypes.fetch_archieve_cards_result,
+		hasError,
+		carts,
+		totalCount,
+		append,
 });
 
 
