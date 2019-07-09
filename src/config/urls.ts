@@ -38,6 +38,8 @@ export const share_cart_with_contacts_url = cartRoot.concat('shareCart');
 
 export const update_order_url = cartRoot.concat('updateOrder');
 
+export const make_archived_url = cartRoot.concat('makeArchived');
+
 // Items Urls
 const itemRoot = root.concat('item/');
 export const change_item_status_url = itemRoot.concat('changeStatus');

@@ -229,13 +229,11 @@ const Carts = (props: Props) => {
 				} else if (source.droppableId === 'list1') {
 						const current = carts;
 						const target = current[source.index] as Cart;
-						current.splice(source.index, 1);
 						dispatch(setDestinationCart(target, true));
 
 				} else if (source.droppableId === 'list2') {
 						const current = destinationCarts;
 						const target = current[source.index] as Cart;
-						current.splice(source.index, 1);
 						dispatch(setDestinationCart(target, false));
 				}
 		};
@@ -371,7 +369,7 @@ const Carts = (props: Props) => {
 								onCopyCartClick={onCopyCartClicked}
 								onCloseCopyCartModalClick={onCloseCopyCartModalClicked}
 						/>
-						{carts.length > 0 ?
+						{carts.length > 0 || destinationCarts.length > 0 ?
 								<div className='carts_container'>
 										{
 												carts.length > 0 ?
@@ -390,7 +388,9 @@ const Carts = (props: Props) => {
 																</div>
 														)}
 												</Droppable>
-												<br /><br /><br /><br /><br /><br />
+												<div style={{height: '50px'}}>
+
+												</div>
 												<Droppable droppableId="list2" direction={'vertical'} key="list2">
 														{provided => (
 																<div ref={provided.innerRef} {...provided.droppableProps}>
@@ -400,6 +400,7 @@ const Carts = (props: Props) => {
 																</div>
 														)}
 												</Droppable>
+
 										</DragDropContext>
 										{modalCart &&
 										<Modal
