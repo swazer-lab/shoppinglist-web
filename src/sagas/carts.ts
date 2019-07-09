@@ -282,28 +282,27 @@ function* reorderCartSaga(action: ReorderCartAction) {
 		}
 }
 
-// function* setDestinationCartSaga(action: SetDestinationCartAction) {
-// 		yield put(showProgress('Destination Card'));
-// 		if (action.isDestinationCart) {
-// 				const { archivedCart,cartId } = yield select((state: AppState) => state.archieveCarts);
-// 				try {
-// 						const response = yield call(set_destination_carts_api, action.cart.id);
-// 						const data = yield morphism(cartMapper(), response.data);
-// 						yield put(setDestinationCartResult(false, archivedCart));
-// 				} catch (e) {
-// 						yield all([
-// 								put(setDestinationCartResult(true, archivedCart)),
-// 								put(showHttpErrorAlert(e)),
-// 						]);
-// 				} finally {
-// 						yield put(hideProgress());
-//
-// 				}
-//
-// 		} else {
-//
-// 		}
-// }
+function* setDestinationCartSaga(action: SetDestinationCartAction) {
+		yield put(showProgress('Destination Card'));
+		if (action.isFromCartsToArchive) {
+				try {
+						const response = yield call(set_destination_carts_api, action.cart.id);
+						const data = yield morphism(cartMapper(), response.data);
+						yield put(setDestinationCartResult(false, data));
+				} catch (e) {
+						yield all([
+								// put(setDestinationCartResult(true, data)),
+								put(showHttpErrorAlert(e)),
+						]);
+				} finally {
+						yield put(hideProgress());
+
+				}
+
+		} else {
+
+		}
+}
 
 export default [
 		takeLatest(ActionTypes.filter_carts, filterCartsSaga),
@@ -315,5 +314,5 @@ export default [
 		takeLatest(ActionTypes.get_access_to_cart, getAccessToCartSaga),
 		takeLatest(ActionTypes.reorder_cart, reorderCartSaga),
 		takeLatest(ActionTypes.copy_cart, copyCartSaga),
-		// takeLatest(ActionTypes.set_destination_carts, setDestinationCartSaga),
+		takeLatest(ActionTypes.set_destination_carts, setDestinationCartSaga),
 ];
