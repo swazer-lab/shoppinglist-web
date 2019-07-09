@@ -314,5 +314,5 @@ export default [
 		takeLatest(ActionTypes.get_access_to_cart, getAccessToCartSaga),
 		takeLatest(ActionTypes.reorder_cart, reorderCartSaga),
 		takeLatest(ActionTypes.copy_cart, copyCartSaga),
-		takeLatest(ActionTypes.set_destination_carts, setDestinationCartSaga),
+		takeLatest(ActionTypes.set_destination_carts, setDestinationCartSaga)
 ];

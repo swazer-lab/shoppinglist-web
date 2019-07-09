@@ -134,9 +134,15 @@ export default (state: State = initialState, action: Action): State => {
 								isCartCopying: action.isCartCopying,
 						};
 
+				case ActionTypes.reorder_archived_cart:
+						const movedCart = state.destinationCarts[action.source];
+						return {
+								...state,
+								destinationCarts: array(array(state.destinationCarts).remove(action.source)).insertBefore(action.destination, movedCart),
+						};
+
 				case ActionTypes.set_destination_carts:
 						if (action.isFromCartsToArchive) {
-								console.log(action.cart.id);
 								return {
 										...state,
 										carts: array(state.carts).remove(Number(action.index)),

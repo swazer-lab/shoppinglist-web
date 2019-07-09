@@ -47,6 +47,8 @@ export enum ActionTypes {
 	reorder_cart = 'CARTS_REORDER_CART',
 	reorder_cart_result = 'CARTS_REORDER_CART_RESULT',
 
+	reorder_archived_cart = 'CARTS_REORDER_ARCHIVED_CART',
+
 	change_visibility_filter = 'CHANGE_VISIBILITY_FILTER',
 
 	clear_carts = 'CARTS__CLEAR_CARTS',
@@ -202,6 +204,13 @@ export interface ReorderCartAction extends CartsAction {
 	destination: number
 }
 
+export interface ReorderArchivedCartAction extends CartsAction {
+		type: ActionTypes.reorder_archived_cart,
+		cartId: string,
+		source: number,
+		destination: number
+}
+
 export interface ReorderCartResultAction extends CartsActionResult {
 	type: ActionTypes.reorder_cart_result,
 	source?: number,
@@ -263,6 +272,7 @@ export type Action =
 	& GetAccessToCartActionResult
 	& ReorderCartAction
 	& ReorderCartResultAction
+	& ReorderArchivedCartAction
 	& ChangeVisibilityFilter
 	& CopyCartAction
 	& SetCartUpdatingAction
