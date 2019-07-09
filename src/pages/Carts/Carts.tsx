@@ -229,12 +229,12 @@ const Carts = (props: Props) => {
 				} else if (source.droppableId === 'list1') {
 						const current = carts;
 						const target = current[source.index] as Cart;
-						dispatch(setDestinationCart(target, true));
+						dispatch(setDestinationCart(target, source.index, true));
 
 				} else if (source.droppableId === 'list2') {
 						const current = destinationCarts;
 						const target = current[source.index] as Cart;
-						dispatch(setDestinationCart(target, false));
+						dispatch(setDestinationCart(target, source.index, false));
 				}
 		};
 
@@ -388,7 +388,7 @@ const Carts = (props: Props) => {
 																</div>
 														)}
 												</Droppable>
-												<div style={{height: '50px'}}>
+												<div style={{ height: '50px' }}>
 
 												</div>
 												<Droppable droppableId="list2" direction={'vertical'} key="list2">

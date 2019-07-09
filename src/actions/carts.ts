@@ -209,10 +209,11 @@ export const setIsCartStatusChanging = (isCartStatusChanging: boolean): SetCartS
 		isCartStatusChanging,
 });
 
-export const setDestinationCart = (cart: Cart, isDestinationCart: boolean): SetDestinationCartAction => ({
+export const setDestinationCart = (cart: Cart, index: number, isFromCartsToArchive: boolean): SetDestinationCartAction => ({
 		type: ActionTypes.set_destination_carts,
 		cart,
-		isDestinationCart,
+		index,
+		isFromCartsToArchive
 });
 
 export const setDestinationCartResult = (hasError: boolean, carts: Cart): SetDestinationCartActionResult => ({

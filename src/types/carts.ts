@@ -221,7 +221,8 @@ export interface SetCartCopyingAction extends CartsAction {
 export interface SetDestinationCartAction extends CartsAction {
 		type: ActionTypes.set_destination_carts,
 		cart: Cart,
-		isDestinationCart: boolean
+		index: number,
+		isFromCartsToArchive: boolean,
 }
 
 export interface SetDestinationCartActionResult extends CartsActionResult {
