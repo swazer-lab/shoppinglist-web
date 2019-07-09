@@ -69,6 +69,34 @@ export default (state: State = initialState, action: Action): State => {
 								filteredCarts: action.carts,
 						};
 
+				case ActionTypes.fetch_archieve_cards:
+						return {
+								...state,
+								isLoading: true,
+								pageNumber: action.pageNumber || 1,
+						};
+
+				case ActionTypes.fetch_archieve_cards_result:
+						if (action.hasError || !action.carts) return { ...state, isLoading: false };
+
+						if (action.append === 'merge') {
+								return {
+										...state,
+										destinationCarts: [...state.destinationCarts, ...action.carts],
+										isLoading: false,
+										totalCount: action.totalCount || 0,
+								};
+
+						} else {
+								return {
+										...state,
+										destinationCarts: [...action.carts],
+
+										isLoading: false,
+										totalCount: action.totalCount || 0,
+								};
+						}
+
 				case ActionTypes.fetch_carts:
 						return {
 								...state,
@@ -134,9 +162,15 @@ export default (state: State = initialState, action: Action): State => {
 								isCartCopying: action.isCartCopying,
 						};
 
+				case ActionTypes.reorder_archived_cart:
+						const movedCart = state.destinationCarts[action.source];
+						return {
+								...state,
+								destinationCarts: array(array(state.destinationCarts).remove(action.source)).insertBefore(action.destination, movedCart),
+						};
+
 				case ActionTypes.set_destination_carts:
 						if (action.isFromCartsToArchive) {
-								console.log(action.cart.id);
 								return {
 										...state,
 										carts: array(state.carts).remove(Number(action.index)),

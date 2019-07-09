@@ -33,12 +33,14 @@ import {
 		removeCart,
 		removeDraftCartItem,
 		reorderCart,
+		reorderArchivedCart,
 		setDestinationCart,
 		setDraftCart,
 		setIsCartCopying,
 		setIsCartStatusChanging,
 		setIsCartUpdating,
 		updateCart,
+		fetchArchieveCards
 } from '../../actions/carts';
 
 import language from '../../assets/language';
@@ -82,6 +84,7 @@ const Carts = (props: Props) => {
 		useEffect(() => {
 				if (isLoggedIn && accessToken) {
 						dispatch(fetchCarts(false, 'replace', 1));
+						dispatch(fetchArchieveCards(false, 'replace', 1));
 				}
 		}, [isLoggedIn, accessToken]);
 
@@ -227,17 +230,14 @@ const Carts = (props: Props) => {
 						dispatch(reorderCart(cartId, source.index, destination.index));
 
 				}else if (source.droppableId === destination.droppableId && source.droppableId === 'list2') {
-						//debugger;
 						if (destination.index === source.index) {
 								return;
 						}
 						const { dispatch, destinationCarts } = props;
 						const cartId = destinationCarts[source.index].id;
-						dispatch(reorderCart(cartId, source.index, destination.index));
+						dispatch(reorderArchivedCart(cartId, source.index, destination.index));
 
-				}
-
-				else if (source.droppableId === 'list1') {
+				} else if (source.droppableId === 'list1') {
 						const current = carts;
 						const target = current[source.index] as Cart;
 						dispatch(setDestinationCart(target, source.index, true));

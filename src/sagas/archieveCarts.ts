@@ -8,7 +8,6 @@ import language from '../assets/language';
 import morphism from 'morphism';
 import { cartMapper } from '../config/mapper';
 
-
 function* fetchArchieveCartsSaga(action: FetchArchieveCardsAction) {
 		const { silent, pageNumber, append } = action;
 		const pageSize = 15;

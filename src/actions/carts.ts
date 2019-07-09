@@ -19,7 +19,7 @@ import {
 		PushCartAction,
 		RemoveCartAction,
 		RemoveCartActionResult,
-		RemoveDraftCartItemAction,
+		RemoveDraftCartItemAction, ReorderArchivedCartAction,
 		ReorderCartAction,
 		ReorderCartResultAction,
 		SetCartCopyingAction,
@@ -32,9 +32,11 @@ import {
 		ShareCartWithContactsActionResult,
 		UpdateCartResultAction,
 		VisibilityFilter,
+		FetchArchieveCardsAction,
+		FetchArchieveCardsActionResult,
 } from '../types/carts';
 import { Cart, CartItemStatusType, CartUser } from '../types/api';
-import Carts from '../pages/Carts/Carts';
+
 
 export const changeDraftCartTitle = (title: string): ChangeDraftCartTitleAction => ({
 		type: ActionTypes.change_draft_cart_title,
@@ -182,6 +184,14 @@ export const reorderCart = (cartId: string, source: number, destination: number)
 		source,
 		destination,
 });
+
+export const reorderArchivedCart = (cartId: string, source: number, destination: number): ReorderArchivedCartAction => ({
+		type: ActionTypes.reorder_archived_cart,
+		cartId,
+		source,
+		destination,
+});
+
 export const reorderCartResult = (hasError: boolean, source?: number, destination?: number): ReorderCartResultAction => ({
 		type: ActionTypes.reorder_cart_result,
 		hasError,
@@ -213,15 +223,28 @@ export const setDestinationCart = (cart: Cart, index: number, isFromCartsToArchi
 		type: ActionTypes.set_destination_carts,
 		cart,
 		index,
-		isFromCartsToArchive
+		isFromCartsToArchive,
 });
 
 export const setDestinationCartResult = (hasError: boolean, carts: Cart): SetDestinationCartActionResult => ({
 		type: ActionTypes.set_destination_carts_result,
 		hasError,
 		carts,
+});
 
+export const fetchArchieveCards = (silent?: boolean, append?: 'merge' | 'replace', pageNumber?: number): FetchArchieveCardsAction => ({
+		type: ActionTypes.fetch_archieve_cards,
+		silent,
+		append,
+		pageNumber,
+});
 
+export const fetchArchieveCardsResult = (hasError: boolean, carts?: Cart[],totalCount?: number, append?: 'replace' | 'merge'): FetchArchieveCardsActionResult => ({
+		type: ActionTypes.fetch_archieve_cards_result,
+		hasError,
+		carts,
+		totalCount,
+		append,
 });
 
 

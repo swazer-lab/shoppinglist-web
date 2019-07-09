@@ -68,7 +68,6 @@ export const update_carts_order_api = (cartId: string, destination: number) => {
 };
 
 export const set_destination_carts_api = (cartId: string) => {
-		debugger;
 		const body = {
 				CartId: cartId,
 		};
@@ -83,4 +82,14 @@ export const set_destination_carts_revoke_api = (cartId: string) => {
 		};
 
 		return axios.post(urls.revoke_archived_url, body);
+};
+
+export const fetch_archieve_carts_api = (pageNumber?: number, pageSize?: number) => {
+		const config = {
+				params: {
+						currentPage: pageNumber,
+						pageSize: pageSize,
+				},
+		};
+		return axios.get(urls.fetch_archive_cart_url, config);
 };
