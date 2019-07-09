@@ -47,6 +47,9 @@ import {
 import { Profile } from '../types/api';
 import { clearSelectedContacts } from '../actions/contacts';
 import { set_destination_carts_api } from '../api/carts';
+import { FetchArchieveCardsAction } from '../types/carts';
+import { fetch_archieve_carts_api } from '../api/carts';
+import { fetchArchieveCardsResult } from '../actions/carts';
 
 function* filterCartsSaga() {
 		const { searchQuery } = yield select((state: AppState) => state.carts);
@@ -288,7 +291,6 @@ function* setDestinationCartSaga(action: SetDestinationCartAction) {
 				try {
 						const response = yield call(set_destination_carts_api, action.cart.id);
 						const data = yield morphism(cartMapper(), response.data);
-						yield put(setDestinationCartResult(false, data));
 				} catch (e) {
 						yield all([
 								// put(setDestinationCartResult(true, data)),
@@ -304,6 +306,31 @@ function* setDestinationCartSaga(action: SetDestinationCartAction) {
 		}
 }
 
+function* fetchArchieveCartsSaga(action: FetchArchieveCardsAction) {
+		const { silent, pageNumber, append } = action;
+		const pageSize = 15;
+
+		if (!silent) yield put(showProgress(language.textFetchingCarts));
+
+		try {
+				const response = yield call(fetch_archieve_carts_api, pageNumber, pageSize);
+				const { totalCount, items } = response.data;
+
+				const carts = yield morphism(cartMapper(), items);
+
+				yield put(fetchArchieveCardsResult(false, carts, totalCount, append));
+
+		} catch (e) {
+				yield all([
+						put(fetchArchieveCardsResult(true)),
+						put(showHttpErrorAlert(e)),
+
+				]);
+		} finally {
+				if (!silent) yield put(hideProgress());
+		}
+}
+
 export default [
 		takeLatest(ActionTypes.filter_carts, filterCartsSaga),
 		takeLatest(ActionTypes.fetch_carts, fetchCartsSaga),
@@ -315,4 +342,5 @@ export default [
 		takeLatest(ActionTypes.reorder_cart, reorderCartSaga),
 		takeLatest(ActionTypes.copy_cart, copyCartSaga),
 		takeLatest(ActionTypes.set_destination_carts, setDestinationCartSaga),
+		takeLatest(ActionTypes.fetch_archieve_cards,fetchArchieveCartsSaga),
 ];

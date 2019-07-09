@@ -39,6 +39,7 @@ import {
 		setIsCartStatusChanging,
 		setIsCartUpdating,
 		updateCart,
+		fetchArchieveCards
 } from '../../actions/carts';
 
 import language from '../../assets/language';
@@ -82,8 +83,11 @@ const Carts = (props: Props) => {
 		useEffect(() => {
 				if (isLoggedIn && accessToken) {
 						dispatch(fetchCarts(false, 'replace', 1));
+						dispatch(fetchArchieveCards(false, 'replace', 1));
 				}
 		}, [isLoggedIn, accessToken]);
+
+
 
 		useEffect(() => {
 				const handleScroll = () => {

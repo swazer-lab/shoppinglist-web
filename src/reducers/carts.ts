@@ -69,6 +69,34 @@ export default (state: State = initialState, action: Action): State => {
 								filteredCarts: action.carts,
 						};
 
+				case ActionTypes.fetch_archieve_cards:
+						return {
+								...state,
+								isLoading: true,
+								pageNumber: action.pageNumber || 1,
+						};
+
+				case ActionTypes.fetch_archieve_cards_result:
+						if (action.hasError || !action.carts) return { ...state, isLoading: false };
+
+						if (action.append === 'merge') {
+								return {
+										...state,
+										destinationCarts: [...state.destinationCarts, ...action.carts],
+										isLoading: false,
+										totalCount: action.totalCount || 0,
+								};
+
+						} else {
+								return {
+										...state,
+										destinationCarts: [...action.carts],
+
+										isLoading: false,
+										totalCount: action.totalCount || 0,
+								};
+						}
+
 				case ActionTypes.fetch_carts:
 						return {
 								...state,
