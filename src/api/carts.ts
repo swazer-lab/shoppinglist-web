@@ -68,9 +68,19 @@ export const update_carts_order_api = (cartId: string, destination: number) => {
 };
 
 export const set_destination_carts_api = (cartId: string) => {
+		debugger;
 		const body = {
 				CartId: cartId,
 		};
 
 		return axios.post(urls.make_archived_url, body);
+};
+
+export const set_destination_carts_revoke_api = (cartId: string) => {
+		debugger;
+		const body = {
+				CartId: cartId,
+		};
+
+		return axios.post(urls.revoke_archived_url, body);
 };

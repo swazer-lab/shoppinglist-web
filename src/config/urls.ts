@@ -40,6 +40,8 @@ export const update_order_url = cartRoot.concat('updateOrder');
 
 export const make_archived_url = cartRoot.concat('makeArchived');
 
+export const revoke_archived_url = cartRoot.concat('revokeArchived');
+
 // Items Urls
 const itemRoot = root.concat('item/');
 export const change_item_status_url = itemRoot.concat('changeStatus');

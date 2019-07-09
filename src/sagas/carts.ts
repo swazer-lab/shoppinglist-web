@@ -46,7 +46,7 @@ import {
 } from '../types/carts';
 import { Profile } from '../types/api';
 import { clearSelectedContacts } from '../actions/contacts';
-import { set_destination_carts_api } from '../api/carts';
+import { set_destination_carts_api, set_destination_carts_revoke_api } from '../api/carts';
 
 function* filterCartsSaga() {
 		const { searchQuery } = yield select((state: AppState) => state.carts);
@@ -289,18 +289,29 @@ function* setDestinationCartSaga(action: SetDestinationCartAction) {
 						const response = yield call(set_destination_carts_api, action.cart.id);
 						const data = yield morphism(cartMapper(), response.data);
 						yield put(setDestinationCartResult(false, data));
+						debugger;
 				} catch (e) {
 						yield all([
-								// put(setDestinationCartResult(true, data)),
 								put(showHttpErrorAlert(e)),
 						]);
 				} finally {
 						yield put(hideProgress());
 
 				}
-
 		} else {
+				try {
+						const response = yield call(set_destination_carts_revoke_api, action.cart.id);
+						const data = yield morphism(cartMapper(), response.data);
+						yield put(setDestinationCartResult(false, data));
+						debugger;
+				} catch (e) {
+						yield all([
+								put(showHttpErrorAlert(e)),
+						]);
+				} finally {
+						yield put(hideProgress());
 
+				}
 		}
 }
 

@@ -223,9 +223,6 @@ const Carts = (props: Props) => {
 								return;
 						}
 						const { dispatch, carts } = props;
-						console.log(props.carts);
-						console.log(props.destinationCarts);
-						debugger;
 						const cartId = carts[source.index].id;
 						dispatch(reorderCart(cartId, source.index, destination.index));
 
@@ -235,22 +232,17 @@ const Carts = (props: Props) => {
 								return;
 						}
 						const { dispatch, destinationCarts } = props;
-						console.log(props.carts);
-						console.log(props.destinationCarts);
-						debugger;
 						const cartId = destinationCarts[source.index].id;
 						dispatch(reorderCart(cartId, source.index, destination.index));
 
 				}
 
 				else if (source.droppableId === 'list1') {
-						debugger;
 						const current = carts;
 						const target = current[source.index] as Cart;
 						dispatch(setDestinationCart(target, source.index, true));
 
 				} else if (source.droppableId === 'list2') {
-						debugger;
 						const current = destinationCarts;
 						const target = current[source.index] as Cart;
 						dispatch(setDestinationCart(target, source.index, false));
