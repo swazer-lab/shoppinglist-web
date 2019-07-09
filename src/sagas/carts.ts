@@ -25,7 +25,9 @@ import {
 		getAccessToCartResult,
 		removeCartResult,
 		reorderCartResult,
-		setIsCartCopying, setIsCartStatusChanging,
+		setDestinationCartResult,
+		setIsCartCopying,
+		setIsCartStatusChanging,
 		setIsCartUpdating,
 		shareCartWithContactsResult,
 		updateCartResult,
@@ -39,10 +41,12 @@ import {
 		GetAccessToCartAction,
 		RemoveCartAction,
 		ReorderCartAction,
+		SetDestinationCartAction,
 		ShareCartWithContactsAction,
 } from '../types/carts';
 import { Profile } from '../types/api';
 import { clearSelectedContacts } from '../actions/contacts';
+import { set_destination_carts_api } from '../api/carts';
 
 function* filterCartsSaga() {
 		const { searchQuery } = yield select((state: AppState) => state.carts);
@@ -190,8 +194,8 @@ function* updateCartSaga() {
 				]);
 		} finally {
 				yield put(setIsCartUpdating(false)),
-				yield put(setIsCartStatusChanging(false)),
-				yield put(hideProgress());
+						yield put(setIsCartStatusChanging(false)),
+						yield put(hideProgress());
 		}
 }
 
@@ -278,6 +282,28 @@ function* reorderCartSaga(action: ReorderCartAction) {
 		}
 }
 
+function* setDestinationCartSaga(action: SetDestinationCartAction) {
+		yield put(showProgress('Destination Card'));
+		if (action.isFromCartsToArchive) {
+				try {
+						const response = yield call(set_destination_carts_api, action.cart.id);
+						const data = yield morphism(cartMapper(), response.data);
+						yield put(setDestinationCartResult(false, data));
+				} catch (e) {
+						yield all([
+								// put(setDestinationCartResult(true, data)),
+								put(showHttpErrorAlert(e)),
+						]);
+				} finally {
+						yield put(hideProgress());
+
+				}
+
+		} else {
+
+		}
+}
+
 export default [
 		takeLatest(ActionTypes.filter_carts, filterCartsSaga),
 		takeLatest(ActionTypes.fetch_carts, fetchCartsSaga),
@@ -288,4 +314,5 @@ export default [
 		takeLatest(ActionTypes.get_access_to_cart, getAccessToCartSaga),
 		takeLatest(ActionTypes.reorder_cart, reorderCartSaga),
 		takeLatest(ActionTypes.copy_cart, copyCartSaga),
+		takeLatest(ActionTypes.set_destination_carts, setDestinationCartSaga),
 ];

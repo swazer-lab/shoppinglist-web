@@ -1,5 +1,6 @@
 import { Action as ReduxAction } from 'redux';
 import { Cart, CartItemStatusType, CartUser } from './api';
+import { Carts } from '../pages/Carts';
 
 export enum ActionTypes {
 	change_draft_cart_title = 'CARTS__CHANGE_DRAFT_CART_TITLE',
@@ -55,6 +56,7 @@ export enum ActionTypes {
 	set_cart_status_changing = 'CARTS__SET_STATUS_CHANGING',
 
 	set_destination_carts = 'CARTS__SET_DESTINATION_CARTS',
+	set_destination_carts_result = 'CARTS__SET_DESTINATION_CARTS_RESULT',
 }
 
 export interface CartsAction extends ReduxAction<ActionTypes> {
@@ -219,7 +221,14 @@ export interface SetCartCopyingAction extends CartsAction {
 export interface SetDestinationCartAction extends CartsAction {
 		type: ActionTypes.set_destination_carts,
 		cart: Cart,
-		isDestinationCart: boolean
+		index: number,
+		isFromCartsToArchive: boolean,
+}
+
+export interface SetDestinationCartActionResult extends CartsActionResult {
+		type: ActionTypes.set_destination_carts_result,
+		carts?: Cart,
+
 }
 
 export interface SetCartStatusChangingAction extends CartsAction {
@@ -259,7 +268,8 @@ export type Action =
 	& SetCartUpdatingAction
 	& SetCartCopyingAction
 	& SetCartStatusChangingAction
-	& SetDestinationCartAction;
+	& SetDestinationCartAction
+	& SetDestinationCartActionResult
 
 export type State = {
 	draftCart: Cart,

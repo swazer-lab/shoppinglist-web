@@ -135,14 +135,17 @@ export default (state: State = initialState, action: Action): State => {
 						};
 
 				case ActionTypes.set_destination_carts:
-						if (action.isDestinationCart) {
+						if (action.isFromCartsToArchive) {
+								console.log(action.cart.id);
 								return {
 										...state,
+										carts: array(state.carts).remove(Number(action.index)),
 										destinationCarts: array(state.destinationCarts).push(action.cart!),
 								};
 						} else {
 								return {
 										...state,
+										destinationCarts: array(state.destinationCarts).remove(Number(action.index)),
 										carts: array(state.carts).push(action.cart!),
 								};
 						}
