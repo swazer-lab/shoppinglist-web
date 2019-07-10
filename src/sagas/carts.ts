@@ -285,8 +285,9 @@ function* reorderCartSaga(action: ReorderCartAction) {
 }
 
 function* setDestinationCartSaga(action: SetDestinationCartAction) {
-		yield put(showProgress('Destination Card'));
+
 		if (action.isFromCartsToArchive) {
+				yield put(showProgress('This card is being archived card'));
 				try {
 						const response = yield call(set_destination_carts_api, action.cart.id);
 						const data = yield morphism(cartMapper(), response.data);
@@ -302,6 +303,7 @@ function* setDestinationCartSaga(action: SetDestinationCartAction) {
 				}
 
 		} else {
+				yield put(showProgress('This card is being destination card'));
 				try {
 						const response = yield call(set_destination_carts_revoke_api, action.cart.id);
 						const data = yield morphism(cartMapper(), response.data);
