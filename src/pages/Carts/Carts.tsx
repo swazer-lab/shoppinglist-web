@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd';
-
 import _ from 'lodash';
-
 import { AppState } from '../../types/store';
 import { Cart, CartItemStatusType } from '../../types/api';
 import { VisibilityFilter } from '../../types/carts';
@@ -27,20 +25,20 @@ import {
 		clearDraftCart,
 		copyCart,
 		createCart,
+		fetchArchieveCards,
 		fetchCarts,
 		pullCart,
 		pushCart,
 		removeCart,
 		removeDraftCartItem,
-		reorderCart,
 		reorderArchivedCart,
+		reorderCart,
 		setDestinationCart,
 		setDraftCart,
 		setIsCartCopying,
 		setIsCartStatusChanging,
 		setIsCartUpdating,
 		updateCart,
-		fetchArchieveCards
 } from '../../actions/carts';
 
 import language from '../../assets/language';
@@ -55,7 +53,7 @@ interface Props {
 		snackbar: AppState['service']['snackbar'],
 
 		carts: Array<Cart>,
-		destinationCarts: Array<Cart>,
+		archivedCarts: Array<Cart>,
 		draftCart: Cart,
 
 		visibilityFilter: VisibilityFilter,
@@ -76,10 +74,11 @@ interface Props {
 const Carts = (props: Props) => {
 		const [isShowDiscardDialog, setShowDiscardDialog] = useState(false);
 		const [isShareModalVisible, setIsShareModalVisible] = useState(false);
+		const [isArchivedCartsVisible, setisArchivedCartsVisible] = useState(false);
 		const [modalCart, setIsModalCart] = useState();
 		const [isSharedUserModalVisible, setisSharedUserModalVisible] = useState(false);
 
-		const { dispatch, progress, snackbar, carts, destinationCarts, draftCart, email, visibilityFilter, isCartUpdating, isCartCopying, isCartStatusChanging, isLoggedIn, accessToken } = props;
+		const { dispatch, progress, snackbar, carts, archivedCarts, draftCart, email, visibilityFilter, isCartUpdating, isCartCopying, isCartStatusChanging, isLoggedIn, accessToken } = props;
 
 		useEffect(() => {
 				if (isLoggedIn && accessToken) {
@@ -90,7 +89,7 @@ const Carts = (props: Props) => {
 
 		useEffect(() => {
 				const handleScroll = () => {
-						const { dispatch, carts, isLoading, totalCount, pageNumber, destinationCarts } = props;
+						const { dispatch, carts, isLoading, totalCount, pageNumber } = props;
 						const reachedEnd = window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight;
 						const shouldFetchCarts = !isLoading && carts.length < totalCount;
 
@@ -214,6 +213,10 @@ const Carts = (props: Props) => {
 				dispatch(updateCart());
 		};
 
+		const onDragStart = () => {
+				setisArchivedCartsVisible(true);
+		};
+
 		const onDragEnd = (result: DropResult) => {
 				const { source, destination } = result;
 
@@ -229,12 +232,12 @@ const Carts = (props: Props) => {
 						const cartId = carts[source.index].id;
 						dispatch(reorderCart(cartId, source.index, destination.index));
 
-				}else if (source.droppableId === destination.droppableId && source.droppableId === 'list2') {
+				} else if (source.droppableId === destination.droppableId && source.droppableId === 'list2') {
 						if (destination.index === source.index) {
 								return;
 						}
-						const { dispatch, destinationCarts } = props;
-						const cartId = destinationCarts[source.index].id;
+						const { dispatch, archivedCarts } = props;
+						const cartId = archivedCarts[source.index].id;
 						dispatch(reorderArchivedCart(cartId, source.index, destination.index));
 
 				} else if (source.droppableId === 'list1') {
@@ -243,7 +246,7 @@ const Carts = (props: Props) => {
 						dispatch(setDestinationCart(target, source.index, true));
 
 				} else if (source.droppableId === 'list2') {
-						const current = destinationCarts;
+						const current = archivedCarts;
 						const target = current[source.index] as Cart;
 						dispatch(setDestinationCart(target, source.index, false));
 				}
@@ -309,7 +312,7 @@ const Carts = (props: Props) => {
 				</div>
 		));
 
-		const renderDestinationCarts = () => destinationCarts.map((cart, index) => (
+		const renderArchivedCarts = () => archivedCarts.map((cart, index) => (
 				<div key={cart.uuid}>
 						<Draggable draggableId={cart.id} index={index}>
 								{provided => (
@@ -371,8 +374,6 @@ const Carts = (props: Props) => {
 								onCloseUpdateCartModalClick={onCloseUpdateCartModalClicked}
 								onUpdateCartClick={onUpdateCartClicked}
 						/>
-
-
 						<CopyCartModal
 								isVisible={isCartCopying}
 								draftCart={draftCart}
@@ -380,7 +381,7 @@ const Carts = (props: Props) => {
 								onCopyCartClick={onCopyCartClicked}
 								onCloseCopyCartModalClick={onCloseCopyCartModalClicked}
 						/>
-						{carts.length > 0 || destinationCarts.length > 0 ?
+						{carts.length > 0 || archivedCarts.length > 0 ?
 								<div className='carts_container'>
 										{
 												carts.length > 0 ?
@@ -390,7 +391,7 @@ const Carts = (props: Props) => {
 																onGetActiveCarts={onGetActiveCarts}
 																onGetCompletedCarts={onGetCompletedCarts} />
 														: ''}
-										<DragDropContext onDragEnd={onDragEnd}>
+										<DragDropContext onDragEnd={onDragEnd} onDragStart={onDragStart}>
 												<Droppable droppableId="list1" direction={'vertical'} key="list1">
 														{provided => (
 																<div ref={provided.innerRef} {...provided.droppableProps}>
@@ -402,16 +403,17 @@ const Carts = (props: Props) => {
 												<div style={{ height: '50px' }}>
 
 												</div>
+												{isArchivedCartsVisible &&
 												<Droppable droppableId="list2" direction={'vertical'} key="list2">
 														{provided => (
 																<div ref={provided.innerRef} {...provided.droppableProps}>
 																		PUT HERE
-																		{renderDestinationCarts()}
+																		{renderArchivedCarts()}
 																		{provided.placeholder}
 																</div>
 														)}
 												</Droppable>
-
+												}
 										</DragDropContext>
 										{modalCart &&
 										<Modal
@@ -459,7 +461,7 @@ const mapStateToProps = (state: AppState) => {
 		const { email } = state.profile;
 		const { isLoggedIn, accessToken } = state.storage;
 
-		const { carts, draftCart, isLoading, totalCount, pageNumber, visibilityFilter, isCartUpdating, isCartCopying, isCartStatusChanging, destinationCarts } = state.carts;
+		const { carts, draftCart, isLoading, totalCount, pageNumber, visibilityFilter, isCartUpdating, isCartCopying, isCartStatusChanging, archivedCarts } = state.carts;
 
 		return {
 				progress,
@@ -467,7 +469,7 @@ const mapStateToProps = (state: AppState) => {
 				email,
 
 				carts,
-				destinationCarts,
+				archivedCarts,
 
 				draftCart,
 				visibilityFilter,

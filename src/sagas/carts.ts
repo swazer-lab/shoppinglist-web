@@ -20,6 +20,7 @@ import {
 		clearDraftCart,
 		copyCartResult,
 		createCartResult,
+		fetchArchieveCardsResult,
 		fetchCartsResult,
 		filterCartsResult,
 		getAccessToCartResult,
@@ -37,6 +38,7 @@ import language from '../assets/language';
 import {
 		ActionTypes,
 		CopyCartAction,
+		FetchArchieveCardsAction,
 		FetchCartsAction,
 		GetAccessToCartAction,
 		RemoveCartAction,
@@ -46,10 +48,7 @@ import {
 } from '../types/carts';
 import { Profile } from '../types/api';
 import { clearSelectedContacts } from '../actions/contacts';
-import { set_destination_carts_api, set_destination_carts_revoke_api } from '../api/carts';
-import { FetchArchieveCardsAction } from '../types/carts';
-import { fetch_archieve_carts_api } from '../api/carts';
-import { fetchArchieveCardsResult } from '../actions/carts';
+import { fetch_archieve_carts_api, set_destination_carts_api, set_destination_carts_revoke_api } from '../api/carts';
 
 function* filterCartsSaga() {
 		const { searchQuery } = yield select((state: AppState) => state.carts);
@@ -356,5 +355,5 @@ export default [
 		takeLatest(ActionTypes.reorder_cart, reorderCartSaga),
 		takeLatest(ActionTypes.copy_cart, copyCartSaga),
 		takeLatest(ActionTypes.set_destination_carts, setDestinationCartSaga),
-		takeLatest(ActionTypes.fetch_archieve_cards,fetchArchieveCartsSaga),
+		takeLatest(ActionTypes.fetch_archieve_cards, fetchArchieveCartsSaga),
 ];

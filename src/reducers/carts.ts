@@ -16,7 +16,7 @@ const initialState: State = {
 		},
 
 		carts: [],
-		destinationCarts: [],
+		archivedCarts: [],
 
 		visibilityFilter: VisibilityFilter.all,
 		isCartUpdating: false,
@@ -82,7 +82,7 @@ export default (state: State = initialState, action: Action): State => {
 						if (action.append === 'merge') {
 								return {
 										...state,
-										destinationCarts: [...state.destinationCarts, ...action.carts],
+										archivedCarts: [...state.archivedCarts, ...action.carts],
 										isLoading: false,
 										totalCount: action.totalCount || 0,
 								};
@@ -90,7 +90,7 @@ export default (state: State = initialState, action: Action): State => {
 						} else {
 								return {
 										...state,
-										destinationCarts: [...action.carts],
+										archivedCarts: [...action.carts],
 
 										isLoading: false,
 										totalCount: action.totalCount || 0,
@@ -163,10 +163,10 @@ export default (state: State = initialState, action: Action): State => {
 						};
 
 				case ActionTypes.reorder_archived_cart:
-						const movedCart = state.destinationCarts[action.source];
+						const movedCart = state.archivedCarts[action.source];
 						return {
 								...state,
-								destinationCarts: array(array(state.destinationCarts).remove(action.source)).insertBefore(action.destination, movedCart),
+								archivedCarts: array(array(state.archivedCarts).remove(action.source)).insertBefore(action.destination, movedCart),
 						};
 
 				case ActionTypes.set_destination_carts:
@@ -174,12 +174,12 @@ export default (state: State = initialState, action: Action): State => {
 								return {
 										...state,
 										carts: array(state.carts).remove(Number(action.index)),
-										destinationCarts: array(state.destinationCarts).push(action.cart!),
+										archivedCarts: array(state.archivedCarts).push(action.cart!),
 								};
 						} else {
 								return {
 										...state,
-										destinationCarts: array(state.destinationCarts).remove(Number(action.index)),
+										archivedCarts: array(state.archivedCarts).remove(Number(action.index)),
 										carts: array(state.carts).push(action.cart!),
 								};
 						}
