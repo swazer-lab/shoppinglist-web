@@ -226,6 +226,7 @@ const Carts = (props: Props) => {
 
 				if (source.droppableId === destination.droppableId && source.droppableId === 'list1') {
 						if (destination.index === source.index) {
+								setisArchivedCartsVisible(false);
 								return;
 						}
 						const { dispatch, carts } = props;
@@ -234,6 +235,7 @@ const Carts = (props: Props) => {
 
 				} else if (source.droppableId === destination.droppableId && source.droppableId === 'list2') {
 						if (destination.index === source.index) {
+								setisArchivedCartsVisible(false);
 								return;
 						}
 						const { dispatch, archivedCarts } = props;
@@ -250,6 +252,8 @@ const Carts = (props: Props) => {
 						const target = current[source.index] as Cart;
 						dispatch(setDestinationCart(target, source.index, false));
 				}
+
+				setisArchivedCartsVisible(false);
 		};
 
 		const onGetAllCarts = () => {
@@ -403,17 +407,16 @@ const Carts = (props: Props) => {
 												<div style={{ height: '50px' }}>
 
 												</div>
-												{isArchivedCartsVisible &&
-												<Droppable droppableId="list2" direction={'vertical'} key="list2">
-														{provided => (
-																<div ref={provided.innerRef} {...provided.droppableProps}>
-																		PUT HERE
-																		{renderArchivedCarts()}
-																		{provided.placeholder}
-																</div>
-														)}
-												</Droppable>
-												}
+												<div style={{visibility: isArchivedCartsVisible ? 'visible': 'hidden'}}>
+														<Droppable droppableId="list2" direction={'horizontal'} key="list2">
+																{provided => (
+																		<div ref={provided.innerRef} {...provided.droppableProps}>
+																				{renderArchivedCarts()}
+																				{provided.placeholder}
+																		</div>
+																)}
+														</Droppable>
+												</div>
 										</DragDropContext>
 										{modalCart &&
 										<Modal
