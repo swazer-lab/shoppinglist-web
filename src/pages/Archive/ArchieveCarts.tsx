@@ -9,7 +9,7 @@ import ArchievedCardsObject from './ArchievedCardsObject';
 interface Props {
 		dispatch: Function,
 		progress: AppState['service']['progress'],
-		destinationCarts: Cart[],
+		archivedCarts: Cart[],
 
 		isLoading: boolean,
 		totalCount: number,
@@ -20,7 +20,7 @@ interface Props {
 }
 
 const ArchivedCarts = (props: Props) => {
-		const { dispatch, destinationCarts } = props;
+		const { dispatch, archivedCarts } = props;
 
 		useEffect(() => {
 						dispatch(fetchArchieveCards(false, 'merge', 1))
@@ -28,9 +28,9 @@ const ArchivedCarts = (props: Props) => {
 
 		useEffect(() => {
 				const handleScroll = () => {
-						const { dispatch, destinationCarts, isLoading, totalCount, pageNumber } = props;
+						const { dispatch, archivedCarts, isLoading, totalCount, pageNumber } = props;
 						const reachedEnd = window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight;
-						const shouldFetchCarts = !isLoading && destinationCarts.length < totalCount;
+						const shouldFetchCarts = !isLoading && archivedCarts.length < totalCount;
 
 						if (reachedEnd && shouldFetchCarts) {
 								dispatch(fetchArchieveCards(false, 'merge', pageNumber + 1));
@@ -44,7 +44,7 @@ const ArchivedCarts = (props: Props) => {
 		});
 
 
-		const renderListCarts = () => destinationCarts.map((cart) => (
+		const renderListCarts = () => archivedCarts.map((cart) => (
 				<ArchievedCardsObject
 						key={cart.uuid}
 						cart={cart}
@@ -67,11 +67,11 @@ ArchivedCarts.layoutOptions = {
 
 const mapStateToProps = (state: AppState) => {
 		const { progress } = state.service;
-		const { isLoading, totalCount, pageNumber, destinationCarts } = state.carts;
+		const { isLoading, totalCount, pageNumber, archivedCarts } = state.carts;
 
 		return {
+				archivedCarts,
 				progress,
-				destinationCarts,
 				isLoading,
 				totalCount,
 				pageNumber,
