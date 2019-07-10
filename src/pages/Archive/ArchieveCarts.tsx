@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Cart } from '../../types/api';
-import { FetchArchieveCards } from '../../actions/archieveCarts';
+import { fetchArchieveCards } from '../../actions/carts';
 import { AppState } from '../../types/store';
 import { connect } from 'react-redux';
 import ArchievedCardsObject from './ArchievedCardsObject';
@@ -9,7 +9,7 @@ import ArchievedCardsObject from './ArchievedCardsObject';
 interface Props {
 		dispatch: Function,
 		progress: AppState['service']['progress'],
-		carts: Cart[],
+		destinationCarts: Cart[],
 
 		isLoading: boolean,
 		totalCount: number,
@@ -20,20 +20,20 @@ interface Props {
 }
 
 const ArchivedCarts = (props: Props) => {
-		const { dispatch, carts, progress } = props;
+		const { dispatch, destinationCarts } = props;
 
 		useEffect(() => {
-						dispatch(FetchArchieveCards(false, 'merge', 1))
+						dispatch(fetchArchieveCards(false, 'merge', 1))
 		}, []);
 
 		useEffect(() => {
 				const handleScroll = () => {
-						const { dispatch, carts, isLoading, totalCount, pageNumber } = props;
+						const { dispatch, destinationCarts, isLoading, totalCount, pageNumber } = props;
 						const reachedEnd = window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight;
-						const shouldFetchCarts = !isLoading && carts.length < totalCount;
+						const shouldFetchCarts = !isLoading && destinationCarts.length < totalCount;
 
 						if (reachedEnd && shouldFetchCarts) {
-								dispatch(FetchArchieveCards(false, 'merge', pageNumber + 1));
+								dispatch(fetchArchieveCards(false, 'merge', pageNumber + 1));
 						}
 				};
 
@@ -44,7 +44,7 @@ const ArchivedCarts = (props: Props) => {
 		});
 
 
-		const renderListCarts = () => carts.map((cart) => (
+		const renderListCarts = () => destinationCarts.map((cart) => (
 				<ArchievedCardsObject
 						key={cart.uuid}
 						cart={cart}
@@ -67,11 +67,11 @@ ArchivedCarts.layoutOptions = {
 
 const mapStateToProps = (state: AppState) => {
 		const { progress } = state.service;
-		const { carts, isLoading, totalCount, pageNumber } = state.archieveCarts;
+		const { isLoading, totalCount, pageNumber, destinationCarts } = state.carts;
 
 		return {
 				progress,
-				carts,
+				destinationCarts,
 				isLoading,
 				totalCount,
 				pageNumber,
