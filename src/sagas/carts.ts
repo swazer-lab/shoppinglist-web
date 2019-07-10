@@ -306,7 +306,6 @@ function* setDestinationCartSaga(action: SetDestinationCartAction) {
 						const response = yield call(set_destination_carts_revoke_api, action.cart.id);
 						const data = yield morphism(cartMapper(), response.data);
 						yield put(setDestinationCartResult(false, data));
-						debugger;
 				} catch (e) {
 						yield all([
 								put(showHttpErrorAlert(e)),

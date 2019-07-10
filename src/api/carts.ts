@@ -76,7 +76,6 @@ export const set_destination_carts_api = (cartId: string) => {
 };
 
 export const set_destination_carts_revoke_api = (cartId: string) => {
-		debugger;
 		const body = {
 				CartId: cartId,
 		};

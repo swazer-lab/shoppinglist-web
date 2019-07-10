@@ -304,7 +304,7 @@ export type Action =
 export type State = {
 	draftCart: Cart,
 	carts:  Array<Cart>,
-	destinationCarts: Array<Cart>,
+	archivedCarts: Array<Cart>,
 
 	filteredCarts?: Array<Cart>,
 	searchQuery?: string,
