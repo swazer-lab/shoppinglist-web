@@ -31,9 +31,7 @@ import {
 		pushCart,
 		removeCart,
 		removeDraftCartItem,
-		reorderArchivedCart,
 		reorderCart,
-		setDestinationCart,
 		setDraftCart,
 		setIsCartCopying,
 		setIsCartStatusChanging,
@@ -223,37 +221,13 @@ const Carts = (props: Props) => {
 				if (!destination) {
 						return;
 				}
-
-				if (source.droppableId === destination.droppableId && source.droppableId === 'list1') {
-						if (destination.index === source.index) {
-								setisArchivedCartsVisible(false);
-								return;
-						}
-						const { dispatch, carts } = props;
-						const cartId = carts[source.index].id;
-						dispatch(reorderCart(cartId, source.index, destination.index));
-
-				} else if (source.droppableId === destination.droppableId && source.droppableId === 'list2') {
-						if (destination.index === source.index) {
-								setisArchivedCartsVisible(false);
-								return;
-						}
-						const { dispatch, archivedCarts } = props;
-						const cartId = archivedCarts[source.index].id;
-						dispatch(reorderArchivedCart(cartId, source.index, destination.index));
-
-				} else if (source.droppableId === 'list1') {
-						const current = carts;
-						const target = current[source.index] as Cart;
-						dispatch(setDestinationCart(target, source.index, true));
-
-				} else if (source.droppableId === 'list2') {
-						const current = archivedCarts;
-						const target = current[source.index] as Cart;
-						dispatch(setDestinationCart(target, source.index, false));
+				if (destination.index === source.index) {
+						return;
 				}
 
-				setisArchivedCartsVisible(false);
+				const { dispatch, carts } = props;
+				const cartId = carts[source.index].id;
+				dispatch(reorderCart(cartId, source.index, destination.index));
 		};
 
 		const onGetAllCarts = () => {
@@ -289,34 +263,6 @@ const Carts = (props: Props) => {
 		};
 
 		const renderCarts = () => carts.map((cart, index) => (
-				<div key={cart.uuid}>
-						<Draggable draggableId={cart.id} index={index}>
-								{provided => (
-										<div className='cart_object_container'
-										     ref={provided.innerRef}
-										     {...provided.draggableProps}
-										     {...provided.dragHandleProps}
-										>
-												{visibilityFilter === 'All' || getCartStatus(cart.items) === visibilityFilter ?
-														<CartObject
-																progress={progress}
-																cart={cart}
-																onOpenUpdateCartModalClick={onOpenUpdateCartModalClicked}
-																onRemoveCartClick={onRemoveCartClicked}
-																currentUserEmail={email}
-																onOpenCopyCartModalClick={onOpenCopyCartModalClicked}
-																onDraftCartItemStatusChange={handleDraftCartObjectItemStatusChange}
-																onOpenShareModalClick={onOpenShareModalClicked}
-																onOpenSharedUserInformationClick={onOpenSharedUserInformationClicked}
-														/> : null
-												}
-										</div>
-								)}
-						</Draggable>
-				</div>
-		));
-
-		const renderArchivedCarts = () => archivedCarts.map((cart, index) => (
 				<div key={cart.uuid}>
 						<Draggable draggableId={cart.id} index={index}>
 								{provided => (
@@ -406,16 +352,6 @@ const Carts = (props: Props) => {
 												</Droppable>
 												<div style={{ height: '50px' }}>
 
-												</div>
-												<div style={{ visibility: isArchivedCartsVisible ? 'visible' : 'hidden' }}>
-														<Droppable droppableId="list2" direction={'horizontal'} key="list2">
-																{provided => (
-																		<div ref={provided.innerRef} {...provided.droppableProps}>
-																				{renderArchivedCarts()}
-																				{provided.placeholder}
-																		</div>
-																)}
-														</Droppable>
 												</div>
 										</DragDropContext>
 										{modalCart &&
