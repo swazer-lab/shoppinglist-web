@@ -23,6 +23,8 @@ interface Props {
 const Layout = (props: Props) => {
 		const { children, match, location, history, dispatch, layoutOptions, isLoggedIn } = props;
 
+		console.log(children, match, location, history, dispatch, layoutOptions, isLoggedIn);
+
 		useDocumentTitle(layoutOptions.title);
 
 		useEffect(() => {
@@ -39,6 +41,7 @@ const Layout = (props: Props) => {
 		const content = React.Children.map(children, (child, index) => (
 				React.cloneElement(child, { index, match, location, history })
 		));
+
 		return (
 				<LayoutComponent {...layoutProps}>
 						{content}

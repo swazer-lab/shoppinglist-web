@@ -5,7 +5,7 @@ import { AppState } from '../../types/store';
 import { Profile } from '../../types/api';
 
 import { Alert, Snackbar } from '../../components';
-import ConfirmLogout  from './ConfirmLogoutModal';
+import ConfirmLogout from './ConfirmLogoutModal';
 import { NavigationBar, ProfileModal } from './';
 
 import { clearAlert, hideSnackbar } from '../../actions/service';
@@ -21,7 +21,7 @@ import {
 		updateProfilePhoto,
 } from '../../actions/profile';
 
-import { changeSearchQuery, clearDraftCart, filterCarts, setIsCartUpdating } from '../../actions/carts';
+import { changeSearchQuery, filterCarts } from '../../actions/carts';
 import { fetchContacts } from '../../actions/contacts';
 
 import './styles.scss';
@@ -59,7 +59,6 @@ const MainLayout = (props: Props) => {
 		const [isProfileModalVisible, setIsProfileModalVisible] = useState(false);
 		const [isOpenedSearchBar, setIsOpenedSearchBar] = useState(false);
 		const [isShowDiscardDialog, setShowDiscardDialog] = useState(false);
-
 
 		useEffect(() => {
 				if (isLoggedIn && accessToken) {
@@ -178,7 +177,6 @@ const MainLayout = (props: Props) => {
 								onLogout={onClickChangesDiscard}
 						/>
 						{children}
-
 				</div>
 		);
 };

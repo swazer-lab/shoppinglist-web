@@ -116,13 +116,9 @@ Login.layoutOptions = {
 const mapStateToProps = (state: AppState, props: Props) => {
 	const { email, password } = state.auth;
 
-	const redirectTo = props.location.state ? props.location.state.routeName : 'Carts';
-
-
 	return {
 		email,
 		password,
-		redirectTo,
 	};
 };
 

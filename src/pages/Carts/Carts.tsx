@@ -407,7 +407,7 @@ const Carts = (props: Props) => {
 												<div style={{ height: '50px' }}>
 
 												</div>
-												<div style={{visibility: isArchivedCartsVisible ? 'visible': 'hidden'}}>
+												<div style={{ visibility: isArchivedCartsVisible ? 'visible' : 'hidden' }}>
 														<Droppable droppableId="list2" direction={'horizontal'} key="list2">
 																{provided => (
 																		<div ref={provided.innerRef} {...provided.droppableProps}>

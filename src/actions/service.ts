@@ -26,6 +26,7 @@ export const navigate = (routeName: RouteName, options?: {}): NavigateAction => 
 		location,
 	};
 };
+
 export const replace = (routeName: string): ReplaceAction => {
 	const route = routes[routes.findIndex((route) => route.name === routeName)];
 	history.replace(route.path);
@@ -35,6 +36,7 @@ export const replace = (routeName: string): ReplaceAction => {
 		routeName,
 	};
 };
+
 export const goBack = (): ServiceAction => {
 	history.goBack();
 
@@ -42,6 +44,7 @@ export const goBack = (): ServiceAction => {
 		type: ActionTypes.go_back,
 	};
 };
+
 export const goForward = (): ServiceAction => {
 	history.goBack();
 
@@ -55,6 +58,7 @@ export const showProgress = (message?: string): ShowProgressAction => ({
 	type: ActionTypes.show_progress,
 	message,
 });
+
 export const hideProgress = (): ServiceAction => ({
 	type: ActionTypes.hide_progress,
 });
@@ -99,6 +103,7 @@ export const showSnackbar = (message: string, actions?: State['snackbar']['actio
 	actions,
 	duration,
 });
+
 export const hideSnackbar = (): ServiceAction => ({
 	type: ActionTypes.hide_snackbar,
 });

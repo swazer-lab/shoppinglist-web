@@ -23,7 +23,7 @@ const ArchivedCarts = (props: Props) => {
 		const { dispatch, archivedCarts } = props;
 
 		useEffect(() => {
-						dispatch(fetchArchieveCards(false, 'merge', 1))
+				dispatch(fetchArchieveCards(false, 'merge', 1));
 		}, []);
 
 		useEffect(() => {
@@ -42,7 +42,6 @@ const ArchivedCarts = (props: Props) => {
 						window.removeEventListener('scroll', handleScroll);
 				};
 		});
-
 
 		const renderListCarts = () => archivedCarts.map((cart) => (
 				<ArchievedCardsObject

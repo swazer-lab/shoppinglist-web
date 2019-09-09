@@ -1,17 +1,20 @@
-.continue_as_user {
-  align-self: flex-start;
+.authorized_login_container{
+    display: flex;
+    flex-direction: column;
+    align-self: flex-start;
 
-  margin-top: 3rem;
-  border-radius: .4rem;
-  height: 4rem;
+    &__continue_as_user{
+        margin-top: 3rem;
+        border-radius: .4rem;
+        height: 4rem;
 
-  background-color:#0336FF ;
-  color: #FFFFFF;
-}
+        background-color:#0336FF ;
+        color: #FFFFFF;
+    }
 
-.switch_user{
-  align-self: flex-start;
-  margin-top: 1rem;
-  padding-left: 0;
-  color: rgba(0,0,0,.4);
+    &__switch_user{
+        align-self: center;
+        margin-top: 1rem;
+        color: rgba(0,0,0,.4);
+    }
 }
