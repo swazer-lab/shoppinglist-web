@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd';
+import { DragDropContext, Draggable, DragUpdate, Droppable, DropResult } from 'react-beautiful-dnd';
 import _ from 'lodash';
 import { AppState } from '../../types/store';
 import { Cart, CartItemStatusType } from '../../types/api';
@@ -31,7 +31,9 @@ import {
 		pushCart,
 		removeCart,
 		removeDraftCartItem,
+		reorderArchivedCart,
 		reorderCart,
+		setDestinationCart,
 		setDraftCart,
 		setIsCartCopying,
 		setIsCartStatusChanging,
@@ -72,7 +74,6 @@ interface Props {
 const Carts = (props: Props) => {
 		const [isShowDiscardDialog, setShowDiscardDialog] = useState(false);
 		const [isShareModalVisible, setIsShareModalVisible] = useState(false);
-		const [isArchivedCartsVisible, setisArchivedCartsVisible] = useState(false);
 		const [modalCart, setIsModalCart] = useState();
 		const [isSharedUserModalVisible, setisSharedUserModalVisible] = useState(false);
 
@@ -88,6 +89,7 @@ const Carts = (props: Props) => {
 		useEffect(() => {
 				const handleScroll = () => {
 						const { dispatch, carts, isLoading, totalCount, pageNumber } = props;
+
 						const reachedEnd = window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight;
 						const shouldFetchCarts = !isLoading && carts.length < totalCount;
 
@@ -211,8 +213,18 @@ const Carts = (props: Props) => {
 				dispatch(updateCart());
 		};
 
-		const onDragStart = () => {
-				setisArchivedCartsVisible(true);
+		const onDragUpdate = (initial: DragUpdate) => {
+				const { destination } = initial;
+
+				if (destination) {
+						console.log(destination!.droppableId);
+				}
+		};
+
+		const onCartMakeArchive = (cart: Cart, cartIndex: number) => {
+				if (window.confirm("Archive the cart?")) {
+						dispatch(setDestinationCart(cart, cartIndex, true));
+				}
 		};
 
 		const onDragEnd = (result: DropResult) => {
@@ -221,13 +233,33 @@ const Carts = (props: Props) => {
 				if (!destination) {
 						return;
 				}
-				if (destination.index === source.index) {
-						return;
-				}
 
-				const { dispatch, carts } = props;
-				const cartId = carts[source.index].id;
-				dispatch(reorderCart(cartId, source.index, destination.index));
+				if (source.droppableId === destination.droppableId && source.droppableId === 'list1') {
+						if (destination.index === source.index) {
+								return;
+						}
+						const { dispatch, carts } = props;
+						const cartId = carts[source.index].id;
+						dispatch(reorderCart(cartId, source.index, destination.index));
+
+				} else if (source.droppableId === destination.droppableId && source.droppableId === 'list2') {
+						if (destination.index === source.index) {
+								return;
+						}
+						const { dispatch, archivedCarts } = props;
+						const cartId = archivedCarts[source.index].id;
+						dispatch(reorderArchivedCart(cartId, source.index, destination.index));
+
+				} else if (source.droppableId === 'list1') {
+						const current = carts;
+						const target = current[source.index] as Cart;
+						dispatch(setDestinationCart(target, source.index, true));
+
+				} else if (source.droppableId === 'list2') {
+						const current = archivedCarts;
+						const target = current[source.index] as Cart;
+						dispatch(setDestinationCart(target, source.index, false));
+				}
 		};
 
 		const onGetAllCarts = () => {
@@ -265,7 +297,7 @@ const Carts = (props: Props) => {
 		const renderCarts = () => carts.map((cart, index) => (
 				<div key={cart.uuid}>
 						<Draggable draggableId={cart.id} index={index}>
-								{provided => (
+								{(provided) => (
 										<div className='cart_object_container'
 										     ref={provided.innerRef}
 										     {...provided.draggableProps}
@@ -273,8 +305,10 @@ const Carts = (props: Props) => {
 										>
 												{visibilityFilter === 'All' || getCartStatus(cart.items) === visibilityFilter ?
 														<CartObject
+																innerRef={provided.innerRef}
 																progress={progress}
 																cart={cart}
+																cartIndex={index}
 																onOpenUpdateCartModalClick={onOpenUpdateCartModalClicked}
 																onRemoveCartClick={onRemoveCartClicked}
 																currentUserEmail={email}
@@ -282,6 +316,7 @@ const Carts = (props: Props) => {
 																onDraftCartItemStatusChange={handleDraftCartObjectItemStatusChange}
 																onOpenShareModalClick={onOpenShareModalClicked}
 																onOpenSharedUserInformationClick={onOpenSharedUserInformationClicked}
+																onArchiveCartClick={onCartMakeArchive}
 														/> : null
 												}
 										</div>
@@ -341,7 +376,7 @@ const Carts = (props: Props) => {
 																onGetActiveCarts={onGetActiveCarts}
 																onGetCompletedCarts={onGetCompletedCarts} />
 														: ''}
-										<DragDropContext onDragEnd={onDragEnd} onDragStart={onDragStart}>
+										<DragDropContext onDragEnd={onDragEnd}>
 												<Droppable droppableId="list1" direction={'vertical'} key="list1">
 														{provided => (
 																<div ref={provided.innerRef} {...provided.droppableProps}>
@@ -350,7 +385,7 @@ const Carts = (props: Props) => {
 																</div>
 														)}
 												</Droppable>
-												<div style={{ height: '50px' }}>
+												<div style={{ height: '10px' }}>
 
 												</div>
 										</DragDropContext>
