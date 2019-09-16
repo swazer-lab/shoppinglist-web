@@ -7,10 +7,14 @@ import { getCartStatus } from '../../config/utilities';
 
 import avatar from '../../assets/images/avatar.jpeg';
 import './styles.scss';
+import index from '../../reducers';
 
 interface Props {
+		innerRef?: any,
+		provided?: any,
 		progress: AppState['service']['progress'],
 		cart: Cart,
+		cartIndex: number,
 
 		currentUserEmail?: string,
 
@@ -20,12 +24,18 @@ interface Props {
 		onDraftCartItemStatusChange: (uuid: string, status: CartItemStatusType, cart: Cart) => void,
 		onOpenShareModalClick: (cart: Cart) => void,
 		onOpenSharedUserInformationClick: (cart: Cart) => void
+		onArchiveCartClick?: (cart: Cart, index: number) => void
+
 }
 
 const CartObject = (props: Props) => {
 		const [accessLevel, setAccessLevel] = useState('');
 
-		const { progress, cart, onOpenUpdateCartModalClick, onRemoveCartClick, onOpenCopyCartModalClick, currentUserEmail, onDraftCartItemStatusChange, onOpenShareModalClick, onOpenSharedUserInformationClick } = props;
+		const { progress, cart, cartIndex, onOpenUpdateCartModalClick, onRemoveCartClick, onOpenCopyCartModalClick, currentUserEmail, onDraftCartItemStatusChange, onOpenShareModalClick, onOpenSharedUserInformationClick, innerRef, onArchiveCartClick } = props;
+
+		useEffect(() => {
+				console.log(innerRef);
+		}, []);
 
 		useEffect(() => {
 				if (!currentUserEmail) return;
@@ -61,8 +71,12 @@ const CartObject = (props: Props) => {
 				onOpenCopyCartModalClick(cart);
 		};
 
-		const status = getCartStatus(cart.items);
+		const onArchiveCartClicked = (e: any) => {
+				e.stopPropagation();
+				onArchiveCartClick!(cart, cartIndex);
+		};
 
+		const status = getCartStatus(cart.items);
 
 		const renderItems = (status: string) => cart.items.filter(item => item.status === status).map(item => {
 				const handleDraftCartItemStatusChange = (e: any) => {
@@ -83,7 +97,7 @@ const CartObject = (props: Props) => {
 		});
 
 		return (
-				<div className='cart_object' onClick={onOpenUpdateCartModalClicked}>
+				<div className='cart_object' onClick={onOpenUpdateCartModalClicked} ref={innerRef}>
 						<div className='cart_object__remove_button' onClick={onRemoveCartClicked}>
 								<i className='material-icons'>cancel</i>
 						</div>
@@ -117,6 +131,10 @@ const CartObject = (props: Props) => {
 
 								<div className='cart_object__users_container__share_button' onClick={onOpenCopyCartModalClicked}>
 										<i className='material-icons'>file_copy</i>
+								</div>
+
+								<div className='cart_object__users_container__archive_button' onClick={onArchiveCartClicked}>
+										<i className='material-icons'>archive</i>
 								</div>
 
 								<div className='cart_object__users_container__user_list'>

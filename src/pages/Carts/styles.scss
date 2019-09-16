@@ -1,5 +1,30 @@
 @import "../../assets/scss/main";
 
+.archive_carts_container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 50rem;
+    height: 12rem;
+    transition: all .1s;
+    visibility: hidden;
+    background-color: #dadce0;
+
+    &__visible {
+        visibility: visible;
+    }
+
+    &__content-container {
+        display: flex;
+        flex: 1;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+
+        height: 100%;
+    }
+}
+
 .carts_container {
     display: flex;
     flex-direction: column;
@@ -198,7 +223,6 @@
     &__filter_button {
         padding: 0.6rem;
         margin-left: 0.6rem;
-
     }
 }
 
@@ -218,6 +242,11 @@
     background-color: $color-white;
     border: .1rem solid $color-gray;
     border-radius: .6rem;
+
+    &__is_archived_cart {
+        padding: unset;
+        margin-left: 10px;
+    }
 
     @include respond-width();
 
@@ -327,7 +356,7 @@
     }
 
     &__users_container {
-        margin: 1.5rem 1.5rem 0 1.5rem;
+        margin: 1.5rem 1.5rem 1.5rem;
 
         &__share_button {
             float: left;
@@ -335,6 +364,14 @@
             & i {
                 color: $color-text;
             }
+
+            &:hover {
+                cursor: pointer;
+            }
+        }
+
+        &__archive_button {
+            float: left;
 
             &:hover {
                 cursor: pointer;
@@ -416,9 +453,7 @@
         color: $color-text;
         margin-left: 2.4rem;
         margin-top: -23px;
-
     }
-
 
     &__sharing_button {
         margin: 1rem;
@@ -638,6 +673,10 @@
 }
 
 .cart_object__users_container__share_button {
+    margin-left: 10px;
+}
+
+.cart_object__users_container__archive_button {
     margin-left: 10px;
 }
 
