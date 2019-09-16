@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { DragDropContext, Draggable, DragUpdate, Droppable, DropResult } from 'react-beautiful-dnd';
+import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd';
 import _ from 'lodash';
 import { AppState } from '../../types/store';
 import { Cart, CartItemStatusType } from '../../types/api';
@@ -31,7 +31,6 @@ import {
 		pushCart,
 		removeCart,
 		removeDraftCartItem,
-		reorderArchivedCart,
 		reorderCart,
 		setDestinationCart,
 		setDraftCart,
@@ -213,16 +212,8 @@ const Carts = (props: Props) => {
 				dispatch(updateCart());
 		};
 
-		const onDragUpdate = (initial: DragUpdate) => {
-				const { destination } = initial;
-
-				if (destination) {
-						console.log(destination!.droppableId);
-				}
-		};
-
 		const onCartMakeArchive = (cart: Cart, cartIndex: number) => {
-				if (window.confirm("Archive the cart?")) {
+				if (window.confirm('Archive the cart?')) {
 						dispatch(setDestinationCart(cart, cartIndex, true));
 				}
 		};
@@ -233,33 +224,13 @@ const Carts = (props: Props) => {
 				if (!destination) {
 						return;
 				}
-
-				if (source.droppableId === destination.droppableId && source.droppableId === 'list1') {
-						if (destination.index === source.index) {
-								return;
-						}
-						const { dispatch, carts } = props;
-						const cartId = carts[source.index].id;
-						dispatch(reorderCart(cartId, source.index, destination.index));
-
-				} else if (source.droppableId === destination.droppableId && source.droppableId === 'list2') {
-						if (destination.index === source.index) {
-								return;
-						}
-						const { dispatch, archivedCarts } = props;
-						const cartId = archivedCarts[source.index].id;
-						dispatch(reorderArchivedCart(cartId, source.index, destination.index));
-
-				} else if (source.droppableId === 'list1') {
-						const current = carts;
-						const target = current[source.index] as Cart;
-						dispatch(setDestinationCart(target, source.index, true));
-
-				} else if (source.droppableId === 'list2') {
-						const current = archivedCarts;
-						const target = current[source.index] as Cart;
-						dispatch(setDestinationCart(target, source.index, false));
+				if (destination.index === source.index) {
+						return;
 				}
+
+				const { dispatch, carts } = props;
+				const cartId = carts[source.index].id;
+				dispatch(reorderCart(cartId, source.index, destination.index));
 		};
 
 		const onGetAllCarts = () => {
