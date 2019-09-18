@@ -24,7 +24,7 @@ interface Props {
 		onDraftCartItemStatusChange: (uuid: string, status: CartItemStatusType, cart: Cart) => void,
 		onOpenShareModalClick: (cart: Cart) => void,
 		onOpenSharedUserInformationClick: (cart: Cart) => void
-		onArchiveCartClick?: (cart: Cart, index: number) => void
+		onArchiveCartClick?: (cart: Cart) => void
 
 }
 
@@ -34,7 +34,6 @@ const CartObject = (props: Props) => {
 		const { progress, cart, cartIndex, onOpenUpdateCartModalClick, onRemoveCartClick, onOpenCopyCartModalClick, currentUserEmail, onDraftCartItemStatusChange, onOpenShareModalClick, onOpenSharedUserInformationClick, innerRef, onArchiveCartClick } = props;
 
 		useEffect(() => {
-				console.log(innerRef);
 		}, []);
 
 		useEffect(() => {
@@ -73,7 +72,7 @@ const CartObject = (props: Props) => {
 
 		const onArchiveCartClicked = (e: any) => {
 				e.stopPropagation();
-				onArchiveCartClick!(cart, cartIndex);
+				onArchiveCartClick!(cart);
 		};
 
 		const status = getCartStatus(cart.items);

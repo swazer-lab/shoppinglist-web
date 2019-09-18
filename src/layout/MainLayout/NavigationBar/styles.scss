@@ -1,71 +1,91 @@
 @import "../../../assets/scss/main";
 
 .navigation_bar {
-  display: flex;
-  justify-content: space-between;
-
-  position: fixed;
-  top: 0;
-  right: 0;
-  left: 0;
-
-  height: 6.5rem;
-  padding: 1.2rem 2.5rem;
-
-  background-color: $color-white;
-  border-bottom: .1rem solid $color-gray;
-
-  z-index: 50;
-
-  &__auth {
     display: flex;
-    align-items: center;
-    justify-content: flex-end;
+    flex-direction: row;
+    justify-content: space-between;
 
-    width: 20rem;
-    cursor: pointer;
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
 
-    @include respond-portal {
-      width: 5rem;
+    height: 6.5rem;
+    padding: 1.2rem 2.5rem;
+
+    background-color: $color-white;
+    border-bottom: .1rem solid $color-gray;
+
+    z-index: 50;
+
+    &__progress_sidebar_container{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+
+        width: 20rem;
+
+        @include respond-portal {
+            width: 5rem;
+        }
     }
 
-    @include respond-phone {
-      &_hidden {
-        display: none;
-      }
+    &__toggle_sidebar{
+        display: flex;
+        align-items: center;
+
+        cursor: pointer;
     }
 
-    &__photo {
-      width: 4.1rem;
-      height: 4.1rem;
+    &__auth {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
 
-      background-color: $color-gray;
-      border-radius: 2.5rem;
-      border: 0;
+        width: 20rem;
+        cursor: pointer;
+
+        @include respond-portal {
+            width: 5rem;
+        }
+
+        @include respond-phone {
+            &_hidden {
+                display: none;
+            }
+        }
+
+        &__photo {
+            width: 4.1rem;
+            height: 4.1rem;
+
+            background-color: $color-gray;
+            border-radius: 2.5rem;
+            border: 0;
+        }
     }
-  }
 }
 
 @-webkit-keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  50% {
-    transform: rotate(180deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
+    0% {
+        transform: rotate(0deg);
+    }
+    50% {
+        transform: rotate(180deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 @keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  50% {
-    transform: rotate(180deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
+    0% {
+        transform: rotate(0deg);
+    }
+    50% {
+        transform: rotate(180deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }

@@ -128,8 +128,6 @@ const ForgotPassword = (props: Props) => {
 const mapStateToProps = (state: AppState) => {
 	const { email, password, resetPasswordCode, isResettingPassword } = state.auth;
 
-	console.log(resetPasswordCode);
-
 	return {
 		email,
 		password,

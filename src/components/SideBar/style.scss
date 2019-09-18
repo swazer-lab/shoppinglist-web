@@ -1,0 +1,78 @@
+@import "../../assets/scss/main";
+
+.container {
+    display: flex;
+    min-height: 100%;
+}
+
+.sidebar {
+    background-color: #fdfdfd;
+    transform: translate3d(-280px, 0px, 0px);
+    position: absolute;
+    width: 280px;
+    color: #eee;
+    left: 0;
+    height: 100%;
+    transition: all .2s;
+    z-index: 1000;
+}
+
+.sidebar_open {
+    background-color: #fdfdfd;
+    transform: translate3d(0px, 0px, 0px);
+    position: absolute;
+    width: 280px;
+    color: #eee;
+    left: 0;
+    height: 100%;
+    transition: all .2s;
+
+    @include respond-portal {
+        z-index: 1000;
+    }
+}
+
+.menu {
+    list-style: none;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.menu li {
+    height: 48px;
+    padding-left: 24px;
+    border-radius: 0 25px 25px 0;
+
+    &:hover {
+        cursor: pointer;
+        background-color: rgba(192, 192, 192, 0.3);
+    }
+}
+
+.menu li.selected {
+    background-color: #488ac7;
+}
+
+.menu li a {
+    line-height: 28px;
+    text-align: center;
+    text-decoration: none;
+}
+
+.menu li a span {
+    position: relative;
+    top: 5px;
+
+    padding-left: 32px;
+    font-size: 14px;
+    font-weight: 600;
+
+    color: #202124;
+}
+
+.menu li a i {
+    position: relative;
+    top: 12px;
+
+    color: black;
+}

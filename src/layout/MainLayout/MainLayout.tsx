@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 
-import { AppState } from '../../types/store';
+import { AppState, RouteName } from '../../types/store';
 import { Profile } from '../../types/api';
 
 import { Alert, Snackbar } from '../../components';
 import ConfirmLogout from './ConfirmLogoutModal';
 import { NavigationBar, ProfileModal } from './';
 
-import { clearAlert, hideSnackbar } from '../../actions/service';
+import { clearAlert, hideSnackbar, navigate, toggleSideBar } from '../../actions/service';
 import { changeNewPassword, changePassword, logout, resendConfirmEmail, updatePassword } from '../../actions/auth';
-
 
 import {
 		changeDraftProfileName,
@@ -25,6 +24,7 @@ import { changeSearchQuery, filterCarts } from '../../actions/carts';
 import { fetchContacts } from '../../actions/contacts';
 
 import './styles.scss';
+import SideBar from '../../components/SideBar/SideBar';
 
 interface Props {
 		dispatch: Function,
@@ -50,11 +50,14 @@ interface Props {
 
 		isLoggedIn: boolean,
 		accessToken: string,
-		isEmailConfirmed: boolean
+		isEmailConfirmed: boolean,
+
+		isShowSideBar?: boolean
 }
 
 const MainLayout = (props: Props) => {
-		const { children, dispatch, progress, snackbar, alert, id, name, email, phoneNumber, password, newPassword, photoUrl, avatarUrl, draftProfile, searchQuery, isLoggedIn, accessToken, isEmailConfirmed } = props;
+		const { children, dispatch, progress, snackbar, alert, id, name, email, phoneNumber, password, newPassword, photoUrl, avatarUrl, draftProfile, searchQuery, isLoggedIn, accessToken, isEmailConfirmed, isShowSideBar, layoutOptions } = props;
+
 
 		const [isProfileModalVisible, setIsProfileModalVisible] = useState(false);
 		const [isOpenedSearchBar, setIsOpenedSearchBar] = useState(false);
@@ -120,6 +123,14 @@ const MainLayout = (props: Props) => {
 				setIsOpenedSearchBar(false);
 		};
 
+		const onToggleSideBar = () => {
+				dispatch(toggleSideBar());
+		};
+
+		const onNavigateFromSideBar = (routeName: RouteName) => {
+				dispatch(navigate(routeName));
+		};
+
 		return (
 				<div className='main_layout'>
 						<NavigationBar
@@ -132,6 +143,8 @@ const MainLayout = (props: Props) => {
 								onFilterClick={onFilterClicked}
 								isOpenSearchBar={isOpenedSearchBar}
 								onCloseSearchBar={onCloseSearchBar}
+								onToggleSideBar={onToggleSideBar}
+								isShowSideBar={isShowSideBar}
 						/>
 						<ProfileModal
 								isVisible={isProfileModalVisible}
@@ -176,13 +189,14 @@ const MainLayout = (props: Props) => {
 								onCancel={onClickCancelLogout}
 								onLogout={onClickChangesDiscard}
 						/>
+						<SideBar isShow={isShowSideBar} onNavigate={onNavigateFromSideBar} selectedRoute={layoutOptions.title}/>
 						{children}
 				</div>
 		);
 };
 
 const mapStateToProps = (state: AppState) => {
-		const { progress, snackbar, alert } = state.service;
+		const { progress, snackbar, alert, isShowSideBar } = state.service;
 		const { id, name, email, phoneNumber, photoUrl, avatarUrl, draftProfile } = state.profile;
 		const { searchQuery } = state.carts;
 		const { password, newPassword } = state.auth;
@@ -209,6 +223,7 @@ const mapStateToProps = (state: AppState) => {
 				isLoggedIn,
 				accessToken,
 				isEmailConfirmed,
+				isShowSideBar
 		};
 };
 

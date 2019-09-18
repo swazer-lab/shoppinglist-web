@@ -29,8 +29,6 @@ export default (state: State = initialState, action: Action): State => {
 
 						if (action.append === 'merge') {
 
-								console.log('**********',state.carts, action.carts);
-
 								return {
 										...state,
 										carts: [...state.carts, ...action.carts],

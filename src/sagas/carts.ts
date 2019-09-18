@@ -129,8 +129,6 @@ function* copyCartSaga(action: CopyCartAction) {
 
 		yield put(showProgress(language.textCopyingCart));
 
-		console.log(action.oldTitle);
-
 		if (!action.hasToShare) {
 				try {
 						const copiedCart = yield morphism(cartMapper(true), { title, notes, items });

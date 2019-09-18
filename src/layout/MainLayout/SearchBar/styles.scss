@@ -1,183 +1,216 @@
 @import "../../../assets/scss/main";
 
 .search_bar_container {
-  display: flex;
-
-  flex: 1;
-  flex-direction: column;
-  align-items: center;
-
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-
-  background-color: rgba($color-black, .5);
-  z-index: 500;
-
-  opacity: 0;
-  visibility: hidden;
-  transition: all .2s;
-
-  &_visible {
-    opacity: 1;
-    visibility: visible;
-  }
-}
-
-.search_bar {
-  display: flex;
-  flex: 1;
-  align-items: center;
-
-  max-width: 50rem;
-  height: 4.1rem;
-
-  background-color: $color-highlight;
-  border: .1rem solid $color-gray;
-  border-radius: .8rem;
-
-  z-index: 600;
-  cursor: pointer;
-
-  overflow: hidden;
-
-  @include respond-portal {
-    background-color: $color-white;
-    border: none;
-
-    &_visible {
-      background-color: $color-highlight;
-      border: .1rem solid $color-gray;
-    }
-  }
-
-  &__icon {
-    margin-left: 0.5rem;
-    margin-top: 0.4rem;
-
-    font-size: 2.2rem;
-    color: $color-text;
-
-    @include respond-portal {
-      &_visible {
-        display: none;
-      }
-    }
-  }
-
-  &__close {
-    display: none;
-
-    margin-top: 0.5rem;
-    margin-left: 1.5rem;
-
-    font-size: 2.2rem;
-    color: $color-text;
-
-    @include respond-portal {
-      &_visible {
-        margin-top: 0;
-        display: flex;
-      }
-    }
-  }
-
-  &__input {
-    flex: 1;
-    margin-right: 1rem;
-    margin-left: 1rem;
-
-    font-family: inherit;
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: $color-text;
-
-    background-color: transparent;
-    border: none;
-
-    &:focus {
-      outline: none;
-    }
-
-    @include respond-portal {
-      display: none;
-
-      &_visible {
-        display: flex;
-      }
-    }
-  }
-}
-
-.search_result_object {
-  display: flex;
-  position: relative;
-
-  flex: 1;
-  flex-direction: column;
-
-  margin-bottom: 1rem;
-  padding: 1rem 0;
-
-  background-color: $color-white;
-  border: .1rem solid $color-gray;
-  border-radius: .6rem;
-
-  cursor: pointer;
-
-  @include respond-width();
-
-  &__title {
-    flex: 1;
-    font-size: 1.6rem;
-
-    padding: 1rem 1.5rem;
-  }
-
-  &__items {
     display: flex;
 
     flex: 1;
     flex-direction: column;
+    align-items: center;
 
-    &__separator {
-      flex: 1;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0px;
 
-      height: .1rem;
-      margin-left: 1rem;
+    background-color: rgba($color-black, .5);
+    z-index: 500;
 
-      background-color: $color-gray;
+    opacity: 0;
+    visibility: hidden;
+    transition: all .2s;
+
+    &_visible {
+        opacity: 1;
+        visibility: visible;
+    }
+}
+
+.search_bar_carts{
+    position: relative;
+    left: 0px;
+
+    transition: all .3s;
+
+    &_side_bar_visible {
+        position: relative;
+        left: 140px;
+        transition: all .3s;
+
+        @include respond-portal {
+            position: relative;
+            left: 0px;
+        }
+    }
+}
+
+.search_bar {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    max-width: 50rem;
+    height: 4.1rem;
+
+    background-color: $color-highlight;
+    border: .1rem solid $color-gray;
+    border-radius: .8rem;
+
+    z-index: 600;
+    cursor: pointer;
+
+    overflow: hidden;
+
+    @include respond-portal {
+        background-color: $color-white;
+        border: none;
+
+        &_visible {
+            background-color: $color-highlight;
+            border: .1rem solid $color-gray;
+        }
     }
 
-    &__item {
-      display: flex;
+    position: relative;
+    left: 0px;
 
-      flex: 1;
-      align-items: center;
+    transition: all .3s;
 
-      padding: .8rem 1.5rem;
+    &_side_bar_visible {
+        position: relative;
+        left: 140px;
+        transition: all .3s;
 
-      border-top: .1rem solid transparent;
-      border-bottom: .1rem solid transparent;
+        @include respond-portal {
+            position: relative;
+            left: 0px;
+        }
+    }
 
-      transition: all .2s;
+    &__icon {
+        margin-left: 0.5rem;
+        margin-top: 0.4rem;
 
-      &:hover {
-        border-top: .1rem solid $color-gray;
-        border-bottom: .1rem solid $color-gray;
-      }
-
-      &__title {
-        margin-left: 1rem;
-        font-size: 1.4rem;
-      }
-
-      &__checkbox {
-        font-size: 1.8rem;
+        font-size: 2.2rem;
         color: $color-text;
-      }
+
+        @include respond-portal {
+            &_visible {
+                display: none;
+            }
+        }
     }
-  }
+
+    &__close {
+        display: none;
+
+        margin-top: 0.5rem;
+        margin-left: 1.5rem;
+
+        font-size: 2.2rem;
+        color: $color-text;
+
+        @include respond-portal {
+            &_visible {
+                margin-top: 0;
+                display: flex;
+            }
+        }
+    }
+
+    &__input {
+        flex: 1;
+        margin-right: 1rem;
+        margin-left: 1rem;
+
+        font-family: inherit;
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: $color-text;
+
+        background-color: transparent;
+        border: none;
+
+        &:focus {
+            outline: none;
+        }
+
+        @include respond-portal {
+            display: none;
+
+            &_visible {
+                display: flex;
+            }
+        }
+    }
+}
+
+.search_result_object {
+    display: flex;
+    position: relative;
+
+    flex: 1;
+    flex-direction: column;
+
+    margin-bottom: 1rem;
+    padding: 1rem 0;
+
+    background-color: $color-white;
+    border: .1rem solid $color-gray;
+    border-radius: .6rem;
+
+    cursor: pointer;
+
+    @include respond-width();
+
+    &__title {
+        flex: 1;
+        font-size: 1.6rem;
+
+        padding: 1rem 1.5rem;
+    }
+
+    &__items {
+        display: flex;
+
+        flex: 1;
+        flex-direction: column;
+
+        &__separator {
+            flex: 1;
+
+            height: .1rem;
+            margin-left: 1rem;
+
+            background-color: $color-gray;
+        }
+
+        &__item {
+            display: flex;
+
+            flex: 1;
+            align-items: center;
+
+            padding: .8rem 1.5rem;
+
+            border-top: .1rem solid transparent;
+            border-bottom: .1rem solid transparent;
+
+            transition: all .2s;
+
+            &:hover {
+                border-top: .1rem solid $color-gray;
+                border-bottom: .1rem solid $color-gray;
+            }
+
+            &__title {
+                margin-left: 1rem;
+                font-size: 1.4rem;
+            }
+
+            &__checkbox {
+                font-size: 1.8rem;
+                color: $color-text;
+            }
+        }
+    }
 }

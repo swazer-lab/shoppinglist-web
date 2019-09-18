@@ -107,3 +107,7 @@ export const showSnackbar = (message: string, actions?: State['snackbar']['actio
 export const hideSnackbar = (): ServiceAction => ({
 	type: ActionTypes.hide_snackbar,
 });
+
+export const toggleSideBar = (): ServiceAction => ({
+		type: ActionTypes.toggle_side_bar,
+});

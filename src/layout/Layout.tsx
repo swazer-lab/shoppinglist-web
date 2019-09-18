@@ -23,8 +23,6 @@ interface Props {
 const Layout = (props: Props) => {
 		const { children, match, location, history, dispatch, layoutOptions, isLoggedIn } = props;
 
-		console.log(children, match, location, history, dispatch, layoutOptions, isLoggedIn);
-
 		useDocumentTitle(layoutOptions.title);
 
 		useEffect(() => {

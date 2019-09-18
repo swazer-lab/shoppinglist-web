@@ -5,7 +5,6 @@ import { AppState } from '../../types/store';
 import { connect } from 'react-redux';
 import ArchievedCardsObject from './ArchievedCardsObject';
 
-
 interface Props {
 		dispatch: Function,
 		progress: AppState['service']['progress'],
@@ -16,14 +15,15 @@ interface Props {
 		pageNumber: number,
 
 		isLoggedIn: boolean,
-		accessToken: string
+		accessToken: string,
+		isShowSideBar?: boolean
 }
 
 const ArchivedCarts = (props: Props) => {
-		const { dispatch, archivedCarts } = props;
+		const { dispatch, archivedCarts, isShowSideBar } = props;
 
 		useEffect(() => {
-				dispatch(fetchArchieveCards(false, 'merge', 1));
+				dispatch(fetchArchieveCards(false, 'replace', 1));
 		}, []);
 
 		useEffect(() => {
@@ -51,21 +51,21 @@ const ArchivedCarts = (props: Props) => {
 		));
 
 		return (
-				<div>
+				<div className= {isShowSideBar ? 'container__open_side_bar' : 'container'}>
 						{renderListCarts()}
 				</div>
 		);
 };
 
 ArchivedCarts.layoutOptions = {
-		title: 'Carts',
+		title: 'ArchivedCarts',
 		layout: 'Main',
 		authorized: true,
 };
 
 
 const mapStateToProps = (state: AppState) => {
-		const { progress } = state.service;
+		const { progress, isShowSideBar } = state.service;
 		const { isLoading, totalCount, pageNumber, archivedCarts } = state.carts;
 
 		return {
@@ -74,6 +74,7 @@ const mapStateToProps = (state: AppState) => {
 				isLoading,
 				totalCount,
 				pageNumber,
+				isShowSideBar
 		};
 };
 

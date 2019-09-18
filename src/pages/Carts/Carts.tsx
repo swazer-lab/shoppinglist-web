@@ -67,7 +67,9 @@ interface Props {
 		pageNumber: number,
 
 		isLoggedIn: boolean,
-		accessToken: string
+		accessToken: string,
+
+		isShowSideBar?: boolean
 }
 
 const Carts = (props: Props) => {
@@ -76,12 +78,11 @@ const Carts = (props: Props) => {
 		const [modalCart, setIsModalCart] = useState();
 		const [isSharedUserModalVisible, setisSharedUserModalVisible] = useState(false);
 
-		const { dispatch, progress, snackbar, carts, archivedCarts, draftCart, email, visibilityFilter, isCartUpdating, isCartCopying, isCartStatusChanging, isLoggedIn, accessToken } = props;
+		const { dispatch, progress, snackbar, carts, archivedCarts, draftCart, email, visibilityFilter, isCartUpdating, isCartCopying, isCartStatusChanging, isLoggedIn, accessToken, isShowSideBar } = props;
 
 		useEffect(() => {
 				if (isLoggedIn && accessToken) {
 						dispatch(fetchCarts(false, 'replace', 1));
-						dispatch(fetchArchieveCards(false, 'replace', 1));
 				}
 		}, [isLoggedIn, accessToken]);
 
@@ -171,6 +172,7 @@ const Carts = (props: Props) => {
 				}
 
 				const cartIndex = carts.indexOf(cart);
+
 				dispatch(pullCart(cartIndex));
 
 				let isUndoClicked = false;
@@ -212,10 +214,35 @@ const Carts = (props: Props) => {
 				dispatch(updateCart());
 		};
 
-		const onCartMakeArchive = (cart: Cart, cartIndex: number) => {
-				if (window.confirm('Archive the cart?')) {
-						dispatch(setDestinationCart(cart, cartIndex, true));
+		const onCartMakeArchive = (cart: Cart) => {
+				if (snackbar.visible) {
+						dispatch(hideSnackbar());
 				}
+
+				const cartIndex = carts.indexOf(cart);
+
+				dispatch(pullCart(cartIndex));
+
+				let isUndoClicked = false;
+
+				const onUndoClicked = () => {
+						isUndoClicked = true;
+						dispatch(hideSnackbar());
+						dispatch(pushCart(cartIndex, cart));
+				};
+
+				dispatch(showSnackbar(language.textArchivingCart, [{
+						title: language.actionUndo,
+						onClick: onUndoClicked,
+				}]));
+
+				setTimeout(() => {
+						debugger;
+						if (!isUndoClicked) {
+								dispatch(hideSnackbar());
+								dispatch(setDestinationCart(cart, cartIndex, true));
+						}
+				}, 3000);
 		};
 
 		const onDragEnd = (result: DropResult) => {
@@ -307,7 +334,7 @@ const Carts = (props: Props) => {
 		} : draftCart;
 
 		return (
-				<div>
+				<div className={isShowSideBar ? 'container__open_side_bar' : 'container'}>
 						<CreateCart
 								draftCart={createCartDraftCart}
 								onDraftCartTitleChange={handleDraftCartTitleChange}
@@ -317,7 +344,6 @@ const Carts = (props: Props) => {
 								onDraftCartItemStatusChange={handleDraftCartItemStatusChange}
 								onCreateCartClick={onCreateCartClicked}
 						/>
-
 						<UpdateCart
 								draftCart={draftCart}
 								onDraftCartTitleChange={handleDraftCartTitleChange}
@@ -402,7 +428,7 @@ Carts.layoutOptions = {
 };
 
 const mapStateToProps = (state: AppState) => {
-		const { progress, snackbar } = state.service;
+		const { progress, snackbar, isShowSideBar } = state.service;
 		const { email } = state.profile;
 		const { isLoggedIn, accessToken } = state.storage;
 
@@ -428,6 +454,7 @@ const mapStateToProps = (state: AppState) => {
 
 				isLoggedIn,
 				accessToken,
+				isShowSideBar,
 		};
 };
 

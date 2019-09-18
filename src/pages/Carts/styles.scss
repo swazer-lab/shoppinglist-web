@@ -1,27 +1,21 @@
 @import "../../assets/scss/main";
 
-.archive_carts_container {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 50rem;
-    height: 12rem;
-    transition: all .1s;
-    visibility: hidden;
-    background-color: #dadce0;
+.container {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    left: 0px;
+    transition: all .3s;
 
-    &__visible {
-        visibility: visible;
-    }
+    &__open_side_bar {
+        position: relative;
+        left: 140px;
+        transition: all .3s;
 
-    &__content-container {
-        display: flex;
-        flex: 1;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
-
-        height: 100%;
+        @include respond-portal {
+            position: relative;
+            left: 0px;
+        }
     }
 }
 

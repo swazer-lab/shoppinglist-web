@@ -173,7 +173,6 @@ export default (state: State = initialState, action: Action): State => {
 						if (action.isFromCartsToArchive) {
 								return {
 										...state,
-										carts: array(state.carts).remove(Number(action.index)),
 										archivedCarts: array(state.archivedCarts).push(action.cart!),
 								};
 						} else {

@@ -17,7 +17,8 @@ const initialState: State = {
 		message: '',
 		actions: [],
 		duration: 3000,
-	}
+	},
+	isShowSideBar: true
 };
 
 export default (state: State = initialState, action: Action): State => {
@@ -71,6 +72,11 @@ export default (state: State = initialState, action: Action): State => {
 					...initialState.snackbar,
 				},
 			};
+			case ActionTypes.toggle_side_bar:
+					return {
+							...state,
+							isShowSideBar: !state.isShowSideBar
+					};
 
 		default:
 			return state;

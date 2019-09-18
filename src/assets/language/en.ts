@@ -98,6 +98,7 @@ export default {
 	textFetchingCarts: 'Fetching Carts',
 	textCreatingCart: 'Creating Cart',
 	textRemovingCart: 'Cart has been removed',
+	textArchivingCart: 'Cart has been archieved',
 	textUpdatingCart: 'Updating Cart',
 	textSearchingCarts: 'Searching Carts',
 	textSharingCarts: 'Sharing Carts to users you choosed',
