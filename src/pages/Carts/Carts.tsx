@@ -237,7 +237,6 @@ const Carts = (props: Props) => {
 				}]));
 
 				setTimeout(() => {
-						debugger;
 						if (!isUndoClicked) {
 								dispatch(hideSnackbar());
 								dispatch(setDestinationCart(cart, cartIndex, true));
