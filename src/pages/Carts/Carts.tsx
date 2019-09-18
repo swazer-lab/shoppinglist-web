@@ -25,7 +25,6 @@ import {
 		clearDraftCart,
 		copyCart,
 		createCart,
-		fetchArchieveCards,
 		fetchCarts,
 		pullCart,
 		pushCart,
