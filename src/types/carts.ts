@@ -1,5 +1,6 @@
 import { Action as ReduxAction } from 'redux';
 import { Cart, CartItemStatusType, CartUser } from './api';
+import { ArchieveAction } from './archieveCarts';
 
 
 export enum ActionTypes {
@@ -47,8 +48,6 @@ export enum ActionTypes {
 		reorder_cart = 'CARTS_REORDER_CART',
 		reorder_cart_result = 'CARTS_REORDER_CART_RESULT',
 
-		reorder_archived_cart = 'CARTS_REORDER_ARCHIVED_CART',
-
 		change_visibility_filter = 'CHANGE_VISIBILITY_FILTER',
 
 		clear_carts = 'CARTS__CLEAR_CARTS',
@@ -59,9 +58,6 @@ export enum ActionTypes {
 
 		set_destination_carts = 'CARTS__SET_DESTINATION_CARTS',
 		set_destination_carts_result = 'CARTS__SET_DESTINATION_CARTS_RESULT',
-
-		fetch_archieve_cards = 'CARTS__FETCH_ARCHİEVE_CARD',
-		fetch_archieve_cards_result = 'CARTS__FETCH_ARCHİEVE_CARD_RESULT',
 }
 
 export interface CartsAction extends ReduxAction<ActionTypes> {
@@ -207,13 +203,6 @@ export interface ReorderCartAction extends CartsAction {
 		destination: number
 }
 
-export interface ReorderArchivedCartAction extends CartsAction {
-		type: ActionTypes.reorder_archived_cart,
-		cartId: string,
-		source: number,
-		destination: number
-}
-
 export interface ReorderCartResultAction extends CartsActionResult {
 		type: ActionTypes.reorder_cart_result,
 		source?: number,
@@ -247,20 +236,6 @@ export interface SetCartStatusChangingAction extends CartsAction {
 		isCartStatusChanging: boolean
 }
 
-export interface FetchArchieveCardsAction extends CartsAction {
-		type: ActionTypes.fetch_archieve_cards,
-		silent?: boolean,
-		append?: 'replace' | 'merge',
-		pageNumber?: number
-}
-
-export interface FetchArchieveCardsActionResult extends CartsActionResult {
-		type: ActionTypes.fetch_archieve_cards_result,
-		carts?: Cart[],
-		totalCount?: number,
-		append?: 'replace' | 'merge',
-}
-
 export type Action =
 		& CartsAction
 		& CartsActionResult
@@ -288,7 +263,6 @@ export type Action =
 		& GetAccessToCartActionResult
 		& ReorderCartAction
 		& ReorderCartResultAction
-		& ReorderArchivedCartAction
 		& ChangeVisibilityFilter
 		& CopyCartAction
 		& SetCartUpdatingAction
@@ -296,13 +270,10 @@ export type Action =
 		& SetCartStatusChangingAction
 		& SetDestinationCartAction
 		& SetDestinationCartActionResult
-		& FetchArchieveCardsAction
-		& FetchArchieveCardsActionResult
 
 export type State = {
 		draftCart: Cart,
 		carts: Array<Cart>,
-		archivedCarts: Array<Cart>,
 
 		filteredCarts?: Array<Cart>,
 		searchQuery?: string,

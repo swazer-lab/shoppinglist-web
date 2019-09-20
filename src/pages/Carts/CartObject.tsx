@@ -14,7 +14,7 @@ interface Props {
 		provided?: any,
 		progress: AppState['service']['progress'],
 		cart: Cart,
-		cartIndex: number,
+		cartIndex?: number,
 
 		currentUserEmail?: string,
 

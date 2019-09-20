@@ -1,31 +1,46 @@
 import {
 		ActionTypes,
-		AddArchieveAction,
-		AddArchieveActionResult,
 		FetchArchieveCardsAction,
 		FetchArchieveCardsActionResult,
+		PushArchiveCartsAction,
+		PullArchiveCartsAction,
+		ReorderArchivedCartAction,
+		ReorderArchivedCartResultAction
 } from '../types/archieveCarts';
 import { Cart } from '../types/api';
 
-export const AddArchieve = (cart?: Cart): AddArchieveAction => ({
-		type: ActionTypes.add_archieve,
+export const pullArchiveCarts = (index: number): PullArchiveCartsAction => ({
+		type: ActionTypes.pull_archive_carts,
+		index,
+});
+export const pushArchiveCarts = (index: number, cart: Cart): PushArchiveCartsAction => ({
+		type: ActionTypes.push_archive_carts,
+		index,
 		cart,
 });
 
-export const AddArchieveResult = (hasError: boolean, cart?: Cart): AddArchieveActionResult => ({
-		type: ActionTypes.add_archieve_result,
+export const reorderArchivedCart = (cartId: string, source: number, destination: number): ReorderArchivedCartAction => ({
+		type: ActionTypes.reorder_archived_cart,
+		cartId,
+		source,
+		destination,
+});
+
+export const reorderAchivedCartResult = (hasError: boolean, source?: number, destination?: number): ReorderArchivedCartResultAction => ({
+		type: ActionTypes.reorder_archived_cart_result,
 		hasError,
-		cart,
+		source,
+		destination,
 });
 
-export const FetchArchieveCards = (silent?: boolean, append?: 'merge' | 'replace', pageNumber?: number): FetchArchieveCardsAction => ({
+export const fetchArchieveCards = (silent?: boolean, append?: 'merge' | 'replace', pageNumber?: number): FetchArchieveCardsAction => ({
 		type: ActionTypes.fetch_archieve_cards,
 		silent,
 		append,
 		pageNumber,
 });
 
-export const FetchArchieveCardsResult = (hasError: boolean, carts?: Cart[],totalCount?: number, append?: 'replace' | 'merge'): FetchArchieveCardsActionResult => ({
+export const fetchArchieveCardsResult = (hasError: boolean, carts?: Cart[],totalCount?: number, append?: 'replace' | 'merge'): FetchArchieveCardsActionResult => ({
 		type: ActionTypes.fetch_archieve_cards_result,
 		hasError,
 		carts,

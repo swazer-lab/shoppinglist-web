@@ -110,5 +110,5 @@ export interface State {
 				actions?: { title: string, onClick: (e: any) => void }[],
 				duration?: number
 		},
-		isShowSideBar?: boolean
+		isOpenSideBar?: boolean
 }

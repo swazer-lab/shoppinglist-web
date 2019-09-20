@@ -18,7 +18,7 @@ const initialState: State = {
 		actions: [],
 		duration: 3000,
 	},
-	isShowSideBar: true
+	isOpenSideBar: true
 };
 
 export default (state: State = initialState, action: Action): State => {
@@ -75,7 +75,7 @@ export default (state: State = initialState, action: Action): State => {
 			case ActionTypes.toggle_side_bar:
 					return {
 							...state,
-							isShowSideBar: !state.isShowSideBar
+							isOpenSideBar: !state.isOpenSideBar
 					};
 
 		default:

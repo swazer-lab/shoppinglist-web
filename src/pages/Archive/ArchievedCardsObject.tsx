@@ -3,21 +3,33 @@ import React from 'react';
 import { Cart, CartItemStatusType } from '../../types/api';
 import '../Carts/styles.scss';
 import { getCartStatus } from '../../config/utilities';
+import avatar from '../../assets/images/avatar.jpeg';
 
 
 interface Props {
 		cart: Cart,
 		onDraftCartItemStatusChange?: (uuid: string, status: CartItemStatusType, cart: Cart) => void,
+		onRemoveCartClick: (cart: Cart) => void,
+		onRetrieveCartClick?: (cart: Cart) => void
 }
 
 const ArchievedCardsObject = (props: Props) => {
 
-		const {  cart, onDraftCartItemStatusChange } = props;
+		const {  cart, onDraftCartItemStatusChange, onRemoveCartClick, onRetrieveCartClick } = props;
+
+		const onRemoveCartClicked = (e: any) => {
+				e.stopPropagation();
+				onRemoveCartClick(cart);
+		};
+
+		const onRetrieveCartClicked = (e: any) => {
+				e.stopPropagation();
+				onRetrieveCartClick!(cart);
+		};
 
 		const status = getCartStatus(cart.items);
 
 		const renderItems = (status: string) => cart.items.filter(item => item.status === status).map(item => {
-
 				const handleDraftCartItemStatusChange = (e: any) => {
 						e.stopPropagation();
 						if (onDraftCartItemStatusChange) onDraftCartItemStatusChange!(item.uuid, item.status === 'completed' ? 'active' : 'completed', cart);
@@ -38,6 +50,9 @@ const ArchievedCardsObject = (props: Props) => {
 
 		return (
 				<div className='cart_object' style={{marginBottom:10}}>
+						<div className='cart_object__remove_button' onClick={onRemoveCartClicked}>
+								<i className='material-icons'>cancel</i>
+						</div>
 						<h4 className='cart_object__title'>{cart.title}</h4>
 						{
 								status === 'Active' ?
@@ -59,9 +74,12 @@ const ArchievedCardsObject = (props: Props) => {
 								}
 								{renderItems('completed')}
 						</div>
-
+						<div className='cart_object__users_container'>
+								<div className='cart_object__users_container__archive_button'  onClick={onRetrieveCartClicked}>
+										<i className='material-icons'>redo</i>
+								</div>
+						</div>
 				</div>
-
 		);
 };
 

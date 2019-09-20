@@ -51,7 +51,6 @@ interface Props {
 		snackbar: AppState['service']['snackbar'],
 
 		carts: Array<Cart>,
-		archivedCarts: Array<Cart>,
 		draftCart: Cart,
 
 		visibilityFilter: VisibilityFilter,
@@ -68,7 +67,7 @@ interface Props {
 		isLoggedIn: boolean,
 		accessToken: string,
 
-		isShowSideBar?: boolean
+		isOpenSideBar?: boolean
 }
 
 const Carts = (props: Props) => {
@@ -77,7 +76,7 @@ const Carts = (props: Props) => {
 		const [modalCart, setIsModalCart] = useState();
 		const [isSharedUserModalVisible, setisSharedUserModalVisible] = useState(false);
 
-		const { dispatch, progress, snackbar, carts, archivedCarts, draftCart, email, visibilityFilter, isCartUpdating, isCartCopying, isCartStatusChanging, isLoggedIn, accessToken, isShowSideBar } = props;
+		const { dispatch, progress, snackbar, carts, draftCart, email, visibilityFilter, isCartUpdating, isCartCopying, isCartStatusChanging, isLoggedIn, accessToken, isOpenSideBar } = props;
 
 		useEffect(() => {
 				if (isLoggedIn && accessToken) {
@@ -292,7 +291,7 @@ const Carts = (props: Props) => {
 
 		const renderCarts = () => carts.map((cart, index) => (
 				<div key={cart.uuid}>
-						<Draggable draggableId={cart.id} index={index}>
+						<Draggable draggableId={cart.uuid} index={index}>
 								{(provided) => (
 										<div className='cart_object_container'
 										     ref={provided.innerRef}
@@ -332,7 +331,7 @@ const Carts = (props: Props) => {
 		} : draftCart;
 
 		return (
-				<div className={isShowSideBar ? 'container__open_side_bar' : 'container'}>
+				<div className={isOpenSideBar ? 'container__open_side_bar' : 'container'}>
 						<CreateCart
 								draftCart={createCartDraftCart}
 								onDraftCartTitleChange={handleDraftCartTitleChange}
@@ -361,7 +360,7 @@ const Carts = (props: Props) => {
 								onCopyCartClick={onCopyCartClicked}
 								onCloseCopyCartModalClick={onCloseCopyCartModalClicked}
 						/>
-						{carts.length > 0 || archivedCarts.length > 0 ?
+						{carts.length > 0 ?
 								<div className='carts_container'>
 										{
 												carts.length > 0 ?
@@ -426,11 +425,11 @@ Carts.layoutOptions = {
 };
 
 const mapStateToProps = (state: AppState) => {
-		const { progress, snackbar, isShowSideBar } = state.service;
+		const { progress, snackbar, isOpenSideBar } = state.service;
 		const { email } = state.profile;
 		const { isLoggedIn, accessToken } = state.storage;
 
-		const { carts, draftCart, isLoading, totalCount, pageNumber, visibilityFilter, isCartUpdating, isCartCopying, isCartStatusChanging, archivedCarts } = state.carts;
+		const { carts, draftCart, isLoading, totalCount, pageNumber, visibilityFilter, isCartUpdating, isCartCopying, isCartStatusChanging } = state.carts;
 
 		return {
 				progress,
@@ -438,7 +437,6 @@ const mapStateToProps = (state: AppState) => {
 				email,
 
 				carts,
-				archivedCarts,
 
 				draftCart,
 				visibilityFilter,
@@ -452,7 +450,7 @@ const mapStateToProps = (state: AppState) => {
 
 				isLoggedIn,
 				accessToken,
-				isShowSideBar,
+				isOpenSideBar,
 		};
 };
 

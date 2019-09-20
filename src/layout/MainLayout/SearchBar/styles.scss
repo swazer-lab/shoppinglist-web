@@ -14,7 +14,7 @@
     left: 0px;
 
     background-color: rgba($color-black, .5);
-    z-index: 500;
+    z-index: 400;
 
     opacity: 0;
     visibility: hidden;
@@ -23,6 +23,7 @@
     &_visible {
         opacity: 1;
         visibility: visible;
+        z-index: 400;
     }
 }
 

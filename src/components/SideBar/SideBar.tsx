@@ -4,30 +4,31 @@ import './style.scss';
 import { RouteName } from '../../types/store';
 
 interface Props {
-		isShow?: boolean,
+		isOpen?: boolean,
 		onNavigate: (routeName: RouteName) => void,
 		selectedRoute?: RouteName
+		routes?: { RouteName: RouteName, Icon: string, Text: string }[]
 }
 
 const SideBar = (props: Props) => {
-		const { isShow, selectedRoute, onNavigate } = props;
+		const { isOpen, selectedRoute, routes, onNavigate } = props;
+
+		const mapRoutes = () => routes!.map((route, index) => (
+				<li key={index} onClick={() => onNavigate(route.RouteName)}
+				    className={selectedRoute === route.RouteName ? 'selected' : ''}>
+						<a>
+								<i className='material-icons'>{route.Icon}</i>
+								<span>{route.Text}</span>
+						</a>
+				</li>
+		));
 
 		return (
-				<div className={isShow ? 'sidebar_open' : 'sidebar'}>
-						<ul className="menu">
-								<li onClick={() => {
-										onNavigate('Carts');
-								}} className={selectedRoute === 'Carts' ? 'selected' : ''}><a>
-										<i className='material-icons'>view_day</i>
-										<span>Carts</span></a></li>
-								<li onClick={() => {
-										onNavigate('ArchivedCarts');
-								}} className={selectedRoute === 'ArchivedCarts' ? 'selected' : ''}><a>
-										<i className='material-icons'>archive</i>
-										<span>Archived Carts</span></a>
-								</li>
-						</ul>
-				</div>
+						<div className={isOpen ? 'sidebar sidebar__open' : 'sidebar'}>
+								<ul className="menu">
+										{mapRoutes()}
+								</ul>
+						</div>
 		);
 };
 

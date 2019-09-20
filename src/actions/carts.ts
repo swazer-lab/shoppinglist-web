@@ -19,7 +19,7 @@ import {
 		PushCartAction,
 		RemoveCartAction,
 		RemoveCartActionResult,
-		RemoveDraftCartItemAction, ReorderArchivedCartAction,
+		RemoveDraftCartItemAction,
 		ReorderCartAction,
 		ReorderCartResultAction,
 		SetCartCopyingAction,
@@ -31,9 +31,7 @@ import {
 		ShareCartWithContactsAction,
 		ShareCartWithContactsActionResult,
 		UpdateCartResultAction,
-		VisibilityFilter,
-		FetchArchieveCardsAction,
-		FetchArchieveCardsActionResult,
+		VisibilityFilter
 } from '../types/carts';
 import { Cart, CartItemStatusType, CartUser } from '../types/api';
 
@@ -185,13 +183,6 @@ export const reorderCart = (cartId: string, source: number, destination: number)
 		destination,
 });
 
-export const reorderArchivedCart = (cartId: string, source: number, destination: number): ReorderArchivedCartAction => ({
-		type: ActionTypes.reorder_archived_cart,
-		cartId,
-		source,
-		destination,
-});
-
 export const reorderCartResult = (hasError: boolean, source?: number, destination?: number): ReorderCartResultAction => ({
 		type: ActionTypes.reorder_cart_result,
 		hasError,
@@ -230,21 +221,6 @@ export const setDestinationCartResult = (hasError: boolean, carts: Cart): SetDes
 		type: ActionTypes.set_destination_carts_result,
 		hasError,
 		carts,
-});
-
-export const fetchArchieveCards = (silent?: boolean, append?: 'merge' | 'replace', pageNumber?: number): FetchArchieveCardsAction => ({
-		type: ActionTypes.fetch_archieve_cards,
-		silent,
-		append,
-		pageNumber,
-});
-
-export const fetchArchieveCardsResult = (hasError: boolean, carts?: Cart[],totalCount?: number, append?: 'replace' | 'merge'): FetchArchieveCardsActionResult => ({
-		type: ActionTypes.fetch_archieve_cards_result,
-		hasError,
-		carts,
-		totalCount,
-		append,
 });
 
 

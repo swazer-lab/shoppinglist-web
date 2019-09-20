@@ -52,11 +52,11 @@ interface Props {
 		accessToken: string,
 		isEmailConfirmed: boolean,
 
-		isShowSideBar?: boolean
+		isOpenSideBar?: boolean
 }
 
 const MainLayout = (props: Props) => {
-		const { children, dispatch, progress, snackbar, alert, id, name, email, phoneNumber, password, newPassword, photoUrl, avatarUrl, draftProfile, searchQuery, isLoggedIn, accessToken, isEmailConfirmed, isShowSideBar, layoutOptions } = props;
+		const { children, dispatch, progress, snackbar, alert, id, name, email, phoneNumber, password, newPassword, photoUrl, avatarUrl, draftProfile, searchQuery, isLoggedIn, accessToken, isEmailConfirmed, isOpenSideBar, layoutOptions } = props;
 
 
 		const [isProfileModalVisible, setIsProfileModalVisible] = useState(false);
@@ -144,7 +144,7 @@ const MainLayout = (props: Props) => {
 								isOpenSearchBar={isOpenedSearchBar}
 								onCloseSearchBar={onCloseSearchBar}
 								onToggleSideBar={onToggleSideBar}
-								isShowSideBar={isShowSideBar}
+								isShowSideBar={isOpenSideBar}
 						/>
 						<ProfileModal
 								isVisible={isProfileModalVisible}
@@ -189,14 +189,15 @@ const MainLayout = (props: Props) => {
 								onCancel={onClickCancelLogout}
 								onLogout={onClickChangesDiscard}
 						/>
-						<SideBar isShow={isShowSideBar} onNavigate={onNavigateFromSideBar} selectedRoute={layoutOptions.title}/>
+						<SideBar isOpen={isOpenSideBar} onNavigate={onNavigateFromSideBar} selectedRoute={layoutOptions.title}
+						         routes={[{RouteName: 'Carts' as RouteName, Text: 'Carts', Icon: 'view_day'}, {RouteName: 'ArchivedCarts' as RouteName, Icon: 'archive', Text: 'Archived Carts'}]}/>
 						{children}
 				</div>
 		);
 };
 
 const mapStateToProps = (state: AppState) => {
-		const { progress, snackbar, alert, isShowSideBar } = state.service;
+		const { progress, snackbar, alert, isOpenSideBar } = state.service;
 		const { id, name, email, phoneNumber, photoUrl, avatarUrl, draftProfile } = state.profile;
 		const { searchQuery } = state.carts;
 		const { password, newPassword } = state.auth;
@@ -223,7 +224,7 @@ const mapStateToProps = (state: AppState) => {
 				isLoggedIn,
 				accessToken,
 				isEmailConfirmed,
-				isShowSideBar
+				isOpenSideBar,
 		};
 };
 

@@ -16,7 +16,6 @@ const initialState: State = {
 		},
 
 		carts: [],
-		archivedCarts: [],
 
 		visibilityFilter: VisibilityFilter.all,
 		isCartUpdating: false,
@@ -68,34 +67,6 @@ export default (state: State = initialState, action: Action): State => {
 								...state,
 								filteredCarts: action.carts,
 						};
-
-				case ActionTypes.fetch_archieve_cards:
-						return {
-								...state,
-								isLoading: true,
-								pageNumber: action.pageNumber || 1,
-						};
-
-				case ActionTypes.fetch_archieve_cards_result:
-						if (action.hasError || !action.carts) return { ...state, isLoading: false };
-
-						if (action.append === 'merge') {
-								return {
-										...state,
-										archivedCarts: [...state.archivedCarts, ...action.carts],
-										isLoading: false,
-										totalCount: action.totalCount || 0,
-								};
-
-						} else {
-								return {
-										...state,
-										archivedCarts: [...action.carts],
-
-										isLoading: false,
-										totalCount: action.totalCount || 0,
-								};
-						}
 
 				case ActionTypes.fetch_carts:
 						return {
@@ -161,27 +132,6 @@ export default (state: State = initialState, action: Action): State => {
 								...state,
 								isCartCopying: action.isCartCopying,
 						};
-
-				case ActionTypes.reorder_archived_cart:
-						const movedCart = state.archivedCarts[action.source];
-						return {
-								...state,
-								archivedCarts: array(array(state.archivedCarts).remove(action.source)).insertBefore(action.destination, movedCart),
-						};
-
-				case ActionTypes.set_destination_carts:
-						if (action.isFromCartsToArchive) {
-								return {
-										...state,
-										archivedCarts: array(state.archivedCarts).push(action.cart!),
-								};
-						} else {
-								return {
-										...state,
-										archivedCarts: array(state.archivedCarts).remove(Number(action.index)),
-										carts: array(state.carts).push(action.cart!),
-								};
-						}
 
 				case ActionTypes.clear_carts:
 						return initialState;

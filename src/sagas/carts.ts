@@ -1,7 +1,6 @@
 import morphism from 'morphism';
 import { all, call, put, select, takeLatest } from 'redux-saga/effects';
 
-
 import { AppState } from '../types/store';
 
 import {
@@ -20,7 +19,6 @@ import {
 		clearDraftCart,
 		copyCartResult,
 		createCartResult,
-		fetchArchieveCardsResult,
 		fetchCartsResult,
 		filterCartsResult,
 		getAccessToCartResult,
@@ -38,7 +36,6 @@ import language from '../assets/language';
 import {
 		ActionTypes,
 		CopyCartAction,
-		FetchArchieveCardsAction,
 		FetchCartsAction,
 		GetAccessToCartAction,
 		RemoveCartAction,
@@ -48,7 +45,7 @@ import {
 } from '../types/carts';
 import { Profile } from '../types/api';
 import { clearSelectedContacts } from '../actions/contacts';
-import { fetch_archieve_carts_api, set_destination_carts_api, set_destination_carts_revoke_api } from '../api/carts';
+import {set_destination_carts_api, set_destination_carts_revoke_api } from '../api/carts';
 
 function* filterCartsSaga() {
 		const { searchQuery } = yield select((state: AppState) => state.carts);
@@ -283,7 +280,6 @@ function* reorderCartSaga(action: ReorderCartAction) {
 }
 
 function* setDestinationCartSaga(action: SetDestinationCartAction) {
-
 		if (action.isFromCartsToArchive) {
 				yield put(showProgress('This card is being archived card'));
 				try {
@@ -292,16 +288,14 @@ function* setDestinationCartSaga(action: SetDestinationCartAction) {
 						yield put(setDestinationCartResult(false, data));
 				} catch (e) {
 						yield all([
-								// put(setDestinationCartResult(true, data)),
 								put(showHttpErrorAlert(e)),
 						]);
 				} finally {
 						yield put(hideProgress());
-
 				}
 
 		} else {
-				yield put(showProgress('This card is being destination card'));
+				yield put(showProgress('This card is being retrieved'));
 				try {
 						const response = yield call(set_destination_carts_revoke_api, action.cart.id);
 						const data = yield morphism(cartMapper(), response.data);
@@ -317,31 +311,6 @@ function* setDestinationCartSaga(action: SetDestinationCartAction) {
 		}
 }
 
-function* fetchArchieveCartsSaga(action: FetchArchieveCardsAction) {
-		const { silent, pageNumber, append } = action;
-		const pageSize = 15;
-
-		if (!silent) yield put(showProgress(language.textFetchingCarts));
-
-		try {
-				const response = yield call(fetch_archieve_carts_api, pageNumber, pageSize);
-				const { totalCount, items } = response.data;
-
-				const carts = yield morphism(cartMapper(), items);
-
-				yield put(fetchArchieveCardsResult(false, carts, totalCount, append));
-
-		} catch (e) {
-				yield all([
-						put(fetchArchieveCardsResult(true)),
-						put(showHttpErrorAlert(e)),
-
-				]);
-		} finally {
-				if (!silent) yield put(hideProgress());
-		}
-}
-
 export default [
 		takeLatest(ActionTypes.filter_carts, filterCartsSaga),
 		takeLatest(ActionTypes.fetch_carts, fetchCartsSaga),
@@ -353,5 +322,4 @@ export default [
 		takeLatest(ActionTypes.reorder_cart, reorderCartSaga),
 		takeLatest(ActionTypes.copy_cart, copyCartSaga),
 		takeLatest(ActionTypes.set_destination_carts, setDestinationCartSaga),
-		takeLatest(ActionTypes.fetch_archieve_cards, fetchArchieveCartsSaga),
 ];
